@@ -1,0 +1,16 @@
+[package]
+name = "chain_wraper"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "chain_wraper"
+crate-type = ["lib", "staticlib", "cdylib"]
+
+[dependencies]
+anyhow = "1.0.66"
+serde = "1.0.143"
+serde_json = "1.0.83"
+tokio = {version = "1.20.1", features = ["full"]}
+flutter_rust_bridge = "1.49.0"
+asyou_rust_sdk = {git = "https://gitee.com/asyoume/asyou-rust-sdk.git" }
