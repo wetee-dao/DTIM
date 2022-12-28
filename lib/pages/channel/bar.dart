@@ -18,7 +18,7 @@ class ChannelBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return moveWindow(Container(
       height: _height,
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      // padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))),
       ),
@@ -26,6 +26,9 @@ class ChannelBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(
+            width: 20.w,
+          ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.start,
           //   crossAxisAlignment: CrossAxisAlignment.center,

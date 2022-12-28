@@ -9,7 +9,6 @@ import 'pages/chain/sr25519_key.dart';
 import 'pages/search.dart';
 import 'pages/select_org.dart';
 import 'preloader.dart';
-import 'utils/screen/screen_util.dart';
 
 routers() {
   return <GoRoute>[

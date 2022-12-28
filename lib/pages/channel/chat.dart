@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../components/close_bar.dart';
 import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
@@ -30,13 +31,12 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   late final IMProvider im;
   late link.Room? room;
   late link.Client? client;
-  link.Timeline? timeline;
   late Account me;
-  Stream<bool>? sub;
 
+  link.Timeline? timeline;
+  Stream<bool>? sub;
   String srcAvatar = "";
   String nameAuthor = "";
-
   Condition<ImMessages>? get condition => null;
 
   @override
@@ -107,33 +107,35 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       appBar: ChannelBar(
         room: room!,
         height: 71.w,
-        tools: Row(
-          children: [
-            Icon(
-              Icons.meeting_room_outlined,
-              color: ConstTheme.centerChannelColor.withAlpha(150),
-              size: 22.w,
-            ),
-            const SizedBox(width: 10),
-            Icon(
-              Icons.task_outlined,
-              color: ConstTheme.centerChannelColor.withAlpha(150),
-              size: 22.w,
-            ),
-            const SizedBox(width: 10),
-            Icon(
-              Icons.lock_outline,
-              color: ConstTheme.sidebarTextActiveBorder,
-              size: 22.w,
-            ),
-            const SizedBox(width: 10),
-            Icon(
-              Icons.info_outline,
-              color: ConstTheme.centerChannelColor.withAlpha(150),
-              size: 22.w,
-            ),
-            const SizedBox(width: 10),
-          ],
+        tools: CloseBar(
+          child: Row(
+            children: [
+              Icon(
+                Icons.meeting_room_outlined,
+                color: ConstTheme.centerChannelColor.withAlpha(150),
+                size: 22.w,
+              ),
+              SizedBox(width: 10.w),
+              Icon(
+                Icons.task_outlined,
+                color: ConstTheme.centerChannelColor.withAlpha(150),
+                size: 22.w,
+              ),
+              SizedBox(width: 10.w),
+              Icon(
+                Icons.lock_outline,
+                color: ConstTheme.sidebarTextActiveBorder,
+                size: 22.w,
+              ),
+              SizedBox(width: 10.w),
+              Icon(
+                Icons.info_outline,
+                color: ConstTheme.centerChannelColor.withAlpha(150),
+                size: 22.w,
+              ),
+              SizedBox(width: 20.w),
+            ],
+          ),
         ),
       ),
       backgroundColor: ConstTheme.centerChannelBg,
@@ -146,11 +148,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 stream: _msgController.stream,
                 initialData: "",
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  var events = timeline != null ? timeline!.events.reversed.toList() : [];
+                  List<link.Event> events = timeline != null ? timeline!.events.reversed.toList() : [];
                   return Scrollbar(
-                    key: Key("chat_${widget.channerlID}"),
+                    key: Key("chat_scrollbar_${widget.channerlID}"),
                     child: ListView.builder(
-                      key: Key("chatlist_${widget.channerlID}"),
+                      key: Key("chat_list_${widget.channerlID}"),
                       itemCount: events.length + 1,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,

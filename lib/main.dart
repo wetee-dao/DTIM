@@ -7,11 +7,8 @@ import 'package:window_manager/window_manager.dart';
 import 'router.dart';
 import 'store/im.dart';
 import 'store/db.dart';
-import 'store/theme.dart';
 import 'utils/screen.dart';
-import 'utils/screen/screen_util.dart';
 import 'utils/screen/size_extension.dart';
-import 'chain_wraper.io.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

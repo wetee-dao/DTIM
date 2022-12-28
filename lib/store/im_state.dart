@@ -45,6 +45,7 @@ class ImState {
 
     client.onEvent.stream.listen((link.EventUpdate eventUpdate) {
       print(eventUpdate.type);
+      print(eventUpdate.content);
       print("New event update!");
     });
 

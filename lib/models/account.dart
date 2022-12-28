@@ -37,6 +37,8 @@ class Account {
 
   @Transient() // Ignore this property, not stored in the database.
   int? computedProperty;
+
+  signRaw() {}
 }
 
 @Entity()
@@ -76,8 +78,7 @@ class ChainData {
 
   ChainData(this.address, this.encoded, this.encoding, this.meta);
 
-  factory ChainData.fromJson(Map<String, dynamic> json) =>
-      _$ChainDataFromJson(json);
+  factory ChainData.fromJson(Map<String, dynamic> json) => _$ChainDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChainDataToJson(this);
 }
 
@@ -89,7 +90,6 @@ class ChainDataEncoding {
 
   ChainDataEncoding(this.content, this.type, this.version);
 
-  factory ChainDataEncoding.fromJson(Map<String, dynamic> json) =>
-      _$ChainDataEncodingFromJson(json);
+  factory ChainDataEncoding.fromJson(Map<String, dynamic> json) => _$ChainDataEncodingFromJson(json);
   Map<String, dynamic> toJson() => _$ChainDataEncodingToJson(this);
 }
