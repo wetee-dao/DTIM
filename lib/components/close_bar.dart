@@ -75,6 +75,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: () {
                   windowManager.minimize();
                 },
@@ -87,6 +88,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
               SizedBox(width: 5.w),
               if (_isMaximized)
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     windowManager.unmaximize();
                   },
@@ -98,6 +100,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                 ),
               if (!_isMaximized)
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     windowManager.maximize();
                   },
@@ -112,6 +115,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                 ),
               SizedBox(width: 5.w),
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: () {
                   windowManager.close();
                 },

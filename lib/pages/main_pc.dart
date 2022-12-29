@@ -95,19 +95,30 @@ class _PCPageState extends State<PCPage> with WindowListener {
                             width: 3.w,
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              aorgs[i].orgName ?? "",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: ConstTheme.sidebarHeaderTextColor,
-                                fontSize: 14.w,
+                        child: aorgs[i].orgAvater == null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (aorgs[i].orgAvater == null)
+                                    Text(
+                                      aorgs[i].orgName ?? "",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: ConstTheme.sidebarHeaderTextColor,
+                                        fontSize: 14.w,
+                                      ),
+                                    ),
+                                ],
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(3.w),
+                                child: Image.network(
+                                  fit: BoxFit.cover,
+                                  aorgs[i].orgAvater!,
+                                  width: 34.w,
+                                  height: 34.w,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   InkWell(

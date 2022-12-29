@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:star_menu/star_menu.dart';
 
 import '../../components/move_window.dart';
+import '../../utils/popup.dart';
 
-class ChannelBar extends StatelessWidget implements PreferredSizeWidget {
+class ChannelBar extends StatefulWidget implements PreferredSizeWidget {
   final double _height;
   final link.Room room;
   final Widget? tools;
@@ -15,9 +17,32 @@ class ChannelBar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   @override
+  State<ChannelBar> createState() => _ChannelBarState();
+
+  @override
+  Size get preferredSize {
+    return Size(100.sw, _height);
+  }
+}
+
+class ItemModel {
+  String title;
+  IconData icon;
+
+  ItemModel(this.title, this.icon);
+}
+
+class _ChannelBarState extends State<ChannelBar> {
+  BasePopupMenuController _controller = BasePopupMenuController();
+  List<ItemModel> menuItems = [
+    ItemModel('发起群聊', Icons.chat_bubble),
+    ItemModel('添加朋友', Icons.group_add),
+    ItemModel('扫一扫', Icons.settings_overscan),
+  ];
+  @override
   Widget build(BuildContext context) {
     return moveWindow(Container(
-      height: _height,
+      height: widget._height,
       // padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))),
@@ -43,12 +68,65 @@ class ChannelBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        room.name,
-                        style: TextStyle(
-                          color: ConstTheme.centerChannelColor,
-                          fontSize: 17.w,
-                          height: 1,
+                      BasePopupMenu(
+                        verticalMargin: -10,
+                        controller: _controller,
+                        pressType: PressType.singleClick,
+                        child: Text(
+                          widget.room.name,
+                          style: TextStyle(
+                            color: ConstTheme.centerChannelColor,
+                            fontSize: 17.w,
+                            height: 1,
+                          ),
+                        ),
+                        menuBuilder: () => ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Container(
+                            color: const Color(0xFF4C4C4C),
+                            child: IntrinsicWidth(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: menuItems
+                                    .map(
+                                      (item) => GestureDetector(
+                                        behavior: HitTestBehavior.translucent,
+                                        onTap: () {
+                                          print("onTap");
+                                          _controller.hideMenu();
+                                        },
+                                        child: Container(
+                                          height: 40,
+                                          padding: EdgeInsets.symmetric(horizontal: 20),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Icon(
+                                                item.icon,
+                                                size: 15,
+                                                color: Colors.white,
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.only(left: 10),
+                                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                                  child: Text(
+                                                    item.title,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       GestureDetector(
@@ -85,19 +163,14 @@ class ChannelBar extends StatelessWidget implements PreferredSizeWidget {
           //   ],
           // ),
           Expanded(child: moveWindow(Container())),
-          tools != null
-              ? tools!
+          widget.tools != null
+              ? widget.tools!
               : SizedBox(
-                  width: _height,
-                  child: tools,
+                  width: widget._height,
+                  child: widget.tools,
                 ),
         ],
       ),
     ));
-  }
-
-  @override
-  Size get preferredSize {
-    return Size(100.sw, _height);
   }
 }
