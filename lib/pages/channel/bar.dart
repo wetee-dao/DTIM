@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:matrix/matrix.dart' as link;
-import 'package:star_menu/star_menu.dart';
 
 import '../../components/move_window.dart';
 import '../../utils/popup.dart';
@@ -69,7 +68,9 @@ class _ChannelBarState extends State<ChannelBar> {
                   Row(
                     children: [
                       BasePopupMenu(
-                        verticalMargin: -10,
+                        verticalMargin: 4.w,
+                        horizontalMargin: -35.w,
+                        showArrow: false,
                         controller: _controller,
                         pressType: PressType.singleClick,
                         child: Text(
@@ -81,9 +82,12 @@ class _ChannelBarState extends State<ChannelBar> {
                           ),
                         ),
                         menuBuilder: () => ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(2.w),
                           child: Container(
-                            color: const Color(0xFF4C4C4C),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                              color: ConstTheme.centerChannelBg,
+                            ),
                             child: IntrinsicWidth(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,

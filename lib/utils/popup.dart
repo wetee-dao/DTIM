@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import '../components/window/virtual_window_frame.dart';
 import 'platform/platform.dart';
 
 enum PressType {
@@ -35,21 +36,22 @@ class BasePopupMenuController extends ChangeNotifier {
 Rect _menuRect = Rect.zero;
 
 class BasePopupMenu extends StatefulWidget {
-  BasePopupMenu({
+  const BasePopupMenu({
+    Key? key,
     required this.child,
     required this.menuBuilder,
     required this.pressType,
     this.controller,
     this.arrowColor = const Color(0xFF4C4C4C),
     this.showArrow = true,
-    this.barrierColor = Colors.black12,
+    this.barrierColor = Colors.transparent,
     this.arrowSize = 10.0,
     this.horizontalMargin = 10.0,
     this.verticalMargin = 10.0,
     this.position,
     this.menuOnChange,
     this.enablePassEvent = true,
-  });
+  }) : super(key: key);
 
   final Widget child;
   final PressType pressType;
@@ -81,12 +83,12 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
 
   _showMenu() {
     Widget arrow = ClipPath(
+      clipper: _ArrowClipper(),
       child: Container(
         width: widget.arrowSize,
         height: widget.arrowSize,
         color: widget.arrowColor,
       ),
-      clipper: _ArrowClipper(),
     );
 
     _overlayEntry = OverlayEntry(
@@ -94,7 +96,7 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
         Widget menu = Center(
           child: Container(
             constraints: BoxConstraints(
-              maxWidth: _parentBox!.size.width - 2 * widget.horizontalMargin,
+              maxWidth: _parentBox!.size.width,
               minWidth: 0,
             ),
             child: CustomMultiChildLayout(
@@ -126,8 +128,8 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Material(
-                        child: widget.menuBuilder(),
                         color: Colors.transparent,
+                        child: widget.menuBuilder(),
                       ),
                     ],
                   ),
@@ -149,7 +151,7 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
             // but the passed event would trigger [showMenu] again.
             // So, we use time threshold to solve this bug.
             _canResponse = false;
-            Future.delayed(Duration(milliseconds: 300)).then((_) => _canResponse = true);
+            Future.delayed(const Duration(milliseconds: 300)).then((_) => _canResponse = true);
           },
           child: widget.barrierColor == Colors.transparent
               ? menu
@@ -186,7 +188,7 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
   void initState() {
     super.initState();
     _controller = widget.controller;
-    if (_controller == null) _controller = BasePopupMenuController();
+    _controller ??= BasePopupMenuController();
     _controller?.addListener(_updateView);
     WidgetsBinding.instance.addPostFrameCallback((call) {
       if (mounted) {
@@ -206,6 +208,7 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
   @override
   Widget build(BuildContext context) {
     var child = Material(
+      color: Colors.transparent,
       child: InkWell(
         hoverColor: Colors.transparent,
         focusColor: Colors.transparent,
@@ -223,7 +226,6 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
           }
         },
       ),
-      color: Colors.transparent,
     );
     if (Platform.isIOS) {
       return child;
@@ -271,8 +273,8 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
   void performLayout(Size size) {
     Size contentSize = Size.zero;
     Size arrowSize = Size.zero;
-    Offset contentOffset = Offset(0, 0);
-    Offset arrowOffset = Offset(0, 0);
+    Offset contentOffset = const Offset(0, 0);
+    Offset arrowOffset = const Offset(0, 0);
 
     double anchorCenterX = anchorOffset.dx + anchorSize.width / 2;
     double anchorTopY = anchorOffset.dy;

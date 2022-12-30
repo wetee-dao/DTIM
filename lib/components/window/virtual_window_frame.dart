@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
@@ -7,7 +8,7 @@ import 'package:window_manager/window_manager.dart';
 final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;
 
-double get kVirtualWindowFrameMargin => (_kIsLinux) ? 8.0 : 0;
+double get kVirtualWindowFrameMargin => (_kIsLinux) ? 8.w : 0;
 
 class VirtualWindowFrame extends StatefulWidget {
   /// The [child] contained by the VirtualWindowFrame.
