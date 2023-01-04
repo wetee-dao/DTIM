@@ -24,15 +24,16 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(
-            iconSize: 25.w,
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.arrow_back,
-              color: ConstTheme.sidebarText,
-              size: 25.w,
+          InkWell(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10.w, right: 10.w),
+              child: Icon(
+                Icons.arrow_back,
+                color: ConstTheme.sidebarText,
+                size: 25.w,
+              ),
             ),
-            onPressed: () {
+            onTap: () {
               if (onBack != null) {
                 onBack!();
                 return;
@@ -40,7 +41,6 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
               context.pop();
             },
           ),
-          SizedBox(width: 10.w),
           Text(
             _title,
             style: TextStyle(color: ConstTheme.sidebarText, fontSize: 14.w),

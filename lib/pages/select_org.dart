@@ -185,12 +185,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                       ),
                       child: Row(
                         children: [
-                          userAvatarWidget(
-                            accounts[i].address,
-                            true,
-                            50.w,
-                            50.w,
-                          ),
+                          UserAvatar(accounts[i].address, true, 50.w),
                           SizedBox(width: 10.w),
                           Expanded(
                             child: accounts[i].name != null && accounts[i].name != ""

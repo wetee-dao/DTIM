@@ -40,6 +40,16 @@ class _MsgState extends State<Msg> {
         showDate = true;
       }
     }
+    if (showDate == true) {
+      return Column(children: [
+        buildDayTag(event),
+        buildMsg(event, showAvatar),
+      ]);
+    }
+    return buildMsg(event, showAvatar);
+  }
+
+  buildMsg(link.Event event, bool showAvatar) {
     return Row(
       key: Key(event.eventId),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +59,7 @@ class _MsgState extends State<Msg> {
           Column(
             children: [
               SizedBox(height: 10.w),
-              if (showAvatar && showDate) SizedBox(height: 40.w, width: 40.w),
+              // if (showAvatar && showDate) SizedBox(height: 40.w, width: 40.w),
               UserAvatar(
                 key: Key("user_${event.eventId}"),
                 event.senderId,
@@ -65,7 +75,7 @@ class _MsgState extends State<Msg> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (showAvatar) SizedBox(height: 10.w),
-              if (showAvatar && showDate) buildDayTag(event),
+              // if (showAvatar && showDate) buildDayTag(event),
               if (showAvatar)
                 RichText(
                   text: TextSpan(
@@ -117,36 +127,28 @@ class _MsgState extends State<Msg> {
   }
 
   buildDayTag(event) {
-    return Row(
-      children: [
-        SizedBox(width: 20.w),
-        Expanded(
-          child: SizedBox(
-            width: double.maxFinite,
-            height: 40.w,
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Container(
-                  height: 1,
-                  color: ConstTheme.centerChannelColor.withOpacity(0.08),
-                ),
-                Positioned(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
-                    decoration: BoxDecoration(color: ConstTheme.centerChannelBg),
-                    child: Text(
-                      getDay(event.originServerTs),
-                      style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 14.w),
-                    ),
-                  ),
-                )
-              ],
-            ),
+    return SizedBox(
+      width: double.maxFinite,
+      height: 40.w,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+            height: 1,
+            color: ConstTheme.centerChannelColor.withOpacity(0.08),
           ),
-        ),
-        SizedBox(width: 90.w),
-      ],
+          Positioned(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+              decoration: BoxDecoration(color: ConstTheme.centerChannelBg),
+              child: Text(
+                getDay(event.originServerTs),
+                style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 14.w),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

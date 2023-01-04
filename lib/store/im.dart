@@ -53,7 +53,7 @@ class IMProvider with ChangeNotifier {
     }
 
     connections[userName] = client;
-    connectionStates[userName] = ImState(client, user, stateChange);
+    connectionStates[userName] = ImState(client, org, user, stateChange);
 
     notifyListeners();
     return true;

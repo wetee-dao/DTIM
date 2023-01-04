@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../models/user.dart';
+import '../components/components.dart';
+import '../components/popup.dart';
+import '../models/models.dart';
 import '../store/im.dart';
 import '../store/theme.dart';
 import 'channel/chat.dart';
@@ -24,7 +28,10 @@ class _ChannelListPageState extends State<ChannelListPage> {
   late ExpandableController _controllerChannels;
   late ExpandableController _controllerStarred;
   late ExpandableController _controllerUsers;
+  final BasePopupMenuController menuController = BasePopupMenuController();
+  final StreamController<bool> menuStreamController = StreamController<bool>();
   IMProvider? im;
+  Org? org;
   User? receiverUser;
   String channelId = "";
   List<User> users = [];
@@ -36,6 +43,9 @@ class _ChannelListPageState extends State<ChannelListPage> {
     _controllerChannels = ExpandableController(initialExpanded: true);
     _controllerStarred = ExpandableController(initialExpanded: true);
     _controllerUsers = ExpandableController(initialExpanded: true);
+    menuController.addListener(() {
+      menuStreamController.add(menuController.menuIsShowing);
+    });
     Future.delayed(Duration.zero).then((value) async {
       im = context.read<IMProvider>();
       im!.addListener(onImInit);
@@ -57,6 +67,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
     }
     setState(() {
       channels = im!.currentState!.channels;
+      org = im!.currentState!.org;
       channelId = channels[0].id;
     });
     im!.currentState!.rosterListen((list) {
@@ -184,9 +195,61 @@ class _ChannelListPageState extends State<ChannelListPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  JumpTo(false, MediaQuery.of(context).size.width - 40, () {
-                    context.push("/search");
-                  }),
+                  Row(
+                    children: [
+                      SizedBox(width: 15.w),
+                      BasePopupMenu(
+                        verticalMargin: -1.w,
+                        horizontalMargin: 5.w,
+                        showArrow: false,
+                        controller: menuController,
+                        pressType: PressType.singleClick,
+                        position: PreferredPosition.bottomLeft,
+                        child: StreamBuilder<bool>(
+                          stream: menuStreamController.stream,
+                          initialData: false,
+                          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                            return Container(
+                              height: 40.w,
+                              padding: EdgeInsets.only(left: 10.w, right: 7.w, top: 2.w, bottom: 2.w),
+                              decoration: BoxDecoration(
+                                color: snapshot.data != null && snapshot.data!
+                                    ? ConstTheme.sidebarTextActiveBorder.withOpacity(0.2)
+                                    : ConstTheme.sidebarText.withOpacity(0.1),
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(3.w), bottomLeft: Radius.circular(3.w)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    org != null ? org!.name ?? "" : '',
+                                    style: TextStyle(
+                                      color: ConstTheme.centerChannelColor,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18.w,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    color: ConstTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        menuBuilder: () => orgMenuRender(menuController),
+                      ),
+                      SizedBox(width: 1.w),
+                      Expanded(
+                        child: JumpTo(false, MediaQuery.of(context).size.width - 40, () {
+                          context.push("/search");
+                          return null;
+                        }),
+                      )
+                    ],
+                  ),
                   Divider(
                     height: 1,
                     color: ConstTheme.sidebarText.withOpacity(0.08),

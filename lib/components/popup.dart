@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import '../components/window/virtual_window_frame.dart';
-import 'platform/platform.dart';
 
 enum PressType {
   longPress,
@@ -10,8 +8,12 @@ enum PressType {
 }
 
 enum PreferredPosition {
-  top,
-  bottom,
+  bottomLeft,
+  bottomCenter,
+  bottomRight,
+  topLeft,
+  topCenter,
+  topRight,
 }
 
 class BasePopupMenuController extends ChangeNotifier {
@@ -32,8 +34,6 @@ class BasePopupMenuController extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-Rect _menuRect = Rect.zero;
 
 class BasePopupMenu extends StatefulWidget {
   const BasePopupMenu({
@@ -80,6 +80,8 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
   OverlayEntry? _overlayEntry;
   BasePopupMenuController? _controller;
   bool _canResponse = true;
+  Rect menuRect = Rect.zero;
+  Rect childRect = Rect.zero;
 
   _showMenu() {
     Widget arrow = ClipPath(
@@ -107,6 +109,10 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
                 ),
                 verticalMargin: widget.verticalMargin,
                 position: widget.position,
+                onRectChange: (mr, cr) {
+                  menuRect = mr;
+                  childRect = cr;
+                },
               ),
               children: <Widget>[
                 if (widget.showArrow)
@@ -138,14 +144,19 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
             ),
           ),
         );
+
         return Listener(
           behavior: widget.enablePassEvent ? HitTestBehavior.translucent : HitTestBehavior.opaque,
           onPointerDown: (PointerDownEvent event) {
             Offset offset = event.localPosition;
-            // If tap position in menu
-            if (_menuRect.contains(Offset(offset.dx - widget.horizontalMargin, offset.dy))) {
+            if (childRect.contains(Offset(offset.dx - widget.horizontalMargin, offset.dy))) {
               return;
             }
+            // If tap position in menu
+            if (menuRect.contains(Offset(offset.dx - widget.horizontalMargin, offset.dy))) {
+              return;
+            }
+
             _controller?.hideMenu();
             // When [enablePassEvent] works and we tap the [child] to [hideMenu],
             // but the passed event would trigger [showMenu] again.
@@ -217,27 +228,35 @@ class _BasePopupMenuState extends State<BasePopupMenu> {
         child: widget.child,
         onTap: () {
           if (widget.pressType == PressType.singleClick && _canResponse) {
-            _controller?.showMenu();
+            if (_controller != null && _controller!.menuIsShowing) {
+              _controller?.hideMenu();
+            } else {
+              _controller?.showMenu();
+            }
           }
         },
-        onLongPress: () {
-          if (widget.pressType == PressType.longPress && _canResponse) {
-            _controller?.showMenu();
-          }
-        },
+        // onLongPress: () {
+        //   if (widget.pressType == PressType.longPress && _canResponse) {
+        //     if (_controller != null && _controller!.menuIsShowing) {
+        //       _controller?.hideMenu();
+        //     } else {
+        //       _controller?.showMenu();
+        //     }
+        //   }
+        // },
       ),
     );
-    if (Platform.isIOS) {
-      return child;
-    } else {
-      return WillPopScope(
-        onWillPop: () {
-          _hideMenu();
-          return Future.value(true);
-        },
-        child: child,
-      );
-    }
+    // if (Platform.isIOS) {
+    return child;
+    // } else {
+    //   return WillPopScope(
+    //     onWillPop: () {
+    //       _hideMenu();
+    //       return Future.value(true);
+    //     },
+    //     child: child,
+    //   );
+    // }
   }
 }
 
@@ -247,20 +266,21 @@ enum _MenuLayoutId {
   content,
 }
 
-enum _MenuPosition {
-  bottomLeft,
-  bottomCenter,
-  bottomRight,
-  topLeft,
-  topCenter,
-  topRight,
-}
+// enum _MenuPosition {
+//   bottomLeft,
+//   bottomCenter,
+//   bottomRight,
+//   topLeft,
+//   topCenter,
+//   topRight,
+// }
 
 class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
   _MenuLayoutDelegate({
     required this.anchorSize,
     required this.anchorOffset,
     required this.verticalMargin,
+    required this.onRectChange,
     this.position,
   });
 
@@ -268,6 +288,7 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
   final Offset anchorOffset;
   final double verticalMargin;
   final PreferredPosition? position;
+  final Function(Rect, Rect) onRectChange;
 
   @override
   void performLayout(Size size) {
@@ -279,7 +300,7 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
     double anchorCenterX = anchorOffset.dx + anchorSize.width / 2;
     double anchorTopY = anchorOffset.dy;
     double anchorBottomY = anchorTopY + anchorSize.height;
-    _MenuPosition menuPosition = _MenuPosition.bottomCenter;
+    PreferredPosition menuPosition = position != null ? position! : PreferredPosition.bottomCenter;
 
     if (hasChild(_MenuLayoutId.content)) {
       contentSize = layoutChild(
@@ -300,23 +321,12 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
       );
     }
 
-    bool isTop = false;
-    if (position == null) {
-      // auto calculate position
-      isTop = anchorBottomY > size.height / 2;
-    } else {
-      isTop = position == PreferredPosition.top;
-    }
-    if (anchorCenterX - contentSize.width / 2 < 0) {
-      menuPosition = isTop ? _MenuPosition.topLeft : _MenuPosition.bottomLeft;
-    } else if (anchorCenterX + contentSize.width / 2 > size.width) {
-      menuPosition = isTop ? _MenuPosition.topRight : _MenuPosition.bottomRight;
-    } else {
-      menuPosition = isTop ? _MenuPosition.topCenter : _MenuPosition.bottomCenter;
+    if (position != null) {
+      menuPosition = position!;
     }
 
     switch (menuPosition) {
-      case _MenuPosition.bottomCenter:
+      case PreferredPosition.bottomCenter:
         arrowOffset = Offset(
           anchorCenterX - arrowSize.width / 2,
           anchorBottomY + verticalMargin,
@@ -326,21 +336,21 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
           anchorBottomY + verticalMargin + arrowSize.height,
         );
         break;
-      case _MenuPosition.bottomLeft:
+      case PreferredPosition.bottomLeft:
         arrowOffset = Offset(anchorCenterX - arrowSize.width / 2, anchorBottomY + verticalMargin);
         contentOffset = Offset(
-          0,
+          anchorCenterX - anchorSize.width / 2,
           anchorBottomY + verticalMargin + arrowSize.height,
         );
         break;
-      case _MenuPosition.bottomRight:
+      case PreferredPosition.bottomRight:
         arrowOffset = Offset(anchorCenterX - arrowSize.width / 2, anchorBottomY + verticalMargin);
         contentOffset = Offset(
-          size.width - contentSize.width,
+          anchorCenterX + anchorSize.width / 2 - contentSize.width,
           anchorBottomY + verticalMargin + arrowSize.height,
         );
         break;
-      case _MenuPosition.topCenter:
+      case PreferredPosition.topCenter:
         arrowOffset = Offset(
           anchorCenterX - arrowSize.width / 2,
           anchorTopY - verticalMargin - arrowSize.height,
@@ -350,23 +360,23 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
           anchorTopY - verticalMargin - arrowSize.height - contentSize.height,
         );
         break;
-      case _MenuPosition.topLeft:
+      case PreferredPosition.topLeft:
         arrowOffset = Offset(
           anchorCenterX - arrowSize.width / 2,
           anchorTopY - verticalMargin - arrowSize.height,
         );
         contentOffset = Offset(
-          0,
+          anchorCenterX - anchorSize.width / 2,
           anchorTopY - verticalMargin - arrowSize.height - contentSize.height,
         );
         break;
-      case _MenuPosition.topRight:
+      case PreferredPosition.topRight:
         arrowOffset = Offset(
           anchorCenterX - arrowSize.width / 2,
           anchorTopY - verticalMargin - arrowSize.height,
         );
         contentOffset = Offset(
-          size.width - contentSize.width,
+          anchorCenterX + anchorSize.width / 2 - contentSize.width,
           anchorTopY - verticalMargin - arrowSize.height - contentSize.height,
         );
         break;
@@ -375,14 +385,22 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
       positionChild(_MenuLayoutId.content, contentOffset);
     }
 
-    _menuRect = Rect.fromLTWH(
-      contentOffset.dx,
-      contentOffset.dy,
-      contentSize.width,
-      contentSize.height,
+    onRectChange(
+      Rect.fromLTWH(
+        contentOffset.dx,
+        contentOffset.dy,
+        contentSize.width,
+        contentSize.height,
+      ),
+      Rect.fromLTWH(
+        anchorOffset.dx,
+        anchorOffset.dy,
+        anchorSize.width,
+        anchorSize.height,
+      ),
     );
     bool isBottom = false;
-    if (_MenuPosition.values.indexOf(menuPosition) < 3) {
+    if (PreferredPosition.values.indexOf(menuPosition) < 3) {
       // bottom
       isBottom = true;
     }

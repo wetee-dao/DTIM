@@ -11,6 +11,8 @@ class ImState {
   // 用户
   late Account _user;
 
+  late Org _org;
+
   // 外部事件触发器
   late Function _onchange;
 
@@ -33,11 +35,13 @@ class ImState {
   // 构建函数
   ImState(
     link.Client connection,
+    Org org,
     Account user,
     Function onchange,
   ) {
     _user = user;
     _onchange = onchange;
+    _org = org;
     client = connection;
     client.onLoginStateChanged.stream.listen((link.LoginState loginState) {
       print("LoginState: ${loginState.toString()}");
@@ -54,6 +58,10 @@ class ImState {
 
   Account get user {
     return _user;
+  }
+
+  Org get org {
+    return _org;
   }
 
   // @override

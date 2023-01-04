@@ -48,10 +48,9 @@ class _DirectMessagePageState extends State<DirectMessagePage> {
               itemCount: userList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: userAvatarWidget(
+                  leading: UserAvatar(
                     userList[index].avatarSrc,
                     userList[index].online,
-                    40,
                     40,
                   ),
                   title: Text(

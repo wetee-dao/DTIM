@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:asyou_app/utils/functions.dart';
 import 'package:asyou_app/components/search_element.dart';
+
+import '../store/theme.dart';
 
 class SearchPageNav extends StatefulWidget {
   const SearchPageNav({Key? key}) : super(key: key);
@@ -36,13 +39,13 @@ class _SearchPageNavState extends State<SearchPageNav> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: "4B144A".toColor(),
-        title: Container(
+        backgroundColor: ConstTheme.sidebarBg,
+        title: SizedBox(
           width: MediaQuery.of(context).size.width * 0.95,
           child: Row(
             children: [
               AnimatedContainer(
-                duration: Duration(milliseconds: 700),
+                duration: const Duration(milliseconds: 700),
                 curve: Curves.fastLinearToSlowEaseIn,
                 height: 40,
                 width: MediaQuery.of(context).size.width * coefWidthField,
@@ -62,8 +65,8 @@ class _SearchPageNavState extends State<SearchPageNav> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.grey.shade400,
-                      size: 21,
+                      color: ConstTheme.centerChannelColor,
+                      size: 21.w,
                     ),
                     hintText: 'Enter a search item',
                     hintStyle: TextStyle(
@@ -71,7 +74,7 @@ class _SearchPageNavState extends State<SearchPageNav> {
                       fontWeight: FontWeight.w400,
                       height: 0.5,
                     ),
-                    fillColor: "502D52".toColor(),
+                    fillColor: ConstTheme.centerChannelColor,
                     filled: true,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -88,7 +91,7 @@ class _SearchPageNavState extends State<SearchPageNav> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 1,
               ),
               Container(

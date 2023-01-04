@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/move_window.dart';
-import '../../utils/popup.dart';
+import '../../components/popup.dart';
+import './chat_menu.dart';
 
 class ChannelBar extends StatefulWidget implements PreferredSizeWidget {
   final double _height;
@@ -24,157 +27,128 @@ class ChannelBar extends StatefulWidget implements PreferredSizeWidget {
   }
 }
 
-class ItemModel {
-  String title;
-  IconData icon;
-
-  ItemModel(this.title, this.icon);
-}
-
 class _ChannelBarState extends State<ChannelBar> {
-  BasePopupMenuController _controller = BasePopupMenuController();
-  List<ItemModel> menuItems = [
-    ItemModel('发起群聊', Icons.chat_bubble),
-    ItemModel('添加朋友', Icons.group_add),
-    ItemModel('扫一扫', Icons.settings_overscan),
-  ];
+  final BasePopupMenuController menuController = BasePopupMenuController();
+  final StreamController<bool> menuStreamController = StreamController<bool>();
+
+  @override
+  void initState() {
+    menuController.addListener(() {
+      menuStreamController.add(menuController.menuIsShowing);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    menuController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return moveWindow(Container(
-      height: widget._height,
-      // padding: EdgeInsets.symmetric(horizontal: 20.w),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 20.w,
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(height: 5.w),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      BasePopupMenu(
-                        verticalMargin: 4.w,
-                        horizontalMargin: -35.w,
-                        showArrow: false,
-                        controller: _controller,
-                        pressType: PressType.singleClick,
-                        child: Text(
-                          widget.room.name,
-                          style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
-                            fontSize: 17.w,
-                            height: 1,
-                          ),
-                        ),
-                        menuBuilder: () => ClipRRect(
-                          borderRadius: BorderRadius.circular(2.w),
-                          child: Container(
+    return moveWindow(
+      Container(
+        height: widget._height,
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 10.w,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 5.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BasePopupMenu(
+                      verticalMargin: -1.w,
+                      horizontalMargin: 5.w,
+                      showArrow: false,
+                      controller: menuController,
+                      position: PreferredPosition.bottomLeft,
+                      pressType: PressType.singleClick,
+                      child: StreamBuilder<bool>(
+                        stream: menuStreamController.stream,
+                        initialData: false,
+                        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                          return Container(
+                            padding: EdgeInsets.only(left: 6.w, right: 3.w, top: 2.w, bottom: 2.w),
                             decoration: BoxDecoration(
-                              border: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
-                              color: ConstTheme.centerChannelBg,
+                              color: snapshot.data != null && snapshot.data!
+                                  ? ConstTheme.sidebarTextActiveBorder.withOpacity(0.1)
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(3.w)),
                             ),
-                            child: IntrinsicWidth(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: menuItems
-                                    .map(
-                                      (item) => GestureDetector(
-                                        behavior: HitTestBehavior.translucent,
-                                        onTap: () {
-                                          print("onTap");
-                                          _controller.hideMenu();
-                                        },
-                                        child: Container(
-                                          height: 40,
-                                          padding: EdgeInsets.symmetric(horizontal: 20),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                item.icon,
-                                                size: 15,
-                                                color: Colors.white,
-                                              ),
-                                              Expanded(
-                                                child: Container(
-                                                  margin: EdgeInsets.only(left: 10),
-                                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                                  child: Text(
-                                                    item.title,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  widget.room.name,
+                                  style: TextStyle(
+                                    color: snapshot.data != null && snapshot.data!
+                                        ? ConstTheme.sidebarTextActiveBorder
+                                        : ConstTheme.centerChannelColor,
+                                    fontSize: 17.w,
+                                    height: 1.4,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                  color: snapshot.data != null && snapshot.data!
+                                      ? ConstTheme.sidebarTextActiveBorder
+                                      : ConstTheme.centerChannelColor,
+                                  size: 18.w,
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: ConstTheme.centerChannelColor,
-                          size: 18.w,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 10.w),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.star_border,
-                      color: ConstTheme.centerChannelColor.withAlpha(155),
-                      size: 18.w,
+                      menuBuilder: () => menuRender(menuController),
                     ),
+                    SizedBox(width: 10.w),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.star_border,
+                        color: ConstTheme.centerChannelColor.withAlpha(155),
+                        size: 18.w,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(height: 3.w),
+                Row(
+                  children: [
+                    SizedBox(width: 5.w),
+                    Text(
+                      '添加频道描述',
+                      style: TextStyle(
+                        color: ConstTheme.centerChannelColor.withAlpha(155),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Expanded(child: moveWindow(Container())),
+            widget.tools != null
+                ? widget.tools!
+                : SizedBox(
+                    width: widget._height,
+                    child: widget.tools,
                   ),
-                ],
-              ),
-              Container(height: 3.w),
-              Text(
-                '添加频道描述',
-                style: TextStyle(
-                  color: ConstTheme.centerChannelColor.withAlpha(155),
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-          //   ],
-          // ),
-          Expanded(child: moveWindow(Container())),
-          widget.tools != null
-              ? widget.tools!
-              : SizedBox(
-                  width: widget._height,
-                  child: widget.tools,
-                ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
