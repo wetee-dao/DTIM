@@ -20,6 +20,12 @@ class Org {
   // 团队图标
   String? avater;
 
+  // 团队大图
+  String? img;
+
+  // 团队颜色
+  String? color;
+
   // 区块链类型
   String? chainType;
 
@@ -42,5 +48,7 @@ class Org {
     this.chainMeta,
     this.chainUrl,
     this.homeUrl,
+    this.img,
+    this.color,
   });
 }

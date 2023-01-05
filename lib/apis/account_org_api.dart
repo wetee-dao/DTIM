@@ -28,8 +28,7 @@ class AccountOrgApi {
     List<Org> orgs,
   ) {
     var accountStoreBox = Box<Account>(DB!);
-    var aquery =
-        accountStoreBox.query(Account_.address.equals(address)).build();
+    var aquery = accountStoreBox.query(Account_.address.equals(address)).build();
     var account = aquery.findUnique();
     aquery.close();
 
@@ -66,6 +65,8 @@ class AccountOrgApi {
           var at = AccountOrg(org.hash);
           at.orgName = org.name;
           at.orgAvater = org.avater;
+          at.orgImg = org.img;
+          at.orgColor = org.color;
           at.domain = org.domain;
           at.status = 1;
           at.withAddr = address;
@@ -76,6 +77,8 @@ class AccountOrgApi {
         if (org != null) {
           storeOrgs[storeIndex].orgName = org.name;
           storeOrgs[storeIndex].orgAvater = org.avater;
+          storeOrgs[storeIndex].orgImg = org.img;
+          storeOrgs[storeIndex].orgColor = org.color;
           storeOrgs[storeIndex].domain = org.domain;
           storeOrgs[storeIndex].status = 1;
           storeOrgs[storeIndex].withAddr = address;

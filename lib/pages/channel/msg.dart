@@ -135,7 +135,7 @@ class _MsgState extends State<Msg> {
         children: [
           Container(
             height: 1,
-            color: ConstTheme.centerChannelColor.withOpacity(0.08),
+            color: ConstTheme.centerChannelColor.withOpacity(0.03),
           ),
           Positioned(
             child: Container(

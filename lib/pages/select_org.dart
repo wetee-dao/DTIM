@@ -26,8 +26,10 @@ List<Org> orgs = [
     "asyoume",
     name: "我门",
     desc: "we3 在线协作，分布式办公软件",
+    color: "#000000",
     domain: "xiaobai.asyou.me",
-    avater: "http://www.asyou.me/custom/temp/images/banner.jpg",
+    avater: "https://www.asyou.me/static/temp/images/icon-152x152.png",
+    img: "https://www.asyou.me/static/temp/images/banner.jpg",
     homeUrl: "www.asyou.me/",
     chainUrl: "wss://chain.asyou.me/",
   )

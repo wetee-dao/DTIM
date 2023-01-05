@@ -52,8 +52,14 @@ class AccountOrg {
   // 组织名
   String? orgName;
 
+  // 组织主颜色
+  String? orgColor;
+
   // 组织头像
   String? orgAvater;
+
+  // 组织图片
+  String? orgImg;
 
   // 组织授权网址
   String? domain;

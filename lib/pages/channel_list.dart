@@ -214,7 +214,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                               padding: EdgeInsets.only(left: 10.w, right: 7.w, top: 2.w, bottom: 2.w),
                               decoration: BoxDecoration(
                                 color: snapshot.data != null && snapshot.data!
-                                    ? ConstTheme.sidebarTextActiveBorder.withOpacity(0.2)
+                                    ? ConstTheme.sidebarText.withOpacity(0.25)
                                     : ConstTheme.sidebarText.withOpacity(0.1),
                                 borderRadius:
                                     BorderRadius.only(topLeft: Radius.circular(3.w), bottomLeft: Radius.circular(3.w)),
@@ -226,13 +226,14 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                     style: TextStyle(
                                       color: ConstTheme.centerChannelColor,
                                       fontWeight: FontWeight.w800,
-                                      fontSize: 18.w,
+                                      fontSize: 15.w,
+                                      height: 1.2,
                                     ),
                                   ),
                                   Icon(
                                     Icons.keyboard_arrow_down_outlined,
                                     color: ConstTheme.centerChannelColor,
-                                    size: 18.w,
+                                    size: 14.w,
                                   ),
                                 ],
                               ),
@@ -341,7 +342,27 @@ class _ChannelListPageState extends State<ChannelListPage> {
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 15.w),
+                            GestureDetector(
+                              onTap: () async {
+                                final client = im!.currentState!.client;
+                                // final roomID = await showFutureLoadingDialog(
+                                //   context: context,
+                                //   future: () async {
+                                //     final roomId = await client.createGroupChat(
+                                //       preset: link.CreateRoomPreset.publicChat,
+                                //       groupName: "测试",
+                                //     );
+                                //     return roomId;
+                                //   },
+                                // );
+                              },
+                              child: Icon(
+                                Icons.add,
+                                size: 25.w,
+                                color: ConstTheme.sidebarText.withAlpha(155),
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
                             GestureDetector(
                               onTap: () {
                                 setState(() {

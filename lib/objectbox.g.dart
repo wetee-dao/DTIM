@@ -160,7 +160,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(9, 7587758870070808570),
       name: 'AccountOrg',
-      lastPropertyId: const IdUid(9, 590516375270286716),
+      lastPropertyId: const IdUid(11, 2874145491573938962),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -204,6 +204,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(9, 590516375270286716),
             name: 'orgAvater',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 4130900473033381690),
+            name: 'orgColor',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 2874145491573938962),
+            name: 'orgImg',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -211,7 +221,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(10, 5693561153061033524),
       name: 'Org',
-      lastPropertyId: const IdUid(10, 8902389809042266938),
+      lastPropertyId: const IdUid(12, 5283786044045942348),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -262,6 +272,16 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(10, 8902389809042266938),
             name: 'hash',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 3198384296014846326),
+            name: 'img',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(12, 5283786044045942348),
+            name: 'color',
             type: 9,
             flags: 0)
       ],
@@ -523,7 +543,12 @@ ModelDefinition getObjectBoxModel() {
           final orgAvaterOffset = object.orgAvater == null
               ? null
               : fbb.writeString(object.orgAvater!);
-          fbb.startTable(10);
+          final orgColorOffset = object.orgColor == null
+              ? null
+              : fbb.writeString(object.orgColor!);
+          final orgImgOffset =
+              object.orgImg == null ? null : fbb.writeString(object.orgImg!);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, orgNameOffset);
           fbb.addOffset(2, domainOffset);
@@ -532,6 +557,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(6, withAddrOffset);
           fbb.addOffset(7, orgHashOffset);
           fbb.addOffset(8, orgAvaterOffset);
+          fbb.addOffset(9, orgColorOffset);
+          fbb.addOffset(10, orgImgOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -552,7 +579,11 @@ ModelDefinition getObjectBoxModel() {
             ..withAddr = const fb.StringReader(asciiOptimization: true)
                 .vTableGet(buffer, rootOffset, 16, '')
             ..orgAvater = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 20);
+                .vTableGetNullable(buffer, rootOffset, 20)
+            ..orgColor = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 22)
+            ..orgImg = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 24);
           object.account.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
           object.account.attach(store);
@@ -587,7 +618,11 @@ ModelDefinition getObjectBoxModel() {
           final homeUrlOffset =
               object.homeUrl == null ? null : fbb.writeString(object.homeUrl!);
           final hashOffset = fbb.writeString(object.hash);
-          fbb.startTable(11);
+          final imgOffset =
+              object.img == null ? null : fbb.writeString(object.img!);
+          final colorOffset =
+              object.color == null ? null : fbb.writeString(object.color!);
+          fbb.startTable(13);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, descOffset);
@@ -598,6 +633,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(7, chainUrlOffset);
           fbb.addOffset(8, homeUrlOffset);
           fbb.addOffset(9, hashOffset);
+          fbb.addOffset(10, imgOffset);
+          fbb.addOffset(11, colorOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -620,8 +657,9 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 16),
               chainUrl: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 18),
-              homeUrl:
-                  const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 20))
+              homeUrl: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 20),
+              img: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 24),
+              color: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 26))
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -744,6 +782,14 @@ class AccountOrg_ {
   /// see [AccountOrg.orgAvater]
   static final orgAvater =
       QueryStringProperty<AccountOrg>(_entities[3].properties[7]);
+
+  /// see [AccountOrg.orgColor]
+  static final orgColor =
+      QueryStringProperty<AccountOrg>(_entities[3].properties[8]);
+
+  /// see [AccountOrg.orgImg]
+  static final orgImg =
+      QueryStringProperty<AccountOrg>(_entities[3].properties[9]);
 }
 
 /// [Org] entity fields to define ObjectBox queries.
@@ -777,4 +823,10 @@ class Org_ {
 
   /// see [Org.hash]
   static final hash = QueryStringProperty<Org>(_entities[4].properties[9]);
+
+  /// see [Org.img]
+  static final img = QueryStringProperty<Org>(_entities[4].properties[10]);
+
+  /// see [Org.color]
+  static final color = QueryStringProperty<Org>(_entities[4].properties[11]);
 }

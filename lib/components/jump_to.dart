@@ -17,7 +17,7 @@ JumpTo(
     padding: EdgeInsets.only(left: 10.w),
     decoration: BoxDecoration(
       color: ConstTheme.sidebarText.withOpacity(0.1),
-      borderRadius: BorderRadius.only(topRight: Radius.circular(5.w), bottomRight: Radius.circular(5.w)),
+      borderRadius: BorderRadius.only(topRight: Radius.circular(3.w), bottomRight: Radius.circular(3.w)),
     ),
     alignment: Alignment.center,
     child: TextField(

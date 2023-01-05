@@ -8,7 +8,7 @@ import 'package:window_manager/window_manager.dart';
 final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;
 
-double get kVirtualWindowFrameMargin => (_kIsLinux) ? 8.w : 0;
+double get kVirtualWindowFrameMargin => (_kIsLinux) ? 5.w : 0;
 
 class VirtualWindowFrame extends StatefulWidget {
   /// The [child] contained by the VirtualWindowFrame.

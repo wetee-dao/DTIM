@@ -88,7 +88,9 @@ class _PCPageState extends State<PCPage> with WindowListener {
                         width: 40.w,
                         height: 40.w,
                         decoration: BoxDecoration(
-                          color: ConstTheme.sidebarText.withOpacity(0.02),
+                          color: aorgs[i].orgColor != null
+                              ? hexToColor(aorgs[i].orgColor!)
+                              : ConstTheme.sidebarText.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(8.w),
                           border: Border.all(
                             color: ConstTheme.sidebarHeaderBg,

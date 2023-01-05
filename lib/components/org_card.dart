@@ -22,7 +22,6 @@ class OrgCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return AnimatedContainer(
       width: 200.w,
       height: 250.w,
@@ -50,7 +49,7 @@ class OrgCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.network(
-                    org.avater ?? "",
+                    org.img ?? "",
                     width: 206.w,
                     fit: BoxFit.cover,
                     height: 150.w,
