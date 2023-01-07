@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../store/theme.dart';
+import 'hover_list_item.dart';
 
 channelsListView(
   List<link.Room> channelsList,
@@ -15,22 +16,27 @@ channelsListView(
     scrollDirection: Axis.vertical,
     itemCount: channelsList.length,
     itemBuilder: (context, index) {
-      return GestureDetector(
-        onTap: () async {
+      return HoverListItem(
+        color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
+        hoverColor: ConstTheme.sidebarText.withOpacity(0.1),
+        onPressed: () async {
           onSelect(channelsList[index].id);
         },
+        trailing: Container(
+          margin: EdgeInsets.only(right: 12.w),
+          child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
+        ),
         child: Container(
           decoration: BoxDecoration(
-            color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
             border: Border(
               left: BorderSide(
-                width: 2.w,
+                width: 3.w,
                 color: currentId == channelsList[index].id ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
               ),
             ),
           ),
           width: double.maxFinite,
-          padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 15.w),
+          padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 12.w),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -54,4 +60,5 @@ channelsListView(
       );
     },
   );
+  // ListTile(trailing: ,)
 }

@@ -272,17 +272,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                final client = im!.currentState!.client;
-                                // final roomID = await showFutureLoadingDialog(
-                                //   context: context,
-                                //   future: () async {
-                                //     final roomId = await client.createGroupChat(
-                                //       preset: link.CreateRoomPreset.publicChat,
-                                //       groupName: "测试",
-                                //     );
-                                //     return roomId;
-                                //   },
-                                // );
+                                context.push("/create_channel");
                               },
                               child: Icon(
                                 Icons.add,

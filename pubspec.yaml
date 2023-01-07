@@ -54,6 +54,7 @@ dependencies:
   future_loading_dialog: ^0.2.3
   # 日期格式化插件
   date_format: ^2.0.7
+  easy_localization: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

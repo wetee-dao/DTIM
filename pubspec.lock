@@ -260,6 +260,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.7"
+  easy_localization:
+    dependency: "direct main"
+    description:
+      name: easy_localization
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.1"
+  easy_logger:
+    dependency: transitive
+    description:
+      name: easy_logger
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.2"
   emoji_picker_flutter:
     dependency: "direct main"
     description:
@@ -363,6 +377,11 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.1"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_rust_bridge:
     dependency: "direct main"
     description:
@@ -492,6 +511,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.2.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.17.0"
   io:
     dependency: transitive
     description:

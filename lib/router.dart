@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'components/window/virtual_window_frame.dart';
+import 'pages/channel/create.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
 import 'pages/chain/sr25519_key.dart';
@@ -46,6 +47,12 @@ routers() {
       path: '/search',
       builder: (BuildContext context, GoRouterState state) {
         return const VirtualWindowFrame(child: SearchPage());
+      },
+    ),
+    GoRoute(
+      path: '/create_channel',
+      builder: (BuildContext context, GoRouterState state) {
+        return const VirtualWindowFrame(child: CreateChannelPage());
       },
     ),
   ];

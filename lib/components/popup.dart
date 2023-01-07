@@ -71,10 +71,10 @@ class BasePopupMenu extends StatefulWidget {
   final bool enablePassEvent;
 
   @override
-  _BasePopupMenuState createState() => _BasePopupMenuState();
+  BasePopupMenuState createState() => BasePopupMenuState();
 }
 
-class _BasePopupMenuState extends State<BasePopupMenu> {
+class BasePopupMenuState extends State<BasePopupMenu> {
   RenderBox? _childBox;
   RenderBox? _parentBox;
   OverlayEntry? _overlayEntry;
