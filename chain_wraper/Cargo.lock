@@ -991,19 +991,22 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "1.51.1"
+version = "1.60.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2548962d7bb6308f4c2561bd8b722f7f1b9b7acb64b3ec089b9ece81ebb5159d"
+checksum = "c0c62935bba5d4cc142a68afa2f0a03653d96496e9b1fd567cebaea5609d7b2a"
 dependencies = [
  "allo-isolate",
  "anyhow",
  "build-target",
  "bytemuck",
+ "cc",
  "chrono",
  "console_error_panic_hook",
  "flutter_rust_bridge_macros",
  "js-sys",
  "lazy_static",
+ "libc",
+ "log",
  "parking_lot 0.12.1",
  "threadpool",
  "wasm-bindgen",

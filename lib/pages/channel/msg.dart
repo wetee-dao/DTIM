@@ -60,12 +60,18 @@ class _MsgState extends State<Msg> {
             children: [
               SizedBox(height: 10.w),
               // if (showAvatar && showDate) SizedBox(height: 40.w, width: 40.w),
-              UserAvatar(
-                key: Key("user_${event.eventId}"),
-                event.senderId,
-                true,
-                40.w,
-              ),
+              FutureBuilder<link.User?>(
+                future: event.fetchSenderUser(),
+                builder: (context, snapshot) {
+                  final user = snapshot.data ?? event.senderFromMemoryOrFallback;
+                  return UserAvatar(
+                    key: Key("user_${event.eventId}"),
+                    user.calcDisplayname(),
+                    true,
+                    40.w,
+                  );
+                },
+              )
             ],
           ),
         if (!showAvatar) SizedBox(width: 40.w),

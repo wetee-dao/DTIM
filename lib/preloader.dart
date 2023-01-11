@@ -186,7 +186,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            '创建区快链账户',
+                            '创建区块链账户',
                             style: TextStyle(
                               color: ConstTheme.centerChannelBg,
                               fontWeight: FontWeight.w600,

@@ -16,9 +16,9 @@ flutter_rust_bridge_codegen \
     -r $CRATE/src/api.rs \
     -d lib/bridge_generated.dart \
     -c ios/Runner/bridge_generated.h \
-    -c macos/Runner/bridge_generated.h 
+    -e macos/Runner
 
 # 编译运行库
-cd $CRATE
-cargo lipo
+# cd $CRATE
+# cargo lipo
 

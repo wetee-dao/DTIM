@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -23,19 +26,21 @@ void main() async {
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.hidden,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
-      // if (Platform.isMacOS || Platform.isWindows) {
-      //   await windowManager.setHasShadow(true);
-      // }
+      if (Platform.isMacOS || Platform.isWindows) {
+        await windowManager.setHasShadow(true);
+      }
+      windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
+      if (Platform.isLinux || Platform.isWindows) {
+        await windowManager.setAsFrameless();
+      }
       await windowManager.show();
-      await windowManager.setAsFrameless();
       await windowManager.focus();
     });
-    initScreen(1300);
+    initScreen(1200);
   } else {
-    initScreen(1300);
+    initScreen(1200);
   }
 
   // 数据库初始化

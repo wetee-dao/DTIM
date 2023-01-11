@@ -1,8 +1,10 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../utils/screen/size_extension.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
 import '../store/theme.dart';
@@ -61,7 +63,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
               windowManager.startDragging();
             },
             child: Container(
-              width: 65.w,
+              width: 68,
               height: double.maxFinite,
               decoration: BoxDecoration(
                 color: ConstTheme.sidebarHeaderBg,
@@ -70,31 +72,31 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 5.w),
+                  if (Platform.isMacOS) const SizedBox(height: 30),
+                  if (Platform.isMacOS) const SizedBox(height: 12),
                   for (var i = 0; i < aorgs.length; i++)
                     Container(
-                      width: 46.w,
-                      height: 46.w,
-                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
+                      width: 52,
+                      height: 52,
                       decoration: BoxDecoration(
                         color: ConstTheme.sidebarText.withOpacity(0.16),
-                        borderRadius: BorderRadius.circular(8.w),
+                        borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: ConstTheme.sidebarTextActiveBorder,
-                          width: 3.w,
+                          width: 3,
                         ),
                       ),
                       child: Container(
-                        width: 40.w,
-                        height: 40.w,
+                        width: 46,
+                        height: 46,
                         decoration: BoxDecoration(
                           color: aorgs[i].orgColor != null
                               ? hexToColor(aorgs[i].orgColor!)
                               : ConstTheme.sidebarText.withOpacity(0.02),
-                          borderRadius: BorderRadius.circular(8.w),
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(
                             color: ConstTheme.sidebarHeaderBg,
-                            width: 3.w,
+                            width: 3,
                           ),
                         ),
                         child: aorgs[i].orgAvater == null
@@ -107,18 +109,18 @@ class _PCPageState extends State<PCPage> with WindowListener {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: ConstTheme.sidebarHeaderTextColor,
-                                        fontSize: 14.w,
+                                        fontSize: 14,
                                       ),
                                     ),
                                 ],
                               )
                             : ClipRRect(
-                                borderRadius: BorderRadius.circular(3.w),
+                                borderRadius: BorderRadius.circular(3),
                                 child: Image.network(
                                   fit: BoxFit.cover,
                                   aorgs[i].orgAvater!,
-                                  width: 34.w,
-                                  height: 34.w,
+                                  width: 40,
+                                  height: 40,
                                 ),
                               ),
                       ),
@@ -128,9 +130,9 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       context.push("/select_org");
                     },
                     child: Container(
-                      width: 40.w,
-                      height: 40.w,
-                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
+                      width: 40,
+                      height: 40,
+                      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
                       child: Icon(
                         Icons.add,
                         color: ConstTheme.sidebarText,

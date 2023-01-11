@@ -26,6 +26,7 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
+		64714D02296BC83C00076A0A /* libchain_wraper_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64714CFB296BC82200076A0A /* libchain_wraper_static.a */; };
 		FBEDCF6FA9AFCB06053BA51C /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A73237F90D7F2EC0D40A52D2 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 33CC111A2044C6BA0003C045;
 			remoteInfo = FLX;
+		};
+		64714CFA296BC82200076A0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64714CF5296BC82100076A0A /* chain_wraper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CA60E2E7443B8732BE24AAFD;
+			remoteInfo = "chain_wraper-staticlib";
+		};
+		64714CFC296BC82200076A0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64714CF5296BC82100076A0A /* chain_wraper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CA60E7962788C264CD99E87A;
+			remoteInfo = "chain_wraper-cdylib";
+		};
+		64714D00296BC83500076A0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64714CF5296BC82100076A0A /* chain_wraper.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CA60E796278898A374F2ED98;
+			remoteInfo = "chain_wraper-cdylib";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -69,6 +91,7 @@
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
 		4CDE59A6E7B5C48683414966 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		64714CF5296BC82100076A0A /* chain_wraper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = chain_wraper.xcodeproj; path = ../../chain_wraper/chain_wraper.xcodeproj; sourceTree = "<group>"; };
 		7746B6A18B42B3B5CE330CA8 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -80,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64714D02296BC83C00076A0A /* libchain_wraper_static.a in Frameworks */,
 				FBEDCF6FA9AFCB06053BA51C /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,6 +166,7 @@
 		33FAB671232836740065AC1E /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				64714CF5296BC82100076A0A /* chain_wraper.xcodeproj */,
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
 				33CC11122044BFA00003C045 /* MainFlutterWindow.swift */,
 				33E51913231747F40026EE4D /* DebugProfile.entitlements */,
@@ -152,6 +177,15 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
+		64714CF6296BC82100076A0A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				64714CFB296BC82200076A0A /* libchain_wraper_static.a */,
+				64714CFD296BC82200076A0A /* chain_wraper.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CA657183C5EF49A5122B55B1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,7 +193,6 @@
 				19619142E996D6DEA2124EF0 /* Pods-Runner.release.xcconfig */,
 				7746B6A18B42B3B5CE330CA8 /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -183,12 +216,13 @@
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
 				33CC110E2044A8840003C045 /* Bundle Framework */,
-				3399D490228B24CF009A79C7 /* ShellScript */,
+				3399D490228B24CF009A79C7 /* Run Script */,
 				440CBE1CB3E9AB512990B728 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				64714D01296BC83500076A0A /* PBXTargetDependency */,
 				33CC11202044C79F0003C045 /* PBXTargetDependency */,
 			);
 			name = Runner;
@@ -233,6 +267,12 @@
 			mainGroup = 33CC10E42044A3C60003C045;
 			productRefGroup = 33CC10EE2044A3C60003C045 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 64714CF6296BC82100076A0A /* Products */;
+					ProjectRef = 64714CF5296BC82100076A0A /* chain_wraper.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				33CC10EC2044A3C60003C045 /* Runner */,
@@ -240,6 +280,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		64714CFB296BC82200076A0A /* libchain_wraper_static.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libchain_wraper_static.a;
+			remoteRef = 64714CFA296BC82200076A0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		64714CFD296BC82200076A0A /* chain_wraper.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = chain_wraper.dylib;
+			remoteRef = 64714CFC296BC82200076A0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		33CC10EB2044A3C60003C045 /* Resources */ = {
@@ -254,7 +311,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3399D490228B24CF009A79C7 /* ShellScript */ = {
+		3399D490228B24CF009A79C7 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -263,6 +320,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -350,6 +408,11 @@
 			isa = PBXTargetDependency;
 			target = 33CC111A2044C6BA0003C045 /* Flutter Assemble */;
 			targetProxy = 33CC111F2044C79F0003C045 /* PBXContainerItemProxy */;
+		};
+		64714D01296BC83500076A0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "chain_wraper-cdylib";
+			targetProxy = 64714D00296BC83500076A0A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

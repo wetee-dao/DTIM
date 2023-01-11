@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:matrix/matrix.dart' as link;
 import 'package:path_provider/path_provider.dart';
 
-import '../apis/d_msg_api.dart';
 import '../models/models.dart';
 import '../utils/screen/size_extension.dart';
 import './im_state.dart';
@@ -41,9 +41,18 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http("192.168.111.105:8008", ''));
+    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
 
     if (!client.isLogged()) {
+      // await client.uiaRequestBackground((auth) {
+      //   return client.register(
+      //     username: user.address,
+      //     password: password,
+      //     initialDeviceDisplayName: platformGet(),
+      //     auth: auth,
+      //   );
+      // });
+
       // 登陆节点
       await client.login(
         link.LoginType.mLoginPassword,

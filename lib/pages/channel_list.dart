@@ -68,7 +68,9 @@ class _ChannelListPageState extends State<ChannelListPage> {
     setState(() {
       channels = im!.currentState!.channels;
       org = im!.currentState!.org;
-      channelId = channels[0].id;
+      if (channels.length > 0) {
+        channelId = channels[0].id;
+      }
     });
     im!.currentState!.rosterListen((list) {
       setState(() {

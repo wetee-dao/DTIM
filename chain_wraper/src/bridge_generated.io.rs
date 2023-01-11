@@ -32,6 +32,8 @@ pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
     support::new_leak_box_ptr(ans)
 }
 
+// Section: related functions
+
 // Section: impl Wire2Api
 
 impl Wire2Api<String> for *mut wire_uint_8_list {
@@ -73,8 +75,8 @@ impl<T> NewWithNullPtr for *mut T {
 // Section: sync execution mode utility
 
 #[no_mangle]
-pub extern "C" fn free_WireSyncReturnStruct(val: support::WireSyncReturnStruct) {
+pub extern "C" fn free_WireSyncReturn(ptr: support::WireSyncReturn) {
     unsafe {
-        let _ = support::vec_from_leak_ptr(val.ptr, val.len);
-    }
+        let _ = support::box_from_leak_ptr(ptr);
+    };
 }
