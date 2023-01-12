@@ -109,7 +109,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                     height: 10.w,
                     margin: EdgeInsets.all(5.w),
                     decoration: BoxDecoration(
-                      border: Border.all(color: ConstTheme.centerChannelColor.withAlpha(150), width: 2),
+                      border: Border.all(color: ConstTheme.centerChannelColor.withAlpha(150), width: 2.w),
                     ),
                   ),
                 ),

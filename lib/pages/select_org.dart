@@ -102,10 +102,10 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 backgroundColor: MaterialStateProperty.resolveWith((states) {
                   //设置按下时的背景颜色
                   if (states.contains(MaterialState.pressed)) {
-                    return ConstTheme.mentionBg;
+                    return ConstTheme.sidebarTextActiveBorder;
                   }
                   //默认不使用背景颜色
-                  return ConstTheme.mentionBg;
+                  return ConstTheme.sidebarTextActiveBorder;
                 }),
                 // backgroundColor: ConstTheme.mentionBg,
               ),
@@ -180,7 +180,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                         border: Border(
                           left: BorderSide(
                             width: 5.w,
-                            color: accounts[i].address == currentAddress ? ConstTheme.mentionBg : ConstTheme.sidebarBg,
+                            color: accounts[i].address == currentAddress
+                                ? ConstTheme.sidebarTextActiveBorder
+                                : ConstTheme.sidebarBg,
                           ),
                         ),
                         color: accounts[i].address == currentAddress ? ConstTheme.centerChannelBg : null,

@@ -18,7 +18,7 @@ channelsListView(
     itemBuilder: (context, index) {
       return HoverListItem(
         color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
-        hoverColor: ConstTheme.sidebarText.withOpacity(0.1),
+        hoverColor: ConstTheme.sidebarTextActiveBorder,
         onPressed: () async {
           onSelect(channelsList[index].id);
         },
@@ -30,7 +30,7 @@ channelsListView(
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                width: 3.w,
+                width: 2.w,
                 color: currentId == channelsList[index].id ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
               ),
             ),

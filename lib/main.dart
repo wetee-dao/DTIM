@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +31,7 @@ void main() async {
         await windowManager.setHasShadow(true);
       }
       windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
-      if (Platform.isLinux || Platform.isWindows) {
+      if (Platform.isLinux) {
         await windowManager.setAsFrameless();
       }
       await windowManager.show();

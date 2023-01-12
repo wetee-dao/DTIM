@@ -1,12 +1,14 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
+
+import 'package:asyou_app/utils/screen/size_extension.dart';
+import 'package:matrix/matrix.dart' as link;
 
 import '../../store/theme.dart';
 
 class ItemModel {
   String title;
-
-  ItemModel(this.title);
+  Function(link.Room room)? onTap;
+  ItemModel(this.title, {this.onTap});
 }
 
 List<List<ItemModel>> menuItems = [
@@ -16,14 +18,14 @@ List<List<ItemModel>> menuItems = [
   [ItemModel('邀请成员'), ItemModel('成员管理')],
   [
     ItemModel('编辑频道标签'),
-    ItemModel('重命名频道'),
+    ItemModel('重命名频道', onTap: (room) {}),
     ItemModel('转换为私有频道'),
     ItemModel('归档频道'),
   ],
   [ItemModel('离开频道')]
 ];
 
-menuRender(controller) {
+menuRender(controller, link.Room room) {
   return Container(
     width: 200.w,
     margin: EdgeInsets.all(5.w),
@@ -49,6 +51,9 @@ menuRender(controller) {
                 onTap: () {
                   print("onTap");
                   controller.hideMenu();
+                  if (menuItems[i][j].onTap != null) {
+                    menuItems[i][j].onTap!.call(room);
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.only(

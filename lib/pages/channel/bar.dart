@@ -111,7 +111,7 @@ class _ChannelBarState extends State<ChannelBar> {
                           );
                         },
                       ),
-                      menuBuilder: () => menuRender(menuController),
+                      menuBuilder: () => menuRender(menuController, widget.room),
                     ),
                     SizedBox(width: 10.w),
                     GestureDetector(

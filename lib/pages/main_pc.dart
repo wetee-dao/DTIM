@@ -63,7 +63,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
               windowManager.startDragging();
             },
             child: Container(
-              width: 68,
+              width: 65.w,
               height: double.maxFinite,
               decoration: BoxDecoration(
                 color: ConstTheme.sidebarHeaderBg,
@@ -72,31 +72,32 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  if (Platform.isMacOS) const SizedBox(height: 30),
-                  if (Platform.isMacOS) const SizedBox(height: 12),
+                  if (Platform.isMacOS) SizedBox(height: 30.w),
+                  SizedBox(height: 5.w),
                   for (var i = 0; i < aorgs.length; i++)
                     Container(
-                      width: 52,
-                      height: 52,
+                      width: 46.w,
+                      height: 46.w,
+                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
                       decoration: BoxDecoration(
                         color: ConstTheme.sidebarText.withOpacity(0.16),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.w),
                         border: Border.all(
                           color: ConstTheme.sidebarTextActiveBorder,
-                          width: 3,
+                          width: 3.w,
                         ),
                       ),
                       child: Container(
-                        width: 46,
-                        height: 46,
+                        width: 40.w,
+                        height: 40.w,
                         decoration: BoxDecoration(
                           color: aorgs[i].orgColor != null
                               ? hexToColor(aorgs[i].orgColor!)
                               : ConstTheme.sidebarText.withOpacity(0.02),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.w),
                           border: Border.all(
                             color: ConstTheme.sidebarHeaderBg,
-                            width: 3,
+                            width: 3.w,
                           ),
                         ),
                         child: aorgs[i].orgAvater == null
@@ -109,18 +110,18 @@ class _PCPageState extends State<PCPage> with WindowListener {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: ConstTheme.sidebarHeaderTextColor,
-                                        fontSize: 14,
+                                        fontSize: 14.w,
                                       ),
                                     ),
                                 ],
                               )
                             : ClipRRect(
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(3.w),
                                 child: Image.network(
                                   fit: BoxFit.cover,
                                   aorgs[i].orgAvater!,
-                                  width: 40,
-                                  height: 40,
+                                  width: 34.w,
+                                  height: 34.w,
                                 ),
                               ),
                       ),
@@ -130,9 +131,9 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       context.push("/select_org");
                     },
                     child: Container(
-                      width: 40,
-                      height: 40,
-                      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                      width: 40.w,
+                      height: 40.w,
+                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
                       child: Icon(
                         Icons.add,
                         color: ConstTheme.sidebarText,

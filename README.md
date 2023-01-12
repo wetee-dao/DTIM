@@ -1,58 +1,64 @@
-# DAO-entrance
+# DAO-entrance phase 1
+
+- **Team Name:** Asyoume inc (点道为址科技有限公司)
+- **Payment Address:** 1PE3N5KmEdhE561i5jRTxeQidSuQGrGtLj912GFMw4vxXMG (aUSD)
+- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):** 2
+
+
+## Project Overview :page_facing_up:
+
+### Overview
+In recent years, with the rapid development of information technology and technology, people's work mode has gradually changed from centralized work to decentralized work. Besides, the spread and prevalence of COVID-19 in recent years get people know the importance of diverse work modes. With this trend, the concept web3 steps out from its previous version web2. 
+
+Currently, most Web3 companies are still working with tools within Web2, such as Telegram, Discord, Google Drive, Enterprise WeChat, DingTalk, Lark, and etc, Which user's information and initiative are limited. 
+
+**DAO-entrance** is trying to create a safe, efficient, powerful and Web3-based instant collaboration tool, which is a breakthrough. It establishes solid trust relationship among organization members through open and transparent smart contract; it maintain end-to-end encrypted communication, to ensure efficient and confidentiallity; it improves work efficiency with thousands of open-source collaborative tool libraries; it keeps data in safe hands through distributed and decentralized storage. 
+
+**DAO-entrance** focuses on providing DAO with a comprehensive collaborative tool. The tool will help DAO to set up a core team. After the core team authorized by the community, they can make decisions on the daily affairs of DAO, in order to avoiding endless voting. 
+
+### Project Details
+
+Our long-term goal is to provide a safe, private, efficient and automated DAO tool for enterprises, blockchains and web3 practitioners, in a multi-stage style in different period, and, in the meantime, to offer communication, consensus, production, settlement and other basic needs of members. 
+
+Currently, we provide not only "ink!"-based DAO smart contract templates, but also  substrate-based pallet templates, which support instant integration of all substrate-based blockchains. By compatible with existing DAOs through a non-instrusive way, it allows enterprises and organization to create their own DAOs in a more convenient way. 
+
+At this stage, **DAO-entrance** will provide a slack-like client which is based on the matrix protocol for instant messaging. Users can log in with a blockchain account. This tool is designed for modern devices and is compatible with devices equipped with Windows/mac/Linux/android/iOS, and provides organization members with a concise and convenient collaboration platform. 
+
+Through DAPP rendering engine which is based on flutter, **DAO-entrance** is compatible with most DAPPs and run at a faster speed. The core business would be materialized by flutter native applications, and DAPPs would be rendered by the dapp engine.
 <p align="left">
-  <img src="docs/icon-152x152.png" style="width:80px";>
+  <img src="https://github.com/dao-entrance/app/raw/main/docs/client.png" style="width:800px";>
 </p>
 
-## Project Overview
-We are creating a Web3 native, secure and powerful instant collaboration tool. To meet the basic office needs of DAO, this tool must be open, equal, decentralized, open and transparent, and sufficiently automated.
+**DAO-entrance** Client is a non-intrusive client that supports layer1 blockchain and layer2 smart contracts, and it's dedicated to adapting DAO scenarios. As an initial stage, we build the **DAO-entrance** chain based on the substrate, and manage the **DAO-entrance** chain by using DAO. After continuous improvement of the Client, we  create **DAO-entrance** DAO, which is a fully autonomous and decentralized organization. Through our own requirements of **DAO-entrance** and continuous introduction of other work modes of DAO, we provide substrate pallet and "ink!" smart contracts with a fast DAO solution Polkadot Ecosystem.
 
-## Overview
-We are committed to providing a de-centralized collaboration tool for all DAOs, and we have created a basic instant communication tool based on the matrix protocol. On the basis of instant messaging, we help more organizations or enterprises to create and operate DAOs quickly and efficiently by compatible with existing block chains or providing block chain services.
+According to business needs, DAO organizations will set up skill groups, called "guilds", and each guild will automatically create public chat channels and Kanbans in **DAO-entrance**. Users can join a guild based on their own strengths or willings.  Members can choose whether to participate in projects or events according to their own strengths and willingness. 
 
-In the first phase, we provided ink-based! The DAO smart contract template, together with the substrate-based pallet template, facilitates the rapid integration and use of all substrate-based block chains. Compatibility with existing DAOs in this non-intrusive way will help more people and enterprises create their own DAOs, create and run TEE-based privacy computing programs.
+We provide DAO templates the substrate pallet and ink! Smart contracts:
+1. RoadMap management.
+2. Manage DAO share.
+3. Management of core team and guild.
+4. Workflow management (board/task).
+5. Financial management.
+6. Task bounty management.
+7. Hot-swap voting management.
+8. Contribution value and medal management.
+9. Level management.
 
-The second phase will help enterprises publish their own DAOs, provide DAO-DAO/Enterprise-DAO  chains, and provide a distributed privacy computing platform based on block chain and TEE.
+**DAO-entrance** focuses on providing DAO with a comprehensive collaborative tool. The tool will help DAO to set up a core team. After the core team authorized by the community, they can make decisions on the daily affairs of DAO, in order to avoiding endless voting. 
 
-## Project Details
-Our long-term goal is to create a secure, private and efficient DAO in three steps for the enterprise/block chain and Web3 people. Members can communicate, agree, produce and settle efficiently through our tools.
-
-First, we offer a team collaboration tool similar to slack and based on the matrix protocol, designed for modern devices and compatible with devices such as window/mac/linux/android/ios.
-
-In the form of a common rendering engine based on flutter and web, our client is compatible with most DAPPs and can run faster. The core business will be implemented by flutter widgets, and DAPP will be rendered by DAPP web engine.
+According to business needs, DAO organizations will set up skill groups, called "guilds", and each guild will automatically create public chat channels and Kanbans in DAO-entrance. Users can join a guild based on their own strengths or willings.  Members can choose whether to participate in projects or events according to their own strengths and willingness. 
 
 <p align="left">
-  <img src="docs/client.png" style="width:800px";>
+  <img src="https://github.com/dao-entrance/app/raw/main/docs/structure.png" style="width:800px";>
 </p>
 
-
-Our client is a non-intrusive client that supports layer1 block chain/layer2 smart contracts and is dedicated to adapting DAO scenarios. As an initial stage, we will improve our clients, and at the same time, we will gradually create a fully autonomous de-centralized organization called DAO-entrance.DAO-entrance based on substrate and concurrent use of DAO governance. Through the internal requirements of our DAO and the continuous introduction of other DAOs. We'll use substrate pallet and ink! Smart Contracts provide a quick DAO solution for Polkadot Ecology.
-
-Our clients have the following characteristics in communication:
-1. Unlimited messaging within and between organizations
-2. Open and non-public channels with no barriers to project communication
-3. Unlimited VoIP chat
-4. End-to-end message encryption
-5. Block Chain Control Robot
-6. Multilingual SDK customizable robots with unlimited scalability
-7. Code open source without security risk, no advertising, no fees
-8. Communications are distributed and organizations have their own organizational nodes
-9. Seamless integration with DAO Governance, DAO Consortium, DAO Projects
-10. Polkadot wallet login
-
-DAO-entrance is committed to providing complete collaboration tool software for DAOs. First, the tool will guide the DAO to set up a core team that will be authorized to make decisions on some of the DAO's daily affairs so as to avoid endless voting. Community empowered core teams to manage daily affairs.
-
-Depending on business needs, DAO organizations can set up multiple skill groups, also known as guilds, which automatically create public chat channels and Kanban boards within my door. Users can choose to join a Congress that matches their expertise and is willing to contribute to it. Everyone here can decide what to do, what not to do, what projects to participate in, and what not to participate in.
-<p align="left">
-  <img src="docs/structure.png" style="width:800px";>
-</p>
-
-We pass the substrate pallet and ink! Smart Contracts provide DAO templates:
-1. RoadMap Target Management
-2. DAO Share Management
-3. Core Team, Association Management
-4. Workflow Management (board/task)
-5. Financial Management
-6. Task reward management
-7. Hot-plug voting management
-8. Contribution Value, Medal Management
-9. Hierarchical Management
+We provide DAO templates the substrate pallet and ink! Smart contracts:
+1. RoadMap management.
+2. Manage DAO share.
+3. Management of core team and guild.
+4. Workflow management (board/task).
+5. Financial management.
+6. Task bounty management.
+7. Hot-swap voting management.
+8. Contribution value and medal management.
+9. Level management.
