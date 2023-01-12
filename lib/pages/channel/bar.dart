@@ -64,7 +64,6 @@ class _ChannelBarState extends State<ChannelBar> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 5.w),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -124,7 +123,6 @@ class _ChannelBarState extends State<ChannelBar> {
                     ),
                   ],
                 ),
-                Container(height: 3.w),
                 Row(
                   children: [
                     SizedBox(width: 5.w),

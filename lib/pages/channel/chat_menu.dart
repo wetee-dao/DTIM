@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../router.dart';
 import '../../store/theme.dart';
 
 class ItemModel {
@@ -18,11 +19,41 @@ List<List<ItemModel>> menuItems = [
   [ItemModel('邀请成员'), ItemModel('成员管理')],
   [
     ItemModel('编辑频道标签'),
-    ItemModel('重命名频道', onTap: (room) {}),
+    ItemModel('重命名频道', onTap: (link.Room room) {
+      rootNavigatorKey.currentContext?.push("/rename_channel/${Uri.encodeComponent(room.id)}");
+    }),
     ItemModel('转换为私有频道'),
     ItemModel('归档频道'),
   ],
-  [ItemModel('离开频道')]
+  [
+    ItemModel('离开频道', onTap: (link.Room room) {
+      showDialog(
+        context: rootNavigatorKey.currentContext!,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: ConstTheme.sidebarBg,
+            buttonPadding: EdgeInsets.all(15.w),
+            title: Text("提示", style: TextStyle(color: ConstTheme.sidebarText)),
+            content: Text("确认离开频道", style: TextStyle(color: ConstTheme.sidebarText)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  await room.leave();
+                },
+                child: Text("确认", style: TextStyle(color: ConstTheme.sidebarText)),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("取消", style: TextStyle(color: ConstTheme.sidebarText)),
+              ),
+            ],
+          );
+        },
+      );
+    })
+  ]
 ];
 
 menuRender(controller, link.Room room) {

@@ -81,6 +81,7 @@ class App extends StatelessWidget {
   }
 
   final GoRouter _router = GoRouter(
+    navigatorKey: rootNavigatorKey,
     routes: routers(),
   );
 }

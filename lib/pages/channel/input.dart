@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:asyou_app/objectbox.g.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/theme.dart';
+import 'chat_menu.dart';
 
 // ignore: must_be_immutable
 class ChannelInputPage extends StatefulWidget {
@@ -20,6 +25,10 @@ class ChannelInputPage extends StatefulWidget {
 
 class _ChannelInputPageState extends State<ChannelInputPage> {
   final _msgController = TextEditingController();
+  final BasePopupMenuController emojiController = BasePopupMenuController();
+  final StreamController<bool> emojiStreamController = StreamController<bool>();
+  final TextEditingController _controller = TextEditingController();
+
   late final _focusNode = FocusNode(
     onKey: (FocusNode node, RawKeyEvent evt) {
       if (!evt.isShiftPressed && evt.logicalKey.keyLabel == 'Enter') {
@@ -135,6 +144,77 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               focusNode: _focusNode,
             ),
           ),
+          BasePopupMenu(
+            verticalMargin: -1.w,
+            horizontalMargin: 0.w,
+            showArrow: false,
+            controller: emojiController,
+            position: PreferredPosition.topRight,
+            pressType: PressType.singleClick,
+            child: StreamBuilder<bool>(
+              stream: emojiStreamController.stream,
+              initialData: false,
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                return Icon(
+                  Icons.emoji_emotions_outlined,
+                  color: ConstTheme.centerChannelColor.withAlpha(150),
+                  size: 25.w,
+                );
+              },
+            ),
+            menuBuilder: () => Container(
+              width: 400.w,
+              height: 300.w,
+              margin: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                border: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                borderRadius: BorderRadius.circular(3.w),
+                color: ConstTheme.centerChannelBg,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 6.w,
+                  ),
+                ],
+              ),
+              child: EmojiPicker(
+                textEditingController: _msgController,
+                onEmojiSelected: (Category? category, Emoji emoji) {
+                  emojiController.hideMenu();
+                },
+                config: Config(
+                  columns: 7,
+                  emojiSizeMax: 28.w,
+                  verticalSpacing: 0,
+                  horizontalSpacing: 0,
+                  gridPadding: EdgeInsets.zero,
+                  initCategory: Category.RECENT,
+                  bgColor: ConstTheme.centerChannelBg,
+                  indicatorColor: ConstTheme.centerChannelColor,
+                  iconColor: Colors.grey,
+                  iconColorSelected: Colors.blue,
+                  backspaceColor: ConstTheme.centerChannelColor,
+                  skinToneDialogBgColor: Colors.white,
+                  skinToneIndicatorColor: Colors.grey,
+                  enableSkinTones: true,
+                  showRecentsTab: true,
+                  recentsLimit: 28,
+                  replaceEmojiOnLimitExceed: false,
+                  noRecents: Text(
+                    'No Recents',
+                    style: TextStyle(fontSize: 20.w, color: ConstTheme.centerChannelColor),
+                    textAlign: TextAlign.center,
+                  ),
+                  loadingIndicator: const SizedBox.shrink(),
+                  tabIndicatorAnimDuration: kTabScrollDuration,
+                  categoryIcons: const CategoryIcons(),
+                  buttonMode: ButtonMode.MATERIAL,
+                  checkPlatformCompatibility: true,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 10.w),
           GestureDetector(
             onTap: () {
               widget.room.sendTextEvent(_msgController.text);
@@ -144,7 +224,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               });
             },
             child: Icon(
-              msg != "" ? Icons.send : Icons.emoji_emotions_outlined,
+              Icons.send,
               color: ConstTheme.centerChannelColor.withAlpha(150),
               size: 25.w,
             ),

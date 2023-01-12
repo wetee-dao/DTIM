@@ -37,7 +37,7 @@ dependencies:
   # 全局状态树
   provider: ^6.0.4
   # 表情包
-  emoji_picker_flutter: ^1.5.0
+  emoji_picker_flutter: ^1.5.2
   # c库调用
   ffi: ^2.0.1
   # 状态管理

@@ -4,12 +4,15 @@ import 'package:go_router/go_router.dart';
 
 import 'components/window/virtual_window_frame.dart';
 import 'pages/channel/create.dart';
+import 'pages/channel/rename.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
 import 'pages/chain/sr25519_key.dart';
 import 'pages/search.dart';
 import 'pages/select_org.dart';
 import 'preloader.dart';
+
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 routers() {
   return <GoRoute>[
@@ -53,6 +56,12 @@ routers() {
       path: '/create_channel',
       builder: (BuildContext context, GoRouterState state) {
         return const VirtualWindowFrame(child: CreateChannelPage());
+      },
+    ),
+    GoRoute(
+      path: '/rename_channel/:id',
+      builder: (BuildContext context, GoRouterState state) {
+        return VirtualWindowFrame(child: RenameChannelPage(id: state.params['id'] ?? ""));
       },
     ),
   ];
