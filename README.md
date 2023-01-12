@@ -1,9 +1,7 @@
-# DAO-entrance phase 1
-
-- **Team Name:** Asyoume inc (点道为址科技有限公司)
-- **Payment Address:** 1PE3N5KmEdhE561i5jRTxeQidSuQGrGtLj912GFMw4vxXMG (aUSD)
-- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):** 2
-
+# DAO-entrance
+<p align="left">
+  <img src="docs/icon-152x152.png" style="width:80px";>
+</p>
 
 ## Project Overview :page_facing_up:
 
