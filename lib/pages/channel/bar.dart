@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
+import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/move_window.dart';
@@ -125,7 +126,30 @@ class _ChannelBarState extends State<ChannelBar> {
                 ),
                 Row(
                   children: [
-                    SizedBox(width: 5.w),
+                    SizedBox(width: 2.w),
+                    InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                      onTap: () {
+                        context.push("/channel_members/${Uri.encodeComponent(widget.room.id)}");
+                      },
+                      child: Row(
+                        children: [
+                          SizedBox(width: 3.w),
+                          Icon(
+                            Icons.group,
+                            color: ConstTheme.centerChannelColor.withAlpha(155),
+                            size: 18.w,
+                          ),
+                          SizedBox(width: 3.w),
+                          Text(
+                            "111",
+                            style: TextStyle(fontSize: 12.w, color: ConstTheme.centerChannelColor.withAlpha(155)),
+                          ),
+                          SizedBox(width: 2.w),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
                     Text(
                       '添加频道描述',
                       style: TextStyle(

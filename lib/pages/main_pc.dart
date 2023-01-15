@@ -140,6 +140,21 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       ),
                     ),
                   ),
+                  Flexible(child: Container()),
+                  InkWell(
+                    onTap: () {
+                      context.push("/select_org");
+                    },
+                    child: Container(
+                      width: 40.w,
+                      height: 40.w,
+                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 12.w),
+                      child: Icon(
+                        Icons.settings,
+                        color: ConstTheme.sidebarText,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

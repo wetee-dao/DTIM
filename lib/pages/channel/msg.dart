@@ -5,6 +5,7 @@ import 'package:matrix/matrix.dart' as link;
 
 import '../../components/user_avatar.dart';
 import '../../store/theme.dart';
+import '../../utils/functions.dart';
 import '../../utils/time.dart';
 
 class Msg extends StatefulWidget {
@@ -59,14 +60,13 @@ class _MsgState extends State<Msg> {
           Column(
             children: [
               SizedBox(height: 10.w),
-              // if (showAvatar && showDate) SizedBox(height: 40.w, width: 40.w),
               FutureBuilder<link.User?>(
                 future: event.fetchSenderUser(),
                 builder: (context, snapshot) {
                   final user = snapshot.data ?? event.senderFromMemoryOrFallback;
                   return UserAvatar(
-                    key: Key("user_${event.eventId}"),
-                    user.calcDisplayname(),
+                    key: Key(user.id),
+                    getUserShortId(user.id),
                     true,
                     40.w,
                   );
@@ -81,7 +81,6 @@ class _MsgState extends State<Msg> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (showAvatar) SizedBox(height: 10.w),
-              // if (showAvatar && showDate) buildDayTag(event),
               if (showAvatar)
                 RichText(
                   text: TextSpan(

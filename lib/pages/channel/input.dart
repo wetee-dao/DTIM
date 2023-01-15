@@ -29,10 +29,12 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   final StreamController<bool> emojiStreamController = StreamController<bool>();
   final TextEditingController _controller = TextEditingController();
 
-  late final _focusNode = FocusNode(
+  late final _msgNode = FocusNode(
     onKey: (FocusNode node, RawKeyEvent evt) {
       if (!evt.isShiftPressed && evt.logicalKey.keyLabel == 'Enter') {
         if (evt is RawKeyDownEvent) {
+          if (_msgController.text == "") return KeyEventResult.handled;
+
           widget.room.sendTextEvent(_msgController.text);
           _msgController.clear();
           setState(() {
@@ -141,11 +143,11 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 });
               },
               cursorColor: ConstTheme.centerChannelColor,
-              focusNode: _focusNode,
+              focusNode: _msgNode,
             ),
           ),
           BasePopupMenu(
-            verticalMargin: -1.w,
+            verticalMargin: 0.w,
             horizontalMargin: 0.w,
             showArrow: false,
             controller: emojiController,
@@ -156,7 +158,9 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               initialData: false,
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 return Icon(
-                  Icons.emoji_emotions_outlined,
+                  snapshot.data != null && snapshot.data!
+                      ? Icons.emoji_emotions_outlined
+                      : Icons.sentiment_satisfied_alt_outlined,
                   color: ConstTheme.centerChannelColor.withAlpha(150),
                   size: 25.w,
                 );
@@ -181,6 +185,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 textEditingController: _msgController,
                 onEmojiSelected: (Category? category, Emoji emoji) {
                   emojiController.hideMenu();
+                  FocusScope.of(context).requestFocus(_msgNode);
                 },
                 config: Config(
                   columns: 7,
@@ -191,8 +196,8 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   initCategory: Category.RECENT,
                   bgColor: ConstTheme.centerChannelBg,
                   indicatorColor: ConstTheme.centerChannelColor,
-                  iconColor: Colors.grey,
-                  iconColorSelected: Colors.blue,
+                  iconColor: ConstTheme.centerChannelColor,
+                  iconColorSelected: ConstTheme.sidebarTextActiveBorder,
                   backspaceColor: ConstTheme.centerChannelColor,
                   skinToneDialogBgColor: Colors.white,
                   skinToneIndicatorColor: Colors.grey,
@@ -217,6 +222,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
           SizedBox(width: 10.w),
           GestureDetector(
             onTap: () {
+              if (_msgController.text == "") return;
               widget.room.sendTextEvent(_msgController.text);
               _msgController.clear();
               setState(() {

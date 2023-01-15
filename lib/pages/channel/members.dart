@@ -7,34 +7,32 @@ import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/app_bar.dart';
+import '../../components/form/switch.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 
-class RenameChannelPage extends StatefulWidget {
+class ChannelMemberPage extends StatefulWidget {
   final String id;
-  const RenameChannelPage({Key? key, required this.id}) : super(key: key);
+  const ChannelMemberPage({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<RenameChannelPage> createState() => _RenameChannelPageState();
+  State<ChannelMemberPage> createState() => _ChannelMemberPageState();
 }
 
-class _RenameChannelPageState extends State<RenameChannelPage> {
+class _ChannelMemberPageState extends State<ChannelMemberPage> {
   bool publicGroup = false;
   late final IMProvider im;
   late link.Client? client;
-  late link.Room? room;
-  final SubmitData _data = SubmitData(groupName: "");
+  final SubmitData _data = SubmitData(groupName: "", preset: link.CreateRoomPreset.publicChat);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     im = context.read<IMProvider>();
+    // me = im.me!;
     if (im.currentState != null) {
-      if (im.currentState != null) {
-        client = im.currentState!.client;
-        room = im.currentState!.client.getRoomById(Uri.decodeComponent(widget.id));
-      }
+      client = im.currentState!.client;
     }
   }
 
@@ -43,11 +41,11 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
       return;
     }
     _formKey.currentState!.save();
-    await showFutureLoadingDialog(
+    final roomID = await showFutureLoadingDialog(
       context: context,
       future: () async {
-        await room!.setName(_data.groupName);
-        return true;
+        final roomId = await client!.createGroupChat(groupName: _data.groupName, preset: _data.preset);
+        return roomId;
       },
     );
     //跳转到组织列表
@@ -59,7 +57,7 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      description: const Text('频道重命名成功'),
+      description: const Text('频道创建成功，现在返回主页面'),
       animationCurve: Curves.bounceIn,
       borderRadius: 0,
       animationDuration: const Duration(milliseconds: 500),
@@ -74,7 +72,7 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
     return Scaffold(
       backgroundColor: ConstTheme.centerChannelBg,
       appBar: LocalAppBar(
-        title: "重命名频道",
+        title: "成员列表",
         onBack: () {
           context.pop();
         },
@@ -119,6 +117,34 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
                     return null;
                   },
                 ),
+                SizedBox(height: 10.w),
+                SwitchFormField(
+                  initialValue: _data.preset == link.CreateRoomPreset.publicChat,
+                  decoration: InputDecoration(
+                    hintText: '是否公开',
+                    hintStyle: TextStyle(
+                      fontSize: 14.w,
+                      color: ConstTheme.centerChannelColor,
+                    ),
+                    filled: true,
+                    fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.public,
+                      color: ConstTheme.centerChannelColor,
+                    ),
+                  ),
+                  onSaved: (v) {
+                    if (v == null) {
+                      _data.preset = link.CreateRoomPreset.privateChat;
+                      return;
+                    }
+                    _data.preset = v ? link.CreateRoomPreset.publicChat : link.CreateRoomPreset.privateChat;
+                  },
+                  validator: (value) {
+                    return null;
+                  },
+                ),
                 SizedBox(height: 50.w),
                 InkWell(
                   onTap: submitAction,
@@ -138,7 +164,7 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
                         Expanded(
                           child: Center(
                             child: Text(
-                              '修改频道',
+                              '创建频道',
                               style: TextStyle(
                                 color: ConstTheme.centerChannelBg,
                                 fontWeight: FontWeight.w600,
@@ -166,6 +192,7 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
 
 class SubmitData {
   String groupName;
+  link.CreateRoomPreset preset;
 
-  SubmitData({required this.groupName});
+  SubmitData({required this.groupName, required this.preset});
 }

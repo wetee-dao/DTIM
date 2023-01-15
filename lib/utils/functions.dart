@@ -9,3 +9,9 @@ extension ColorExtension on String {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 }
+
+String getUserShortId(String id) {
+  String userId = id.split(":")[0];
+  userId = userId.replaceAll("@", "");
+  return userId;
+}

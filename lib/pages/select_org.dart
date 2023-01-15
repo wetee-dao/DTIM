@@ -157,94 +157,94 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            height: double.maxFinite,
-            width: 260.w,
-            color: ConstTheme.sidebarBg,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                for (var i = 0; i < accounts.length; i++)
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        currentAddress = accounts[i].address;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10.w,
-                        horizontal: 15.w,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            width: 5.w,
-                            color: accounts[i].address == currentAddress
-                                ? ConstTheme.sidebarTextActiveBorder
-                                : ConstTheme.sidebarBg,
-                          ),
-                        ),
-                        color: accounts[i].address == currentAddress ? ConstTheme.centerChannelBg : null,
-                      ),
-                      child: Row(
-                        children: [
-                          UserAvatar(accounts[i].address, true, 50.w),
-                          SizedBox(width: 10.w),
-                          Expanded(
-                            child: accounts[i].name != null && accounts[i].name != ""
-                                ? Text(
-                                    accounts[i].name!,
-                                    style: TextStyle(
-                                      color: ConstTheme.sidebarHeaderTextColor,
-                                      fontSize: 16.w,
-                                    ),
-                                  )
-                                : Text(
-                                    accounts[i].address,
-                                    style: TextStyle(
-                                      color: ConstTheme.sidebarHeaderTextColor,
-                                      fontSize: 12.w,
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                InkWell(
-                  onTap: () => context.push("/sr25519key"),
-                  child: Container(
-                    height: 50.w,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          width: 1.w,
-                          color: ConstTheme.sidebarText.withOpacity(0.05),
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: ConstTheme.sidebarHeaderTextColor,
-                        ),
-                        Text(
-                          "添加帐号",
-                          style: TextStyle(
-                            color: ConstTheme.sidebarHeaderTextColor,
-                            fontSize: 14.w,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   height: double.maxFinite,
+          //   width: 260.w,
+          //   color: ConstTheme.sidebarBg,
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     children: [
+          //       for (var i = 0; i < accounts.length; i++)
+          //         InkWell(
+          //           onTap: () {
+          //             setState(() {
+          //               currentAddress = accounts[i].address;
+          //             });
+          //           },
+          //           child: Container(
+          //             padding: EdgeInsets.symmetric(
+          //               vertical: 10.w,
+          //               horizontal: 15.w,
+          //             ),
+          //             decoration: BoxDecoration(
+          //               border: Border(
+          //                 left: BorderSide(
+          //                   width: 5.w,
+          //                   color: accounts[i].address == currentAddress
+          //                       ? ConstTheme.sidebarTextActiveBorder
+          //                       : ConstTheme.sidebarBg,
+          //                 ),
+          //               ),
+          //               color: accounts[i].address == currentAddress ? ConstTheme.centerChannelBg : null,
+          //             ),
+          //             child: Row(
+          //               children: [
+          //                 UserAvatar(accounts[i].address, true, 50.w),
+          //                 SizedBox(width: 10.w),
+          //                 Expanded(
+          //                   child: accounts[i].name != null && accounts[i].name != ""
+          //                       ? Text(
+          //                           accounts[i].name!,
+          //                           style: TextStyle(
+          //                             color: ConstTheme.sidebarHeaderTextColor,
+          //                             fontSize: 16.w,
+          //                           ),
+          //                         )
+          //                       : Text(
+          //                           accounts[i].address,
+          //                           style: TextStyle(
+          //                             color: ConstTheme.sidebarHeaderTextColor,
+          //                             fontSize: 12.w,
+          //                           ),
+          //                         ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       InkWell(
+          //         onTap: () => context.push("/sr25519key"),
+          //         child: Container(
+          //           height: 50.w,
+          //           decoration: BoxDecoration(
+          //             border: Border(
+          //               top: BorderSide(
+          //                 width: 1.w,
+          //                 color: ConstTheme.sidebarText.withOpacity(0.05),
+          //               ),
+          //             ),
+          //           ),
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Icon(
+          //                 Icons.add,
+          //                 color: ConstTheme.sidebarHeaderTextColor,
+          //               ),
+          //               Text(
+          //                 "添加帐号",
+          //                 style: TextStyle(
+          //                   color: ConstTheme.sidebarHeaderTextColor,
+          //                   fontSize: 14.w,
+          //                 ),
+          //               )
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Expanded(
             flex: 1,
             child: Padding(

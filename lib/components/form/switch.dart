@@ -41,6 +41,7 @@ class SwitchFormField extends FormField<bool> {
                   ),
                   SizedBox(width: 20.w),
                   Switch(
+                    activeColor: ConstTheme.sidebarTextActiveBorder,
                     onChanged: _onSwitchChanged,
                     value: state.value ?? false,
                   ),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'components/window/virtual_window_frame.dart';
 import 'pages/channel/create.dart';
+import 'pages/channel/members.dart';
 import 'pages/channel/rename.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
@@ -62,6 +63,12 @@ routers() {
       path: '/rename_channel/:id',
       builder: (BuildContext context, GoRouterState state) {
         return VirtualWindowFrame(child: RenameChannelPage(id: state.params['id'] ?? ""));
+      },
+    ),
+    GoRoute(
+      path: '/channel_members/:id',
+      builder: (BuildContext context, GoRouterState state) {
+        return VirtualWindowFrame(child: ChannelMemberPage(id: state.params['id'] ?? ""));
       },
     ),
   ];
