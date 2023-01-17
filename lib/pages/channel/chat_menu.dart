@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../components/components.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
 
@@ -16,7 +17,16 @@ List<List<ItemModel>> menuItems = [
   [ItemModel('查看详情')],
   [ItemModel('移动至...')],
   [ItemModel('通知偏好'), ItemModel('静音频道')],
-  [ItemModel('邀请成员'), ItemModel('成员管理')],
+  [
+    ItemModel('邀请成员'),
+    ItemModel('成员管理', onTap: ((room) {
+      showModelOrPage(
+        rootNavigatorKey.currentContext!,
+        "/channel_members/${Uri.encodeComponent(room.id)}",
+        ps: {"id": room.id},
+      );
+    }))
+  ],
   [
     ItemModel('编辑频道标签'),
     ItemModel('重命名频道', onTap: (link.Room room) {
@@ -107,7 +117,7 @@ menuRender(controller, link.Room room) {
                           menuItems[i][j].title,
                           style: TextStyle(
                             color: ConstTheme.centerChannelColor,
-                            fontSize: 12.w,
+                            fontSize: 13.w,
                           ),
                         ),
                       ),

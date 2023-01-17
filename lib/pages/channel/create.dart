@@ -1,18 +1,20 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
+
+import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../components/app_bar.dart';
+import '../../components/components.dart';
 import '../../components/form/switch.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 
 class CreateChannelPage extends StatefulWidget {
-  const CreateChannelPage({Key? key}) : super(key: key);
+  final Function? closeModel;
+  const CreateChannelPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
   State<CreateChannelPage> createState() => _CreateChannelPageState();
@@ -61,6 +63,10 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
       borderRadius: 0,
       animationDuration: const Duration(milliseconds: 500),
       onClose: () {
+        if (widget.closeModel != null) {
+          widget.closeModel!.call();
+          return;
+        }
         context.pop();
       },
     ).show(context);
@@ -70,12 +76,27 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ConstTheme.centerChannelBg,
-      appBar: LocalAppBar(
-        title: "创建频道",
-        onBack: () {
-          context.pop();
-        },
-      ),
+      appBar: widget.closeModel == null
+          ? LocalAppBar(
+              title: "创建频道",
+              onBack: () {
+                if (widget.closeModel != null) {
+                  widget.closeModel!.call();
+                  return;
+                }
+                context.pop();
+              },
+            ) as PreferredSizeWidget
+          : ModelBar(
+              title: "创建频道",
+              onBack: () {
+                if (widget.closeModel != null) {
+                  widget.closeModel!.call();
+                  return;
+                }
+                context.pop();
+              },
+            ),
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.4,

@@ -88,6 +88,7 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
               children: [
                 SizedBox(height: 100.w),
                 TextFormField(
+                  initialValue: room!.displayname,
                   style: TextStyle(
                     color: ConstTheme.centerChannelColor,
                   ),

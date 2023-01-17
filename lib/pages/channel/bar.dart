@@ -6,6 +6,7 @@ import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../components/components.dart';
 import '../../components/move_window.dart';
 import '../../components/popup.dart';
 import './chat_menu.dart';
@@ -48,6 +49,9 @@ class _ChannelBarState extends State<ChannelBar> {
 
   @override
   Widget build(BuildContext context) {
+    final actualMembersCount =
+        (widget.room.summary.mInvitedMemberCount ?? 0) + (widget.room.summary.mJoinedMemberCount ?? 0);
+
     return moveWindow(
       Container(
         height: widget._height,
@@ -130,7 +134,11 @@ class _ChannelBarState extends State<ChannelBar> {
                     InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(3.w)),
                       onTap: () {
-                        context.push("/channel_members/${Uri.encodeComponent(widget.room.id)}");
+                        showModelOrPage(
+                          context,
+                          "/channel_members/${Uri.encodeComponent(widget.room.id)}",
+                          ps: {"id": widget.room.id},
+                        );
                       },
                       child: Row(
                         children: [
@@ -142,10 +150,10 @@ class _ChannelBarState extends State<ChannelBar> {
                           ),
                           SizedBox(width: 3.w),
                           Text(
-                            "111",
+                            actualMembersCount.toString(),
                             style: TextStyle(fontSize: 12.w, color: ConstTheme.centerChannelColor.withAlpha(155)),
                           ),
-                          SizedBox(width: 2.w),
+                          SizedBox(width: 4.w),
                         ],
                       ),
                     ),

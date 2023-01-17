@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:provider/provider.dart';
+import 'package:asyou_app/utils/screen/size_extension.dart';
 
 import '../store/theme.dart';
-import '../utils/screen/size_extension.dart';
-import '../components/user_avatar.dart';
-import '../components/app_bar.dart';
+import '../components/components.dart';
 import '../store/im.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  final Function? closeModel;
+  const SearchPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -36,11 +36,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void getList() async {
     var client = im.currentState!.client;
-    // await client.createGroupChat(
-    //     groupName: "xxxxx2", visibility: link.Visibility.public, preset: link.CreateRoomPreset.publicChat);
     var roomResp = await client.getPublicRooms();
-    roomResp.chunk;
-    print(roomResp.chunk);
     setState(() {
       rooms = roomResp.chunk;
     });
@@ -50,12 +46,23 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ConstTheme.centerChannelBg,
-      appBar: LocalAppBar(
-        title: "搜索频道",
-        onBack: () {
-          context.pop();
-        },
-      ),
+      appBar: widget.closeModel == null
+          ? LocalAppBar(
+              title: "搜索频道",
+              onBack: () {
+                context.pop();
+              },
+            ) as PreferredSizeWidget
+          : ModelBar(
+              title: "搜索频道",
+              onBack: () {
+                if (widget.closeModel != null) {
+                  widget.closeModel!.call();
+                  return;
+                }
+                context.pop();
+              },
+            ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(top: 5.w),
@@ -66,31 +73,33 @@ class _SearchPageState extends State<SearchPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(width: 15.w),
-                  Container(
-                    height: 40.w,
-                    width: MediaQuery.of(context).size.width - 120.w,
-                    margin: EdgeInsets.only(left: 0.w, right: 15.w, top: 15.w, bottom: 15.w),
-                    padding: EdgeInsets.only(left: 10.w),
-                    decoration: BoxDecoration(
-                      color: ConstTheme.sidebarText.withOpacity(0.1),
-                      borderRadius: BorderRadius.all(Radius.circular(3.w)),
-                    ),
-                    alignment: Alignment.center,
-                    child: TextField(
-                      onTap: () {},
-                      style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
-                      autofocus: true,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: '查找频道',
-                        hintStyle: TextStyle(
-                          height: 1.5,
-                          color: ConstTheme.sidebarText.withAlpha(155),
+                  Expanded(
+                    child: Container(
+                      height: 40.w,
+                      width: MediaQuery.of(context).size.width - 120.w,
+                      margin: EdgeInsets.only(left: 0.w, right: 15.w, top: 15.w, bottom: 15.w),
+                      padding: EdgeInsets.only(left: 10.w),
+                      decoration: BoxDecoration(
+                        color: ConstTheme.sidebarText.withOpacity(0.1),
+                        borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                      ),
+                      alignment: Alignment.center,
+                      child: TextField(
+                        onTap: () {},
+                        style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+                        autofocus: true,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          hintText: '查找频道',
+                          hintStyle: TextStyle(
+                            height: 1.5,
+                            color: ConstTheme.sidebarText.withAlpha(155),
+                          ),
+                          suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
+                          contentPadding: const EdgeInsets.all(0),
+                          border: const OutlineInputBorder(borderSide: BorderSide.none),
+                          label: null,
                         ),
-                        suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
-                        contentPadding: const EdgeInsets.all(0),
-                        border: const OutlineInputBorder(borderSide: BorderSide.none),
-                        label: null,
                       ),
                     ),
                   ),
@@ -100,6 +109,10 @@ class _SearchPageState extends State<SearchPage> {
                     child: Center(
                       child: InkWell(
                         onTap: () {
+                          if (widget.closeModel != null) {
+                            widget.closeModel!.call();
+                            return;
+                          }
                           context.pop();
                         },
                         child: Text(

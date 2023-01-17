@@ -1,198 +1,202 @@
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../components/app_bar.dart';
-import '../../components/form/switch.dart';
+import '../../components/components.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
+import '../../utils/functions.dart';
 
 class ChannelMemberPage extends StatefulWidget {
   final String id;
-  const ChannelMemberPage({Key? key, required this.id}) : super(key: key);
+  final Function? closeModel;
+  const ChannelMemberPage({Key? key, required this.id, this.closeModel}) : super(key: key);
 
   @override
   State<ChannelMemberPage> createState() => _ChannelMemberPageState();
 }
 
 class _ChannelMemberPageState extends State<ChannelMemberPage> {
-  bool publicGroup = false;
-  late final IMProvider im;
-  late link.Client? client;
-  final SubmitData _data = SubmitData(groupName: "", preset: link.CreateRoomPreset.publicChat);
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late IMProvider im;
+  late link.Room? room;
+  List<link.User> userList = [];
 
   @override
   void initState() {
     super.initState();
     im = context.read<IMProvider>();
-    // me = im.me!;
-    if (im.currentState != null) {
-      client = im.currentState!.client;
-    }
+    room = im.currentState!.client.getRoomById(widget.id);
+    getList();
   }
 
-  void submitAction() async {
-    if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void getList() async {
+    var client = im.currentState!.client;
+
+    List<link.MatrixEvent>? matrixEvents = await client.getMembersByRoom(widget.id);
+    Iterable<link.User>? users = matrixEvents?.map((e) => link.Event.fromMatrixEvent(e, room!).asUser);
+    if (users == null) {
       return;
     }
-    _formKey.currentState!.save();
-    final roomID = await showFutureLoadingDialog(
-      context: context,
-      future: () async {
-        final roomId = await client!.createGroupChat(groupName: _data.groupName, preset: _data.preset);
-        return roomId;
-      },
-    );
-    //跳转到组织列表
-    if (!mounted) return;
-    MotionToast.success(
-      title: const Text(
-        '提示',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      description: const Text('频道创建成功，现在返回主页面'),
-      animationCurve: Curves.bounceIn,
-      borderRadius: 0,
-      animationDuration: const Duration(milliseconds: 500),
-      onClose: () {
-        context.pop();
-      },
-    ).show(context);
+
+    setState(() {
+      userList = users.toList(growable: false);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ConstTheme.centerChannelBg,
-      appBar: LocalAppBar(
-        title: "成员列表",
-        onBack: () {
-          context.pop();
-        },
-      ),
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.4,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                SizedBox(height: 100.w),
-                TextFormField(
-                  style: TextStyle(
-                    color: ConstTheme.centerChannelColor,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: '频道名称',
-                    hintStyle: TextStyle(
-                      fontSize: 14.w,
-                      color: ConstTheme.centerChannelColor,
-                    ),
-                    filled: true,
-                    fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
-                    border: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.text_fields,
-                      color: ConstTheme.centerChannelColor,
-                    ),
-                  ),
-                  onSaved: (v) {
-                    _data.groupName = v ?? "";
-                  },
-                  validator: (value) {
-                    RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                    if (!reg.hasMatch(value ?? "")) {
-                      return '请输入中文、英文、数字、下划线组成昵称';
-                    }
-                    if (value == null || value.isEmpty) {
-                      return '名称不能为空';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10.w),
-                SwitchFormField(
-                  initialValue: _data.preset == link.CreateRoomPreset.publicChat,
-                  decoration: InputDecoration(
-                    hintText: '是否公开',
-                    hintStyle: TextStyle(
-                      fontSize: 14.w,
-                      color: ConstTheme.centerChannelColor,
-                    ),
-                    filled: true,
-                    fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
-                    border: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.public,
-                      color: ConstTheme.centerChannelColor,
+      appBar: widget.closeModel == null
+          ? LocalAppBar(
+              title: "成员列表",
+              onBack: () {
+                context.pop();
+              },
+            ) as PreferredSizeWidget
+          : ModelBar(
+              title: "成员列表",
+              onBack: () {
+                if (widget.closeModel != null) {
+                  widget.closeModel!.call();
+                  return;
+                }
+                context.pop();
+              },
+            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(top: 5.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: 15.w),
+                  Expanded(
+                    child: Container(
+                      height: 40.w,
+                      margin: EdgeInsets.only(left: 0.w, right: 15.w, top: 15.w, bottom: 15.w),
+                      padding: EdgeInsets.only(left: 10.w),
+                      decoration: BoxDecoration(
+                        color: ConstTheme.sidebarText.withOpacity(0.1),
+                        borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                      ),
+                      alignment: Alignment.center,
+                      child: TextField(
+                        onTap: () {},
+                        style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+                        autofocus: true,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          hintText: '查找频道',
+                          hintStyle: TextStyle(
+                            height: 1.5,
+                            color: ConstTheme.sidebarText.withAlpha(155),
+                          ),
+                          suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
+                          contentPadding: const EdgeInsets.all(0),
+                          border: const OutlineInputBorder(borderSide: BorderSide.none),
+                          label: null,
+                        ),
+                      ),
                     ),
                   ),
-                  onSaved: (v) {
-                    if (v == null) {
-                      _data.preset = link.CreateRoomPreset.privateChat;
-                      return;
-                    }
-                    _data.preset = v ? link.CreateRoomPreset.publicChat : link.CreateRoomPreset.privateChat;
-                  },
-                  validator: (value) {
-                    return null;
-                  },
-                ),
-                SizedBox(height: 50.w),
-                InkWell(
-                  onTap: submitAction,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 15.w,
-                      horizontal: 30.w,
-                    ),
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: ConstTheme.centerChannelColor,
-                      borderRadius: BorderRadius.circular(5.w),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              '创建频道',
-                              style: TextStyle(
-                                color: ConstTheme.centerChannelBg,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 19.w,
-                              ),
-                            ),
+                  SizedBox(
+                    height: 40.w,
+                    width: 60.w,
+                    child: Center(
+                      child: InkWell(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Text(
+                          '取消',
+                          style: TextStyle(
+                            color: ConstTheme.centerChannelColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.w,
                           ),
                         ),
-                        Icon(
-                          Icons.navigate_next,
-                          color: ConstTheme.centerChannelBg,
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(width: 10.w),
+                ],
+              ),
+              Divider(
+                height: 5.w,
+                color: ConstTheme.centerChannelColor.withOpacity(0.1),
+              ),
+              SizedBox(
+                height: 10.w,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                height: 110.w,
+                child: ListView.builder(
+                    itemCount: userList.length,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              UserAvatar(
+                                getUserShortId(userList[index].senderId),
+                                true,
+                                40.w,
+                              ),
+                              SizedBox(width: 10.w),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${userList[index].calcDisplayname()}",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: ConstTheme.centerChannelColor.withOpacity(0.6),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    userList[index].id,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: ConstTheme.centerChannelColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                        ],
+                      );
+                    }),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-}
-
-class SubmitData {
-  String groupName;
-  link.CreateRoomPreset preset;
-
-  SubmitData({required this.groupName, required this.preset});
 }

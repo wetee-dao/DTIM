@@ -67,7 +67,7 @@ orgMenuRender(controller) {
                           menuItems[i][j].title,
                           style: TextStyle(
                             color: ConstTheme.centerChannelColor,
-                            fontSize: 12.w,
+                            fontSize: 13.w,
                           ),
                         ),
                       ),

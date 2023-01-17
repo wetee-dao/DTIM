@@ -1,11 +1,9 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter/material.dart';
-import 'package:asyou_app/components/channels_list.dart';
 import 'package:asyou_app/components/jump_to.dart';
-import 'package:asyou_app/components/user_list.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -68,7 +66,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
     setState(() {
       channels = im!.currentState!.channels;
       org = im!.currentState!.org;
-      if (channels.length > 0) {
+      if (channels.isNotEmpty) {
         channelId = channels[0].id;
       }
     });
@@ -88,7 +86,6 @@ class _ChannelListPageState extends State<ChannelListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ConstTheme.sidebarBg,
       // appBar: AppBar(
       //   elevation: 0,
       //   backgroundColor: "4B144A".toColor(),
@@ -187,6 +184,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
       //     ),
       //   ],
       // ),
+      backgroundColor: ConstTheme.sidebarBg,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -218,8 +216,10 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                 color: snapshot.data != null && snapshot.data!
                                     ? ConstTheme.sidebarText.withOpacity(0.25)
                                     : ConstTheme.sidebarText.withOpacity(0.1),
-                                borderRadius:
-                                    BorderRadius.only(topLeft: Radius.circular(3.w), bottomLeft: Radius.circular(3.w)),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(3.w),
+                                  bottomLeft: Radius.circular(3.w),
+                                ),
                               ),
                               child: Row(
                                 children: [
@@ -247,7 +247,8 @@ class _ChannelListPageState extends State<ChannelListPage> {
                       SizedBox(width: 1.w),
                       Expanded(
                         child: JumpTo(false, MediaQuery.of(context).size.width - 40, () {
-                          context.push("/search");
+                          // context.push("/search");
+                          showModelOrPage(context, "/search");
                           return null;
                         }),
                       )
@@ -274,7 +275,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                context.push("/create_channel");
+                                showModelOrPage(context, "/create_channel");
                               },
                               child: Icon(
                                 Icons.add,

@@ -51,83 +51,85 @@ class _MsgState extends State<Msg> {
   }
 
   buildMsg(link.Event event, bool showAvatar) {
-    return Row(
-      key: Key(event.eventId),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(width: 20.w),
-        if (showAvatar)
-          Column(
-            children: [
-              SizedBox(height: 10.w),
-              FutureBuilder<link.User?>(
-                future: event.fetchSenderUser(),
-                builder: (context, snapshot) {
-                  final user = snapshot.data ?? event.senderFromMemoryOrFallback;
-                  return UserAvatar(
+    return FutureBuilder<link.User?>(
+      future: event.fetchSenderUser(),
+      builder: (context, snapshot) {
+        final user = snapshot.data ?? event.senderFromMemoryOrFallback;
+        return Row(
+          key: Key(event.eventId),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(width: 20.w),
+            if (showAvatar)
+              Column(
+                children: [
+                  SizedBox(height: 10.w),
+                  UserAvatar(
                     key: Key(user.id),
                     getUserShortId(user.id),
                     true,
                     40.w,
-                  );
-                },
-              )
-            ],
-          ),
-        if (!showAvatar) SizedBox(width: 40.w),
-        SizedBox(width: 10.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (showAvatar) SizedBox(height: 10.w),
-              if (showAvatar)
-                RichText(
-                  text: TextSpan(
-                    text: event.senderId == widget.client.userID ? "我" : event.senderId,
-                    style: TextStyle(
-                      color: ConstTheme.centerChannelColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15.w,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "  ${getTime(event.originServerTs)}",
-                        style: TextStyle(
-                          color: ConstTheme.centerChannelColor.withAlpha(155),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.w,
-                        ),
-                      )
-                    ],
                   ),
-                ),
-              if (showAvatar) SizedBox(height: 5.w),
-              Text(
-                event.body,
-                style: TextStyle(
-                  fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
-                ),
+
+                  // ),
+                ],
               ),
-              SizedBox(height: 5.w),
-              // (detailMessages[index].srcImage != null)
-              //     ? ClipRRect(
-              //         borderRadius:
-              //             BorderRadius.circular(10.w),
-              //         child: Image.network(
-              //           detailMessages[index].srcImage!,
-              //           width: MediaQuery.of(context)
-              //                   .size
-              //                   .width *
-              //               0.7,
-              //         ),
-              //       )
-              //     : const SizedBox(),
-            ],
-          ),
-        ),
-      ],
+            if (!showAvatar) SizedBox(width: 40.w),
+            SizedBox(width: 10.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (showAvatar) SizedBox(height: 10.w),
+                  if (showAvatar)
+                    RichText(
+                      text: TextSpan(
+                        text: event.senderId == widget.client.userID ? "我" : event.senderId,
+                        style: TextStyle(
+                          color: ConstTheme.centerChannelColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15.w,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "  ${getTime(event.originServerTs)}",
+                            style: TextStyle(
+                              color: ConstTheme.centerChannelColor.withAlpha(155),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12.w,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  if (showAvatar) SizedBox(height: 5.w),
+                  Text(
+                    event.body,
+                    style: TextStyle(
+                      fontSize: 14.w,
+                      color: ConstTheme.centerChannelColor,
+                    ),
+                  ),
+                  SizedBox(height: 5.w),
+                  // (detailMessages[index].srcImage != null)
+                  //     ? ClipRRect(
+                  //         borderRadius:
+                  //             BorderRadius.circular(10.w),
+                  //         child: Image.network(
+                  //           detailMessages[index].srcImage!,
+                  //           width: MediaQuery.of(context)
+                  //                   .size
+                  //                   .width *
+                  //               0.7,
+                  //         ),
+                  //       )
+                  //     : const SizedBox(),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -11,7 +11,6 @@ import 'package:matrix/matrix.dart' as link;
 import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/theme.dart';
-import 'chat_menu.dart';
 
 // ignore: must_be_immutable
 class ChannelInputPage extends StatefulWidget {

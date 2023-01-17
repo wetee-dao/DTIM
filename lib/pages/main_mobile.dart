@@ -42,7 +42,7 @@ class _MobilePageState extends State<MobilePage> {
     return Scaffold(
       drawer: WidgetDrawer(),
       body: PageView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,
         children: sideNavs,

@@ -79,8 +79,11 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
   onImInit() {
     if (im!.current == null || im!.currentState == null) {
-      context.go("/pc");
-      // context.go("/mobile");
+      if (isPc()) {
+        context.go("/pc");
+      } else {
+        context.go("/mobile");
+      }
       return;
     }
     final queryStream = AccountOrgApi.create().storeBox.query(AccountOrg_.withAddr.equals(currentAddress)).watch();

@@ -15,6 +15,9 @@ import 'utils/screen/size_extension.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // 数据库初始化
+  await initDB();
+
   // 初始化桌面窗口
   if (isPc()) {
     // 等待桌面初始化
@@ -41,9 +44,6 @@ void main() async {
   } else {
     initScreen(1200);
   }
-
-  // 数据库初始化
-  await initDB();
 
   // 构建IM全局对象
   IMProvider im = IMProvider();
