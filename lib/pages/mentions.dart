@@ -33,12 +33,13 @@ class _MentionsPageState extends State<MentionsPage> {
             children: [
               SizedBox(height: 15.w),
               ListView.builder(
-                  itemCount: mentionsList.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return MentionCard(mentionsList[index], index);
-                  }),
+                itemCount: mentionsList.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return MentionCard(mentionsList[index], index);
+                },
+              ),
             ],
           ),
         ),
