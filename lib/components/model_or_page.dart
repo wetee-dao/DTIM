@@ -6,7 +6,7 @@ import '../pages/search.dart';
 import '../store/theme.dart';
 import '../utils/screen/size_extension.dart';
 
-showModelOrPage(context, url, {int width = 600, int height = 600, Map<String, String>? ps}) {
+showModelOrPage(context, url, {double width = 600, double height = 600, Map<String, String>? ps}) {
   if (isPc()) {
     showDialog(
       context: context,

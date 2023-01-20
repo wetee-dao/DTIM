@@ -56,7 +56,7 @@ class _ChannelBarState extends State<ChannelBar> {
       Container(
         height: widget._height,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))),
+          border: Border(bottom: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.08))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

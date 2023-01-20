@@ -226,7 +226,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                   Text(
                                     org != null ? org!.name ?? "" : '',
                                     style: TextStyle(
-                                      color: ConstTheme.centerChannelColor,
+                                      color: ConstTheme.sidebarText,
                                       fontWeight: FontWeight.w800,
                                       fontSize: 15.w,
                                       height: 1.2,
@@ -234,7 +234,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                   ),
                                   Icon(
                                     Icons.keyboard_arrow_down_outlined,
-                                    color: ConstTheme.centerChannelColor,
+                                    color: ConstTheme.sidebarText,
                                     size: 14.w,
                                   ),
                                 ],
@@ -275,7 +275,12 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                showModelOrPage(context, "/create_channel");
+                                showModelOrPage(
+                                  context,
+                                  "/create_channel",
+                                  width: 700.w,
+                                  height: 400.w,
+                                );
                               },
                               child: Icon(
                                 Icons.add,

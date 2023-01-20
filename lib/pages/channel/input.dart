@@ -91,7 +91,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
         //     blurRadius: 2,
         //   ),
         // ],
-        border: Border(top: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.03))),
+        border: Border(top: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.08))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,7 +170,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               height: 300.w,
               margin: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                border: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                border: Border.all(color: ConstTheme.centerChannelColor.withOpacity(0.08)),
                 borderRadius: BorderRadius.circular(3.w),
                 color: ConstTheme.centerChannelBg,
                 boxShadow: <BoxShadow>[

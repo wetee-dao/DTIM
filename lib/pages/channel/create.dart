@@ -104,7 +104,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
             key: _formKey,
             child: Column(
               children: [
-                SizedBox(height: 100.w),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 TextFormField(
                   style: TextStyle(
                     color: ConstTheme.centerChannelColor,

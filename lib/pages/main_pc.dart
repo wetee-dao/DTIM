@@ -53,7 +53,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: ConstTheme.sidebarHeaderBg,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

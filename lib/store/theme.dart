@@ -3,6 +3,7 @@ import 'package:themed/themed.dart';
 
 const themes = [
   {
+    //0
     "type": 'Afterglow',
     "sidebarBg": "#2f2c2f",
     "sidebarText": "#dedede",
@@ -31,6 +32,7 @@ const themes = [
     "sidebarOrgBarBg": "#1d1d1d"
   },
   {
+    // 1
     "type": 'Bourbon',
     "sidebarBg": "#cf7c44",
     "sidebarText": "#fffafc",
@@ -38,7 +40,7 @@ const themes = [
     "sidebarTextHoverBg": "#fbedd4",
     "sidebarTextActiveBorder": "#e89a6b",
     "sidebarTextActiveColor": "#f7db72",
-    "sidebarHeaderBg": "#cf7c44",
+    "sidebarHeaderBg": "#c46524",
     "sidebarHeaderTextColor": "#fffafc",
     "onlineIndicator": "#92406a",
     "mentionBg": "#92406a",
@@ -59,6 +61,7 @@ const themes = [
     "sidebarOrgBarBg": "#a56336"
   },
   {
+    // 2
     "type": 'Brinjal',
     "sidebarBg": "#4f2f4c",
     "sidebarText": "#ffffff",
@@ -87,6 +90,7 @@ const themes = [
     "sidebarOrgBarBg": "#372034"
   },
   {
+    // 3
     "type": 'Blue',
     "sidebarBg": "#014a83",
     "sidebarText": "#ffffff",
@@ -115,6 +119,7 @@ const themes = [
     "sidebarOrgBarBg": "#042843"
   },
   {
+    // 4
     "type": 'Red',
     "sidebarBg": "#751c01",
     "sidebarText": "#ffffff",
@@ -143,6 +148,7 @@ const themes = [
     "sidebarOrgBarBg": "#491000"
   },
   {
+    //5
     "type": "Thoroughcare",
     "sidebarBg": "#245b61",
     "sidebarText": "#ffffff",
@@ -171,6 +177,7 @@ const themes = [
     "sidebarOrgBarBg": "#1c484d"
   },
   {
+    //6
     "type": "Solarized",
     "sidebarBg": "#fdf6e3",
     "sidebarText": "#837e65",
@@ -199,6 +206,7 @@ const themes = [
     "sidebarOrgBarBg": "#eee8d5"
   },
   {
+    //7
     "type": "JuiceBar",
     "sidebarBg": "#86a34e",
     "sidebarText": "#ffffff",
@@ -227,6 +235,7 @@ const themes = [
     "sidebarOrgBarBg": "#768c4f"
   },
   {
+    //8
     "type": "SQOOL",
     "sidebarBg": "#003554",
     "sidebarText": "#ffffff",
@@ -255,6 +264,7 @@ const themes = [
     "sidebarOrgBarBg": "#053045"
   },
   {
+    //9
     "type": 'Choco Mint',
     "sidebarBg": "#544538",
     "sidebarText": "#ffffff",
@@ -283,6 +293,7 @@ const themes = [
     "sidebarOrgBarBg": "#342b22"
   },
   {
+    //10
     "type": 'quartz',
     "sidebarBg": "#373d48",
     "sidebarText": "#ffffff",
@@ -311,6 +322,7 @@ const themes = [
     "sidebarOrgBarBg": "#262b34",
   },
   {
+    //11
     "type": 'Dolly Light',
     "sidebarBg": "#fafafa",
     "sidebarText": "#564f4d",
@@ -339,6 +351,7 @@ const themes = [
     "sidebarOrgBarBg": "#c2c2c2"
   },
   {
+    //12
     "type": 'Solarized Dark Theme',
     "awayIndicator": "#E0B333",
     "buttonBg": "#859900",
@@ -364,6 +377,7 @@ const themes = [
     "errorTextColor": "#dc322f"
   },
   {
+    //13
     "type": "Gruvbox Dark Theme",
     "awayIndicator": "#fabd2f",
     "buttonBg": "#689d6a",
@@ -389,6 +403,7 @@ const themes = [
     "sidebarUnreadText": "#fe8019"
   },
   {
+    //14
     "type": "One Dark Theme",
     "sidebarBg": "#21252b",
     "sidebarText": "#abb2bf",
@@ -415,6 +430,7 @@ const themes = [
     "codeTheme": "monokai"
   },
   {
+    //15
     "type": "Discord Dark Theme",
     "sidebarBg": "#2f3136",
     "sidebarText": "#ffffff",
@@ -441,6 +457,7 @@ const themes = [
     "codeTheme": "monokai"
   },
   {
+    //16
     "type": "Night Owl Dark Theme",
     "sidebarBg": "#011627",
     "sidebarText": "#d6deeb",
