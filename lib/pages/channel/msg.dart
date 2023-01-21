@@ -70,8 +70,6 @@ class _MsgState extends State<Msg> {
                     true,
                     40.w,
                   ),
-
-                  // ),
                 ],
               ),
             if (!showAvatar) SizedBox(width: 40.w),

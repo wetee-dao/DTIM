@@ -13,7 +13,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? tools;
   final Function? onBack;
   ModelBar({Key? key, this.onBack, this.tools, String? title, double? height})
-      : _height = height ?? 55.w,
+      : _height = height ?? 50.w,
         _title = title ?? "",
         super(key: key);
 

@@ -84,7 +84,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                   Expanded(
                     child: Container(
                       height: 40.w,
-                      margin: EdgeInsets.only(left: 0.w, right: 15.w, top: 15.w, bottom: 15.w),
+                      margin: EdgeInsets.only(left: 0.w, right: 0.w, top: 10.w, bottom: 10.w),
                       padding: EdgeInsets.only(left: 10.w),
                       decoration: BoxDecoration(
                         color: ConstTheme.sidebarText.withOpacity(0.1),
@@ -116,6 +116,10 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                     child: Center(
                       child: InkWell(
                         onTap: () {
+                          if (widget.closeModel != null) {
+                            widget.closeModel!.call();
+                            return;
+                          }
                           context.pop();
                         },
                         child: Text(

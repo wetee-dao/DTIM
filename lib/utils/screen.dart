@@ -1,18 +1,22 @@
 import 'dart:ui';
 
 import 'package:asyou_app/utils/screen/screen_util.dart';
+import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
 
-initScreen(double width) {
-  // var size = MediaQuery.of(context).size;
-  var windowWidth = window.physicalSize.width / window.devicePixelRatio;
-  // 初始化页面缩放单位
+initScreen(
+  double designWidth, // 设计图宽度
+) {
+  double windowWidth = window.physicalSize.width / window.devicePixelRatio;
+  if (isPc()) {
+    // PC 端套用当前屏幕缩放比
+    windowWidth = designWidth * window.devicePixelRatio;
+  }
   double swidth = windowWidth > 1200 ? 1200 : windowWidth;
-  // print("window_width ==> " + window_width.toString());
-  // print("swidth ==> " + swidth.toString());
+
   ScreenUtil.init(
     deviceSize: Size(swidth, swidth * 1.5),
-    designSize: Size(width, width * 1.5),
+    designSize: Size(designWidth, designWidth * 1.5),
     minTextAdapt: true,
     orientation: Orientation.portrait,
   );

@@ -20,10 +20,11 @@ void main() async {
 
   // 初始化桌面窗口
   if (isPc()) {
+    initScreen(1200);
     // 等待桌面初始化
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(1200, 700),
+      size: Size(950, 650),
       minimumSize: Size(800, 550),
       center: true,
       backgroundColor: Colors.transparent,
@@ -40,7 +41,6 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
-    initScreen(1200);
   } else {
     initScreen(1200);
   }
