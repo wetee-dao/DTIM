@@ -6,7 +6,7 @@ while [ -h "$SOURCE"  ]; do
     [[ $SOURCE != /*  ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
-CRATE="$DIR/../chain_wraper"
+CRATE="$DIR/../rust_wraper"
 
 echo "RUST项目根目录 => $CRATE"
 cd "$DIR/../"

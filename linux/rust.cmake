@@ -15,11 +15,11 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Corrosion)
 
-corrosion_import_crate(MANIFEST_PATH ../chain_wraper/Cargo.toml)
+corrosion_import_crate(MANIFEST_PATH ../rust_wraper/Cargo.toml)
 
 # Flutter-specific
 
-set(CRATE_NAME "chain_wraper")
+set(CRATE_NAME "rust_wraper")
 
 target_link_libraries(${BINARY_NAME} PRIVATE ${CRATE_NAME})
 

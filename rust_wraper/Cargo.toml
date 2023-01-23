@@ -1,10 +1,10 @@
 [package]
-name = "chain_wraper"
+name = "rust_wraper"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "chain_wraper"
+name = "rust_wraper"
 crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]

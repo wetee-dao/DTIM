@@ -84,7 +84,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                   Expanded(
                     child: Container(
                       height: 40.w,
-                      margin: EdgeInsets.only(left: 0.w, right: 0.w, top: 10.w, bottom: 10.w),
+                      margin: EdgeInsets.only(top: 10.w, bottom: 10.w),
                       padding: EdgeInsets.only(left: 10.w),
                       decoration: BoxDecoration(
                         color: ConstTheme.sidebarText.withOpacity(0.1),
@@ -93,10 +93,11 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                       alignment: Alignment.center,
                       child: TextField(
                         onTap: () {},
-                        style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
                         autofocus: true,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
                         decoration: InputDecoration(
+                          label: null,
                           hintText: '查找频道',
                           hintStyle: TextStyle(
                             height: 1.5,
@@ -105,7 +106,6 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                           suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
                           contentPadding: const EdgeInsets.all(0),
                           border: const OutlineInputBorder(borderSide: BorderSide.none),
-                          label: null,
                         ),
                       ),
                     ),
@@ -147,55 +147,56 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                 padding: EdgeInsets.only(left: 15.w, right: 15.w),
                 height: 110.w,
                 child: ListView.builder(
-                    itemCount: userList.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              UserAvatar(
-                                getUserShortId(userList[index].senderId),
-                                true,
-                                40.w,
-                              ),
-                              SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${userList[index].calcDisplayname()}",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: ConstTheme.centerChannelColor.withOpacity(0.6),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    textAlign: TextAlign.center,
+                  itemCount: userList.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            UserAvatar(
+                              getUserShortId(userList[index].senderId),
+                              true,
+                              40.w,
+                            ),
+                            SizedBox(width: 10.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userList[index].calcDisplayname(),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: ConstTheme.centerChannelColor.withOpacity(0.6),
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  Text(
-                                    userList[index].id,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: ConstTheme.centerChannelColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  userList[index].id,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: ConstTheme.centerChannelColor,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                        ],
-                      );
-                    }),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ],
           ),

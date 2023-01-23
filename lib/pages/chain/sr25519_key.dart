@@ -10,7 +10,7 @@ import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:asyou_app/models/account.dart';
 import '../../apis/account_api.dart';
-import '../../chain_wraper.io.dart';
+import '../../rust_wraper.io.dart';
 import '../../components/app_bar.dart';
 
 class Sr25519KeyPage extends StatefulWidget {

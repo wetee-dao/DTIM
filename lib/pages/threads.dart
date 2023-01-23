@@ -27,8 +27,8 @@ class _ThreadsPageState extends State<ThreadsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 10, bottom: 5),
+            const Padding(
+              padding: EdgeInsets.only(left: 15, top: 10, bottom: 5),
               child: Text(
                 '#support_channel',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
@@ -37,7 +37,7 @@ class _ThreadsPageState extends State<ThreadsPage> {
             Padding(
               padding: const EdgeInsets.only(left: 15, bottom: 5),
               child: Row(
-                children: [
+                children: const [
                   Text(
                     'Bob, ',
                     style: TextStyle(color: Colors.grey),

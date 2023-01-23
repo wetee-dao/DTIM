@@ -508,18 +508,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "chain_wraper"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "asyou_rust_sdk",
- "flutter_rust_bridge",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "chrono"
 version = "0.4.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2686,6 +2674,18 @@ dependencies = [
  "smallvec",
  "subtle",
  "zeroize",
+]
+
+[[package]]
+name = "rust_wraper"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "asyou_rust_sdk",
+ "flutter_rust_bridge",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]
