@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:expandable/expandable.dart';
 import 'package:asyou_app/components/jump_to.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 

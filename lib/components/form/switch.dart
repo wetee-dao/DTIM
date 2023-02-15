@@ -50,7 +50,6 @@ class SwitchFormField extends FormField<bool> {
             );
           },
         );
-
   // @override
   // _SwitchFormField createState() => _SwitchFormFieldState();
 }
