@@ -24,7 +24,7 @@ void main() async {
     // 等待桌面初始化
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(950, 650),
+      size: Size(1050, 650),
       minimumSize: Size(800, 550),
       center: true,
       backgroundColor: Colors.transparent,

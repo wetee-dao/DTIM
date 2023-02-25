@@ -174,7 +174,7 @@ class BasePopupMenuState extends State<BasePopupMenu> {
       },
     );
     if (_overlayEntry != null) {
-      Overlay.of(context)!.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
     }
   }
 
@@ -204,7 +204,7 @@ class BasePopupMenuState extends State<BasePopupMenu> {
     WidgetsBinding.instance.addPostFrameCallback((call) {
       if (mounted) {
         _childBox = context.findRenderObject() as RenderBox?;
-        _parentBox = Overlay.of(context)?.context.findRenderObject() as RenderBox?;
+        _parentBox = Overlay.of(context).context.findRenderObject() as RenderBox?;
       }
     });
   }

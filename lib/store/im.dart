@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:matrix/matrix.dart' as link;
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +30,9 @@ class IMProvider with ChangeNotifier {
       userName,
       databaseBuilder: (_) async {
         final dir = await getApplicationSupportDirectory();
+        if (kDebugMode) {
+          print("hlive ===> ${dir.path}");
+        }
         final db = link.HiveCollectionsDatabase(
           org.domain!.replaceAll(".", "_"),
           dir.path,
@@ -41,17 +44,17 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
+    await client.checkHomeserver(Uri.http("192.168.111.105:8008", ''));
 
     if (!client.isLogged()) {
-      // await client.uiaRequestBackground((auth) {
-      //   return client.register(
-      //     username: user.address,
-      //     password: password,
-      //     initialDeviceDisplayName: platformGet(),
-      //     auth: auth,
-      //   );
-      // });
+      await client.uiaRequestBackground((auth) {
+        return client.register(
+          username: user.address,
+          password: password,
+          initialDeviceDisplayName: platformGet(),
+          auth: auth,
+        );
+      });
 
       // 登陆节点
       await client.login(

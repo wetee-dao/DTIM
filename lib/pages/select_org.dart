@@ -50,12 +50,13 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
       im = context.read<IMProvider>();
       var aorgs = AccountOrgApi.create().listAll();
 
-      // 登录账户
-      im!.login(aorgs[0].account.target!, orgs[0]);
-      im!.setCurrent(aorgs[0].account.target!, orgs[0]);
+      if(aorgs.isNotEmpty){
+        // 登录账户
+        im!.login(aorgs[0].account.target!, orgs[0]);
+        im!.setCurrent(aorgs[0].account.target!, orgs[0]);
+        onImInit();
+      }
       im!.addListener(onImInit);
-
-      onImInit();
     });
 
     super.initState();
