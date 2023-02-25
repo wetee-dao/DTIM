@@ -44,7 +44,7 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http("192.168.111.105:8008", ''));
+    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
 
     if (!client.isLogged()) {
       await client.uiaRequestBackground((auth) {

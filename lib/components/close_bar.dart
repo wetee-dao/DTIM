@@ -69,7 +69,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
-          padding: EdgeInsets.all(2.w),
+          padding: EdgeInsets.only(left: 2.w, top: 5.w, right: 5.w, bottom: 2.w),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,

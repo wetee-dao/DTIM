@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
-import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
-import '../../components/move_window.dart';
 import '../../components/popup.dart';
 import './chat_menu.dart';
 
@@ -157,12 +155,13 @@ class _ChannelBarState extends State<ChannelBar> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 8.w),
+                    SizedBox(width: 3.w),
                     Text(
                       '添加频道描述',
                       style: TextStyle(
                         color: ConstTheme.centerChannelColor.withAlpha(155),
-                        fontSize: 12,
+                        fontSize: 13,
+                        height: 1,
                       ),
                     ),
                   ],

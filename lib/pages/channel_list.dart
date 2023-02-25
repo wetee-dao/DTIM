@@ -27,6 +27,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
   late ExpandableController _controllerUsers;
   final BasePopupMenuController menuController = BasePopupMenuController();
   final StreamController<bool> menuStreamController = StreamController<bool>();
+  double leftWidth = 200.w;
   IMProvider? im;
   Org? org;
   User? receiverUser;
@@ -189,7 +190,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
         children: [
           Container(
             height: double.maxFinite,
-            width: 260.w,
+            width: leftWidth,
             color: ConstTheme.sidebarBg,
             child: SingleChildScrollView(
               child: Column(
@@ -395,6 +396,24 @@ class _ChannelListPageState extends State<ChannelListPage> {
                 ],
               ),
             ),
+          ),
+          GestureDetector(
+            child: MouseRegion(
+              cursor: SystemMouseCursors.resizeColumn,
+              child: SizedBox(
+                width: 2,
+                height: double.infinity,
+                child: Container(color: ConstTheme.sidebarBg),
+              ),
+            ),
+            onPanUpdate: (details) {
+              setState(() {
+                if (leftWidth + details.delta.dx < 180.w || leftWidth + details.delta.dx > 350.w) {
+                  return;
+                }
+                leftWidth = leftWidth + details.delta.dx;
+              });
+            },
           ),
           Flexible(
             child: buildDetailPage(receiverUser, channelId),
