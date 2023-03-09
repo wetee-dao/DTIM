@@ -1,7 +1,7 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../store/theme.dart';
+import '../../utils/screen.dart';
 
 class SwitchFormField extends FormField<bool> {
   SwitchFormField({

@@ -1,8 +1,8 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../store/theme.dart';
+import '../utils/screen.dart';
 import 'hover_list_item.dart';
 
 channelsListView(

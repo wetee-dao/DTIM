@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 
+import '../utils/screen.dart';
 import '../store/theme.dart';
 
 // ignore: non_constant_identifier_names

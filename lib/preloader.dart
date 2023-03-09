@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
+import 'store/theme.dart';
+import 'utils/screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 
-// import 'package:asyou_app/pages/chat_detail_screen.dart';
-import 'package:asyou_app/components/name_with_emoji.dart';
-import 'package:asyou_app/components/user_avatar.dart';
-
+import '../components/name_with_emoji.dart';
+import '../components/user_avatar.dart';
+import '../utils/screen.dart';
 import '../models/user.dart';
 
 Widget usersList(List<User> usersList, User? select, Function(int) onSelect) {

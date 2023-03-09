@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
-import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
 import '../../components/popup.dart';
+import '../../store/theme.dart';
+import '../../utils/screen.dart';
 import './chat_menu.dart';
 
 class ChannelBar extends StatefulWidget implements PreferredSizeWidget {

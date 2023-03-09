@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../utils/screen.dart';
 import '../../components/components.dart';
 import '../../components/form/switch.dart';
 import '../../store/im.dart';

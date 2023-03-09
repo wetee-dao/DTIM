@@ -5,7 +5,7 @@ import '../pages/channel/members.dart';
 import '../pages/search.dart';
 import '../pages/setting/setting.dart';
 import '../store/theme.dart';
-import '../utils/screen/size_extension.dart';
+import '../utils/screen.dart';
 
 showModelOrPage(context, url, {double width = 600, double height = 600, Map<String, String>? ps}) {
   if (isPc()) {

@@ -2,15 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:asyou_app/objectbox.g.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/theme.dart';
+import '../../objectbox.g.dart';
+import '../../utils/screen.dart';
 
 // ignore: must_be_immutable
 class ChannelInputPage extends StatefulWidget {

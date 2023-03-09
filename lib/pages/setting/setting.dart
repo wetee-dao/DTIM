@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/utils/screen/size_extension.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../utils/screen.dart';
 import '../../components/components.dart';
-import '../../components/form/switch.dart';
 import '../../components/hover_list_item.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
@@ -106,10 +103,6 @@ class _SettingPageState extends State<SettingPage> {
                   onPressed: () async {
                     onSelect(index);
                   },
-                  trailing: Container(
-                    margin: EdgeInsets.only(right: 12.w),
-                    child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
-                  ),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border(

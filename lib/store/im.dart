@@ -4,7 +4,7 @@ import 'package:matrix/matrix.dart' as link;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/models.dart';
-import '../utils/screen/size_extension.dart';
+import '../utils/screen.dart';
 import './im_state.dart';
 
 class IMProvider with ChangeNotifier {

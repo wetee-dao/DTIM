@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:asyou_app/objectbox.g.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +11,8 @@ import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
+import '../../objectbox.g.dart';
+import '../../utils/screen.dart';
 import 'bar.dart';
 import 'input.dart';
 import 'msg.dart';

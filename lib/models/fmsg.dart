@@ -1,5 +1,5 @@
-import 'package:asyou_app/models/user.dart';
 import 'package:objectbox/objectbox.dart';
+import './user.dart';
 
 @Entity()
 class DirectMsg {

@@ -1,8 +1,9 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:asyou_app/utils/functions.dart';
-import 'package:asyou_app/components/search_element.dart';
-import 'package:asyou_app/components/user_avatar.dart';
+
+import '../utils/screen.dart';
+import '../utils/functions.dart';
+import '../components/search_element.dart';
+import '../components/user_avatar.dart';
 
 class YouPage extends StatefulWidget {
   const YouPage({Key? key}) : super(key: key);

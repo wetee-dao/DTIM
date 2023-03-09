@@ -1,4 +1,4 @@
-import 'package:asyou_app/pages/setting/setting.dart';
+import 'pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';

@@ -1,8 +1,10 @@
 import 'dart:ui';
-
-import 'package:asyou_app/utils/screen/screen_util.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
+
+import './screen/screen_util.dart';
+import './screen/size_extension.dart';
+
+export './screen/size_extension.dart';
 
 initScreen(
   double designWidth, // 设计图宽度

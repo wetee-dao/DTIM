@@ -1,5 +1,4 @@
-import 'package:asyou_app/store/db.dart';
-
+import '../store/db.dart';
 import '../models/system.dart';
 import '../objectbox.g.dart';
 

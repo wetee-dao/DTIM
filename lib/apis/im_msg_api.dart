@@ -1,7 +1,6 @@
-import 'package:asyou_app/store/db.dart';
-
 import '../models/im_message_model.dart';
 import '../objectbox.g.dart';
+import '../store/db.dart';
 
 class ImMsgApi {
   late final Box<ImMessages> storeBox;

@@ -1,5 +1,6 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/screen.dart';
 
 class ThreadsPage extends StatefulWidget {
   const ThreadsPage({Key? key}) : super(key: key);

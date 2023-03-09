@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:asyou_app/components/search_element.dart';
+
+import '../components/search_element.dart';
 
 class WidgetDrawer extends StatefulWidget {
   const WidgetDrawer({Key? key}) : super(key: key);

@@ -1,8 +1,9 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
-import 'package:asyou_app/models/mentions_model.dart';
-import 'package:asyou_app/components/user_avatar.dart';
+
+import '../models/mentions_model.dart';
+import '../components/user_avatar.dart';
+import '../utils/screen.dart';
 
 // ignore: non_constant_identifier_names
 MentionCard(MentionModel mentionElement, int index) {

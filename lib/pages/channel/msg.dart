@@ -1,9 +1,8 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
-
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/user_avatar.dart';
+import '../../utils/screen.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
 import '../../utils/time.dart';

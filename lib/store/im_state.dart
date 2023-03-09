@@ -1,9 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:async';
 import 'package:matrix/matrix.dart' as link;
-import 'package:asyou_app/apis/d_msg_api.dart';
 
-import '../apis/apis.dart';
 import '../models/models.dart';
 
 // class ImState implements xmpp.ConnectionStateChangedListener {

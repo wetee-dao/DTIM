@@ -1,10 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:animated_checkmark/animated_checkmark.dart';
 
 import '../models/models.dart';
 import '../store/theme.dart';
+import '../utils/screen.dart';
 
 class OrgCard extends StatelessWidget {
   final Org org;

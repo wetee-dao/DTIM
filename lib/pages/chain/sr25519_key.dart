@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
-import 'package:asyou_app/models/account.dart';
+import '../../store/theme.dart';
+import '../../utils/screen.dart';
+import '../../models/account.dart';
 import '../../apis/account_api.dart';
 import '../../rust_wraper.io.dart';
 import '../../components/app_bar.dart';

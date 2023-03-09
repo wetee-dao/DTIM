@@ -1,7 +1,8 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:asyou_app/utils/functions.dart';
-import 'package:asyou_app/components/mentions_card.dart';
+
+import '../utils/screen.dart';
+import '../utils/functions.dart';
+import '../components/mentions_card.dart';
 
 class MentionsPage extends StatefulWidget {
   const MentionsPage({Key? key}) : super(key: key);

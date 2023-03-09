@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../models/account.dart';
 import '../objectbox.g.dart';
-import '../utils/screen/size_extension.dart';
+import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../components/components.dart';
 import '../models/org.dart';
@@ -50,7 +50,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
       im = context.read<IMProvider>();
       var aorgs = AccountOrgApi.create().listAll();
 
-      if(aorgs.isNotEmpty){
+      if (aorgs.isNotEmpty) {
         // 登录账户
         im!.login(aorgs[0].account.target!, orgs[0]);
         im!.setCurrent(aorgs[0].account.target!, orgs[0]);

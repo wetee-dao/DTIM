@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
-import 'package:asyou_app/utils/functions.dart';
-import 'package:asyou_app/pages/search.dart';
-import 'package:asyou_app/components/jump_to.dart';
-import 'package:asyou_app/components/user_avatar.dart';
+import '../store/theme.dart';
+import '../utils/screen.dart';
+import '../utils/functions.dart';
+import '../components/jump_to.dart';
+import '../components/user_avatar.dart';
+import './search.dart';
 
 class DirectMessagePage extends StatefulWidget {
   const DirectMessagePage({Key? key}) : super(key: key);

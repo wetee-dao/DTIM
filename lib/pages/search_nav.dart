@@ -1,11 +1,10 @@
 import 'dart:async';
-
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:asyou_app/utils/functions.dart';
-import 'package:asyou_app/components/search_element.dart';
 
+import '../../components/search_element.dart';
+import '../../utils/screen.dart';
+import '../../utils/functions.dart';
 import '../store/theme.dart';
 
 class SearchPageNav extends StatefulWidget {

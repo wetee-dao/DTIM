@@ -1,5 +1,5 @@
-import 'package:asyou_app/models/account.dart';
 import 'package:objectbox/objectbox.dart';
+import './account.dart';
 
 @Entity()
 class User {

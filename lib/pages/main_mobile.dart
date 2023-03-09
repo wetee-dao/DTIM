@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:asyou_app/components/drawer.dart';
 
+import '../components/drawer.dart';
 import '../apis/navs.dart';
 
 class MobilePage extends StatefulWidget {

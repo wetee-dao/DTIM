@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:objectbox/objectbox.dart';
-import 'package:asyou_app/models/user.dart';
+import './user.dart';
 
 part 'account.g.dart';
 

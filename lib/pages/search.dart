@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:provider/provider.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 
+import '../utils/screen.dart';
 import '../store/theme.dart';
 import '../components/components.dart';
 import '../store/im.dart';

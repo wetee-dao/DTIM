@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../objectbox.g.dart';
-import 'package:path_provider/path_provider.dart';
 
 // ignore: non_constant_identifier_names
 Store? DB;

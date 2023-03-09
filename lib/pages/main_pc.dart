@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../components/model_or_page.dart';
-import '../utils/screen/size_extension.dart';
+import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
 import '../store/theme.dart';

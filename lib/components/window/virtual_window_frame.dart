@@ -1,10 +1,10 @@
 import 'dart:io';
-
-import 'package:asyou_app/apis/system_api.dart';
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
+
+import '../../apis/system_api.dart';
+import '../../utils/screen.dart';
 
 final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;

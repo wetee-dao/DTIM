@@ -1,8 +1,7 @@
-import 'package:asyou_app/store/db.dart';
-
 import '../models/user.dart';
 import '../models/account.dart';
 import '../objectbox.g.dart';
+import '../../store/db.dart';
 
 class AccountApi {
   late final Box<Account> storeBox;

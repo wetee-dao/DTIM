@@ -1,6 +1,7 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:asyou_app/components/last_status.dart';
+
+import '../../components/last_status.dart';
+import '../../utils/screen.dart';
 
 class YourStatus extends StatelessWidget {
   const YourStatus({Key? key}) : super(key: key);

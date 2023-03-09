@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:expandable/expandable.dart';
-import 'package:asyou_app/components/jump_to.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../utils/screen.dart';
+import '../components/jump_to.dart';
 import '../components/components.dart';
 import '../components/popup.dart';
 import '../models/models.dart';
@@ -229,8 +229,8 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                       style: TextStyle(
                                         color: ConstTheme.sidebarText,
                                         fontWeight: FontWeight.w800,
-                                        fontSize: 16.w,
-                                        height: 1.2,
+                                        fontSize: 15.w,
+                                        height: 1.3,
                                       ),
                                     ),
                                     Icon(
@@ -270,7 +270,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           style: TextStyle(
                             color: ConstTheme.sidebarText.withAlpha(155),
                             fontWeight: FontWeight.w800,
-                            fontSize: 15.w,
+                            fontSize: 14.w,
                           ),
                         ),
                         Row(
@@ -336,7 +336,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           '私信',
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
-                            fontSize: 15.w,
+                            fontSize: 14.w,
                             color: ConstTheme.sidebarText.withAlpha(155),
                           ),
                         ),

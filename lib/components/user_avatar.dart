@@ -1,8 +1,8 @@
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../store/theme.dart';
 import '../utils/identicon.dart';
+import '../utils/screen.dart';
 
 class UserAvatar extends StatelessWidget {
   final String avatarSrc;

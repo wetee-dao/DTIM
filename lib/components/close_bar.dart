@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-
-import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../utils/screen.dart';
 import '../store/theme.dart';
 
 class CloseBar extends StatefulWidget {
