@@ -1,3 +1,4 @@
+import 'package:asyou_app/pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -69,6 +70,12 @@ routers() {
       path: '/channel_members/:id',
       builder: (BuildContext context, GoRouterState state) {
         return VirtualWindowFrame(child: ChannelMemberPage(id: state.params['id'] ?? ""));
+      },
+    ),
+    GoRoute(
+      path: '/setting',
+      builder: (BuildContext context, GoRouterState state) {
+        return const VirtualWindowFrame(child: SettingPage());
       },
     ),
   ];

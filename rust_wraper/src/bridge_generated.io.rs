@@ -2,8 +2,8 @@ use super::*;
 // Section: wire functions
 
 #[no_mangle]
-pub extern "C" fn wire_returning_structs_with_boxed_fields(port_: i64) {
-    wire_returning_structs_with_boxed_fields_impl(port_)
+pub extern "C" fn wire_connect(port_: i64, url: *mut wire_uint_8_list) {
+    wire_connect_impl(port_, url)
 }
 
 #[no_mangle]

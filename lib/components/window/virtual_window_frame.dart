@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:asyou_app/apis/system_api.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,13 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
   void onWindowLeaveFullScreen() {
     setState(() {
       _isFullScreen = false;
+    });
+  }
+
+  @override
+  void onWindowResize() {
+    windowManager.getSize().then((value) {
+      SystemApi.create().save(value.width, value.height);
     });
   }
 }

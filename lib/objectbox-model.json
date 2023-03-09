@@ -266,9 +266,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "11:3570047071226480332",
+      "lastPropertyId": "3:4687964772241030953",
+      "name": "System",
+      "properties": [
+        {
+          "id": "1:4844467738019453648",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3470713345628720947",
+          "name": "width",
+          "type": 8
+        },
+        {
+          "id": "3:4687964772241030953",
+          "name": "height",
+          "type": 8
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "10:5693561153061033524",
+  "lastEntityId": "11:3570047071226480332",
   "lastIndexId": "14:2038028947041398503",
   "lastRelationId": "2:2905611084694405217",
   "lastSequenceId": "0:0",

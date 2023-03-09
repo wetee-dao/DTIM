@@ -195,64 +195,66 @@ class _ChannelListPageState extends State<ChannelListPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 15.w),
-                      BasePopupMenu(
-                        verticalMargin: -1.w,
-                        horizontalMargin: 5.w,
-                        showArrow: false,
-                        controller: menuController,
-                        pressType: PressType.singleClick,
-                        position: PreferredPosition.bottomLeft,
-                        child: StreamBuilder<bool>(
-                          stream: menuStreamController.stream,
-                          initialData: false,
-                          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                            return Container(
-                              height: 40.w,
-                              padding: EdgeInsets.only(left: 10.w, right: 7.w, top: 2.w, bottom: 2.w),
-                              decoration: BoxDecoration(
-                                color: snapshot.data != null && snapshot.data!
-                                    ? ConstTheme.sidebarText.withOpacity(0.25)
-                                    : ConstTheme.sidebarText.withOpacity(0.1),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(3.w),
-                                  bottomLeft: Radius.circular(3.w),
+                  moveWindow(
+                    Row(
+                      children: [
+                        SizedBox(width: 15.w),
+                        BasePopupMenu(
+                          verticalMargin: -1.w,
+                          horizontalMargin: 5.w,
+                          showArrow: false,
+                          controller: menuController,
+                          pressType: PressType.singleClick,
+                          position: PreferredPosition.bottomLeft,
+                          child: StreamBuilder<bool>(
+                            stream: menuStreamController.stream,
+                            initialData: false,
+                            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                              return Container(
+                                height: 40.w,
+                                padding: EdgeInsets.only(left: 10.w, right: 7.w, top: 2.w, bottom: 2.w),
+                                decoration: BoxDecoration(
+                                  color: snapshot.data != null && snapshot.data!
+                                      ? ConstTheme.sidebarText.withOpacity(0.25)
+                                      : ConstTheme.sidebarText.withOpacity(0.1),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(3.w),
+                                    bottomLeft: Radius.circular(3.w),
+                                  ),
                                 ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    org != null ? org!.name ?? "" : '',
-                                    style: TextStyle(
-                                      color: ConstTheme.sidebarText,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 15.w,
-                                      height: 1.2,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      org != null ? org!.name ?? "" : '',
+                                      style: TextStyle(
+                                        color: ConstTheme.sidebarText,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16.w,
+                                        height: 1.2,
+                                      ),
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: ConstTheme.sidebarText,
-                                    size: 14.w,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: ConstTheme.sidebarText,
+                                      size: 16.w,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                          menuBuilder: () => orgMenuRender(menuController),
                         ),
-                        menuBuilder: () => orgMenuRender(menuController),
-                      ),
-                      SizedBox(width: 1.w),
-                      Expanded(
-                        child: JumpTo(false, MediaQuery.of(context).size.width - 40, () {
-                          // context.push("/search");
-                          showModelOrPage(context, "/search");
-                          return null;
-                        }),
-                      )
-                    ],
+                        SizedBox(width: 1.w),
+                        Expanded(
+                          child: JumpTo(false, MediaQuery.of(context).size.width - 40, () {
+                            // context.push("/search");
+                            showModelOrPage(context, "/search");
+                            return null;
+                          }),
+                        )
+                      ],
+                    ),
                   ),
                   Divider(
                     height: 1,
@@ -268,7 +270,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           style: TextStyle(
                             color: ConstTheme.sidebarText.withAlpha(155),
                             fontWeight: FontWeight.w800,
-                            fontSize: 14.w,
+                            fontSize: 15.w,
                           ),
                         ),
                         Row(
@@ -278,17 +280,17 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                 showModelOrPage(
                                   context,
                                   "/create_channel",
-                                  width: 700.w,
-                                  height: 400.w,
+                                  width: 450.w,
+                                  height: 300.w,
                                 );
                               },
                               child: Icon(
                                 Icons.add,
-                                size: 25.w,
+                                size: 20.w,
                                 color: ConstTheme.sidebarText.withAlpha(155),
                               ),
                             ),
-                            SizedBox(width: 8.w),
+                            SizedBox(width: 5.w),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -334,7 +336,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           '私信',
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
-                            fontSize: 14.w,
+                            fontSize: 15.w,
                             color: ConstTheme.sidebarText.withAlpha(155),
                           ),
                         ),
@@ -356,11 +358,11 @@ class _ChannelListPageState extends State<ChannelListPage> {
                               },
                               child: Icon(
                                 Icons.add,
-                                size: 25.w,
+                                size: 20.w,
                                 color: ConstTheme.sidebarText.withAlpha(155),
                               ),
                             ),
-                            SizedBox(width: 8.w),
+                            SizedBox(width: 5.w),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -435,8 +437,8 @@ class _ChannelListPageState extends State<ChannelListPage> {
         channerlID: c!,
       );
     }
-    return Container(
+    return moveWindow(Container(
       color: ConstTheme.centerChannelBg,
-    );
+    ));
   }
 }

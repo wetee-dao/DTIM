@@ -23,7 +23,7 @@ WidgetUserNameEmoji(String name, String? emoji) {
                   offset: const Offset(10.0, -5.0),
                   child: Text(
                     parser.emojify(emoji).toString(),
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 15.w),
                   ),
                 ),
               )

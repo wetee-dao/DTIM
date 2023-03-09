@@ -31,11 +31,11 @@ class IMProvider with ChangeNotifier {
       databaseBuilder: (_) async {
         final dir = await getApplicationSupportDirectory();
         if (kDebugMode) {
-          print("hlive ===> ${dir.path}");
+          print("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
         }
         final db = link.HiveCollectionsDatabase(
-          org.domain!.replaceAll(".", "_"),
-          dir.path,
+          "${org.domain!.replaceAll(".", "_")}",
+          "${dir.path}/_db",
         );
         await db.open();
         return db;
@@ -44,7 +44,7 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
+    await client.checkHomeserver(Uri.http("192.168.111.109:30003", ''));
 
     if (!client.isLogged()) {
       await client.uiaRequestBackground((auth) {

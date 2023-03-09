@@ -28,14 +28,19 @@ class _MsgState extends State<Msg> {
   @override
   Widget build(BuildContext context) {
     var event = widget.event;
-    var showAvatar = true;
+    var showAvatar = isShowAvatar(event, widget.preEvent);
     var showDate = false;
+    if (event.type == link.EventTypes.RoomMember ||
+        event.type == link.EventTypes.RoomPowerLevels ||
+        event.type == link.EventTypes.RoomJoinRules ||
+        event.type == link.EventTypes.HistoryVisibility ||
+        event.type == link.EventTypes.RoomName) {
+      return const SizedBox(height: 0);
+    }
+
     if (widget.preEvent != null) {
       link.Event preEvent = widget.preEvent!;
-      if (event.originServerTs.millisecondsSinceEpoch - preEvent.originServerTs.millisecondsSinceEpoch < 240000 &&
-          event.senderId == preEvent.senderId) {
-        showAvatar = false;
-      }
+
       if ("${event.originServerTs.year}-${event.originServerTs.month}-${event.originServerTs.day}" !=
           "${preEvent.originServerTs.year}-${preEvent.originServerTs.month}-${preEvent.originServerTs.day}") {
         showDate = true;
@@ -48,6 +53,23 @@ class _MsgState extends State<Msg> {
       ]);
     }
     return buildMsg(event, showAvatar);
+  }
+
+  isShowAvatar(link.Event event, link.Event? preEvent) {
+    var showAvatar = true;
+    if (preEvent == null) return true;
+    if (preEvent.type == link.EventTypes.RoomMember ||
+        preEvent.type == link.EventTypes.RoomPowerLevels ||
+        preEvent.type == link.EventTypes.RoomJoinRules ||
+        preEvent.type == link.EventTypes.HistoryVisibility ||
+        preEvent.type == link.EventTypes.RoomName) {
+      return true;
+    }
+    if (event.originServerTs.millisecondsSinceEpoch - preEvent.originServerTs.millisecondsSinceEpoch < 240000 &&
+        event.senderId == preEvent.senderId) {
+      showAvatar = false;
+    }
+    return showAvatar;
   }
 
   buildMsg(link.Event event, bool showAvatar) {
@@ -86,7 +108,7 @@ class _MsgState extends State<Msg> {
                         style: TextStyle(
                           color: ConstTheme.centerChannelColor,
                           fontWeight: FontWeight.w600,
-                          fontSize: 15.w,
+                          fontSize: 16.w,
                         ),
                         children: [
                           TextSpan(
@@ -104,7 +126,7 @@ class _MsgState extends State<Msg> {
                   Text(
                     event.body,
                     style: TextStyle(
-                      fontSize: 14.w,
+                      fontSize: 16.w,
                       color: ConstTheme.centerChannelColor,
                     ),
                   ),

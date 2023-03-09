@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   # rust 链桥
-  flutter_rust_bridge: 1.64.0
+  flutter_rust_bridge: 1.68.0
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
@@ -56,7 +56,6 @@ dependencies:
   date_format: ^2.0.7
   easy_localization: ^3.0.1
   path_provider: ^2.0.13
-  flutter_olm: ^1.2.0
 
 dev_dependencies:
   flutter_test:

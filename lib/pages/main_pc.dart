@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../components/model_or_page.dart';
 import '../utils/screen/size_extension.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
@@ -137,13 +138,14 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       child: Icon(
                         Icons.add,
                         color: ConstTheme.sidebarText,
+                        size: 25.w,
                       ),
                     ),
                   ),
                   Flexible(child: Container()),
                   InkWell(
                     onTap: () {
-                      context.push("/select_org");
+                      showModelOrPage(context, "/setting", width: 0.7.sw);
                     },
                     child: Container(
                       width: 40.w,

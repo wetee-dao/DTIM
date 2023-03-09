@@ -18,7 +18,7 @@ class SwitchFormField extends FormField<bool> {
           validator: validator,
           initialValue: initialValue ?? false,
           builder: (state) {
-            void _onSwitchChanged(bool value) {
+            void onSwitchChanged(bool value) {
               state.didChange(value);
             }
 
@@ -42,7 +42,7 @@ class SwitchFormField extends FormField<bool> {
                   SizedBox(width: 20.w),
                   Switch(
                     activeColor: ConstTheme.sidebarTextActiveBorder,
-                    onChanged: _onSwitchChanged,
+                    onChanged: onSwitchChanged,
                     value: state.value ?? false,
                   ),
                 ],

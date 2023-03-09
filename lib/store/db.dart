@@ -10,11 +10,11 @@ Future<Store> initDB() async {
   if (DB != null) {
     return DB!;
   }
-  
+
   final dir = await getApplicationSupportDirectory();
   if (kDebugMode) {
-    print("objectbox ==> ${dir.path}_daoent xxxx");
+    print("objectbox ==> ${dir.path}/daoent");
   }
-  DB = await openStore(directory: "${dir.path}_daoent");
+  DB = await openStore(directory: "${dir.path}/daoent");
   return DB!;
 }

@@ -15,3 +15,9 @@ String getUserShortId(String id) {
   userId = userId.replaceAll("@", "");
   return userId;
 }
+
+extension StringExtension on String {
+  String fisrtUpperCase() {
+    return "${this[0].toUpperCase()}${substring(1)}";
+  }
+}

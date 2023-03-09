@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../pages/channel/create.dart';
 import '../pages/channel/members.dart';
 import '../pages/search.dart';
+import '../pages/setting/setting.dart';
 import '../store/theme.dart';
 import '../utils/screen/size_extension.dart';
 
@@ -17,10 +18,12 @@ showModelOrPage(context, url, {double width = 600, double height = 600, Map<Stri
         return Container(
           margin: EdgeInsets.only(
             left: (media.size.width - width.w) / 2,
-            right: (media.size.width - height.w) / 2,
+            right: (media.size.width - width.w) / 2,
             top: 30.w,
             bottom: bottom > 0 ? bottom : 40.w,
           ),
+          width: width.w,
+          height: height.w,
           decoration: BoxDecoration(
             color: ConstTheme.centerChannelBg,
             boxShadow: <BoxShadow>[
@@ -30,7 +33,7 @@ showModelOrPage(context, url, {double width = 600, double height = 600, Map<Stri
               ),
             ],
           ),
-          child: switchPage(url, ps, () {
+          child: getPage(url, ps, () {
             Navigator.pop(context);
           }),
         );
@@ -41,11 +44,13 @@ showModelOrPage(context, url, {double width = 600, double height = 600, Map<Stri
   }
 }
 
-switchPage(String url, Map<String, String>? ps, Function closeModel) {
+getPage(String url, Map<String, String>? ps, Function closeModel) {
   if (url == "/create_channel") {
     return CreateChannelPage(closeModel: closeModel);
   } else if (url == "/search") {
     return SearchPage(closeModel: closeModel);
+  } else if (url == "/setting") {
+    return SettingPage(closeModel: closeModel);
   } else if (url.indexOf("/channel_members/") == 0) {
     return ChannelMemberPage(
       closeModel: closeModel,

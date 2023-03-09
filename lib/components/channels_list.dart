@@ -49,7 +49,7 @@ channelsListView(
               Text(
                 channelsList[index].name,
                 style: TextStyle(
-                  fontSize: 14.w,
+                  fontSize: 15.w,
                   fontWeight: FontWeight.normal,
                   color: ConstTheme.sidebarText.withAlpha(155),
                 ),

@@ -17,6 +17,7 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 import 'models/account.dart';
 import 'models/fmsg.dart';
 import 'models/org.dart';
+import 'models/system.dart';
 import 'models/user.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -286,6 +287,30 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(11, 3570047071226480332),
+      name: 'System',
+      lastPropertyId: const IdUid(3, 4687964772241030953),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4844467738019453648),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 3470713345628720947),
+            name: 'width',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 4687964772241030953),
+            name: 'height',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -309,7 +334,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(10, 5693561153061033524),
+      lastEntityId: const IdUid(11, 3570047071226480332),
       lastIndexId: const IdUid(14, 2038028947041398503),
       lastRelationId: const IdUid(2, 2905611084694405217),
       lastSequenceId: const IdUid(0, 0),
@@ -663,6 +688,35 @@ ModelDefinition getObjectBoxModel() {
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
+        }),
+    System: EntityDefinition<System>(
+        model: _entities[5],
+        toOneRelations: (System object) => [],
+        toManyRelations: (System object) => {},
+        getId: (System object) => object.id,
+        setId: (System object, int id) {
+          object.id = id;
+        },
+        objectToFB: (System object, fb.Builder fbb) {
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addFloat64(1, object.width);
+          fbb.addFloat64(2, object.height);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = System(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              width:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              height:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0));
+
+          return object;
         })
   };
 
@@ -829,4 +883,16 @@ class Org_ {
 
   /// see [Org.color]
   static final color = QueryStringProperty<Org>(_entities[4].properties[11]);
+}
+
+/// [System] entity fields to define ObjectBox queries.
+class System_ {
+  /// see [System.id]
+  static final id = QueryIntegerProperty<System>(_entities[5].properties[0]);
+
+  /// see [System.width]
+  static final width = QueryDoubleProperty<System>(_entities[5].properties[1]);
+
+  /// see [System.height]
+  static final height = QueryDoubleProperty<System>(_entities[5].properties[2]);
 }

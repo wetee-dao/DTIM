@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:themed/themed.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'apis/apis.dart';
 import 'router.dart';
 import 'store/im.dart';
 import 'store/db.dart';
@@ -21,15 +22,23 @@ void main() async {
   // 初始化桌面窗口
   if (isPc()) {
     initScreen(1200);
+    // 计算创建窗口大小
+    var winSize = const Size(1050, 650);
+    var winSizeStore = SystemApi.create().get();
+    if (winSizeStore != null) {
+      winSize = Size(winSizeStore.width, winSizeStore.height);
+    }
+
     // 等待桌面初始化
     await windowManager.ensureInitialized();
-    WindowOptions windowOptions = const WindowOptions(
-      size: Size(1050, 650),
-      minimumSize: Size(800, 550),
+    WindowOptions windowOptions = WindowOptions(
+      size: winSize,
+      minimumSize: const Size(800, 550),
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
     );
+
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       if (Platform.isMacOS || Platform.isWindows) {
         await windowManager.setHasShadow(true);

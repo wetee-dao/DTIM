@@ -411,7 +411,7 @@ const themes = [
     "sidebarTextHoverBg": "#3a3f4b",
     "sidebarTextActiveBorder": "#4d78cc",
     "sidebarTextActiveColor": "#d7dae0",
-    "sidebarHeaderBg": "#282c34",
+    "sidebarHeaderBg": "#1c1f24",
     "sidebarHeaderTextColor": "#abb2bf",
     "onlineIndicator": "#98c379",
     "awayIndicator": "#d19a66",
@@ -485,7 +485,7 @@ const themes = [
   },
 ];
 
-int currentTheme = 13;
+int currentTheme = 14;
 
 class ConstTheme {
   static ColorRef sidebarBg = ColorRef(hexToColor(themes[currentTheme]["sidebarBg"]!));

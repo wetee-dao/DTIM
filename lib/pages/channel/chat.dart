@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:asyou_app/objectbox.g.dart';
 import 'package:asyou_app/utils/screen/size_extension.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -11,6 +12,7 @@ import '../../components/close_bar.dart';
 import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
+import '../../utils/functions.dart';
 import 'bar.dart';
 import 'input.dart';
 import 'msg.dart';
@@ -167,6 +169,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         if (index - 1 > 0) {
                           preEvent = events[index - 1];
                         }
+                        if (event.type == link.EventTypes.RoomCreate) {
+                          return renderCreate(event);
+                        }
+
                         return Msg(event: event, preEvent: preEvent, client: client!);
                       },
                     ),
@@ -179,5 +185,42 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
         ),
       ),
     );
+  }
+
+  renderCreate(link.Event event) {
+    if (event.type == link.EventTypes.RoomCreate) {
+      return Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "# ${room!.name.fisrtUpperCase()}",
+              style: TextStyle(
+                color: ConstTheme.centerChannelColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 25.w,
+              ),
+            ),
+            SizedBox(height: 5.w),
+            Text(
+              "你于 在 ${formatDate(event.originServerTs, [
+                    yyyy,
+                    ' 年 ',
+                    mm,
+                    " 月 ",
+                    dd,
+                    " 日",
+                  ])} 创建此频道。这是 ${room!.name} 频道的开头。",
+              style: TextStyle(
+                color: ConstTheme.centerChannelColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 14.w,
+              ),
+            )
+          ],
+        ),
+      );
+    }
   }
 }
