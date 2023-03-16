@@ -5,6 +5,7 @@ import 'package:expandable/expandable.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../router_model.dart';
 import '../utils/screen.dart';
 import '../components/jump_to.dart';
 import '../components/components.dart';
@@ -30,10 +31,11 @@ class _ChannelListPageState extends State<ChannelListPage> {
   double leftWidth = 200.w;
   IMProvider? im;
   Org? org;
-  User? receiverUser;
   String channelId = "";
+  String directId = "";
   List<User> users = [];
   List<link.Room> channels = [];
+  List<link.Room> directChats = [];
 
   @override
   void initState() {
@@ -63,11 +65,13 @@ class _ChannelListPageState extends State<ChannelListPage> {
     if (im!.current == null || im!.currentState == null) {
       return;
     }
+    var clist = im!.currentState!.channels;
     setState(() {
-      channels = im!.currentState!.channels;
+      channels = clist.where((c) => !c.isDirectChat).toList();
+      directChats = clist.where((c) => c.isDirectChat).toList();
       org = im!.currentState!.org;
-      if (channels.isNotEmpty) {
-        channelId = channels[0].id;
+      if (clist.isNotEmpty) {
+        channelId = clist[0].id;
       }
     });
     im!.currentState!.rosterListen((list) {
@@ -227,7 +231,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                   if (channels.isNotEmpty) SizedBox(height: 10.w),
                   Divider(
                     height: 1,
-                    color: ConstTheme.sidebarText.withOpacity(0.08),
+                    color: ConstTheme.sidebarText.withOpacity(0.05),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.w),
@@ -249,8 +253,8 @@ class _ChannelListPageState extends State<ChannelListPage> {
                                 showModelOrPage(
                                   context,
                                   "/create_private",
-                                  width: 450.w,
-                                  height: 300.w,
+                                  width: 550.w,
+                                  height: 0.7.sh,
                                 );
                               },
                               child: Icon(
@@ -282,19 +286,19 @@ class _ChannelListPageState extends State<ChannelListPage> {
                   ExpandablePanel(
                     controller: _controllerUsers,
                     collapsed: const SizedBox(),
-                    expanded: usersList(
-                      users,
-                      receiverUser,
-                      (index) => {
-                        setState(() {
-                          receiverUser = users[index];
-                        })
-                      },
-                    ),
+                    expanded: DirectChats(directChats, channelId, (id) {
+                      if (id == channelId) {
+                        return;
+                      }
+                      setState(() {
+                        channelId = id;
+                      });
+                    }),
                   ),
+                  if (channels.isNotEmpty) SizedBox(height: 10.w),
                   Divider(
                     height: 1,
-                    color: ConstTheme.sidebarText.withOpacity(0.08),
+                    color: ConstTheme.sidebarText.withOpacity(0.05),
                   ),
                 ],
               ),
@@ -319,20 +323,15 @@ class _ChannelListPageState extends State<ChannelListPage> {
             },
           ),
           Flexible(
-            child: buildDetailPage(receiverUser, channelId),
+            child: buildDetailPage(channelId),
           )
         ],
       ),
     );
   }
 
-  Widget buildDetailPage(u, c) {
-    if (u != null) {
-      return ChannelDetailPage(
-        key: Key("channel_${c!}"),
-        channerlID: c!,
-      );
-    } else if (c != "") {
+  Widget buildDetailPage(c) {
+    if (c != null && c != "") {
       return ChannelDetailPage(
         key: Key("channel_${c!}"),
         channerlID: c!,

@@ -122,33 +122,42 @@ class _MsgState extends State<Msg> {
                       ),
                     ),
                   if (showAvatar) SizedBox(height: 5.w),
-                  Text(
-                    event.body,
-                    style: TextStyle(
-                      fontSize: 16.w,
-                      color: ConstTheme.centerChannelColor,
-                    ),
-                  ),
+                  renderBody(event),
                   SizedBox(height: 5.w),
-                  // (detailMessages[index].srcImage != null)
-                  //     ? ClipRRect(
-                  //         borderRadius:
-                  //             BorderRadius.circular(10.w),
-                  //         child: Image.network(
-                  //           detailMessages[index].srcImage!,
-                  //           width: MediaQuery.of(context)
-                  //                   .size
-                  //                   .width *
-                  //               0.7,
-                  //         ),
-                  //       )
-                  //     : const SizedBox(),
                 ],
               ),
             ),
           ],
         );
       },
+    );
+  }
+
+  renderBody(link.Event event) {
+    if (event.type == link.EventTypes.Encryption) {
+      return Row(
+        children: [
+          Icon(Icons.lock_outline, color: ConstTheme.mentionBg, size: 19.w),
+          SizedBox(width: 5.w),
+          Text(
+            "启用了E2E加密",
+            style: TextStyle(fontSize: 16.w, color: ConstTheme.centerChannelColor),
+          )
+        ],
+      );
+    }
+    // if (event.messageType == link.MessageTypes.Image) {
+    //   return ClipRRect(
+    //     borderRadius: BorderRadius.circular(10.w),
+    //     child: Image.network(
+    //       detailMessages[index].srcImage!,
+    //       width: MediaQuery.of(context).size.width * 0.7,
+    //     ),
+    //   );
+    // }
+    return Text(
+      event.body,
+      style: TextStyle(fontSize: 16.w, color: ConstTheme.centerChannelColor),
     );
   }
 

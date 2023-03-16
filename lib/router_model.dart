@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../pages/channel/create.dart';
-import '../pages/channel/create_private.dart';
-import '../pages/channel/members.dart';
-import '../pages/search.dart';
-import '../pages/setting/setting.dart';
-import '../store/theme.dart';
-import '../utils/screen.dart';
+import 'pages/channel/create.dart';
+import 'pages/channel/create_private.dart';
+import 'pages/channel/members.dart';
+import 'pages/search.dart';
+import 'pages/setting/setting.dart';
+import 'store/theme.dart';
+import 'utils/screen.dart';
 
 showModelOrPage(context, url, {double width = 600, double height = 600, Map<String, String>? ps}) {
   if (isPc()) {
     showDialog(
       context: context,
       useSafeArea: true,
-      barrierColor: ConstTheme.sidebarHeaderTextColor.withOpacity(0.04),
+      barrierColor: ConstTheme.sidebarHeaderTextColor.withOpacity(0.06),
       builder: (context) {
         var media = MediaQuery.of(context);
         var bottom = media.size.height - 30.w - height.w;

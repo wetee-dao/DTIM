@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../components/model_or_page.dart';
+import '../router_model.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../components/channels_list.dart';
-import '../components/user_list.dart';
+import '../components/direct_chat.dart';
 import '../models/models.dart';
 import '../store/im.dart';
 import '../store/theme.dart';
@@ -397,19 +397,19 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
                   ],
                 ),
               ),
-              ExpandablePanel(
-                controller: _controllerUsers,
-                collapsed: const SizedBox(),
-                expanded: usersList(
-                  users,
-                  receiverUser,
-                  (index) => {
-                    setState(() {
-                      receiverUser = users[index];
-                    })
-                  },
-                ),
-              ),
+              // ExpandablePanel(
+              //   controller: _controllerUsers,
+              //   collapsed: const SizedBox(),
+              //   expanded: usersList(
+              //     users,
+              //     receiverUser,
+              //     (index) => {
+              //       setState(() {
+              //         receiverUser = users[index];
+              //       })
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),

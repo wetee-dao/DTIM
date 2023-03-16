@@ -491,7 +491,7 @@ const themes = [
   },
 ];
 
-int currentTheme = 14;
+int currentTheme = 16;
 
 class ConstTheme {
   static ColorRef sidebarBg = ColorRef(hexToColor(themes[currentTheme]["sidebarBg"]!));

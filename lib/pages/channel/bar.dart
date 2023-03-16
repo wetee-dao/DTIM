@@ -4,6 +4,7 @@ import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
 import '../../components/popup.dart';
+import '../../router_model.dart';
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
 import './chat_menu.dart';
@@ -29,12 +30,14 @@ class ChannelBar extends StatefulWidget implements PreferredSizeWidget {
 class _ChannelBarState extends State<ChannelBar> {
   final BasePopupMenuController menuController = BasePopupMenuController();
   final StreamController<bool> menuStreamController = StreamController<bool>();
+  late String displayname;
 
   @override
   void initState() {
     menuController.addListener(() {
       menuStreamController.add(menuController.menuIsShowing);
     });
+    displayname = widget.room.getLocalizedDisplayname();
     super.initState();
   }
 
@@ -91,7 +94,7 @@ class _ChannelBarState extends State<ChannelBar> {
                             child: Row(
                               children: [
                                 Text(
-                                  widget.room.name,
+                                  displayname.toUpperCase(),
                                   style: TextStyle(
                                     color: snapshot.data != null && snapshot.data!
                                         ? ConstTheme.centerChannelColor

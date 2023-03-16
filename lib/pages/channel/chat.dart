@@ -193,7 +193,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "# ${room!.name.fisrtUpperCase()}",
+              "# ${room!.getLocalizedDisplayname().fisrtUpperCase()}",
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,

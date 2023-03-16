@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../components/components.dart';
+import '../../router_model.dart';
 import '../../utils/screen.dart';
 import '../../router.dart';
 import '../../store/theme.dart';

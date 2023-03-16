@@ -10,6 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # 多语言
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
   flutter_rust_bridge: 1.68.0
@@ -66,12 +70,14 @@ dev_dependencies:
   build_runner: ^2.2.0
   ffigen: ^7.2.6
   json_serializable: ^6.5.4
+  flutter_gen_runner: ^5.2.0
 
 flutter:
+  generate: true
   uses-material-design: true
   assets:
     - assets/
-    - assets/translations/
+    - assets/l10n/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
