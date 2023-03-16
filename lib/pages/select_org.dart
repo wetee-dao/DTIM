@@ -106,10 +106,10 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 backgroundColor: MaterialStateProperty.resolveWith((states) {
                   //设置按下时的背景颜色
                   if (states.contains(MaterialState.pressed)) {
-                    return ConstTheme.sidebarTextActiveBorder;
+                    return ConstTheme.mentionBg;
                   }
                   //默认不使用背景颜色
-                  return ConstTheme.sidebarTextActiveBorder;
+                  return ConstTheme.mentionBg;
                 }),
                 // backgroundColor: ConstTheme.mentionBg,
               ),
@@ -146,11 +146,18 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                   borderRadius: 0,
                   animationDuration: const Duration(milliseconds: 500),
                   onClose: () {
-                    context.go("/pc");
+                    if (isPc()) {
+                      context.go("/pc");
+                    } else {
+                      context.go("/mobile");
+                    }
                   },
                 ).show(context);
               },
-              child: const Text('确定'),
+              child: Text(
+                '确定',
+                style: TextStyle(color: ConstTheme.mentionColor),
+              ),
             ),
             SizedBox(width: 10.w),
           ],

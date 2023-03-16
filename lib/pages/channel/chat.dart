@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:themed/themed.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -68,7 +69,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
 
   void updateView(index) {
     if (!mounted) return;
-    print("updateView updateView");
+    print("updateView updateView ===> " + timeline!.events.length.toString());
     _msgController.add(timeline!.events.reversed.last.eventId);
     Timer(const Duration(milliseconds: 20), () {
       _listController.jumpTo(_listController.position.maxScrollExtent);
@@ -126,7 +127,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               SizedBox(width: 10.w),
               Icon(
                 Icons.lock_outline,
-                color: ConstTheme.sidebarTextActiveBorder,
+                color: ConstTheme.mentionBg,
                 size: 19.w,
               ),
               SizedBox(width: 10.w),
@@ -151,31 +152,28 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 initialData: "",
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   List<link.Event> events = timeline != null ? timeline!.events.reversed.toList() : [];
-                  return Scrollbar(
-                    key: Key("chat_scrollbar_${widget.channerlID}"),
-                    child: ListView.builder(
-                      key: Key("chat_list_${widget.channerlID}"),
-                      itemCount: events.length + 1,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      controller: _listController,
-                      itemBuilder: (context, index) {
-                        if (index == events.length) {
-                          return SizedBox(height: 10.w);
-                        }
-                        link.Event event = events[index];
-                        link.Event? preEvent;
-                        if (index - 1 > 0) {
-                          preEvent = events[index - 1];
-                        }
-                        if (event.type == link.EventTypes.RoomCreate) {
-                          return renderCreate(event);
-                        }
+                  return ListView.builder(
+                    key: Key("chat_list_${widget.channerlID}"),
+                    itemCount: events.length + 1,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: _listController,
+                    itemBuilder: (context, index) {
+                      if (index == events.length) {
+                        return SizedBox(height: 10.w);
+                      }
+                      link.Event event = events[index];
+                      link.Event? preEvent;
+                      if (index - 1 > 0) {
+                        preEvent = events[index - 1];
+                      }
+                      if (event.type == link.EventTypes.RoomCreate) {
+                        return renderCreate(event);
+                      }
 
-                        return Msg(event: event, preEvent: preEvent, client: client!);
-                      },
-                    ),
+                      return Msg(event: event, preEvent: preEvent, client: client!);
+                    },
                   );
                 },
               ),
@@ -199,19 +197,22 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,
-                fontSize: 25.w,
+                fontSize: 20.w,
               ),
             ),
             SizedBox(height: 5.w),
             Text(
-              "你于 在 ${formatDate(event.originServerTs, [
-                    yyyy,
-                    ' 年 ',
-                    mm,
-                    " 月 ",
-                    dd,
-                    " 日",
-                  ])} 创建此频道。这是 ${room!.name} 频道的开头。",
+              "你于 在 ${formatDate(
+                event.originServerTs,
+                [
+                  yyyy,
+                  ' 年 ',
+                  mm,
+                  " 月 ",
+                  dd,
+                  " 日",
+                ],
+              )} 创建此频道，这是 ${room!.name} 频道的开头。",
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,

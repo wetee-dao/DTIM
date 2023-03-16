@@ -1,3 +1,6 @@
+import 'package:asyou_app/utils/screen.dart';
+
+import 'pages/channel/create_private.dart';
 import 'pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
@@ -21,62 +24,75 @@ routers() {
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: PreloaderPage());
+        return renderFram(const PreloaderPage());
       },
     ),
     GoRoute(
       path: '/mobile',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: MobilePage());
+        return renderFram(const MobilePage());
       },
     ),
     GoRoute(
       path: '/pc',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: PCPage());
+        return renderFram(const PCPage());
       },
     ),
     GoRoute(
       path: '/sr25519key',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: Sr25519KeyPage());
+        return renderFram(const Sr25519KeyPage());
       },
     ),
     GoRoute(
       path: '/select_org',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: SelectOrgPage());
+        return renderFram(const SelectOrgPage());
       },
     ),
     GoRoute(
       path: '/search',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: SearchPage());
+        return renderFram(const SearchPage());
       },
     ),
     GoRoute(
       path: '/create_channel',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: CreateChannelPage());
+        return renderFram(const CreateChannelPage());
+      },
+    ),
+    GoRoute(
+      path: '/create_private',
+      builder: (BuildContext context, GoRouterState state) {
+        return renderFram(const CreatePrivatePage());
       },
     ),
     GoRoute(
       path: '/rename_channel/:id',
       builder: (BuildContext context, GoRouterState state) {
-        return VirtualWindowFrame(child: RenameChannelPage(id: state.params['id'] ?? ""));
+        return renderFram(RenameChannelPage(id: state.params['id'] ?? ""));
       },
     ),
     GoRoute(
       path: '/channel_members/:id',
       builder: (BuildContext context, GoRouterState state) {
-        return VirtualWindowFrame(child: ChannelMemberPage(id: state.params['id'] ?? ""));
+        return renderFram(ChannelMemberPage(id: state.params['id'] ?? ""));
       },
     ),
     GoRoute(
       path: '/setting',
       builder: (BuildContext context, GoRouterState state) {
-        return const VirtualWindowFrame(child: SettingPage());
+        return renderFram(const SettingPage());
       },
     ),
   ];
+}
+
+renderFram(Widget page) {
+  if (isPc()) {
+    return VirtualWindowFrame(child: page);
+  }
+  return page;
 }

@@ -10,6 +10,7 @@ import '../../components/hover_list_item.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 import 'notice.dart';
+import 'theme.dart';
 
 class SettingPage extends StatefulWidget {
   final Function? closeModel;
@@ -19,7 +20,13 @@ class SettingPage extends StatefulWidget {
   State<SettingPage> createState() => _SettingPageState();
 }
 
+final settingPages = [
+  const NoticePage(),
+  const ThemePage(),
+];
+
 class _SettingPageState extends State<SettingPage> {
+  int _page = 0;
   bool publicGroup = false;
   late final IMProvider im;
   late link.Client? client;
@@ -30,13 +37,9 @@ class _SettingPageState extends State<SettingPage> {
     SettingNav("通知", Icons.notifications),
     SettingNav("主题", Icons.notifications),
     SettingNav("语言和地区", Icons.notifications),
-    SettingNav("音频和视频", Icons.notifications),
-    SettingNav("隐私和可见性", Icons.notifications),
-    SettingNav("高级", Icons.notifications),
-  ];
-
-  final settingPages = [
-    const NoticePage(),
+    // SettingNav("音频和视频", Icons.notifications),
+    // SettingNav("隐私和可见性", Icons.notifications),
+    // SettingNav("高级", Icons.notifications),
   ];
 
   @override
@@ -47,18 +50,26 @@ class _SettingPageState extends State<SettingPage> {
     if (im.currentState != null) {
       client = im.currentState!.client;
     }
+    pageController = PageController();
   }
 
-  onSelect(id) {
+  void onPageChanged(int page) {
     setState(() {
-      currentId = id;
+      _page = page;
+    });
+  }
+
+  onSelect(index) {
+    pageController.jumpToPage(index);
+    setState(() {
+      currentId = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: ConstTheme.sidebarBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "首选项",
@@ -88,7 +99,7 @@ class _SettingPageState extends State<SettingPage> {
             padding: EdgeInsets.only(top: 15.w),
             decoration: BoxDecoration(
               border: Border(
-                right: BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                right: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.08)),
               ),
             ),
             child: ListView.builder(
@@ -98,8 +109,8 @@ class _SettingPageState extends State<SettingPage> {
               itemCount: settingNavs.length,
               itemBuilder: (context, index) {
                 return HoverListItem(
-                  color: currentId == index ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
-                  hoverColor: ConstTheme.sidebarTextActiveBorder,
+                  color: currentId == index ? ConstTheme.centerChannelColor.withOpacity(0.08) : Colors.transparent,
+                  hoverColor: ConstTheme.sidebarTextActiveBorder.withOpacity(0.08),
                   onPressed: () async {
                     onSelect(index);
                   },
@@ -138,6 +149,14 @@ class _SettingPageState extends State<SettingPage> {
               },
             ),
           ),
+          Flexible(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              onPageChanged: onPageChanged,
+              children: settingPages,
+            ),
+          )
         ],
       ),
     );

@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:themed/themed.dart';
+
+import '../apis/apis.dart';
 
 const themes = [
   {
     //0
-    "type": 'Afterglow',
+    "type": 'light',
     "sidebarBg": "#2f2c2f",
     "sidebarText": "#dedede",
     "sidebarUnreadText": "#dedede",
@@ -28,12 +32,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Afterglow",
     "sidebarOrgBarBg": "#1d1d1d"
   },
   {
     // 1
-    "type": 'Bourbon',
+    "type": 'light',
     "sidebarBg": "#cf7c44",
     "sidebarText": "#fffafc",
     "sidebarUnreadText": "#fffafc",
@@ -57,12 +61,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Bourbon",
     "sidebarOrgBarBg": "#a56336"
   },
   {
     // 2
-    "type": 'Brinjal',
+    "type": 'light',
     "sidebarBg": "#4f2f4c",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -86,12 +90,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Brinjal",
     "sidebarOrgBarBg": "#372034"
   },
   {
     // 3
-    "type": 'Blue',
+    "type": 'light',
     "sidebarBg": "#014a83",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -115,12 +119,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Blue",
     "sidebarOrgBarBg": "#042843"
   },
   {
     // 4
-    "type": 'Red',
+    "type": 'light',
     "sidebarBg": "#751c01",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -144,19 +148,19 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Red",
     "sidebarOrgBarBg": "#491000"
   },
   {
     //5
-    "type": "Thoroughcare",
+    "type": "light",
     "sidebarBg": "#245b61",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
     "sidebarTextHoverBg": "#b0c1c4",
     "sidebarTextActiveBorder": "#72d4c0",
     "sidebarTextActiveColor": "#ffffff",
-    "sidebarHeaderBg": "#245b61",
+    "sidebarHeaderBg": "#1c484d",
     "sidebarHeaderTextColor": "#ffffff",
     "onlineIndicator": "#bef200",
     "mentionBg": "#f15340",
@@ -173,12 +177,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Thoroughcare",
     "sidebarOrgBarBg": "#1c484d"
   },
   {
     //6
-    "type": "Solarized",
+    "type": "light",
     "sidebarBg": "#fdf6e3",
     "sidebarText": "#837e65",
     "sidebarUnreadText": "#657b83",
@@ -202,12 +206,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Solarized",
     "sidebarOrgBarBg": "#eee8d5"
   },
   {
     //7
-    "type": "JuiceBar",
+    "type": "light",
     "sidebarBg": "#86a34e",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -231,12 +235,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "JuiceBar",
     "sidebarOrgBarBg": "#768c4f"
   },
   {
     //8
-    "type": "SQOOL",
+    "type": "light",
     "sidebarBg": "#003554",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -260,12 +264,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "SQOOL",
     "sidebarOrgBarBg": "#053045"
   },
   {
     //9
-    "type": 'Choco Mint',
+    "type": 'light',
     "sidebarBg": "#544538",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -289,12 +293,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Choco Mint",
     "sidebarOrgBarBg": "#342b22"
   },
   {
     //10
-    "type": 'quartz',
+    "type": 'light',
     "sidebarBg": "#373d48",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -318,12 +322,12 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "quartz",
     "sidebarOrgBarBg": "#262b34",
   },
   {
     //11
-    "type": 'Dolly Light',
+    "type": 'light',
     "sidebarBg": "#fafafa",
     "sidebarText": "#564f4d",
     "sidebarUnreadText": "#564f4d",
@@ -347,18 +351,18 @@ const themes = [
     "errorTextColor": "#d24b4e",
     "mentionHighlightBg": "#ffd470",
     "mentionHighlightLink": "#1b1d22",
-    "codeTheme": "github",
+    "codeTheme": "Dolly Light",
     "sidebarOrgBarBg": "#c2c2c2"
   },
   {
     //12
-    "type": 'Solarized Dark Theme',
+    "type": 'dark',
     "awayIndicator": "#E0B333",
     "buttonBg": "#859900",
     "buttonColor": "#fdf6e3",
-    "centerChannelBg": "#073642",
+    "centerChannelBg": "#0e4351",
     "centerChannelColor": "#93a1a1",
-    "codeTheme": "solarized-dark",
+    "codeTheme": "Solarized Dark Theme",
     "linkColor": "#268bd2",
     "mentionBg": "#dc322f",
     "mentionColor": "#ffffff",
@@ -374,17 +378,17 @@ const themes = [
     "sidebarTextActiveColor": "#FDF6E3",
     "sidebarTextHoverBg": "#CB4B16",
     "sidebarUnreadText": "#FDF6E3",
-    "errorTextColor": "#dc322f"
+    "errorTextColor": "#dc322f",
+    "dndIndicator": "#be5046",
   },
   {
     //13
-    "type": "Gruvbox Dark Theme",
+    "type": "dark",
     "awayIndicator": "#fabd2f",
     "buttonBg": "#689d6a",
     "buttonColor": "#ebdbb2",
     "centerChannelBg": "#3c3836",
     "centerChannelColor": "#ebdbb2",
-    "codeTheme": "monokai",
     "errorTextColor": "#fb4934",
     "linkColor": "#83a598",
     "mentionBg": "#b16286",
@@ -393,6 +397,7 @@ const themes = [
     "mentionHighlightLink": "#fbf1c7",
     "newMessageSeparator": "#d65d0e",
     "onlineIndicator": "#b8bb26",
+    "dndIndicator": "#be5046",
     "sidebarBg": "#282828",
     "sidebarHeaderBg": "#1d2021",
     "sidebarHeaderTextColor": "#ebdbb2",
@@ -400,11 +405,12 @@ const themes = [
     "sidebarTextActiveBorder": "#d65d0e",
     "sidebarTextActiveColor": "#fbf1c7",
     "sidebarTextHoverBg": "#d65d0e",
-    "sidebarUnreadText": "#fe8019"
+    "sidebarUnreadText": "#fe8019",
+    "codeTheme": "Gruvbox Dark Theme",
   },
   {
     //14
-    "type": "One Dark Theme",
+    "type": "dark",
     "sidebarBg": "#21252b",
     "sidebarText": "#abb2bf",
     "sidebarUnreadText": "#abb2bf",
@@ -427,11 +433,11 @@ const themes = [
     "errorTextColor": "#f44747",
     "mentionHighlightBg": "#525a69",
     "mentionHighlightLink": "#61afef",
-    "codeTheme": "monokai"
+    "codeTheme": "One Dark Theme"
   },
   {
     //15
-    "type": "Discord Dark Theme",
+    "type": "dark",
     "sidebarBg": "#2f3136",
     "sidebarText": "#ffffff",
     "sidebarUnreadText": "#ffffff",
@@ -454,25 +460,25 @@ const themes = [
     "errorTextColor": "#ff6461",
     "mentionHighlightBg": "#3d414f",
     "mentionHighlightLink": "#6e84d2",
-    "codeTheme": "monokai"
+    "codeTheme": "Discord Dark Theme"
   },
   {
     //16
-    "type": "Night Owl Dark Theme",
+    "type": "dark",
     "sidebarBg": "#011627",
     "sidebarText": "#d6deeb",
     "sidebarUnreadText": "#d6deeb",
     "sidebarTextHoverBg": "#1d3b53",
     "sidebarTextActiveBorder": "#ff2c83",
     "sidebarTextActiveColor": "#82aaff",
-    "sidebarHeaderBg": "#1d3b53",
+    "sidebarHeaderBg": "#011220",
     "sidebarHeaderTextColor": "#d6deeb",
     "onlineIndicator": "#addb67",
     "awayIndicator": "#ffbc42",
     "dndIndicator": "#f74343",
     "mentionBg": "#d6deeb",
     "mentionColor": "#145dbf",
-    "centerChannelBg": "#011627",
+    "centerChannelBg": "#05192b",
     "centerChannelColor": "#d6deeb",
     "newMessageSeparator": "#ff8800",
     "linkColor": "#2389d7",
@@ -481,7 +487,7 @@ const themes = [
     "errorTextColor": "#fd5960",
     "mentionHighlightBg": "#0b2942",
     "mentionHighlightLink": "#82aaff",
-    "codeTheme": "solarized-dark"
+    "codeTheme": "Night Owl Dark Theme",
   },
 ];
 
@@ -510,11 +516,12 @@ class ConstTheme {
   static ColorRef errorTextColor = ColorRef(hexToColor(themes[currentTheme]["errorTextColor"]!));
   static ColorRef mentionHighlightBg = ColorRef(hexToColor(themes[currentTheme]["mentionHighlightBg"]!));
   static ColorRef mentionHighlightLink = ColorRef(hexToColor(themes[currentTheme]["mentionHighlightLink"]!));
-  static ColorRef codeTheme = ColorRef(hexToColor(themes[currentTheme]["codeTheme"]!));
 }
 
-setTheme(int index) {
-  Map<ThemeRef, Object> anotherTheme = {
+setTheme(String name) {
+  var index = themes.indexWhere((t) => t["codeTheme"] == name);
+
+  Map<ThemeRef, Object> newTheme = {
     ConstTheme.sidebarBg: ColorRef(hexToColor(themes[index]["sidebarBg"]!)),
     ConstTheme.sidebarText: ColorRef(hexToColor(themes[index]["sidebarText"]!)),
     ConstTheme.sidebarUnreadText: ColorRef(hexToColor(themes[index]["sidebarUnreadText"]!)),
@@ -537,10 +544,22 @@ setTheme(int index) {
     ConstTheme.errorTextColor: ColorRef(hexToColor(themes[index]["errorTextColor"]!)),
     ConstTheme.mentionHighlightBg: ColorRef(hexToColor(themes[index]["mentionHighlightBg"]!)),
     ConstTheme.mentionHighlightLink: ColorRef(hexToColor(themes[index]["mentionHighlightLink"]!)),
-    ConstTheme.codeTheme: ColorRef(hexToColor(themes[index]["codeTheme"]!)),
   };
+
+  SystemApi.create().saveTheme(name);
+
+  Themed.currentTheme = newTheme;
+}
+
+setThemeIndex(String name) {
+  if (name == "") {
+    return;
+  }
+  var index = themes.indexWhere((t) => t["codeTheme"] == name);
+  currentTheme = index;
 }
 
 Color hexToColor(String code) {
+  Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
 }

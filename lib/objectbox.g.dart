@@ -291,7 +291,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(11, 3570047071226480332),
       name: 'System',
-      lastPropertyId: const IdUid(3, 4687964772241030953),
+      lastPropertyId: const IdUid(4, 9007201754874973267),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -308,6 +308,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(3, 4687964772241030953),
             name: 'height',
             type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 9007201754874973267),
+            name: 'theme',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -698,10 +703,12 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (System object, fb.Builder fbb) {
-          fbb.startTable(4);
+          final themeOffset = fbb.writeString(object.theme);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.width);
           fbb.addFloat64(2, object.height);
+          fbb.addOffset(3, themeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -714,7 +721,9 @@ ModelDefinition getObjectBoxModel() {
               width:
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0),
               height:
-                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0));
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              theme: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
         })
@@ -895,4 +904,7 @@ class System_ {
 
   /// see [System.height]
   static final height = QueryDoubleProperty<System>(_entities[5].properties[2]);
+
+  /// see [System.theme]
+  static final theme = QueryStringProperty<System>(_entities[5].properties[3]);
 }

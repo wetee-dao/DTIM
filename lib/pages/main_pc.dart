@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:asyou_app/pages/channel_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -18,9 +19,7 @@ class PCPage extends StatefulWidget {
 }
 
 class _PCPageState extends State<PCPage> with WindowListener {
-  int _page = 0;
   late List<AccountOrg> aorgs;
-  late PageController pageController;
 
   @override
   void initState() {
@@ -29,7 +28,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
       windowManager.addListener(this);
     }
     aorgs = AccountOrgApi.create().listAll();
-    pageController = PageController();
   }
 
   @override
@@ -38,17 +36,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
       windowManager.removeListener(this);
     }
     super.dispose();
-    pageController.dispose();
-  }
-
-  void navigationTapped(int page) {
-    pageController.jumpToPage(page);
-  }
-
-  void onPageChanged(int page) {
-    setState(() {
-      _page = page;
-    });
   }
 
   @override
@@ -145,7 +132,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   Flexible(child: Container()),
                   InkWell(
                     onTap: () {
-                      showModelOrPage(context, "/setting", width: 0.7.sw);
+                      showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
                     },
                     child: Container(
                       width: 40.w,
@@ -161,13 +148,8 @@ class _PCPageState extends State<PCPage> with WindowListener {
               ),
             ),
           ),
-          Flexible(
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: pageController,
-              onPageChanged: onPageChanged,
-              children: sideNavs,
-            ),
+          const Flexible(
+            child: ChannelListPage(),
           )
         ],
       ),

@@ -10,7 +10,7 @@ import 'apis/apis.dart';
 import 'router.dart';
 import 'store/im.dart';
 import 'store/db.dart';
-import 'utils/screen.dart';
+import 'store/theme.dart';
 import 'utils/screen.dart';
 
 void main() async {
@@ -18,15 +18,19 @@ void main() async {
 
   // 数据库初始化
   await initDB();
+  var winsystem = SystemApi.create().get();
+  if (winsystem != null) {
+    setThemeIndex(winsystem.theme);
+  }
 
   // 初始化桌面窗口
   if (isPc()) {
     initScreen(1200);
     // 计算创建窗口大小
     var winSize = const Size(1050, 650);
-    var winSizeStore = SystemApi.create().get();
-    if (winSizeStore != null) {
-      winSize = Size(winSizeStore.width, winSizeStore.height);
+
+    if (winsystem != null) {
+      winSize = Size(winsystem.width, winsystem.height);
     }
 
     // 等待桌面初始化
@@ -51,7 +55,7 @@ void main() async {
       await windowManager.focus();
     });
   } else {
-    initScreen(1200);
+    initScreen(400);
   }
 
   // 构建IM全局对象

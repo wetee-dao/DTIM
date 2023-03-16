@@ -116,7 +116,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                       color: ConstTheme.centerChannelColor,
                     ),
                     filled: true,
-                    fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                    fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
                     border: InputBorder.none,
                     prefixIcon: Icon(
                       Icons.text_fields,
@@ -147,7 +147,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                       color: ConstTheme.centerChannelColor,
                     ),
                     filled: true,
-                    fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                    fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
                     border: InputBorder.none,
                     prefixIcon: Icon(
                       Icons.public,

@@ -11,5 +11,7 @@ class System {
   // 高度
   late double height;
 
-  System({this.id = 0, required this.width, required this.height});
+  late String theme;
+
+  System({this.id = 0, required this.width, required this.height, required this.theme});
 }

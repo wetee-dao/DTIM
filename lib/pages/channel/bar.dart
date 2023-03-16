@@ -84,7 +84,7 @@ class _ChannelBarState extends State<ChannelBar> {
                             padding: EdgeInsets.only(left: 6.w, right: 3.w, top: 2.w, bottom: 2.w),
                             decoration: BoxDecoration(
                               color: snapshot.data != null && snapshot.data!
-                                  ? ConstTheme.sidebarTextActiveBorder.withOpacity(0.1)
+                                  ? ConstTheme.centerChannelColor.withOpacity(0.1)
                                   : Colors.transparent,
                               borderRadius: BorderRadius.all(Radius.circular(3.w)),
                             ),
@@ -94,7 +94,7 @@ class _ChannelBarState extends State<ChannelBar> {
                                   widget.room.name,
                                   style: TextStyle(
                                     color: snapshot.data != null && snapshot.data!
-                                        ? ConstTheme.sidebarTextActiveBorder
+                                        ? ConstTheme.centerChannelColor
                                         : ConstTheme.centerChannelColor,
                                     fontSize: 17.w,
                                     height: 1.4,
@@ -103,7 +103,7 @@ class _ChannelBarState extends State<ChannelBar> {
                                 Icon(
                                   Icons.keyboard_arrow_down_outlined,
                                   color: snapshot.data != null && snapshot.data!
-                                      ? ConstTheme.sidebarTextActiveBorder
+                                      ? ConstTheme.centerChannelColor
                                       : ConstTheme.centerChannelColor,
                                   size: 18.w,
                                 ),

@@ -24,7 +24,7 @@ class OrgCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       width: 200.w,
-      height: 250.w,
+      height: 240.w,
       duration: const Duration(milliseconds: 300),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -34,7 +34,7 @@ class OrgCard extends StatelessWidget {
         //       : (color ?? ConstTheme.sidebarBg.withAlpha(50)),
         //   width: 4.w,
         // ),
-        color: ConstTheme.sidebarBg.withAlpha(50),
+        color: ConstTheme.centerChannelColor.withOpacity(0.1),
       ),
       child: InkWell(
         onTap: () => onSelect(!selected),

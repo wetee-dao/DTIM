@@ -1,3 +1,4 @@
+import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -50,8 +51,9 @@ class _MobilePageState extends State<MobilePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _page,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: ConstTheme.sidebarTextActiveBorder,
+        unselectedItemColor: ConstTheme.sidebarText,
+        backgroundColor: ConstTheme.sidebarBg,
         showUnselectedLabels: true,
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w600,

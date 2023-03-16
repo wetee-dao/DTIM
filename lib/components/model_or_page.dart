@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../pages/channel/create.dart';
+import '../pages/channel/create_private.dart';
 import '../pages/channel/members.dart';
 import '../pages/search.dart';
 import '../pages/setting/setting.dart';
@@ -12,6 +13,7 @@ showModelOrPage(context, url, {double width = 600, double height = 600, Map<Stri
     showDialog(
       context: context,
       useSafeArea: true,
+      barrierColor: ConstTheme.sidebarHeaderTextColor.withOpacity(0.04),
       builder: (context) {
         var media = MediaQuery.of(context);
         var bottom = media.size.height - 30.w - height.w;
@@ -51,6 +53,8 @@ getPage(String url, Map<String, String>? ps, Function closeModel) {
     return SearchPage(closeModel: closeModel);
   } else if (url == "/setting") {
     return SettingPage(closeModel: closeModel);
+  } else if (url == "/create_private") {
+    return CreatePrivatePage(closeModel: closeModel);
   } else if (url.indexOf("/channel_members/") == 0) {
     return ChannelMemberPage(
       closeModel: closeModel,

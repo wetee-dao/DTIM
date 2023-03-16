@@ -132,133 +132,134 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
               )
             : Row(
                 children: [
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      moveWindow(SizedBox(
-                        height: 70.w,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                      )),
-                      Expanded(
-                        flex: 1,
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '生成加密账户',
-                                style: TextStyle(
-                                  fontSize: 32.w,
-                                  color: ConstTheme.centerChannelColor,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              Text(
-                                '欢迎使用「我门」web3协作软件，将你的办公搬进元宇宙！',
-                                style: TextStyle(
-                                  fontSize: 14.w,
-                                  color: ConstTheme.centerChannelColor.withOpacity(0.7),
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 120.w,
-                              ),
-                              SizedBox(
-                                height: 10.w,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => selectAccountType(),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 15.w,
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: ConstTheme.centerChannelColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            '创建区块链账户',
-                            style: TextStyle(
-                              color: ConstTheme.centerChannelBg,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 19.w,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5.w),
-                      InkWell(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 15.w,
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            '导入区块链账户',
-                            style: TextStyle(
-                              color: ConstTheme.centerChannelColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.w,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 0.02.sh,
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                   Expanded(
-                    child: moveWindow(Container(
-                      color: ConstTheme.sidebarBg,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () => pop(),
-                                child: Padding(
-                                  padding: EdgeInsets.all(20.w),
-                                  child: Icon(
-                                    Icons.close,
-                                    size: 25.w,
-                                    color: ConstTheme.sidebarText,
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        moveWindow(SizedBox(
+                          height: 70.w,
+                          width: MediaQuery.of(context).size.width * 0.4,
+                        )),
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '生成加密账户',
+                                  style: TextStyle(
+                                    fontSize: 32.w,
+                                    color: ConstTheme.centerChannelColor,
+                                    fontWeight: FontWeight.w800,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  '欢迎使用「我门」web3协作软件，将你的办公搬进元宇宙！',
+                                  style: TextStyle(
+                                    fontSize: 14.w,
+                                    color: ConstTheme.centerChannelColor.withOpacity(0.7),
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 120.w,
+                                ),
+                                SizedBox(
+                                  height: 10.w,
+                                ),
+                              ],
+                            ),
                           ),
-                          Expanded(
-                            child: Opacity(
-                              opacity: 0.8,
-                              child: Lottie.asset(
-                                'assets/crypto-wallet.json',
-                                repeat: true,
+                        ),
+                        InkWell(
+                          onTap: () => selectAccountType(),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 15.w,
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: ConstTheme.centerChannelColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '创建区块链账户',
+                              style: TextStyle(
+                                color: ConstTheme.centerChannelBg,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 19.w,
                               ),
                             ),
                           ),
-                          SizedBox(height: 65.w)
-                        ],
-                      ),
-                    )),
+                        ),
+                        SizedBox(height: 5.w),
+                        InkWell(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 15.w,
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '导入区块链账户',
+                              style: TextStyle(
+                                color: ConstTheme.centerChannelColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16.w,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 0.02.sh,
+                        ),
+                      ],
+                    ),
                   ),
+                  if (isPc())
+                    Expanded(
+                      child: moveWindow(Container(
+                        color: ConstTheme.sidebarBg,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: () => pop(),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20.w),
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 25.w,
+                                      color: ConstTheme.sidebarText,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Expanded(
+                              child: Opacity(
+                                opacity: 0.8,
+                                child: Lottie.asset(
+                                  'assets/crypto-wallet.json',
+                                  repeat: true,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 65.w)
+                          ],
+                        ),
+                      )),
+                    ),
                 ],
               ),
       ),

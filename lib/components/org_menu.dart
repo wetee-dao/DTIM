@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
+import '../router.dart';
 
 class ItemModel {
   String title;
 
-  ItemModel(this.title);
+  Function(String id)? onTap;
+  ItemModel(this.title, {this.onTap});
 }
 
 List<List<ItemModel>> menuItems = [
@@ -16,7 +20,11 @@ List<List<ItemModel>> menuItems = [
     ItemModel('成员管理'),
     ItemModel('离开组织'),
   ],
-  [ItemModel('创建组织')]
+  [
+    ItemModel('创建组织', onTap: (id) {
+      rootNavigatorKey.currentContext?.push("/select_org");
+    })
+  ]
 ];
 
 orgMenuRender(controller) {
@@ -45,6 +53,9 @@ orgMenuRender(controller) {
                 onTap: () {
                   print("onTap");
                   controller.hideMenu();
+                  if (menuItems[i][j].onTap != null) {
+                    menuItems[i][j].onTap!.call("");
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.only(

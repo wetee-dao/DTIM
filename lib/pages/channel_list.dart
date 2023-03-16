@@ -86,104 +86,6 @@ class _ChannelListPageState extends State<ChannelListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: "4B144A".toColor(),
-      //   leading: InkWell(
-      //     onTap: () => Scaffold.of(context).openDrawer(),
-      //     child: Padding(
-      //       padding: const EdgeInsets.symmetric(
-      //         horizontal: 10,
-      //         vertical: 10,
-      //       ),
-      //       child: Container(
-      //         alignment: Alignment.center,
-      //         decoration: BoxDecoration(
-      //           color: Colors.grey.shade300,
-      //           borderRadius: BorderRadius.circular(7),
-      //         ),
-      //         child: Text(
-      // textScaleFactor:1,
-      //           'AN',
-      //           style: TextStyle(
-      //             color: "4B144A".toColor(),
-      //             fontSize: 20,
-      //             fontWeight: FontWeight.w600,
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      //   title: Text(
-      //textScaleFactor:1,
-      //     'Artur Workspace',
-      //     style: TextStyle(
-      //       fontSize: 22,
-      //       fontWeight: FontWeight.w600,
-      //     ),
-      //   ),
-      //   actions: [
-      //     PopupMenuButton(
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.all(
-      //             Radius.circular(10.0),
-      //           ),
-      //         ),
-      //         icon: Icon(
-      //           Icons.filter_list,
-      //           color: Colors.white,
-      //         ),
-      //         onSelected: (value) {},
-      //         itemBuilder: (context) => [
-      //               PopupMenuItem(
-      //                 value: 1,
-      //                 child: Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Row(
-      //                       children: [
-      //                         Icon(
-      //                           Icons.done,
-      //                           color: Colors.grey,
-      //                           size: 18,
-      //                         ),
-      //                         SizedBox(width: 10),
-      //                         Text(
-      //textScaleFactor:1,'Sections'),
-      //                       ],
-      //                     ),
-      //                     Icon(
-      //                       Icons.list_alt,
-      //                       color: Colors.grey,
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //               PopupMenuItem(
-      //                 value: 2,
-      //                 child: Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Row(
-      //                       children: [
-      //                         SizedBox(width: 30),
-      //                         Text(
-      // textScaleFactor:1,'Recent Activity'),
-      //                       ],
-      //                     ),
-      //                     Icon(
-      //                       Icons.access_time,
-      //                       color: Colors.grey,
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //             ]),
-      //     SizedBox(
-      //       width: 15,
-      //     ),
-      //   ],
-      // ),
       backgroundColor: ConstTheme.sidebarBg,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -344,17 +246,12 @@ class _ChannelListPageState extends State<ChannelListPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                final client = im!.currentState!.client;
-                                // final roomID = await showFutureLoadingDialog(
-                                //   context: context,
-                                //   future: () async {
-                                //     final roomId = await client.createGroupChat(
-                                //       preset: link.CreateRoomPreset.publicChat,
-                                //       groupName: "测试",
-                                //     );
-                                //     return roomId;
-                                //   },
-                                // );
+                                showModelOrPage(
+                                  context,
+                                  "/create_private",
+                                  width: 450.w,
+                                  height: 300.w,
+                                );
                               },
                               child: Icon(
                                 Icons.add,
@@ -395,6 +292,10 @@ class _ChannelListPageState extends State<ChannelListPage> {
                       },
                     ),
                   ),
+                  Divider(
+                    height: 1,
+                    color: ConstTheme.sidebarText.withOpacity(0.08),
+                  ),
                 ],
               ),
             ),
@@ -403,9 +304,9 @@ class _ChannelListPageState extends State<ChannelListPage> {
             child: MouseRegion(
               cursor: SystemMouseCursors.resizeColumn,
               child: SizedBox(
-                width: 2,
+                width: 1.w,
                 height: double.infinity,
-                child: Container(color: ConstTheme.sidebarBg),
+                child: Container(color: ConstTheme.sidebarText.withOpacity(0.08)),
               ),
             ),
             onPanUpdate: (details) {
