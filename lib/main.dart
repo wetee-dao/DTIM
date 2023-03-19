@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:themed/themed.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'apis/apis.dart';
 import 'router.dart';
@@ -60,6 +62,7 @@ void main() async {
 
   // 构建IM全局对象
   IMProvider im = IMProvider();
+  EasyLoading.init();
 
   runApp(App(im: im));
 }
@@ -81,6 +84,8 @@ class App extends StatelessWidget {
           routeInformationProvider: _router.routeInformationProvider,
           routeInformationParser: _router.routeInformationParser,
           routerDelegate: _router.routerDelegate,
+          localizationsDelegates: L10n.localizationsDelegates,
+          supportedLocales: L10n.supportedLocales,
           builder: ((context, child) {
             final MediaQueryData data = MediaQuery.of(context);
             return MediaQuery(

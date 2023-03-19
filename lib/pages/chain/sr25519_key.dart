@@ -1,11 +1,13 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../router.dart';
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
 import '../../models/account.dart';
@@ -131,18 +133,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               Clipboard.setData(ClipboardData(
                 text: seeds.join(" "),
               )).then((value) {
-                MotionToast.success(
-                  title: const Text(
-                    '提示',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  description: const Text('助记词复制成功'),
-                  animationCurve: Curves.bounceIn,
-                  borderRadius: 0,
-                  animationDuration: const Duration(milliseconds: 500),
-                ).show(context);
+                EasyLoading.showToast('助记词复制成功');
               });
             },
             child: Row(
@@ -339,13 +330,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 }
                 _formKey.currentState!.save();
 
-                api
-                    .getSeedPhrase(
-                  seedStr: seeds.join(" "),
-                  name: _name,
-                  password: _password,
-                )
-                    .then((accountStr) {
+                api.getSeedPhrase(seedStr: seeds.join(" "), name: _name, password: _password).then((accountStr) async {
                   print(accountStr);
                   // 解码区块链账户问题
                   var chainData = ChainData.fromJson(
@@ -363,21 +348,13 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   AccountApi.create().addUser(initUser);
 
                   //跳转到组织列表
-                  MotionToast.success(
-                    title: const Text(
-                      '提示',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    description: const Text('账户创建成功，稍后您需要选择您的组织连接web3网络'),
-                    animationCurve: Curves.bounceIn,
-                    borderRadius: 0,
-                    animationDuration: const Duration(milliseconds: 500),
-                    onClose: () {
-                      context.push("/select_org");
-                    },
-                  ).show(context);
+                  await showOkAlertDialog(
+                    context: context,
+                    title: '提示',
+                    message: '账户创建成功，稍后您需要选择您的组织连接web3网络',
+                  );
+
+                  rootNavigatorKey.currentContext?.go("/select_org");
                 });
               },
               child: Container(

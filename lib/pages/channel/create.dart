@@ -1,13 +1,14 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
 import '../../components/form/switch.dart';
+import '../../router.dart';
 import '../../utils/screen.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
@@ -51,25 +52,16 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
     );
     //跳转到组织列表
     if (!mounted) return;
-    MotionToast.success(
-      title: const Text(
-        '提示',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      description: const Text('频道创建成功，现在返回主页面'),
-      animationCurve: Curves.bounceIn,
-      borderRadius: 0,
-      animationDuration: const Duration(milliseconds: 500),
-      onClose: () {
-        if (widget.closeModel != null) {
-          widget.closeModel!.call();
-          return;
-        }
-        context.pop();
-      },
-    ).show(context);
+    await showOkAlertDialog(
+      context: context,
+      title: '提示',
+      message: '频道创建成功，现在返回主页面',
+    );
+    if (widget.closeModel != null) {
+      widget.closeModel!.call();
+      return;
+    }
+    rootNavigatorKey.currentContext?.pop();
   }
 
   @override

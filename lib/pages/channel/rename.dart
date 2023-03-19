@@ -1,10 +1,11 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../router.dart';
 import '../../utils/screen.dart';
 import '../../components/app_bar.dart';
 import '../../store/im.dart';
@@ -52,21 +53,14 @@ class _RenameChannelPageState extends State<RenameChannelPage> {
     );
     //跳转到组织列表
     if (!mounted) return;
-    MotionToast.success(
-      title: const Text(
-        '提示',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      description: const Text('频道重命名成功'),
-      animationCurve: Curves.bounceIn,
-      borderRadius: 0,
-      animationDuration: const Duration(milliseconds: 500),
-      onClose: () {
-        context.pop();
-      },
-    ).show(context);
+
+    await showOkAlertDialog(
+      context: context,
+      title: '提示',
+      message: '频道创建成功，现在返回主页面',
+    );
+
+    rootNavigatorKey.currentContext?.pop();
   }
 
   @override

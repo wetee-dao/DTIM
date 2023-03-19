@@ -1,6 +1,7 @@
 import 'package:asyou_app/utils/screen.dart';
 
 import 'pages/channel/create_private.dart';
+import 'pages/channel/setting/setting.dart';
 import 'pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import 'components/window/virtual_window_frame.dart';
 import 'pages/channel/create.dart';
-import 'pages/channel/members.dart';
+import 'pages/channel/setting/members.dart';
 import 'pages/channel/rename.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
@@ -16,6 +17,7 @@ import 'pages/chain/sr25519_key.dart';
 import 'pages/search.dart';
 import 'pages/select_org.dart';
 import 'preloader.dart';
+import 'store/theme.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -76,9 +78,12 @@ routers() {
       },
     ),
     GoRoute(
-      path: '/channel_members/:id',
+      path: '/channel_setting/:id/:t',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(ChannelMemberPage(id: state.params['id'] ?? ""));
+        return renderFram(ChannelSettingPage(
+          id: state.params['id'] ?? "",
+          t: state.params['t'] ?? "",
+        ));
       },
     ),
     GoRoute(
@@ -90,9 +95,70 @@ routers() {
   ];
 }
 
+getPage(String url, Function closeModel) {
+  if (url == "/create_channel") {
+    return CreateChannelPage(closeModel: closeModel);
+  } else if (url == "/search") {
+    return SearchPage(closeModel: closeModel);
+  } else if (url == "/setting") {
+    return SettingPage(closeModel: closeModel);
+  } else if (url == "/create_private") {
+    return CreatePrivatePage(closeModel: closeModel);
+  } else if (url.indexOf("/channel_setting/") == 0) {
+    var pstr = url.replaceAll("/channel_setting/", "");
+    print(pstr);
+    var ps = pstr.split("/");
+    return ChannelSettingPage(
+      closeModel: closeModel,
+      id: Uri.decodeComponent(ps[0]),
+      t: Uri.decodeComponent(ps[1]),
+    );
+  }
+
+  return const Center(child: Text("404"));
+}
+
 renderFram(Widget page) {
   if (isPc()) {
     return VirtualWindowFrame(child: page);
   }
   return page;
+}
+
+showModelOrPage(context, url, {double width = 520, double height = 550}) {
+  if (isPc()) {
+    showDialog(
+      context: context,
+      useSafeArea: true,
+      barrierColor: ConstTheme.sidebarHeaderTextColor.withOpacity(0.06),
+      builder: (context) {
+        var media = MediaQuery.of(context);
+        var bottom = media.size.height - 30.w - height.w;
+        return Container(
+          margin: EdgeInsets.only(
+            left: (media.size.width - width.w) / 2,
+            right: (media.size.width - width.w) / 2,
+            top: 30.w,
+            bottom: bottom > 0 ? bottom : 40.w,
+          ),
+          width: width.w,
+          height: height.w,
+          decoration: BoxDecoration(
+            color: ConstTheme.centerChannelBg,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 8.w,
+              ),
+            ],
+          ),
+          child: getPage(url, () {
+            Navigator.pop(context);
+          }),
+        );
+      },
+    );
+  } else {
+    context.push(url);
+  }
 }

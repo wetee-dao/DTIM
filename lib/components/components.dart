@@ -1,5 +1,5 @@
 export "app_bar.dart";
-export 'channels_list.dart';
+export 'channels_list_view.dart';
 export 'move_window.dart';
 export 'direct_chat.dart';
 export 'user_avatar.dart';

@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 import 'package:matrix_link_text/link_text.dart';
+// import 'package:fluffychat/pages/chat/events/video_player.dart';
+import 'package:provider/provider.dart';
 
-import 'package:fluffychat/pages/chat/events/video_player.dart';
-import 'package:fluffychat/utils/adaptive_bottom_sheet.dart';
-import 'package:fluffychat/utils/date_time_extension.dart';
-import 'package:fluffychat/utils/matrix_sdk_extensions/matrix_locals.dart';
-import 'package:fluffychat/widgets/avatar.dart';
-import 'package:fluffychat/widgets/matrix.dart';
 import '../../../config/app_config.dart';
+import '../../../store/im.dart';
+import '../../../utils/adaptive_bottom_sheet.dart';
+import '../../../utils/date_time_extension.dart';
+import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
+import '../../../utils/screen.dart';
+import '../../../components/avatar.dart';
 import '../../../utils/platform_infos.dart';
 import '../../../utils/url_launcher.dart';
-import '../../bootstrap/bootstrap_dialog.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
 import 'html_message.dart';
@@ -21,6 +22,7 @@ import 'image_bubble.dart';
 import 'map_bubble.dart';
 import 'message_download_content.dart';
 import 'sticker.dart';
+import 'video_player.dart';
 
 class MessageContent extends StatelessWidget {
   final Event event;
@@ -50,12 +52,13 @@ class MessageContent extends StatelessWidget {
       );
       return;
     }
-    final client = Matrix.of(context).client;
+    final im = context.read<IMProvider>();
+    final client = im.currentState!.client;
     if (client.isUnknownSession && client.encryption!.crossSigning.enabled) {
-      final success = await BootstrapDialog(
-        client: Matrix.of(context).client,
-      ).show(context);
-      if (success != true) return;
+      // final success = await BootstrapDialog(
+      //   client: client,
+      // ).show(context);
+      // if (success != true) return;
     }
     event.requestKey();
     final sender = event.senderFromMemoryOrFallback;
@@ -98,8 +101,9 @@ class MessageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontSize = AppConfig.messageFontSize * AppConfig.fontSizeFactor;
-    final buttonTextColor = event.senderId == Matrix.of(context).client.userID ? textColor : null;
+    final im = context.read<IMProvider>();
+    final client = im.currentState!.client;
+    final buttonTextColor = event.senderId == client.userID ? textColor : null;
     switch (event.type) {
       case EventTypes.Message:
       case EventTypes.Encrypted:
@@ -150,16 +154,16 @@ class MessageContent extends StatelessWidget {
                 html: html,
                 defaultTextStyle: TextStyle(
                   color: textColor,
-                  fontSize: bigEmotes ? fontSize * 3 : fontSize,
+                  fontSize: 15.w,
                 ),
                 linkStyle: TextStyle(
                   color: textColor.withAlpha(150),
-                  fontSize: bigEmotes ? fontSize * 3 : fontSize,
+                  fontSize: 15.w,
                   decoration: TextDecoration.underline,
                   decorationColor: textColor.withAlpha(150),
                 ),
                 room: event.room,
-                emoteSize: bigEmotes ? fontSize * 3 : fontSize * 1.5,
+                emoteSize: 15.w,
               );
             }
             // else we fall through to the normal message rendering
@@ -231,12 +235,12 @@ class MessageContent extends StatelessWidget {
                       ),
                   textStyle: TextStyle(
                     color: textColor,
-                    fontSize: bigEmotes ? fontSize * 3 : fontSize,
+                    fontSize: 15.w,
                     decoration: event.redacted ? TextDecoration.lineThrough : null,
                   ),
                   linkStyle: TextStyle(
                     color: textColor.withAlpha(150),
-                    fontSize: bigEmotes ? fontSize * 3 : fontSize,
+                    fontSize: 15.w,
                     decoration: TextDecoration.underline,
                     decorationColor: textColor.withAlpha(150),
                   ),

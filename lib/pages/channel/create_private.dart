@@ -38,7 +38,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
   }
 
   void getList() async {
-    var client = im.currentState!.client;
+    final client = im.currentState!.client;
     link.SearchUserDirectoryResponse response =
         await client.searchUserDirectory(search != "" ? "%$search" : "", limit: 10);
 
@@ -231,7 +231,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                       suffixIcon: IconButton(
                         icon: Icon(Icons.send_outlined, color: ConstTheme.sidebarText),
                         onPressed: () async {
-                          var client = im.currentState!.client;
+                          final client = im.currentState!.client;
                           final result = await showFutureLoadingDialog<String>(
                             context: context,
                             future: () => client.startDirectChat("@xiaobai:xiaobai.asyou.me"),

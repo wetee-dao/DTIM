@@ -50,22 +50,6 @@ class SettingsTile extends AbstractSettingsTile {
     tileType = SettingsTileType.navigationTile;
   }
 
-  SettingsTile.switchtile({
-    required this.initialValue,
-    required this.onToggle,
-    this.activeSwitchColor,
-    this.leading,
-    this.trailing,
-    required this.title,
-    this.description,
-    this.onPressed,
-    this.enabled = true,
-    Key? key,
-  }) : super(key: key) {
-    value = null;
-    tileType = SettingsTileType.switchTile;
-  }
-
   @override
   Widget build(BuildContext context) {
     final scaleFactor = MediaQuery.of(context).textScaleFactor;
@@ -88,94 +72,90 @@ class SettingsTile extends AbstractSettingsTile {
                   }
                 },
           highlightColor: ConstTheme.centerChannelColor.lighter(),
-          child: Container(
-            child: Row(
-              children: [
-                if (leading != null)
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 24),
-                    child: IconTheme(
-                      data: IconTheme.of(context).copyWith(
-                        color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
-                      ),
-                      child: leading!,
+          child: Row(
+            children: [
+              if (leading != null)
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 24),
+                  child: IconTheme(
+                    data: IconTheme.of(context).copyWith(
+                      color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
                     ),
-                  ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      start: 24.w,
-                      end: 10.w,
-                      bottom: 10.w,
-                      top: 10.w,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DefaultTextStyle(
-                          style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
-                            fontSize: 13.w,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          child: title ?? Container(),
-                        ),
-                        if (value != null)
-                          Padding(
-                            padding: EdgeInsets.only(top: 4.0),
-                            child: DefaultTextStyle(
-                              style: TextStyle(
-                                color:
-                                    enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
-                              ),
-                              child: value!,
-                            ),
-                          )
-                        else if (description != null)
-                          Padding(
-                            padding: EdgeInsets.only(top: 4.0),
-                            child: DefaultTextStyle(
-                              style: TextStyle(
-                                color:
-                                    enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
-                              ),
-                              child: description!,
-                            ),
-                          ),
-                      ],
-                    ),
+                    child: leading!,
                   ),
                 ),
-                if (trailing != null && tileType == SettingsTileType.switchTile)
-                  Row(
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(
+                    start: 24.w,
+                    end: 10.w,
+                    bottom: 10.w,
+                    top: 10.w,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      trailing!,
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 8),
-                        child: Switch(
-                          value: initialValue!,
-                          onChanged: onToggle,
-                          activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                          fontSize: 13.w,
+                          fontWeight: FontWeight.w400,
                         ),
+                        child: title ?? Container(),
                       ),
+                      if (value != null)
+                        Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            ),
+                            child: value!,
+                          ),
+                        )
+                      else if (description != null)
+                        Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            ),
+                            child: description!,
+                          ),
+                        ),
                     ],
-                  )
-                else if (tileType == SettingsTileType.switchTile)
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
-                    child: Switch(
-                      value: initialValue!,
-                      onChanged: onToggle,
-                      activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                  ),
+                ),
+              ),
+              if (trailing != null && tileType == SettingsTileType.switchTile)
+                Row(
+                  children: [
+                    trailing!,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 8),
+                      child: Switch(
+                        value: initialValue!,
+                        onChanged: onToggle,
+                        activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                      ),
                     ),
-                  )
-                else if (trailing != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: trailing!,
-                  )
-              ],
-            ),
+                  ],
+                )
+              else if (tileType == SettingsTileType.switchTile)
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
+                  child: Switch(
+                    value: initialValue!,
+                    onChanged: onToggle,
+                    activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                  ),
+                )
+              else if (trailing != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: trailing!,
+                )
+            ],
           ),
         ),
       ),

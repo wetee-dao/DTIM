@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 import '../models/account.dart';
 import '../objectbox.g.dart';
+import '../router.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../components/components.dart';
@@ -106,27 +108,16 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 backgroundColor: MaterialStateProperty.resolveWith((states) {
                   //设置按下时的背景颜色
                   if (states.contains(MaterialState.pressed)) {
-                    return ConstTheme.mentionBg;
+                    return ConstTheme.buttonBg;
                   }
                   //默认不使用背景颜色
-                  return ConstTheme.mentionBg;
+                  return ConstTheme.buttonBg.withOpacity(0.8);
                 }),
                 // backgroundColor: ConstTheme.mentionBg,
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (selected.isEmpty) {
-                  MotionToast.warning(
-                    title: const Text(
-                      '提示',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    description: const Text('请选择组织'),
-                    animationCurve: Curves.bounceIn,
-                    borderRadius: 0,
-                    animationDuration: const Duration(milliseconds: 500),
-                  ).show(context);
+                  EasyLoading.showToast('请选择组织');
                   return;
                 }
                 AccountOrgApi.create().accountSyncOrgs(
@@ -134,29 +125,20 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                   selected,
                   orgs,
                 );
-                MotionToast.success(
-                  title: const Text(
-                    '提示',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  description: const Text('组织选中成功'),
-                  animationCurve: Curves.bounceIn,
-                  borderRadius: 0,
-                  animationDuration: const Duration(milliseconds: 500),
-                  onClose: () {
-                    if (isPc()) {
-                      context.go("/pc");
-                    } else {
-                      context.go("/mobile");
-                    }
-                  },
-                ).show(context);
+                await showOkAlertDialog(
+                  context: context,
+                  title: '提示',
+                  message: '组织选中成功',
+                );
+                if (isPc()) {
+                  rootNavigatorKey.currentContext?.go("/pc");
+                } else {
+                  rootNavigatorKey.currentContext?.go("/mobile");
+                }
               },
               child: Text(
                 '确定',
-                style: TextStyle(color: ConstTheme.mentionColor),
+                style: TextStyle(color: ConstTheme.buttonColor),
               ),
             ),
             SizedBox(width: 10.w),

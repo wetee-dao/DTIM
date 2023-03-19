@@ -6,6 +6,7 @@ import '../../utils/screen.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
 import '../../utils/time.dart';
+import 'content/content.dart';
 
 class Msg extends StatefulWidget {
   final link.Event event;
@@ -85,9 +86,9 @@ class _MsgState extends State<Msg> {
               Column(
                 children: [
                   SizedBox(height: 10.w),
-                  UserAvatar(
+                  UserAvatarWithPop(
                     key: Key(user.id),
-                    getUserShortId(user.id),
+                    user,
                     true,
                     40.w,
                   ),
@@ -106,7 +107,7 @@ class _MsgState extends State<Msg> {
                         text: event.senderId == widget.client.userID ? "我" : event.senderId,
                         style: TextStyle(
                           color: ConstTheme.centerChannelColor,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
                           fontSize: 16.w,
                         ),
                         children: [
@@ -155,10 +156,7 @@ class _MsgState extends State<Msg> {
     //     ),
     //   );
     // }
-    return Text(
-      event.body,
-      style: TextStyle(fontSize: 16.w, color: ConstTheme.centerChannelColor),
-    );
+    return MessageContent(event, textColor: ConstTheme.centerChannelColor);
   }
 
   buildDayTag(event) {

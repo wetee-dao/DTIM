@@ -25,33 +25,24 @@ class _ThemePageState extends State<ThemePage> {
         platform: DevicePlatform.android,
         sections: [
           SettingsSection(
-            title: const Text('浅色'),
-            tiles: [
-              ThemeSettingsTile(
-                title: const Text('为账户启用通知'),
-                description: const Text('关闭后在全部设备和会话上停用统治'),
-              ),
-            ],
-          ),
-          SettingsSection(
             title: const Text('深色'),
             tiles: [
-              SettingsTile.switchtile(
+              Switchtile(
                 initialValue: false,
                 onToggle: (_) {},
                 title: const Text('私聊消息'),
               ),
-              SettingsTile.switchtile(
+              Switchtile(
                 initialValue: false,
                 onToggle: (_) {},
                 title: const Text('私聊中加密消息'),
               ),
-              SettingsTile.switchtile(
+              Switchtile(
                 initialValue: false,
                 onToggle: (_) {},
                 title: const Text('群聊中的消息'),
               ),
-              SettingsTile.switchtile(
+              Switchtile(
                 initialValue: false,
                 onToggle: (_) {},
                 title: const Text('群聊中的加密消息'),

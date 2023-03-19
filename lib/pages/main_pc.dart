@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../router_model.dart';
+import '../router.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
@@ -20,6 +20,8 @@ class PCPage extends StatefulWidget {
 
 class _PCPageState extends State<PCPage> with WindowListener {
   late List<AccountOrg> aorgs;
+  double rightWidth = 200.w;
+  String rightUrl = "";
 
   @override
   void initState() {
@@ -150,7 +152,27 @@ class _PCPageState extends State<PCPage> with WindowListener {
           ),
           const Flexible(
             child: ChannelListPage(),
-          )
+          ),
+          GestureDetector(
+            child: MouseRegion(
+              cursor: SystemMouseCursors.resizeColumn,
+              child: SizedBox(
+                width: 1.w,
+                height: double.infinity,
+                child: Container(color: ConstTheme.sidebarText.withOpacity(0.08)),
+              ),
+            ),
+            onPanUpdate: (details) {
+              setState(() {
+                if (rightWidth - details.delta.dx < 180.w || rightWidth - details.delta.dx > 350.w) {
+                  return;
+                }
+
+                rightWidth = rightWidth - details.delta.dx;
+              });
+            },
+          ),
+          if (rightUrl != "") Container(width: rightWidth, height: double.maxFinite, color: Colors.red),
         ],
       ),
     );

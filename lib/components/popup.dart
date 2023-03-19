@@ -1,11 +1,10 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-enum PressType {
-  longPress,
-  singleClick,
-}
+import '../../utils/screen.dart';
+
+enum PressType { longPress, singleClick, mouseHover }
 
 enum PreferredPosition {
   bottomLeft,
@@ -148,28 +147,60 @@ class BasePopupMenuState extends State<BasePopupMenu> {
         return Listener(
           behavior: widget.enablePassEvent ? HitTestBehavior.translucent : HitTestBehavior.opaque,
           onPointerDown: (PointerDownEvent event) {
+            if (widget.pressType == PressType.mouseHover) {
+              return;
+            }
             Offset offset = event.localPosition;
-            if (childRect.contains(Offset(offset.dx - widget.horizontalMargin, offset.dy))) {
+
+            // 扩大鼠标面积
+            var childRectWrap = Rect.fromLTRB(
+              childRect.left - 10.w,
+              childRect.top - 10.w,
+              childRect.right + 10.w,
+              childRect.bottom + 10.w,
+            );
+            if (childRectWrap.contains(Offset(offset.dx, offset.dy))) {
               return;
             }
             // If tap position in menu
-            if (menuRect.contains(Offset(offset.dx - widget.horizontalMargin, offset.dy))) {
+            if (menuRect.contains(Offset(offset.dx - widget.horizontalMargin, offset.dy - widget.verticalMargin))) {
               return;
             }
 
             _controller?.hideMenu();
-            // When [enablePassEvent] works and we tap the [child] to [hideMenu],
-            // but the passed event would trigger [showMenu] again.
-            // So, we use time threshold to solve this bug.
             _canResponse = false;
             Future.delayed(const Duration(milliseconds: 300)).then((_) => _canResponse = true);
           },
-          child: widget.barrierColor == Colors.transparent
-              ? menu
-              : Container(
-                  color: widget.barrierColor,
-                  child: menu,
-                ),
+          onPointerHover: (PointerHoverEvent event) {
+            if (widget.pressType != PressType.mouseHover) {
+              return;
+            }
+            Offset offset = event.localPosition;
+
+            // 扩大鼠标面积
+            var childRectWrap = Rect.fromLTRB(
+              childRect.left - 10.w,
+              childRect.top - 10.w,
+              childRect.right + 10.w,
+              childRect.bottom + 10.w,
+            );
+            if (childRectWrap.contains(Offset(offset.dx, offset.dy))) {
+              return;
+            }
+
+            // If tap position in menu
+            if (menuRect.contains(Offset(
+              offset.dx - widget.horizontalMargin,
+              offset.dy - widget.verticalMargin,
+            ))) {
+              return;
+            }
+
+            _controller?.hideMenu();
+            _canResponse = false;
+            Future.delayed(const Duration(milliseconds: 300)).then((_) => _canResponse = true);
+          },
+          child: widget.barrierColor == Colors.transparent ? menu : Container(color: widget.barrierColor, child: menu),
         );
       },
     );
@@ -218,45 +249,43 @@ class BasePopupMenuState extends State<BasePopupMenu> {
 
   @override
   Widget build(BuildContext context) {
-    var child = Material(
-      color: Colors.transparent,
-      child: InkWell(
-        hoverColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
+    if (isPc() && widget.pressType == PressType.mouseHover) {
+      return MouseRegion(
         child: widget.child,
-        onTap: () {
-          if (widget.pressType == PressType.singleClick && _canResponse) {
-            if (_controller != null && _controller!.menuIsShowing) {
-              _controller?.hideMenu();
-            } else {
-              _controller?.showMenu();
-            }
+        onHover: (e) {
+          if (_controller == null || !_controller!.menuIsShowing) {
+            _controller?.showMenu();
           }
         },
-        // onLongPress: () {
-        //   if (widget.pressType == PressType.longPress && _canResponse) {
-        //     if (_controller != null && _controller!.menuIsShowing) {
-        //       _controller?.hideMenu();
-        //     } else {
-        //       _controller?.showMenu();
-        //     }
-        //   }
-        // },
-      ),
+      );
+    }
+
+    return InkWell(
+      hoverColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: widget.child,
+      onTap: () {
+        if (widget.pressType == PressType.singleClick && _canResponse) {
+          if (_controller != null && _controller!.menuIsShowing) {
+            _controller?.hideMenu();
+          } else {
+            _controller?.showMenu();
+          }
+        }
+      },
+      onLongPress: () {
+        if ((widget.pressType == PressType.longPress || (!isPc() && widget.pressType == PressType.mouseHover)) &&
+            _canResponse) {
+          if (_controller != null && _controller!.menuIsShowing) {
+            _controller?.hideMenu();
+          } else {
+            _controller?.showMenu();
+          }
+        }
+      },
     );
-    // if (Platform.isIOS) {
-    return child;
-    // } else {
-    //   return WillPopScope(
-    //     onWillPop: () {
-    //       _hideMenu();
-    //       return Future.value(true);
-    //     },
-    //     child: child,
-    //   );
-    // }
   }
 }
 
@@ -265,15 +294,6 @@ enum _MenuLayoutId {
   downArrow,
   content,
 }
-
-// enum _MenuPosition {
-//   bottomLeft,
-//   bottomCenter,
-//   bottomRight,
-//   topLeft,
-//   topCenter,
-//   topRight,
-// }
 
 class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
   _MenuLayoutDelegate({
@@ -319,10 +339,6 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
         _MenuLayoutId.downArrow,
         BoxConstraints.loose(size),
       );
-    }
-
-    if (position != null) {
-      menuPosition = position!;
     }
 
     switch (menuPosition) {
@@ -381,6 +397,7 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
         );
         break;
     }
+
     if (hasChild(_MenuLayoutId.content)) {
       positionChild(_MenuLayoutId.content, contentOffset);
     }
@@ -399,9 +416,9 @@ class _MenuLayoutDelegate extends MultiChildLayoutDelegate {
         anchorSize.height,
       ),
     );
+
     bool isBottom = false;
     if (PreferredPosition.values.indexOf(menuPosition) < 3) {
-      // bottom
       isBottom = true;
     }
     if (hasChild(_MenuLayoutId.arrow)) {

@@ -9,9 +9,10 @@ import 'package:just_audio/just_audio.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:fluffychat/config/app_config.dart';
-import 'package:fluffychat/utils/localized_exception_extension.dart';
+import '../../../utils/localized_extension.dart';
 import '../../../utils/matrix_sdk_extensions/event_extension.dart';
+
+import '../../../utils/screen.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final Color color;
@@ -21,8 +22,7 @@ class AudioPlayerWidget extends StatefulWidget {
 
   static const int wavesCount = 40;
 
-  const AudioPlayerWidget(this.event, {this.color = Colors.black, Key? key})
-      : super(key: key);
+  const AudioPlayerWidget(this.event, {this.color = Colors.black, Key? key}) : super(key: key);
 
   @override
   AudioPlayerState createState() => AudioPlayerState();
@@ -115,17 +115,14 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
       setState(() {
         statusText =
             '${state.inMinutes.toString().padLeft(2, '0')}:${(state.inSeconds % 60).toString().padLeft(2, '0')}';
-        currentPosition = ((state.inMilliseconds.toDouble() / maxPosition) *
-                AudioPlayerWidget.wavesCount)
-            .round();
+        currentPosition = ((state.inMilliseconds.toDouble() / maxPosition) * AudioPlayerWidget.wavesCount).round();
       });
     });
     onDurationChanged ??= audioPlayer.durationStream.listen((max) {
       if (max == null || max == Duration.zero) return;
       setState(() => maxPosition = max.inMilliseconds.toDouble());
     });
-    onPlayerStateChanged ??=
-        audioPlayer.playingStream.listen((_) => setState(() {}));
+    onPlayerStateChanged ??= audioPlayer.playingStream.listen((_) => setState(() {}));
     final audioFile = this.audioFile;
     if (audioFile != null) {
       audioPlayer.setFilePath(audioFile.path);
@@ -145,18 +142,15 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
   static const double buttonSize = 36;
 
   String? get _durationString {
-    final durationInt = widget.event.content
-        .tryGetMap<String, dynamic>('info')
-        ?.tryGet<int>('duration');
+    final durationInt = widget.event.content.tryGetMap<String, dynamic>('info')?.tryGet<int>('duration');
     if (durationInt == null) return null;
     final duration = Duration(milliseconds: durationInt);
     return '${duration.inMinutes.toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
   List<int> _getWaveform() {
-    final eventWaveForm = widget.event.content
-        .tryGetMap<String, dynamic>('org.matrix.msc1767.audio')
-        ?.tryGetList<int>('waveform');
+    final eventWaveForm =
+        widget.event.content.tryGetMap<String, dynamic>('org.matrix.msc1767.audio')?.tryGetList<int>('waveform');
     if (eventWaveForm == null) {
       return List<int>.filled(AudioPlayerWidget.wavesCount, 500);
     }
@@ -186,7 +180,7 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
   Widget build(BuildContext context) {
     final statusText = this.statusText ??= _durationString ?? '00:00';
     return Padding(
-      padding: EdgeInsets.all(16 * AppConfig.bubbleSizeFactor),
+      padding: EdgeInsets.all(16.w),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -202,9 +196,7 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
                       color: widget.color.withAlpha(64),
                       borderRadius: BorderRadius.circular(64),
                       child: Icon(
-                        audioPlayer?.playerState.playing == true
-                            ? Icons.pause_outlined
-                            : Icons.play_arrow_outlined,
+                        audioPlayer?.playerState.playing == true ? Icons.pause_outlined : Icons.play_arrow_outlined,
                         color: widget.color,
                       ),
                     ),
@@ -227,10 +219,7 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
                     child: InkWell(
                       onTap: () => audioPlayer?.seek(
                         Duration(
-                          milliseconds:
-                              (maxPosition / AudioPlayerWidget.wavesCount)
-                                      .round() *
-                                  i,
+                          milliseconds: (maxPosition / AudioPlayerWidget.wavesCount).round() * i,
                         ),
                       ),
                       child: Container(

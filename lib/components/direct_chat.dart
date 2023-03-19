@@ -19,7 +19,7 @@ Widget DirectChats(List<link.Room> channelsList, String currentId, Function(Stri
       final displayname = room.getLocalizedDisplayname();
       return HoverListItem(
         color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
-        hoverColor: ConstTheme.sidebarTextActiveBorder,
+        hoverColor: ConstTheme.sidebarText.withOpacity(0.08),
         onPressed: () async {
           onSelect(channelsList[index].id);
         },
@@ -45,7 +45,9 @@ Widget DirectChats(List<link.Room> channelsList, String currentId, Function(Stri
                 child: UserAvatar(
                   room.directChatMatrixID ?? "-",
                   true,
-                  30.w,
+                  25.w,
+                  bg: ConstTheme.sidebarText.withOpacity(0.1),
+                  color: ConstTheme.sidebarText,
                 ),
               ),
               WidgetUserNameEmoji(

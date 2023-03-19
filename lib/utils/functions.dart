@@ -16,6 +16,12 @@ String getUserShortId(String id) {
   return userId;
 }
 
+String getUserShortName(String id) {
+  String userId = id.split(":")[0];
+  userId = userId.replaceAll("@", "");
+  return "${userId.substring(0, 12)}...${userId.substring(userId.length - 13, userId.length - 1)}";
+}
+
 extension StringExtension on String {
   String fisrtUpperCase() {
     if (isEmpty) {

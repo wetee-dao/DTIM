@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../router_model.dart';
 import '../../utils/screen.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
@@ -19,11 +18,10 @@ List<List<ItemModel>> menuItems = [
   [ItemModel('通知偏好'), ItemModel('静音频道')],
   [
     ItemModel('邀请成员'),
-    ItemModel('成员管理', onTap: ((room) {
+    ItemModel('成员管理', onTap: ((link.Room room) {
       showModelOrPage(
         rootNavigatorKey.currentContext!,
-        "/channel_members/${Uri.encodeComponent(room.id)}",
-        ps: {"id": room.id},
+        "/channel_setting/${Uri.encodeComponent(room.id)}",
       );
     }))
   ],

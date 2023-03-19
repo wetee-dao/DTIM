@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../components/components.dart';
-import '../../utils/screen.dart';
-import '../../store/im.dart';
-import '../../store/theme.dart';
-import '../../utils/functions.dart';
+import '../../../components/components.dart';
+import '../../../utils/screen.dart';
+import '../../../store/im.dart';
+import '../../../store/theme.dart';
+import '../../../utils/functions.dart';
 
 class ChannelMemberPage extends StatefulWidget {
   final String id;
@@ -37,7 +37,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
   }
 
   void getList() async {
-    var client = im.currentState!.client;
+    final client = im.currentState!.client;
 
     List<link.MatrixEvent>? matrixEvents = await client.getMembersByRoom(widget.id);
     Iterable<link.User>? users = matrixEvents?.map((e) => link.Event.fromMatrixEvent(e, room!).asUser);
@@ -54,23 +54,6 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ConstTheme.centerChannelBg,
-      appBar: widget.closeModel == null
-          ? LocalAppBar(
-              title: "成员列表",
-              onBack: () {
-                context.pop();
-              },
-            ) as PreferredSizeWidget
-          : ModelBar(
-              title: "成员列表",
-              onBack: () {
-                if (widget.closeModel != null) {
-                  widget.closeModel!.call();
-                  return;
-                }
-                context.pop();
-              },
-            ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(top: 5.w),
@@ -135,10 +118,6 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                   ),
                   SizedBox(width: 10.w),
                 ],
-              ),
-              Divider(
-                height: 5.w,
-                color: ConstTheme.centerChannelColor.withOpacity(0.1),
               ),
               SizedBox(
                 height: 10.w,

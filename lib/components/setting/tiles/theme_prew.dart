@@ -16,8 +16,8 @@ class ThemePrew extends StatelessWidget {
         onTap(theme["codeTheme"]!);
       },
       child: Container(
-        width: 180.w,
-        height: 100.w,
+        width: 185.w,
+        height: 145.w,
         decoration: BoxDecoration(
           color: ConstTheme.centerChannelBg,
           borderRadius: BorderRadius.circular(4.w),
@@ -100,7 +100,9 @@ class ThemePrew extends StatelessWidget {
                   Icon(
                     selected == theme["codeTheme"]! ? Icons.check_circle : Icons.radio_button_unchecked,
                     size: 14.w,
-                    color: ConstTheme.sidebarText,
+                    color: selected == theme["codeTheme"]!
+                        ? ConstTheme.mentionHighlightLink
+                        : ConstTheme.centerChannelColor,
                   ),
                   SizedBox(width: 5.w),
                   Text(

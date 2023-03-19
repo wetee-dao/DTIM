@@ -5,7 +5,7 @@ import 'package:expandable/expandable.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../router_model.dart';
+import '../router.dart';
 import '../utils/screen.dart';
 import '../components/jump_to.dart';
 import '../components/components.dart';
@@ -154,7 +154,6 @@ class _ChannelListPageState extends State<ChannelListPage> {
                         SizedBox(width: 1.w),
                         Expanded(
                           child: JumpTo(false, MediaQuery.of(context).size.width - 40, () {
-                            // context.push("/search");
                             showModelOrPage(context, "/search");
                             return null;
                           }),
@@ -219,7 +218,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
                   ExpandablePanel(
                     controller: _controllerChannels,
                     collapsed: const SizedBox(),
-                    expanded: channelsListView(channels, channelId, (id) {
+                    expanded: ChannelsListView(channels, channelId, (id) {
                       if (id == channelId) {
                         return;
                       }

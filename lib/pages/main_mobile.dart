@@ -1,6 +1,5 @@
 import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 
 import '../components/drawer.dart';
 import '../apis/navs.dart';
@@ -69,7 +68,7 @@ class _MobilePageState extends State<MobilePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              EvaIcons.message_circle_outline,
+              Icons.message_outlined,
               size: 25,
             ),
             label: 'DMs',

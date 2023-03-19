@@ -2,25 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
 
-import 'package:fluffychat/utils/matrix_sdk_extensions/event_extension.dart';
+import '../../../utils/matrix_sdk_extensions/event_extension.dart';
 
 class MessageDownloadContent extends StatelessWidget {
   final Event event;
   final Color textColor;
 
-  const MessageDownloadContent(this.event, this.textColor, {Key? key})
-      : super(key: key);
+  const MessageDownloadContent(this.event, this.textColor, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final filename = event.content.tryGet<String>('filename') ?? event.body;
     final filetype = (filename.contains('.')
         ? filename.split('.').last.toUpperCase()
-        : event.content
-                .tryGetMap<String, dynamic>('info')
-                ?.tryGet<String>('mimetype')
-                ?.toUpperCase() ??
-            'UNKNOWN');
+        : event.content.tryGetMap<String, dynamic>('info')?.tryGet<String>('mimetype')?.toUpperCase() ?? 'UNKNOWN');
     final sizeString = event.sizeString;
     return InkWell(
       onTap: () => event.saveFile(context),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../components/channels_list.dart';
+import '../components/channels_list_view.dart';
 import '../components/direct_chat.dart';
 import '../models/models.dart';
 import '../store/im.dart';
@@ -299,7 +299,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
               Expandable(
                 controller: _controllerChannels,
                 collapsed: SizedBox(),
-                expanded: channelsListView(channels, channelId, (id) {
+                expanded: ChannelsListView(channels, channelId, (id) {
                   if (id == channelId) {
                     return;
                   }

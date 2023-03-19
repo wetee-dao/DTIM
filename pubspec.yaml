@@ -16,13 +16,11 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
-  flutter_rust_bridge: 1.68.0
+  flutter_rust_bridge: ^1.70.0
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
   entry: ^0.0.6
-  # 图标
-  icons_plus: ^4.0.0
   # 英文扩展包
   english_words: ^4.0.0
   # 表情包
@@ -46,20 +44,40 @@ dependencies:
   ffi: ^2.0.1
   # 状态管理
   freezed_annotation: ^2.2.0
-  # 弹窗提醒
-  motion_toast: ^2.5.4
   # json
   json_annotation: ^4.7.0
   # 多选框
   chips_choice: ^3.0.0
   # matrix 连接库
-  matrix: ^0.17.1
+  matrix: ^0.18.0
+  matrix_link_text: ^1.0.2
   # 加载框
   future_loading_dialog: ^0.2.3
   # 日期格式化插件
   date_format: ^2.0.7
-  easy_localization: ^3.0.1
+  # easy_localization: ^3.0.1
   path_provider: ^2.0.13
+  # 音频
+  just_audio: ^0.9.31
+  # 弹窗
+  adaptive_dialog: ^1.8.2
+  # 缩略图
+  flutter_blurhash: ^0.7.0
+  video_player: ^2.6.0
+  universal_html: ^2.2.1
+  flutter_matrix_html: ^1.1.0
+  chewie: ^1.4.0
+  flutter_map: ^3.1.0
+  latlong2: ^0.8.1
+  punycode: ^1.0.0
+  url_launcher: ^6.1.10
+  collection: ^1.17.0
+  flutter_secure_storage: ^8.0.0
+  file_picker_cross: ^4.6.0
+  share_plus: ^4.0.10+1
+  image_picker: ^0.8.7
+  flutter_easyloading: ^3.0.5
+  tab_indicator_styler: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +88,10 @@ dev_dependencies:
   build_runner: ^2.2.0
   ffigen: ^7.2.6
   json_serializable: ^6.5.4
-  flutter_gen_runner: ^5.2.0
+
+dependency_overrides:
+  # c库调用
+  ffi: ^2.0.1
 
 flutter:
   generate: true

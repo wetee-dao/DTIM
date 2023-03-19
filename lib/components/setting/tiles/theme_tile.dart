@@ -18,33 +18,29 @@ class ThemeSettingsTile extends AbstractSettingsTile {
   /// The widget at the bottom of the [title]
   final Widget? description;
 
-  late final Widget? value;
+  final Widget? value;
 
-  /// A function that is called by tap on a tile
-  final Function(BuildContext context)? onPressed;
-  late final Function(String value)? onToggle;
-  late final String? initialValue;
-  late final bool enabled;
+  final Function(String value) onToggle;
+  final String? initialValue;
+  final bool enabled;
   final String type;
 
-  ThemeSettingsTile({
+  const ThemeSettingsTile({
+    required this.title,
+    required this.onToggle,
     this.leading,
     this.trailing,
     this.value,
-    required this.title,
     this.description,
-    this.onPressed,
     this.enabled = true,
     this.type = "light",
+    this.initialValue,
     Key? key,
-  }) : super(key: key) {
-    onToggle = null;
-    initialValue = null;
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var themes_curr = themes.where((t) => t["type"] == type).toList();
+    var themesCurr = themes.where((t) => t["type"] == type).toList();
     return IgnorePointer(
       ignoring: !enabled,
       child: Material(
@@ -103,7 +99,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                     SizedBox(height: 10.w),
                     GridView.builder(
                       shrinkWrap: true,
-                      itemCount: themes_curr.length,
+                      itemCount: themesCurr.length,
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 20,
@@ -111,10 +107,10 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                         childAspectRatio: 1.4,
                       ),
                       itemBuilder: (_, index) => ThemePrew(
-                        theme: themes_curr[index],
-                        selected: "111",
+                        theme: themesCurr[index],
+                        selected: initialValue ?? "",
                         onTap: (name) {
-                          setTheme(name);
+                          onToggle(name);
                         },
                       ),
                     )
@@ -130,6 +126,35 @@ class ThemeSettingsTile extends AbstractSettingsTile {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CurrThemeSettingsTile extends AbstractSettingsTile {
+  final String theme;
+
+  const CurrThemeSettingsTile({
+    required this.theme,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var themesCurr = themes.where((t) => t["codeTheme"] == theme).toList();
+    return Row(
+      children: [
+        SizedBox(width: 24.w),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ThemePrew(
+              theme: themesCurr[0],
+              selected: theme,
+              onTap: (name) {},
+            )
+          ],
+        )
+      ],
     );
   }
 }

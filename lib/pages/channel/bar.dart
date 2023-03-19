@@ -4,7 +4,7 @@ import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
 import '../../components/popup.dart';
-import '../../router_model.dart';
+import '../../router.dart';
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
 import './chat_menu.dart';
@@ -133,13 +133,8 @@ class _ChannelBarState extends State<ChannelBar> {
                     SizedBox(width: 2.w),
                     InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(3.w)),
-                      onTap: () {
-                        showModelOrPage(
-                          context,
-                          "/channel_members/${Uri.encodeComponent(widget.room.id)}",
-                          ps: {"id": widget.room.id},
-                        );
-                      },
+                      onTap: () =>
+                          showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(widget.room.id)}/member"),
                       child: Row(
                         children: [
                           SizedBox(width: 3.w),

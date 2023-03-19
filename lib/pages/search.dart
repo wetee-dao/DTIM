@@ -35,7 +35,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void getList() async {
-    var client = im.currentState!.client;
+    final client = im.currentState!.client;
     var roomResp = await client.getPublicRooms();
     setState(() {
       rooms = roomResp.chunk;
@@ -202,7 +202,7 @@ class _SearchPageState extends State<SearchPage> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            var client = im.currentState!.client;
+                            final client = im.currentState!.client;
                             client.joinRoomById(rooms[index].roomId);
                           },
                           child: Container(

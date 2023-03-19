@@ -39,8 +39,7 @@ class MapBubble extends StatelessWidget {
                   TileLayer(
                     maxZoom: 20,
                     minZoom: 0,
-                    urlTemplate:
-                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     subdomains: const ['a', 'b', 'c'],
                   ),
                   MarkerLayer(
@@ -72,11 +71,8 @@ class MapBubble extends StatelessWidget {
                 child: Text(
                   ' © OpenStreetMap contributors ',
                   style: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                    backgroundColor:
-                        Theme.of(context).appBarTheme.backgroundColor,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                   ),
                 ),
               ),

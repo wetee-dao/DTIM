@@ -31,7 +31,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   void initState() {
     super.initState();
     accounts = AccountApi.create().getUsers();
-    var im = context.read<IMProvider>();
+    final im = context.read<IMProvider>();
     if (im.connections.keys.isEmpty) {
       Timer(const Duration(milliseconds: 2000), () {
         setState(() {

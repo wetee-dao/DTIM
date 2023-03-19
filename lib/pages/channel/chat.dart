@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:themed/themed.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/close_bar.dart';
 import '../../models/models.dart';
+import '../../router.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
@@ -125,10 +126,29 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 size: 19.w,
               ),
               SizedBox(width: 10.w),
-              Icon(
-                Icons.lock_outline,
-                color: ConstTheme.mentionBg,
-                size: 19.w,
+              StreamBuilder<link.SyncUpdate>(
+                stream: client!.onSync.stream.where((s) => s.deviceLists != null),
+                builder: (context, snapshot) {
+                  return FutureBuilder<link.EncryptionHealthState>(
+                    future: room!.calcEncryptionHealthState(),
+                    builder: (BuildContext context, snapshot) => IconButton(
+                      tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
+                      icon: Icon(
+                        room!.encrypted ? Icons.lock_outline : Icons.lock_open,
+                        size: 19.w,
+                        color: room!.joinRules != link.JoinRules.public && !room!.encrypted
+                            ? ConstTheme.centerChannelColor.withAlpha(150)
+                            : room!.joinRules != link.JoinRules.public &&
+                                    snapshot.data == link.EncryptionHealthState.unverifiedDevices
+                                ? ConstTheme.mentionBg
+                                : ConstTheme.centerChannelColor.withAlpha(150),
+                      ),
+                      onPressed: () {
+                        showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/e2e");
+                      },
+                    ),
+                  );
+                },
               ),
               SizedBox(width: 10.w),
               Icon(

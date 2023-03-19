@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_matrix_html/flutter_html.dart';
 import 'package:matrix/matrix.dart';
+import 'package:provider/provider.dart';
 
-import 'package:fluffychat/widgets/matrix.dart';
-import '../../../config/app_config.dart';
-import '../../../config/setting_keys.dart';
-import '../../../pages/image_viewer/image_viewer.dart';
+import '../../../store/im.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/url_launcher.dart';
+import '../../image_viewer/image_viewer.dart';
 
 class HtmlMessage extends StatelessWidget {
   final String html;
@@ -47,9 +46,8 @@ class HtmlMessage extends StatelessWidget {
       '',
     );
 
-    // there is no need to pre-validate the html, as we validate it while rendering
-
-    final matrix = Matrix.of(context);
+    final im = context.read<IMProvider>();
+    final client = im.currentState!.client;
 
     final themeData = Theme.of(context);
     return Html(
@@ -75,37 +73,39 @@ class HtmlMessage extends StatelessWidget {
         final ratio = MediaQuery.of(context).devicePixelRatio;
         return Uri.parse(mxc)
             .getThumbnail(
-              matrix.client,
+              client,
               width: (width ?? 800) * ratio,
               height: (height ?? 800) * ratio,
               method: ThumbnailMethod.scale,
-              animated: AppConfig.autoplayImages ? animated : false,
+              animated: animated,
             )
             .toString();
       },
-      onImageTap: (String mxc) => showDialog(
-        context: Matrix.of(context).navigatorContext,
-        useRootNavigator: false,
-        builder: (_) => ImageViewer(
-          Event(
-            type: EventTypes.Message,
-            content: <String, dynamic>{
-              'body': mxc,
-              'url': mxc,
-              'msgtype': MessageTypes.Image,
-            },
-            senderId: room.client.userID!,
-            originServerTs: DateTime.now(),
-            eventId: 'fake_event',
-            room: room,
+      onImageTap: (String mxc) {
+        showDialog(
+          context: context,
+          useRootNavigator: false,
+          builder: (_) => ImageViewer(
+            Event(
+              type: EventTypes.Message,
+              content: <String, dynamic>{
+                'body': mxc,
+                'url': mxc,
+                'msgtype': MessageTypes.Image,
+              },
+              senderId: room.client.userID!,
+              originServerTs: DateTime.now(),
+              eventId: 'fake_event',
+              room: room,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       setCodeLanguage: (String key, String value) async {
-        await matrix.store.setItem('${SettingKeys.codeLanguage}.$key', value);
+        // await matrix.store.setItem('code_language.$key', value);
       },
       getCodeLanguage: (String key) async {
-        return await matrix.store.getItem('${SettingKeys.codeLanguage}.$key');
+        // return await matrix.store.getItem('code_language.$key');
       },
       getPillInfo: (String url) async {
         final identityParts = url.parseIdentifierIntoParts();
@@ -131,14 +131,11 @@ class HtmlMessage extends StatelessWidget {
           for (final r in room.client.rooms) {
             final state = r.getState('m.room.canonical_alias');
             if (state != null &&
-                ((state.content['alias'] is String &&
-                        state.content['alias'] == identifier) ||
-                    (state.content['alt_aliases'] is List &&
-                        state.content['alt_aliases'].contains(identifier)))) {
+                ((state.content['alias'] is String && state.content['alias'] == identifier) ||
+                    (state.content['alt_aliases'] is List && state.content['alt_aliases'].contains(identifier)))) {
               // we have a room!
               return {
-                'displayname':
-                    r.getLocalizedDisplayname(MatrixLocals(L10n.of(context)!)),
+                'displayname': r.getLocalizedDisplayname(MatrixLocals(L10n.of(context)!)),
                 'avatar_url': r.getState('m.room.avatar')?.content['url'],
               };
             }
@@ -152,8 +149,7 @@ class HtmlMessage extends StatelessWidget {
             return {};
           }
           return {
-            'displayname':
-                r.getLocalizedDisplayname(MatrixLocals(L10n.of(context)!)),
+            'displayname': r.getLocalizedDisplayname(MatrixLocals(L10n.of(context)!)),
             'avatar_url': r.getState('m.room.avatar')?.content['url'],
           };
         }
