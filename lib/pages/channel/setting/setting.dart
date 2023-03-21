@@ -5,11 +5,12 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../../components/components.dart';
+import '../../../utils/functions.dart';
 import '../../../utils/screen.dart';
 import '../../../store/im.dart';
 import '../../../store/theme.dart';
+import 'details.dart';
 import 'encryption.dart';
-import 'info.dart';
 import 'members.dart';
 
 Map<String, int> typeMap = {
@@ -33,7 +34,8 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
   late link.Room? room;
   late TabController _tabController;
   late PageController _pageController;
-  final List<String> _titleList = <String>['关于', '成员', '加密', '设置'];
+  // , '权限'
+  final List<String> _titleList = <String>['关于', '成员', '加密'];
   late List<Widget> pageItems;
 
   @override
@@ -50,7 +52,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
     });
 
     pageItems = [
-      ChannelInfoPage(id: room!.id),
+      ChatDetails(id: room!.id),
       ChannelMemberPage(id: room!.id),
       ChatEncryptionSettings(roomId: room!.id),
     ];
@@ -67,14 +69,14 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
       backgroundColor: ConstTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "# ${room!.getLocalizedDisplayname()}",
+              title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
               height: 40.w,
               onBack: () {
                 context.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "# ${room!.getLocalizedDisplayname()}",
+              title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
               height: 40.w,
               onBack: () {
                 if (widget.closeModel != null) {

@@ -1,3 +1,4 @@
+import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -304,7 +305,8 @@ class _ButtonContent extends StatelessWidget {
       label: Text(label, overflow: TextOverflow.ellipsis),
       style: OutlinedButton.styleFrom(
         foregroundColor: textColor,
-        backgroundColor: Colors.white.withAlpha(64),
+        backgroundColor: ConstTheme.centerChannelColor.withOpacity(0.1),
+        padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
       ),
     );
   }

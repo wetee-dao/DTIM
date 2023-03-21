@@ -76,8 +76,10 @@ dependencies:
   file_picker_cross: ^4.6.0
   share_plus: ^4.0.10+1
   image_picker: ^0.8.7
-  flutter_easyloading: ^3.0.5
   tab_indicator_styler: ^2.0.0
+  desktop_notifications: ^0.6.3
+  desktop_lifecycle: ^0.1.0
+  bot_toast: ^4.0.3
 
 dev_dependencies:
   flutter_test:

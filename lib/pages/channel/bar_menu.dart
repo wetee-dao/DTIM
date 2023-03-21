@@ -1,5 +1,8 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
+import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../utils/screen.dart';
@@ -13,53 +16,50 @@ class ItemModel {
 }
 
 List<List<ItemModel>> menuItems = [
-  [ItemModel('查看详情')],
-  [ItemModel('移动至...')],
-  [ItemModel('通知偏好'), ItemModel('静音频道')],
+  [
+    ItemModel('查看详情', onTap: (link.Room room) {
+      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
+    })
+  ],
+  // [ItemModel('移动至...')], ItemModel('通知偏好'),
+  [ItemModel('静音频道')],
   [
     ItemModel('邀请成员'),
     ItemModel('成员管理', onTap: ((link.Room room) {
-      showModelOrPage(
-        rootNavigatorKey.currentContext!,
-        "/channel_setting/${Uri.encodeComponent(room.id)}",
-      );
+      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/member");
     }))
   ],
   [
-    ItemModel('编辑频道标签'),
+    ItemModel('编辑频道标签', onTap: (link.Room room) {
+      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
+    }),
     ItemModel('重命名频道', onTap: (link.Room room) {
-      rootNavigatorKey.currentContext?.push("/rename_channel/${Uri.encodeComponent(room.id)}");
+      // rootNavigatorKey.currentContext?.push("/rename_channel/${Uri.encodeComponent(room.id)}");
+      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
     }),
     ItemModel('转换为私有频道'),
     ItemModel('归档频道'),
   ],
   [
-    ItemModel('离开频道', onTap: (link.Room room) {
-      showDialog(
-        context: rootNavigatorKey.currentContext!,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: ConstTheme.sidebarBg,
-            buttonPadding: EdgeInsets.all(15.w),
-            title: Text("提示", style: TextStyle(color: ConstTheme.sidebarText)),
-            content: Text("确认离开频道", style: TextStyle(color: ConstTheme.sidebarText)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () async {
-                  await room.leave();
-                },
-                child: Text("确认", style: TextStyle(color: ConstTheme.sidebarText)),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("取消", style: TextStyle(color: ConstTheme.sidebarText)),
-              ),
-            ],
-          );
-        },
-      );
+    ItemModel('离开频道', onTap: (link.Room room) async {
+      if (OkCancelResult.ok ==
+          await showOkCancelAlertDialog(
+            useRootNavigator: false,
+            title: "提示",
+            message: "确认离开频道",
+            context: globalCtx(),
+            okLabel: L10n.of(globalCtx())!.next,
+            cancelLabel: L10n.of(globalCtx())!.cancel,
+          )) {
+        // BotToast.showLoading();
+        showFutureLoadingDialog(
+          context: globalCtx(),
+          future: () async {
+            await room.leave();
+            return true;
+          },
+        );
+      } else {}
     })
   ]
 ];

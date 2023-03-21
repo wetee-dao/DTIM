@@ -61,7 +61,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
     var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.user.id), size: 50);
     return BasePopupMenu(
       verticalMargin: 5.w,
-      horizontalMargin: -1.w,
+      horizontalMargin: 0,
       showArrow: false,
       controller: menuController,
       position: PreferredPosition.topLeft,

@@ -234,7 +234,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                           final client = im.currentState!.client;
                           final result = await showFutureLoadingDialog<String>(
                             context: context,
-                            future: () => client.startDirectChat("@xiaobai:xiaobai.asyou.me"),
+                            future: () => client.startDirectChat(id.text),
                           );
                         },
                       ),

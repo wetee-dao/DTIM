@@ -26,14 +26,18 @@ class _ChannelListPageState extends State<ChannelListPage> {
   late ExpandableController _controllerChannels;
   late ExpandableController _controllerStarred;
   late ExpandableController _controllerUsers;
+  late link.Client client;
+  StreamSubscription? _onRoom;
+
   final BasePopupMenuController menuController = BasePopupMenuController();
   final StreamController<bool> menuStreamController = StreamController<bool>();
+  final StreamController<int> _room = StreamController<int>();
+  final StreamController<int> _directRoom = StreamController<int>();
   double leftWidth = 200.w;
   IMProvider? im;
   Org? org;
   String channelId = "";
   String directId = "";
-  List<User> users = [];
   List<link.Room> channels = [];
   List<link.Room> directChats = [];
 
@@ -59,32 +63,33 @@ class _ChannelListPageState extends State<ChannelListPage> {
     _controllerChannels.dispose();
     _controllerStarred.dispose();
     _controllerUsers.dispose();
+    _onRoom?.cancel();
   }
 
   onImInit() {
     if (im!.current == null || im!.currentState == null) {
       return;
     }
-    var clist = im!.currentState!.channels;
-    setState(() {
-      channels = clist.where((c) => !c.isDirectChat).toList();
-      directChats = clist.where((c) => c.isDirectChat).toList();
-      org = im!.currentState!.org;
-      if (clist.isNotEmpty) {
-        channelId = clist[0].id;
-      }
+    client = im!.currentState!.client;
+    _onRoom = client.onRoomState.stream.listen((event) {
+      getRoom();
     });
-    im!.currentState!.rosterListen((list) {
-      setState(() {
-        users = list;
-      });
-    });
+    getRoom();
   }
 
-  onRoster(event) {
-    setState(() {
-      users = event;
-    });
+  getRoom() {
+    var clist = client.rooms.toList();
+
+    // setState(() {
+    channels = clist.where((c) => !c.isDirectChat).toList();
+    directChats = clist.where((c) => c.isDirectChat).toList();
+    org = im!.currentState!.org;
+    if (clist.isNotEmpty) {
+      channelId = clist[0].id;
+    }
+    _room.add(DateTime.now().millisecondsSinceEpoch);
+    _directRoom.add(DateTime.now().millisecondsSinceEpoch);
+    // });
   }
 
   @override
@@ -216,16 +221,23 @@ class _ChannelListPageState extends State<ChannelListPage> {
                     ),
                   ),
                   ExpandablePanel(
+                    key: const Key("room"),
                     controller: _controllerChannels,
                     collapsed: const SizedBox(),
-                    expanded: ChannelsListView(channels, channelId, (id) {
-                      if (id == channelId) {
-                        return;
-                      }
-                      setState(() {
-                        channelId = id;
-                      });
-                    }),
+                    expanded: StreamBuilder<int>(
+                      stream: _room.stream,
+                      initialData: 0,
+                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return ChannelsListView(channels, channelId, (id) {
+                          if (id == channelId) {
+                            return;
+                          }
+                          setState(() {
+                            channelId = id;
+                          });
+                        });
+                      },
+                    ),
                   ),
                   if (channels.isNotEmpty) SizedBox(height: 10.w),
                   Divider(
@@ -283,16 +295,23 @@ class _ChannelListPageState extends State<ChannelListPage> {
                     ),
                   ),
                   ExpandablePanel(
+                    key: const Key("droom"),
                     controller: _controllerUsers,
                     collapsed: const SizedBox(),
-                    expanded: DirectChats(directChats, channelId, (id) {
-                      if (id == channelId) {
-                        return;
-                      }
-                      setState(() {
-                        channelId = id;
-                      });
-                    }),
+                    expanded: StreamBuilder<int>(
+                      stream: _directRoom.stream,
+                      initialData: 0,
+                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return DirectChats(directChats, channelId, (id) {
+                          if (id == channelId) {
+                            return;
+                          }
+                          setState(() {
+                            channelId = id;
+                          });
+                        });
+                      },
+                    ),
                   ),
                   if (channels.isNotEmpty) SizedBox(height: 10.w),
                   Divider(

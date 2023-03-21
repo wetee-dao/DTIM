@@ -70,10 +70,12 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
 
   void updateView(index) {
     if (!mounted) return;
-    print("updateView updateView ===> " + timeline!.events.length.toString());
+    print("updateView updateView ===> ${timeline!.events.length}");
     _msgController.add(timeline!.events.reversed.last.eventId);
     Timer(const Duration(milliseconds: 20), () {
-      _listController.jumpTo(_listController.position.maxScrollExtent);
+      try {
+        _listController.jumpTo(_listController.position.maxScrollExtent);
+      } catch (e) {}
     });
   }
 
@@ -114,17 +116,17 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
         tools: CloseBar(
           child: Row(
             children: [
-              Icon(
-                Icons.meeting_room_outlined,
-                color: ConstTheme.centerChannelColor.withAlpha(150),
-                size: 19.w,
-              ),
-              SizedBox(width: 10.w),
-              Icon(
-                Icons.task_outlined,
-                color: ConstTheme.centerChannelColor.withAlpha(150),
-                size: 19.w,
-              ),
+              // Icon(
+              //   Icons.meeting_room_outlined,
+              //   color: ConstTheme.centerChannelColor.withAlpha(150),
+              //   size: 19.w,
+              // ),
+              // SizedBox(width: 10.w),
+              // Icon(
+              //   Icons.task_outlined,
+              //   color: ConstTheme.centerChannelColor.withAlpha(150),
+              //   size: 19.w,
+              // ),
               SizedBox(width: 10.w),
               StreamBuilder<link.SyncUpdate>(
                 stream: client!.onSync.stream.where((s) => s.deviceLists != null),
@@ -151,10 +153,15 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 },
               ),
               SizedBox(width: 10.w),
-              Icon(
-                Icons.info_outline,
-                color: ConstTheme.centerChannelColor.withAlpha(150),
-                size: 19.w,
+              InkWell(
+                onTap: () async {
+                  showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
+                },
+                child: Icon(
+                  Icons.info_outline,
+                  color: ConstTheme.centerChannelColor.withAlpha(150),
+                  size: 19.w,
+                ),
               ),
               SizedBox(width: 20.w),
             ],
@@ -191,8 +198,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       if (event.type == link.EventTypes.RoomCreate) {
                         return renderCreate(event);
                       }
-
-                      return Msg(event: event, preEvent: preEvent, client: client!);
+                      return Msg(event: event, preEvent: preEvent, client: client!, timeline: timeline!);
                     },
                   );
                 },
@@ -232,7 +238,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   dd,
                   " 日",
                 ],
-              )} 创建此频道，这是 ${room!.name} 频道的开头。",
+              )} 创建此频道，这是${room!.isDirectChat ? "聊天" : "频道"}的开头。",
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,

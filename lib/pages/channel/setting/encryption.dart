@@ -77,7 +77,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
     );
     if (consent != OkCancelResult.ok) return;
     await showFutureLoadingDialog(
-      context: rootNavigatorKey.currentContext!,
+      context: globalCtx(),
       future: () => room.enableEncryption(),
     );
   }
@@ -89,7 +89,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
         setState(() {});
       }
     };
-    await KeyVerificationDialog(request: req).show(rootNavigatorKey.currentContext!);
+    await KeyVerificationDialog(request: req).show(globalCtx());
   }
 
   void toggleDeviceKey(DeviceKeys key) {
@@ -133,13 +133,27 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
             ),
             if (room.isDirectChat)
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.w),
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => ConstTheme.centerChannelBg),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 19.w, horizontal: 30.w)),
+                      side: MaterialStateProperty.all(BorderSide(
+                        color: ConstTheme.centerChannelColor.withOpacity(0.5),
+                        width: 1,
+                      )),
+                    ),
                     onPressed: startVerification,
                     icon: const Icon(Icons.verified_outlined),
-                    label: Text(L10n.of(context)!.verifyStart),
+                    label: Text(
+                      L10n.of(context)!.verifyStart,
+                      style: TextStyle(
+                        color: ConstTheme.centerChannelColor,
+                        fontSize: 18.w,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -200,6 +214,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                             const SizedBox(width: 4),
                             Text(
                               deviceKeys[i].deviceId ?? L10n.of(context)!.unknownDevice,
+                              style: TextStyle(color: ConstTheme.centerChannelColor),
                             ),
                             const SizedBox(width: 4),
                             Flexible(
@@ -209,13 +224,10 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                                   borderRadius: BorderRadius.circular(
                                     AppConfig.borderRadius,
                                   ),
-                                  side: BorderSide(
-                                    color: Theme.of(context).colorScheme.primary,
-                                  ),
                                 ),
                                 color: Theme.of(context).colorScheme.primaryContainer,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding: EdgeInsets.all(4.w),
                                   child: Text(
                                     deviceKeys[i].userId,
                                     maxLines: 1,
@@ -223,7 +235,6 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
                                       fontSize: 12,
-                                      fontStyle: FontStyle.italic,
                                     ),
                                   ),
                                 ),
@@ -235,6 +246,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                           deviceKeys[i].ed25519Key?.beautified ?? L10n.of(context)!.unknownEncryptionAlgorithm,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 13.w,
                           ),
                         ),
                       ),

@@ -58,7 +58,8 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
       return;
     }
     setState(() {
-      channels = im!.currentState!.channels;
+      var client = im!.currentState!.client;
+      var channels = client.rooms.toList();
       org = im!.currentState!.org;
       if (channels.isNotEmpty) {
         channelId = channels[0].id;

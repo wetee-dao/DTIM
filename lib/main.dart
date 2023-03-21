@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:themed/themed.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'apis/apis.dart';
 import 'router.dart';
@@ -15,6 +15,7 @@ import 'store/db.dart';
 import 'store/theme.dart';
 import 'utils/screen.dart';
 
+final botToastBuilder = BotToastInit();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -62,7 +63,6 @@ void main() async {
 
   // 构建IM全局对象
   IMProvider im = IMProvider();
-  EasyLoading.init();
 
   runApp(App(im: im));
 }
@@ -86,13 +86,38 @@ class App extends StatelessWidget {
           routerDelegate: _router.routerDelegate,
           localizationsDelegates: L10n.localizationsDelegates,
           supportedLocales: L10n.supportedLocales,
-          builder: ((context, child) {
+          theme: ThemeData.light().copyWith(
+            primaryColor: ConstTheme.centerChannelBg,
+            colorScheme: const ColorScheme.light().copyWith(
+              primary: ConstTheme.centerChannelColor,
+              secondary: ConstTheme.centerChannelColor.withAlpha(155),
+            ),
+            dialogTheme: DialogTheme(
+              backgroundColor: ConstTheme.sidebarBg,
+              titleTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 14.w),
+              contentTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 13.w),
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3.w),
+              ),
+              actionsPadding: EdgeInsets.only(bottom: 20.w, right: 15.w),
+            ),
+            textTheme: TextTheme(
+              titleMedium: TextStyle(color: ConstTheme.centerChannelColor),
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
+              hintStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
+            ),
+          ),
+          builder: (context, child) {
             final MediaQueryData data = MediaQuery.of(context);
+            child = botToastBuilder(context, child);
             return MediaQuery(
               data: data.copyWith(textScaleFactor: 1),
-              child: child!,
+              child: child,
             );
-          }),
+          },
         ),
       ),
     );
@@ -101,5 +126,6 @@ class App extends StatelessWidget {
   final GoRouter _router = GoRouter(
     navigatorKey: rootNavigatorKey,
     routes: routers(),
+    observers: [BotToastNavigatorObserver()],
   );
 }

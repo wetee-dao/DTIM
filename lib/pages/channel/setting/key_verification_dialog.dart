@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -108,6 +109,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
         final textEditingController = TextEditingController();
         String input;
         body = Container(
+          color: ConstTheme.centerChannelBg,
           margin: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 import '../models/account.dart';
@@ -29,7 +29,7 @@ List<Org> orgs = [
     name: "我门",
     desc: "we3 在线协作，分布式办公软件",
     color: "#000000",
-    domain: "xiaobai.asyou.me",
+    domain: "im.tc.asyou.me",
     avater: "https://www.asyou.me/static/temp/images/icon-152x152.png",
     img: "https://www.asyou.me/static/temp/images/banner.jpg",
     homeUrl: "www.asyou.me/",
@@ -117,7 +117,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               ),
               onPressed: () async {
                 if (selected.isEmpty) {
-                  EasyLoading.showToast('请选择组织');
+                  BotToast.showText(text: '请选择组织', duration: const Duration(seconds: 2));
                   return;
                 }
                 AccountOrgApi.create().accountSyncOrgs(

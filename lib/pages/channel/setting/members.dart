@@ -39,14 +39,14 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
   void getList() async {
     final client = im.currentState!.client;
 
-    List<link.MatrixEvent>? matrixEvents = await client.getMembersByRoom(widget.id);
-    Iterable<link.User>? users = matrixEvents?.map((e) => link.Event.fromMatrixEvent(e, room!).asUser);
-    if (users == null) {
-      return;
-    }
+    List<link.User> matrixEvents = client.getRoomById(widget.id)!.getParticipants();
+    // Iterable<link.User>? users = matrixEvents?.map((e) => link.Event.fromMatrixEvent(e, room!).asUser);
+    // if (users == null) {
+    //   return;
+    // }
 
     setState(() {
-      userList = users.toList(growable: false);
+      userList = matrixEvents;
     });
   }
 
@@ -60,65 +60,37 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(width: 15.w),
-                  Expanded(
-                    child: Container(
-                      height: 40.w,
-                      margin: EdgeInsets.only(top: 10.w, bottom: 10.w),
-                      padding: EdgeInsets.only(left: 10.w),
-                      decoration: BoxDecoration(
-                        color: ConstTheme.sidebarText.withOpacity(0.1),
-                        borderRadius: BorderRadius.all(Radius.circular(3.w)),
-                      ),
-                      alignment: Alignment.center,
-                      child: TextField(
-                        onTap: () {},
-                        autofocus: true,
-                        keyboardType: TextInputType.text,
-                        style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
-                        decoration: InputDecoration(
-                          label: null,
-                          hintText: '查找频道',
-                          hintStyle: TextStyle(
-                            height: 1.5,
-                            color: ConstTheme.sidebarText.withAlpha(155),
-                          ),
-                          suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
-                          contentPadding: const EdgeInsets.all(0),
-                          border: const OutlineInputBorder(borderSide: BorderSide.none),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40.w,
-                    width: 60.w,
-                    child: Center(
-                      child: InkWell(
-                        onTap: () {
-                          if (widget.closeModel != null) {
-                            widget.closeModel!.call();
-                            return;
-                          }
-                          context.pop();
-                        },
-                        child: Text(
-                          '取消',
-                          style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.w,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                ],
-              ),
+              // Container(
+              //   height: 40.w,
+              //   margin: EdgeInsets.only(top: 10.w, bottom: 10.w, left: 15.w, right: 15.w),
+              //   padding: EdgeInsets.only(left: 10.w),
+              //   decoration: BoxDecoration(
+              //     color: ConstTheme.sidebarText.withOpacity(0.1),
+              //     borderRadius: BorderRadius.all(Radius.circular(3.w)),
+              //   ),
+              //   alignment: Alignment.center,
+              //   child: TextField(
+              //     onTap: () {},
+              //     autofocus: true,
+              //     keyboardType: TextInputType.text,
+              //     style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+              //     decoration: InputDecoration(
+              //       label: null,
+              //       hintText: '查找频道',
+              //       hintStyle: TextStyle(
+              //         height: 1.5,
+              //         color: ConstTheme.sidebarText.withAlpha(155),
+              //       ),
+              //       // suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
+              //       contentPadding: const EdgeInsets.all(0),
+              //       border: const OutlineInputBorder(borderSide: BorderSide.none),
+              //       suffixIcon: IconButton(
+              //         icon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText),
+              //         onPressed: () async {},
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: 10.w,
               ),
@@ -128,7 +100,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                 child: ListView.builder(
                   itemCount: userList.length,
                   shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.vertical,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
@@ -140,37 +112,39 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                               40.w,
                             ),
                             SizedBox(width: 10.w),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  userList[index].calcDisplayname(),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    color: ConstTheme.centerChannelColor.withOpacity(0.6),
-                                    fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    userList[index].calcDisplayname(),
+                                    maxLines: 2,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: ConstTheme.centerChannelColor.withOpacity(0.6),
+                                      fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    textAlign: TextAlign.left,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  userList[index].id,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    color: ConstTheme.centerChannelColor,
-                                    fontWeight: FontWeight.w600,
+                                  Text(
+                                    userList[index].id,
+                                    maxLines: 2,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: ConstTheme.centerChannelColor,
+                                      fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    textAlign: TextAlign.left,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          width: 10.w,
+                          height: 10.w,
                         ),
                       ],
                     );

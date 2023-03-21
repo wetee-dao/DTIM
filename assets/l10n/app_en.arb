@@ -114,7 +114,7 @@
       "senderName": {}
     }
   },
-  "userSentUnknownEvent": "{username} sent a {type} event",
+  "userSentUnknownEvent": "sent {type} event",
   "@userSentUnknownEvent": {
     "type": "text",
     "placeholders": {
@@ -562,5 +562,57 @@
   "waitingPartnerEmoji": "Waiting for partner to accept the emoji…",
   "waitingPartnerNumbers": "Waiting for partner to accept the numbers…",
   "verifySuccess": "You successfully verified!",
+  "changeTheNameOfTheGroup": "Change the name of the group",
+  "displaynameHasBeenChanged": "Displayname has been changed",
+  "editRoomAliases": "Edit room aliases",
+  "create": "Create",
+  "copyToClipboard": "Copy to clipboard",
+  "setAsCanonicalAlias": "Set as main alias",
+  "copiedToClipboard": "Copied to clipboard",
+  "setInvitationLink": "Set invitation link",
+  "alias": "alias",
+  "setGroupDescription": "Set group description",
+  "groupDescriptionHasBeenChanged": "Group description changed",
+  "openCamera": "Open camera",
+  "openGallery": "Open gallery",
+  "editRoomAvatar": "Edit room avatar",
+  "youAreNoLongerParticipatingInThisChat": "You are no longer participating in this chat",
+  "addGroupDescription": "Add a group description",
+  "settings": "Settings",
+  "none": "None",
+  "whoIsAllowedToJoinThisGroup": "Who is allowed to join this group",
+  "visibilityOfTheChatHistory": "Visibility of the chat history",
+  "areGuestsAllowedToJoin": "Are guest users allowed to join",
+  "editChatPermissions": "Edit chat permissions",
+  "whoCanPerformWhichAction": "Who can perform which action",
+  "countParticipants": "{count} participants",
+  "@countParticipants": {
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "inviteContact": "Invite contact",
+  "loadCountMoreParticipants": "Load {count} more participants",
+  "@loadCountMoreParticipants": {
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "banned": "Banned",
+  "invited": "Invited",
+  "leftTheChat": "Left the chat",
+  "admin": "Admin",
+  "moderator": "Moderator",
+  "pleaseEnterYourPassword": "Please enter your password",
+  "serverRequiresEmail": "This server needs to validate your email address for registration.",
+  "weSentYouAnEmail": "We sent you an email",
+  "pleaseClickOnLink": "Please click on the link in the email and then proceed.",
+  "iHaveClickedOnLink": "I have clicked on the link",
+  "pleaseFollowInstructionsOnWeb": "Please follow the instructions on the website and tap on next.",
+  "next": "Next",
+  "openChat": "Open Chat",
+  "markAsRead": "Mark as read",
   "oopsSomethingWentWrong": "Oops, something went wrong…"
 }

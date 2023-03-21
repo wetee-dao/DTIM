@@ -89,10 +89,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '注册波卡生态账户',
+                      '注册兼容 polkadot-js 账户',
                       style: TextStyle(
                         color: ConstTheme.centerChannelBg,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                         fontSize: 19.w,
                       ),
                     ),
@@ -189,7 +189,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               '创建区块链账户',
                               style: TextStyle(
                                 color: ConstTheme.centerChannelBg,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 19.w,
                               ),
                             ),
@@ -211,7 +211,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               '导入区块链账户',
                               style: TextStyle(
                                 color: ConstTheme.centerChannelColor,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 16.w,
                               ),
                             ),

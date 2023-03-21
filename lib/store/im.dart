@@ -34,7 +34,7 @@ class IMProvider with ChangeNotifier {
           print("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
         }
         final db = link.HiveCollectionsDatabase(
-          "${org.domain!.replaceAll(".", "_")}",
+          org.domain!.replaceAll(".", "_"),
           "${dir.path}/_db",
         );
         await db.open();
@@ -44,17 +44,24 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http("192.168.111.109:30003", ''));
+    await client.checkHomeserver(Uri.http(org.domain!, ''));
 
     if (!client.isLogged()) {
-      await client.uiaRequestBackground((auth) {
-        return client.register(
-          username: user.address,
-          password: password,
-          initialDeviceDisplayName: platformGet(),
-          auth: auth,
-        );
-      });
+      // var u = await client
+      //     .getUserProfile("@0x6e8ed045d1f7072a2736d08275100e6e756db8604f011956b2b44dcdf289b407:im.tc.asyou.me");
+
+      try {
+        await client.uiaRequestBackground((auth) {
+          return client.register(
+            username: user.address,
+            password: password,
+            initialDeviceDisplayName: platformGet(),
+            auth: auth,
+          );
+        });
+      } catch (e) {
+        print("注册出现错误");
+      }
 
       // 登陆节点
       await client.login(
@@ -64,6 +71,7 @@ class IMProvider with ChangeNotifier {
       );
       await client.setDisplayName(client.userID!, user.name);
     }
+    print(client.userID);
 
     connections[userName] = client;
     connectionStates[userName] = ImState(client, org, user, stateChange);

@@ -1,9 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -133,7 +133,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               Clipboard.setData(ClipboardData(
                 text: seeds.join(" "),
               )).then((value) {
-                EasyLoading.showToast('助记词复制成功');
+                BotToast.showText(text: '助记词复制成功', duration: const Duration(seconds: 2));
               });
             },
             child: Row(
@@ -268,6 +268,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 color: ConstTheme.centerChannelColor,
               ),
               controller: _passwordController,
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: '账户密码',
                 hintStyle: TextStyle(
@@ -298,6 +299,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
               ),
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: '再次输入密码',
                 hintStyle: TextStyle(
@@ -347,12 +349,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   //保存在本地
                   AccountApi.create().addUser(initUser);
 
-                  //跳转到组织列表
-                  await showOkAlertDialog(
-                    context: context,
-                    title: '提示',
-                    message: '账户创建成功，稍后您需要选择您的组织连接web3网络',
-                  );
+                  BotToast.showText(text: '账户创建成功，稍后您需要选择您的组织连接web3网络', duration: const Duration(seconds: 2));
 
                   rootNavigatorKey.currentContext?.go("/select_org");
                 });

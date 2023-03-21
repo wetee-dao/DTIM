@@ -7,13 +7,16 @@ import '../../store/theme.dart';
 import '../../utils/functions.dart';
 import '../../utils/time.dart';
 import 'content/content.dart';
+import 'content/verification_request_content.dart';
 
 class Msg extends StatefulWidget {
   final link.Event event;
   final link.Event? preEvent;
   final link.Client client;
+  final link.Timeline timeline;
 
-  const Msg({Key? key, required this.event, required this.client, this.preEvent}) : super(key: key);
+  const Msg({Key? key, required this.event, required this.client, this.preEvent, required this.timeline})
+      : super(key: key);
 
   @override
   State<Msg> createState() => _MsgState();
@@ -104,7 +107,7 @@ class _MsgState extends State<Msg> {
                   if (showAvatar)
                     RichText(
                       text: TextSpan(
-                        text: event.senderId == widget.client.userID ? "我" : event.senderId,
+                        text: event.senderId == widget.client.userID ? "我" : user.displayName,
                         style: TextStyle(
                           color: ConstTheme.centerChannelColor,
                           fontWeight: FontWeight.bold,
@@ -147,6 +150,10 @@ class _MsgState extends State<Msg> {
         ],
       );
     }
+    if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {
+      return VerificationRequestContent(event: event, timeline: widget.timeline);
+    }
+
     // if (event.messageType == link.MessageTypes.Image) {
     //   return ClipRRect(
     //     borderRadius: BorderRadius.circular(10.w),

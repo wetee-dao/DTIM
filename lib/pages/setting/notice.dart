@@ -95,7 +95,7 @@ class _NoticePageState extends State<NoticePage> {
     if (delete != true) return;
 
     final success = await showFutureLoadingDialog(
-      context: rootNavigatorKey.currentContext!,
+      context: globalCtx(),
       future: () => client.deletePusher(
         PusherId(
           appId: pusher.appId,

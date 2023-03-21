@@ -1,15 +1,26 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:async';
+import 'package:desktop_notifications/desktop_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:matrix/encryption.dart';
+import 'package:universal_html/html.dart' as html;
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../models/models.dart';
+import '../pages/channel/setting/key_verification_dialog.dart';
+import '../router.dart';
+import '../utils/platform_infos.dart';
+import '../utils/uia_request_manager.dart';
+import '../utils/local_notifications_extension.dart';
 
 // class ImState implements xmpp.ConnectionStateChangedListener {
 class ImState {
   // 用户
   late Account _user;
-
   late Org _org;
+  Account get user => _user;
+  Org get org => _org;
 
   // 外部事件触发器
   late Function _onchange;
@@ -25,9 +36,6 @@ class ImState {
   List<User> rosters = [];
   final List<void Function(List<User>)> _rosterListener = [];
 
-  // 频道消息
-  List<link.Room> channels = [];
-
   StreamSubscription<String>? subscription;
 
   // 构建函数
@@ -41,95 +49,111 @@ class ImState {
     _onchange = onchange;
     _org = org;
     client = connection;
-    client.onLoginStateChanged.stream.listen((link.LoginState loginState) {
-      print("LoginState: ${loginState.toString()}");
+    _registerSubs();
+  }
+
+  bool webHasFocus = true;
+  String? activeRoomId = "";
+  String? _cachedPassword;
+  Timer? _cachedPasswordClearTimer;
+  link.RequestTokenResponse? currentThreepidCreds;
+
+  String? get cachedPassword => _cachedPassword;
+
+  void _initWithStore() async {
+    try {
+      if (client.isLogged()) {
+        // final statusMsg = await store.getItem(SettingKeys.ownStatusMessage);
+        // if (statusMsg?.isNotEmpty ?? false) {
+        //   print('Send cached status message: "$statusMsg"');
+        //   await client.setPresence(
+        //     client.userID!,
+        //     link.PresenceType.online,
+        //     statusMsg: statusMsg,
+        //   );
+        // }
+      }
+    } catch (e, s) {
+      client.onLoginStateChanged.addError(e, s);
+      rethrow;
+    }
+  }
+
+  set cachedPassword(String? p) {
+    print('Password cached');
+    _cachedPasswordClearTimer?.cancel();
+    _cachedPassword = p;
+    _cachedPasswordClearTimer = Timer(const Duration(minutes: 10), () {
+      _cachedPassword = null;
+      print('Cached Password cleared');
     });
+  }
 
-    client.onEvent.stream.listen((link.EventUpdate eventUpdate) {
-      print(eventUpdate.type);
-      print(eventUpdate.content);
-      print("New event update!");
+  StreamSubscription? onRoomKeyRequestSub;
+  StreamSubscription? onKeyVerificationRequestSub;
+  StreamSubscription? onLoginStateChanged;
+  StreamSubscription? onUiaRequest;
+  StreamSubscription? onNotification;
+  int? linuxNotificationId;
+  late String currentClientSecret;
+  final linuxNotifications = PlatformInfos.isLinux ? NotificationsClient() : null;
+
+  void _registerSubs() {
+    print("===========================================_registerSubs");
+    onRoomKeyRequestSub = client.onRoomKeyRequest.stream.listen((RoomKeyRequest request) async {
+      print("===========================================onRoomKeyRequest");
+      // if (widget.clients.any(
+      //   ((cl) =>
+      //       cl.userID == request.requestingDevice.userId && cl.identityKey == request.requestingDevice.curve25519Key),
+      // )) {
+      //   print(
+      //     '[Key Request] Request is from one of our own clients, forwarding the key...',
+      //   );
+      //   await request.forwardKey();
+      // }
     });
-
-    channels = connection.rooms;
+    onKeyVerificationRequestSub = client.onKeyVerificationRequest.stream.listen((KeyVerification request) async {
+      print("===========================================onKeyVerificationRequeston");
+      var hidPopup = false;
+      request.onUpdate = () {
+        if (!hidPopup && {KeyVerificationState.done, KeyVerificationState.error}.contains(request.state)) {
+          Navigator.of(globalCtx()).pop('dialog');
+        }
+        hidPopup = true;
+      };
+      request.onUpdate = null;
+      hidPopup = true;
+      await KeyVerificationDialog(request: request).show(globalCtx());
+    });
+    onLoginStateChanged = client.onLoginStateChanged.stream.listen((state) {
+      print("===========================================onLoginStateChanged");
+      if (state != link.LoginState.loggedIn) {
+        _cancelSubs();
+      }
+    });
+    onUiaRequest = client.onUiaRequest.stream.listen(uiaRequestHandler);
+    if (PlatformInfos.isWeb || PlatformInfos.isLinux) {
+      client.onSync.stream.first.then((s) {
+        html.Notification.requestPermission();
+        onNotification = client.onEvent.stream.where((e) {
+          print("===========================================onNotification");
+          return e.type == link.EventUpdateType.timeline &&
+              [link.EventTypes.Message, link.EventTypes.Sticker, link.EventTypes.Encrypted]
+                  .contains(e.content['type']) &&
+              e.content['sender'] != client.userID;
+        }).listen(showLocalNotification);
+      });
+    }
   }
 
-  Account get user {
-    return _user;
+  void _cancelSubs() {
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<_cancelSubs");
+    onRoomKeyRequestSub?.cancel();
+    onKeyVerificationRequestSub?.cancel();
+    onLoginStateChanged?.cancel();
+    onUiaRequest?.cancel();
+    onNotification?.cancel();
   }
-
-  Org get org {
-    return _org;
-  }
-
-  // @override
-  // void onConnectionStateChanged(xmpp.XmppConnectionState state) {
-  //   currentState = state;
-  //   print("链接状态 =》 " + currentState.toString());
-  //   if (state == xmpp.XmppConnectionState.Ready) {
-  //     var vCardManager = xmpp.VCardManager(_connection);
-  //     vCardManager.getSelfVCard().then((vCard) {
-  //       print('Your info' + vCard.buildXmlString());
-  //     });
-
-  //     // 消息监听
-  //     var messageHandler = xmpp.MessageHandler.getInstance(_connection);
-  //     messageHandler.messagesStream.listen(_messagesListener.onNewMessage);
-
-  //     // 好友监听
-  //     rosterManager = xmpp.RosterManager.getInstance(_connection);
-  //     rosterManager.rosterStream.listen(onRosters);
-
-  //     // var receiver = 'nemanja2@test';
-  //     // var receiverJid = xmpp.Jid.fromFullJid(receiver);
-  //     // rosterManager.addRosterItem(xmpp.Buddy(receiverJid)).then((result) {
-  //     //   if (result.description != null) {
-  //     //     print('add roster' + result.description!);
-  //     //   }
-  //     // });
-
-  //     // sleep(const Duration(seconds: 1));
-  //     // vCardManager.getVCardFor(receiverJid).then((vCard) {
-  //     //   if (vCard != null) {
-  //     //     print('Receiver info' + vCard.buildXmlString());
-  //     //     if (vCard != null && vCard.image != null) {
-  //     //       var file = File('test456789.jpg')..writeAsBytesSync(image.encodeJpg(vCard.image!));
-  //     //       print('IMAGE SAVED TO: ${file.path}');
-  //     //     }
-  //     //   }
-  //     // });
-
-  //     _onchange();
-  //   }
-  // }
-
-  // // 处理事务
-  // void onPresence(xmpp.PresenceData event) {
-  //   print(
-  //     'presence Event from ${event.jid!.fullJid!} PRESENCE: ${event.showElement}',
-  //   );
-  // }
-
-  // // 处理用户列表变化
-  // void onRosters(List<xmpp.Buddy> users) {
-  //   if (_connection.state != xmpp.XmppConnectionState.Ready) {
-  //     return;
-  //   }
-  //   List<User> fs = users.map((u) {
-  //     var f = User();
-  //     f.address = u.jid!.local;
-  //     f.name = u.name ?? "";
-  //     f.avatar = "";
-  //     f.domain = u.jid!.domain;
-  //     f.status = -1;
-  //     return f;
-  //   }).toList();
-  //   var nfs = AccountApi.create().userSyncFriend(_user, fs);
-  //   rosters = nfs;
-  //   for (var i = 0; i < _rosterListener.length; i++) {
-  //     _rosterListener[i](nfs);
-  //   }
-  // }
 
   // 添加监听用户变化句柄
   rosterListen(void Function(List<User>) onData) {

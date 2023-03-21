@@ -17,9 +17,13 @@ String getUserShortId(String id) {
 }
 
 String getUserShortName(String id) {
+  if (!id.startsWith("0x")) {
+    if (id.length > 20) return "${id.substring(0, 19)}...";
+    return id;
+  }
   String userId = id.split(":")[0];
   userId = userId.replaceAll("@", "");
-  return "${userId.substring(0, 12)}...${userId.substring(userId.length - 13, userId.length - 1)}";
+  return "${userId.substring(0, 11)}...${userId.substring(userId.length - 11, userId.length)}";
 }
 
 extension StringExtension on String {

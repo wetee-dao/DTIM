@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../router.dart';
 import '../store/theme.dart';
 import '../utils/screen.dart';
 import 'hover_list_item.dart';
@@ -57,13 +58,21 @@ class _ChannelsListViewState extends State<ChannelsListView> {
                 ),
                 constraints: const BoxConstraints(minHeight: 0),
                 items: <PopupMenuItem<String>>[
-                  renderItem("f", Icons.star_border, "收藏"),
+                  renderItem("f1", Icons.star_border, "收藏"),
                   renderItem("f2", Icons.notifications, "静音频道"),
                   renderItem("f3", Icons.settings, "设置"),
                   renderItem("f4", Icons.add, "添加成员", hideBorder: true),
                 ],
               );
-              if (result != null) {}
+              if (result != null) {
+                switch (result) {
+                  case "f1":
+                  case "f2":
+                  case "f3":
+                  case "f4":
+                    showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(currentId)}/info");
+                }
+              }
               print(result);
               setState(() {
                 hover = -1;

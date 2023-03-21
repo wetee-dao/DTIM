@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 
 import 'components/window/virtual_window_frame.dart';
 import 'pages/channel/create.dart';
-import 'pages/channel/setting/members.dart';
 import 'pages/channel/rename.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
@@ -20,6 +19,9 @@ import 'preloader.dart';
 import 'store/theme.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+globalCtx() {
+  return rootNavigatorKey.currentContext!;
+}
 
 routers() {
   return <GoRoute>[
@@ -106,7 +108,6 @@ getPage(String url, Function closeModel) {
     return CreatePrivatePage(closeModel: closeModel);
   } else if (url.indexOf("/channel_setting/") == 0) {
     var pstr = url.replaceAll("/channel_setting/", "");
-    print(pstr);
     var ps = pstr.split("/");
     return ChannelSettingPage(
       closeModel: closeModel,

@@ -4,6 +4,7 @@ import 'package:matrix/matrix.dart' as link;
 import '../components/name_with_emoji.dart';
 import '../components/user_avatar.dart';
 import '../store/theme.dart';
+import '../utils/functions.dart';
 import '../utils/screen.dart';
 import 'hover_list_item.dart';
 
@@ -16,7 +17,7 @@ Widget DirectChats(List<link.Room> channelsList, String currentId, Function(Stri
     itemCount: channelsList.length,
     itemBuilder: (context, index) {
       var room = channelsList[index];
-      final displayname = room.getLocalizedDisplayname();
+      final displayname = getUserShortName(room.getLocalizedDisplayname());
       return HoverListItem(
         color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
         hoverColor: ConstTheme.sidebarText.withOpacity(0.08),
@@ -50,10 +51,12 @@ Widget DirectChats(List<link.Room> channelsList, String currentId, Function(Stri
                   color: ConstTheme.sidebarText,
                 ),
               ),
-              WidgetUserNameEmoji(
-                displayname,
-                null,
-              ),
+              Expanded(
+                child: WidgetUserNameEmoji(
+                  displayname,
+                  null,
+                ),
+              )
             ],
           ),
         ),

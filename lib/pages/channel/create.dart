@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:future_loading_dialog/future_loading_dialog.dart';
@@ -52,11 +53,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
     );
     //跳转到组织列表
     if (!mounted) return;
-    await showOkAlertDialog(
-      context: context,
-      title: '提示',
-      message: '频道创建成功，现在返回主页面',
-    );
+    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
@@ -179,7 +176,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                               '创建频道',
                               style: TextStyle(
                                 color: ConstTheme.centerChannelBg,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 19.w,
                               ),
                             ),

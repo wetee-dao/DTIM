@@ -6,8 +6,9 @@ import '../../components/components.dart';
 import '../../components/popup.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
+import '../../utils/functions.dart';
 import '../../utils/screen.dart';
-import './chat_menu.dart';
+import 'bar_menu.dart';
 
 class ChannelBar extends StatefulWidget implements PreferredSizeWidget {
   final double _height;
@@ -94,7 +95,7 @@ class _ChannelBarState extends State<ChannelBar> {
                             child: Row(
                               children: [
                                 Text(
-                                  displayname.toUpperCase(),
+                                  getUserShortName(displayname).toUpperCase(),
                                   style: TextStyle(
                                     color: snapshot.data != null && snapshot.data!
                                         ? ConstTheme.centerChannelColor
@@ -154,7 +155,7 @@ class _ChannelBarState extends State<ChannelBar> {
                     ),
                     SizedBox(width: 3.w),
                     Text(
-                      '添加频道描述',
+                      widget.room.topic,
                       style: TextStyle(
                         color: ConstTheme.centerChannelColor.withAlpha(155),
                         fontSize: 13,

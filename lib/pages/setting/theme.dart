@@ -59,7 +59,7 @@ class _ThemePageState extends State<ThemePage> {
             title: const Text('当前已选主题'),
             margin: EdgeInsetsDirectional.only(top: 10.w),
             tiles: [
-              CurrThemeSettingsTile(theme: theme),
+              if (theme != "") CurrThemeSettingsTile(theme: theme),
               ThemeSettingsTile(
                 title: const Text('浅色主题'),
                 initialValue: theme,

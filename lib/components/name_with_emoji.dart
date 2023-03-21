@@ -15,6 +15,7 @@ WidgetUserNameEmoji(String name, String? emoji) {
         color: ConstTheme.sidebarText.withAlpha(155),
         fontWeight: FontWeight.normal,
         fontSize: 15.w,
+        overflow: TextOverflow.ellipsis,
       ),
       children: [
         (emoji != null)
