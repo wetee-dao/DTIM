@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../components/channels_list_view.dart';
+import '../components/chat_list.dart';
 import '../components/direct_chat.dart';
 import '../models/models.dart';
 import '../store/im.dart';
@@ -64,11 +64,6 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
       if (channels.isNotEmpty) {
         channelId = channels[0].id;
       }
-    });
-    im!.currentState!.rosterListen((list) {
-      setState(() {
-        users = list;
-      });
     });
   }
 
@@ -300,7 +295,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
               Expandable(
                 controller: _controllerChannels,
                 collapsed: SizedBox(),
-                expanded: ChannelsListView(channels, channelId, (id) {
+                expanded: ChatList(channels, channelId, (id) {
                   if (id == channelId) {
                     return;
                   }

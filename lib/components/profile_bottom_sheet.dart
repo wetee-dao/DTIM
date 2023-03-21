@@ -75,6 +75,7 @@ class ProfileBottomSheet extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Avatar(
+                      id: profile?.userId ?? "-",
                       mxContent: profile?.avatarUrl,
                       name: profile?.displayName ?? userId,
                       size: Avatar.defaultSize * 3,

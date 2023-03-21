@@ -330,15 +330,6 @@ class ChatDetailsController extends State<ChatDetails> {
 
   static const fixedWidth = 360.0;
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   members ??= client.getRoomById(roomId!)!.getParticipants();
-  //   return SizedBox(
-  //     width: fixedWidth,
-  //     child: ChatDetailsView(this),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     members ??= client.getRoomById(roomId!)!.getParticipants();
@@ -361,8 +352,8 @@ class ChatDetailsController extends State<ChatDetails> {
     );
 
     members!.removeWhere((u) => u.membership == Membership.leave);
-    final actualMembersCount = (room.summary.mInvitedMemberCount ?? 0) + (room.summary.mJoinedMemberCount ?? 0);
-    final canRequestMoreMembers = members!.length < actualMembersCount;
+    // final actualMembersCount = (room.summary.mInvitedMemberCount ?? 0) + (room.summary.mJoinedMemberCount ?? 0);
+    // final canRequestMoreMembers = members!.length < actualMembersCount;
 
     return StreamBuilder(
       stream: room.onUpdate.stream,
@@ -377,7 +368,7 @@ class ChatDetailsController extends State<ChatDetails> {
                 room.getLocalizedDisplayname(
                   MatrixLocals(L10n.of(context)!),
                 ),
-                onTap: room.canSendEvent('m.room.name') ? setDisplaynameAction : null,
+                onTap: room.canSendEvent(EventTypes.RoomName) ? setDisplaynameAction : null,
               ),
 
               renderTile(

@@ -197,6 +197,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                         ),
                         SizedBox(height: 5.w),
                         InkWell(
+                          onTap: () {
+                            context.push("/importSr25519key");
+                          },
                           child: Container(
                             padding: EdgeInsets.symmetric(
                               vertical: 15.w,

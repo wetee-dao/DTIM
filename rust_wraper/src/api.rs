@@ -11,7 +11,7 @@ use asyou_rust_sdk::{account, Client};
 #[tokio::main(flavor = "current_thread")]
 pub async fn connect(url: String) -> anyhow::Result<u32, anyhow::Error> {
     // 创建连接
-    let client: Client = Client::new(url.to_string()).await?;
+    let client: Client = Client::new(url.to_string())?;
 
     Ok(client.index)
 }

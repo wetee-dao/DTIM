@@ -131,32 +131,32 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
               height: 1,
               color: ConstTheme.centerChannelColor.withOpacity(0.08),
             ),
-            if (room.isDirectChat)
-              Padding(
-                padding: EdgeInsets.all(16.w),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => ConstTheme.centerChannelBg),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 19.w, horizontal: 30.w)),
-                      side: MaterialStateProperty.all(BorderSide(
-                        color: ConstTheme.centerChannelColor.withOpacity(0.5),
-                        width: 1,
-                      )),
-                    ),
-                    onPressed: startVerification,
-                    icon: const Icon(Icons.verified_outlined),
-                    label: Text(
-                      L10n.of(context)!.verifyStart,
-                      style: TextStyle(
-                        color: ConstTheme.centerChannelColor,
-                        fontSize: 18.w,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            // if (room.isDirectChat)
+            //   Padding(
+            //     padding: EdgeInsets.all(16.w),
+            //     child: SizedBox(
+            //       width: double.infinity,
+            //       child: ElevatedButton.icon(
+            //         style: ButtonStyle(
+            //           backgroundColor: MaterialStateProperty.resolveWith((states) => ConstTheme.centerChannelBg),
+            //           padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 19.w, horizontal: 30.w)),
+            //           side: MaterialStateProperty.all(BorderSide(
+            //             color: ConstTheme.centerChannelColor.withOpacity(0.5),
+            //             width: 1,
+            //           )),
+            //         ),
+            //         onPressed: startVerification,
+            //         icon: const Icon(Icons.verified_outlined),
+            //         label: Text(
+            //           L10n.of(context)!.verifyStart,
+            //           style: TextStyle(
+            //             color: ConstTheme.centerChannelColor,
+            //             fontSize: 18.w,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
             if (room.encrypted) ...[
               const SizedBox(height: 16),
               ListTile(

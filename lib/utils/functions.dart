@@ -16,6 +16,10 @@ String getUserShortId(String id) {
   return userId;
 }
 
+String getUserOrg(String id) {
+  return id.split(":")[1];
+}
+
 String getUserShortName(String id) {
   if (!id.startsWith("0x")) {
     if (id.length > 20) return "${id.substring(0, 19)}...";

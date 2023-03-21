@@ -1,28 +1,26 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:future_loading_dialog/future_loading_dialog.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
-import 'package:badges/badges.dart' as badges;
 
-import '../components/name_with_emoji.dart';
-import '../components/user_avatar.dart';
 import '../router.dart';
 import '../store/theme.dart';
-import '../utils/functions.dart';
 import '../utils/screen.dart';
 import 'hover_list_item.dart';
 
-class DirectChats extends StatefulWidget {
+class ChatList extends StatefulWidget {
   final List<link.Room> channelsList;
   final String currentId;
   final Function onSelect;
 
-  const DirectChats(this.channelsList, this.currentId, this.onSelect, {Key? key}) : super(key: key);
+  const ChatList(this.channelsList, this.currentId, this.onSelect, {Key? key}) : super(key: key);
 
   @override
-  State<DirectChats> createState() => _DirectChatsState();
+  State<ChatList> createState() => _ChatListState();
 }
 
-class _DirectChatsState extends State<DirectChats> {
+class _ChatListState extends State<ChatList> {
   // 当前激活
   int hover = -1;
 
@@ -37,15 +35,14 @@ class _DirectChatsState extends State<DirectChats> {
       scrollDirection: Axis.vertical,
       itemCount: channelsList.length,
       itemBuilder: (context, index) {
-        var room = channelsList[index];
-        final displayname = getUserShortName(room.getLocalizedDisplayname());
+        final chat = channelsList[index];
         return HoverListItem(
-          key: Key(channelsList[index].id),
+          key: Key(chat.id),
           ishover: index == hover,
-          color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
+          color: currentId == chat.id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
           hoverColor: ConstTheme.sidebarText.withOpacity(0.08),
           onPressed: () async {
-            onSelect(channelsList[index].id);
+            onSelect(chat.id);
           },
           trailing: GestureDetector(
             onTapDown: (e) async {
@@ -65,13 +62,15 @@ class _DirectChatsState extends State<DirectChats> {
                 ),
                 constraints: const BoxConstraints(minHeight: 0),
                 items: <PopupMenuItem<String>>[
-                  renderItem("f1", Icons.star_border, room.isFavourite ? "取消收藏" : "收藏"),
+                  renderItem("f1", Icons.star_border, chat.isFavourite ? "取消收藏" : "收藏"),
                   renderItem(
                     "f2",
                     Icons.notifications,
-                    room.pushRuleState == link.PushRuleState.notify ? "静音频道" : "取消静音",
+                    chat.pushRuleState == link.PushRuleState.notify ? "静音频道" : "取消静音",
                   ),
-                  renderItem("f3", Icons.settings, "设置")
+                  renderItem("f3", Icons.settings, "设置"),
+                  renderItem("f4", Icons.add, "添加成员"),
+                  renderItem("f5", Icons.time_to_leave_outlined, "离开频道", hideBorder: true),
                 ],
               );
               if (result != null) {
@@ -80,23 +79,45 @@ class _DirectChatsState extends State<DirectChats> {
                     await showFutureLoadingDialog(
                       context: globalCtx(),
                       future: () async {
-                        await room.setFavourite(!room.isFavourite);
+                        await chat.setFavourite(!chat.isFavourite);
                       },
                     );
                     break;
                   case "f2":
                     await showFutureLoadingDialog(
                       context: globalCtx(),
-                      future: () => room.pushRuleState == link.PushRuleState.notify
-                          ? room.setPushRuleState(link.PushRuleState.dontNotify)
-                          : room.setPushRuleState(link.PushRuleState.notify),
+                      future: () => chat.pushRuleState == link.PushRuleState.notify
+                          ? chat.setPushRuleState(link.PushRuleState.dontNotify)
+                          : chat.setPushRuleState(link.PushRuleState.notify),
                     );
                     break;
                   case "f3":
                     showModelOrPage(
                       globalCtx(),
-                      "/channel_setting/${Uri.encodeComponent(channelsList[index].id)}/info",
+                      "/channel_setting/${Uri.encodeComponent(chat.id)}/info",
                     );
+                    break;
+                  case "f4":
+                    showModelOrPage(globalCtx(), "/invitation/${Uri.encodeComponent(chat.id)}");
+                    break;
+                  case "f5":
+                    if (OkCancelResult.ok ==
+                        await showOkCancelAlertDialog(
+                          useRootNavigator: false,
+                          title: "提示",
+                          message: "确认离开频道",
+                          context: globalCtx(),
+                          okLabel: L10n.of(globalCtx())!.next,
+                          cancelLabel: L10n.of(globalCtx())!.cancel,
+                        )) {
+                      showFutureLoadingDialog(
+                        context: globalCtx(),
+                        future: () async {
+                          await chat.leave();
+                          return true;
+                        },
+                      );
+                    } else {}
                     break;
                 }
               }
@@ -106,52 +127,51 @@ class _DirectChatsState extends State<DirectChats> {
             },
             child: Container(
               height: 29.w,
-              padding: EdgeInsets.only(right: 6.w, left: 12.w),
+              padding: EdgeInsets.only(right: 12.w, left: 12.w),
               child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
             ),
           ),
-          // child: Container(
-          //   margin: EdgeInsets.only(right: 12.w),
-          //   child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
-          // ),),
           child: Container(
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
                   width: 2.w,
-                  color: currentId == channelsList[index].id ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
+                  color: currentId == chat.id ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
                 ),
               ),
             ),
+            height: 35.w,
             width: double.maxFinite,
-            padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 12.w),
+            // padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 12.w),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
-                  child: badges.Badge(
-                    showBadge: room.isUnread,
-                    badgeStyle: badges.BadgeStyle(badgeColor: ConstTheme.sidebarUnreadText),
-                    badgeContent: Text(
-                      room.notificationCount.toString(),
-                      style: TextStyle(
-                        fontSize: 10.w,
-                        fontWeight: FontWeight.bold,
-                        color: ConstTheme.centerChannelBg,
-                      ),
-                    ),
-                    child: UserAvatar(
-                      room.directChatMatrixID ?? "-",
-                      true,
-                      28.w,
-                      bg: ConstTheme.sidebarText.withOpacity(0.1),
-                      color: ConstTheme.sidebarText,
+                SizedBox(width: 10.w),
+                Container(
+                  width: 25.w,
+                  height: 35.w,
+                  padding: EdgeInsets.only(top: 2.w),
+                  child: Center(
+                    child: Icon(
+                      chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                      size: chat.encrypted ? 24.w : 19.w,
+                      color:
+                          chat.isUnreadOrInvited ? ConstTheme.sidebarUnreadText : ConstTheme.sidebarText.withAlpha(155),
                     ),
                   ),
                 ),
+                SizedBox(width: 5.w),
                 Expanded(
-                  child: WidgetUserNameEmoji(displayname, null),
-                )
+                  child: Text(
+                    chat.getLocalizedDisplayname(),
+                    style: TextStyle(
+                      fontSize: 15.w,
+                      fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
+                      color:
+                          chat.isUnreadOrInvited ? ConstTheme.sidebarUnreadText : ConstTheme.sidebarText.withAlpha(155),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

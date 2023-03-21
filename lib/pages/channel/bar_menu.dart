@@ -15,56 +15,65 @@ class ItemModel {
   ItemModel(this.title, {this.onTap});
 }
 
-List<List<ItemModel>> menuItems = [
-  [
-    ItemModel('查看详情', onTap: (link.Room room) {
-      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
-    })
-  ],
-  // [ItemModel('移动至...')], ItemModel('通知偏好'),
-  [ItemModel('静音频道')],
-  [
-    ItemModel('邀请成员'),
-    ItemModel('成员管理', onTap: ((link.Room room) {
-      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/member");
-    }))
-  ],
-  [
-    ItemModel('编辑频道标签', onTap: (link.Room room) {
-      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
-    }),
-    ItemModel('重命名频道', onTap: (link.Room room) {
-      // rootNavigatorKey.currentContext?.push("/rename_channel/${Uri.encodeComponent(room.id)}");
-      showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
-    }),
-    ItemModel('转换为私有频道'),
-    ItemModel('归档频道'),
-  ],
-  [
-    ItemModel('离开频道', onTap: (link.Room room) async {
-      if (OkCancelResult.ok ==
-          await showOkCancelAlertDialog(
-            useRootNavigator: false,
-            title: "提示",
-            message: "确认离开频道",
-            context: globalCtx(),
-            okLabel: L10n.of(globalCtx())!.next,
-            cancelLabel: L10n.of(globalCtx())!.cancel,
-          )) {
-        // BotToast.showLoading();
-        showFutureLoadingDialog(
-          context: globalCtx(),
-          future: () async {
-            await room.leave();
-            return true;
-          },
-        );
-      } else {}
-    })
-  ]
-];
-
 menuRender(controller, link.Room room) {
+  List<List<ItemModel>> menuItems = [
+    [
+      ItemModel('查看详情', onTap: (link.Room room) {
+        showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
+      })
+    ],
+    // [ItemModel('移动至...')], ItemModel('通知偏好'),
+    [
+      ItemModel(room.pushRuleState == link.PushRuleState.notify ? "静音频道" : "取消静音", onTap: (link.Room room) async {
+        await showFutureLoadingDialog(
+          context: globalCtx(),
+          future: () => room.pushRuleState == link.PushRuleState.notify
+              ? room.setPushRuleState(link.PushRuleState.dontNotify)
+              : room.setPushRuleState(link.PushRuleState.notify),
+        );
+      })
+    ],
+    [
+      ItemModel('邀请成员', onTap: ((link.Room room) {
+        showModelOrPage(globalCtx(), "/invitation/${Uri.encodeComponent(room.id)}");
+      })),
+      ItemModel('查看成员', onTap: ((link.Room room) {
+        showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/member");
+      }))
+    ],
+    [
+      ItemModel('编辑频道标签', onTap: (link.Room room) {
+        showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
+      }),
+      ItemModel('重命名频道', onTap: (link.Room room) {
+        // rootNavigatorKey.currentContext?.push("/rename_channel/${Uri.encodeComponent(room.id)}");
+        showModelOrPage(globalCtx(), "/channel_setting/${Uri.encodeComponent(room.id)}/info");
+      })
+    ],
+    [
+      ItemModel('离开频道', onTap: (link.Room room) async {
+        if (OkCancelResult.ok ==
+            await showOkCancelAlertDialog(
+              useRootNavigator: false,
+              title: "提示",
+              message: "确认离开频道",
+              context: globalCtx(),
+              okLabel: L10n.of(globalCtx())!.next,
+              cancelLabel: L10n.of(globalCtx())!.cancel,
+            )) {
+          // BotToast.showLoading();
+          showFutureLoadingDialog(
+            context: globalCtx(),
+            future: () async {
+              await room.leave();
+              return true;
+            },
+          );
+        } else {}
+      })
+    ]
+  ];
+
   return Container(
     width: 200.w,
     margin: EdgeInsets.all(5.w),

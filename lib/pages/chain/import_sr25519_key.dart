@@ -14,35 +14,26 @@ import '../../apis/account_api.dart';
 import '../../rust_wraper.io.dart';
 import '../../components/app_bar.dart';
 
-class Sr25519KeyPage extends StatefulWidget {
-  const Sr25519KeyPage({Key? key}) : super(key: key);
+class ImportSr25519KeyPage extends StatefulWidget {
+  const ImportSr25519KeyPage({Key? key}) : super(key: key);
 
   @override
-  State<Sr25519KeyPage> createState() => _Sr25519KeyPageState();
+  State<ImportSr25519KeyPage> createState() => _ImportSr25519KeyPageState();
 }
 
-const titles = ["第一步：生成助记词", "第二步：完成创建"];
+const titles = ["第一步：输入助记词", "第二步：完成导入"];
 
-class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
-  List<String> seeds = [];
+class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with WindowListener {
   int step = 0;
   String _name = "";
   String _password = "";
+  final TextEditingController seed = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    getSeeds();
-  }
-
-  getSeeds() {
-    api.seedGenerate().then((value) {
-      setState(() {
-        seeds = value;
-      });
-    });
   }
 
   @override
@@ -69,7 +60,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '创建区块链账户',
+                '导入区块链账户',
                 style: TextStyle(
                   fontSize: 32.w,
                   color: ConstTheme.centerChannelColor,
@@ -104,54 +95,37 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           Container(
             padding: EdgeInsets.all(5.w),
             decoration: BoxDecoration(
-              color: ConstTheme.sidebarBg,
+              color: ConstTheme.centerChannelColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(5.w),
             ),
-            child: Wrap(
-              children: [
-                for (var i = 0; i < seeds.length; i++)
-                  Container(
-                    padding: EdgeInsets.all(5.w),
-                    child: Text(
-                      seeds[i],
-                      style: TextStyle(
-                        fontSize: 14.w,
-                        color: ConstTheme.centerChannelColor,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 5.w,
-          ),
-          InkWell(
-            onTap: () {
-              Clipboard.setData(ClipboardData(
-                text: seeds.join(" "),
-              )).then((value) {
-                BotToast.showText(text: '助记词复制成功', duration: const Duration(seconds: 2));
-              });
-            },
-            child: Row(
-              children: [
-                Icon(
-                  Icons.copy_all,
-                  size: 20.w,
-                  color: ConstTheme.centerChannelColor,
-                ),
-                SizedBox(width: 5.w),
-                Text(
-                  "复制到剪贴板",
-                  style: TextStyle(
-                    fontSize: 14.w,
+            child: Container(
+              height: 40.w,
+              margin: EdgeInsets.all(10.w),
+              padding: EdgeInsets.only(left: 10.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(3.w)),
+              ),
+              alignment: Alignment.center,
+              child: TextField(
+                controller: seed,
+                autofocus: false,
+                minLines: 5,
+                maxLines: 6,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.go,
+                style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 13.w),
+                decoration: InputDecoration(
+                  label: null,
+                  hintText: '',
+                  hintStyle: TextStyle(
+                    height: 1.5,
                     color: ConstTheme.centerChannelColor,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 14.w,
                   ),
+                  contentPadding: const EdgeInsets.all(0),
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
                 ),
-              ],
+              ),
             ),
           ),
           SizedBox(
@@ -176,7 +150,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   style: TextStyle(
                     fontSize: 12.w,
                     color: ConstTheme.linkColor.withOpacity(0.7),
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -186,6 +160,10 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           InkWell(
             onTap: () {
               setState(() {
+                if (seed.text.split(" ").length != 12) {
+                  BotToast.showText(text: '账户助记词长度错误', duration: const Duration(seconds: 2));
+                  return;
+                }
                 step = 1;
               });
             },
@@ -208,7 +186,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                         '下一步',
                         style: TextStyle(
                           color: ConstTheme.centerChannelBg,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
                           fontSize: 19.w,
                         ),
                       ),
@@ -331,7 +309,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 }
                 _formKey.currentState!.save();
 
-                api.getSeedPhrase(seedStr: seeds.join(" "), name: _name, password: _password).then((accountStr) async {
+                api.getSeedPhrase(seedStr: seed.text, name: _name, password: _password).then((accountStr) async {
                   print(accountStr);
                   // 解码区块链账户问题
                   var chainData = ChainData.fromJson(

@@ -129,6 +129,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Avatar(
+                        id: "",
                         mxContent: profile.avatarUrl,
                         name: profile.name ?? roomAlias,
                         size: Avatar.defaultSize * 3,

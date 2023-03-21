@@ -91,6 +91,7 @@ class App extends StatelessWidget {
             colorScheme: const ColorScheme.light().copyWith(
               primary: ConstTheme.centerChannelColor,
               secondary: ConstTheme.centerChannelColor.withAlpha(155),
+              error: ConstTheme.errorTextColor,
             ),
             dialogTheme: DialogTheme(
               backgroundColor: ConstTheme.sidebarBg,

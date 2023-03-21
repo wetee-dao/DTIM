@@ -15,13 +15,15 @@ class ItemModel {
 
 List<List<ItemModel>> menuItems = [
   [
-    ItemModel('邀请人员'),
-    ItemModel('组织设置'),
-    ItemModel('成员管理'),
-    ItemModel('离开组织'),
+    // ItemModel('邀请人员'),
+    // ItemModel('组织设置'),
+    // ItemModel('成员管理'),
+    ItemModel('离开组织', onTap: (id) {
+      // rootNavigatorKey.currentContext?.push("/select_org");
+    }),
   ],
   [
-    ItemModel('创建组织', onTap: (id) {
+    ItemModel('创建或加入组织', onTap: (id) {
       rootNavigatorKey.currentContext?.push("/select_org");
     })
   ]

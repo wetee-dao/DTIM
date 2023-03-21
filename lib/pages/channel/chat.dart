@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -51,6 +52,15 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     if (im.currentState != null) {
       client = im.currentState!.client;
       room = im.currentState!.client.getRoomById(widget.channerlID);
+      if (room!.membership == link.Membership.invite) {
+        Timer(const Duration(milliseconds: 10), () {
+          showFutureLoadingDialog(
+            context: context,
+            future: () => room!.join(),
+          );
+          getTimeline();
+        });
+      }
       getTimeline();
     }
   }
@@ -59,6 +69,22 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   void dispose() {
     _listController.dispose();
     super.dispose();
+  }
+
+  Future<void>? _setReadMarkerFuture;
+  void setReadMarker([_]) {
+    print("setReadMarker");
+    room!.markUnread(false);
+    if (_setReadMarkerFuture == null &&
+        (room!.hasNewMessages || room!.notificationCount > 0) &&
+        timeline != null &&
+        timeline!.events.isNotEmpty &&
+        im.currentState!.webHasFocus) {
+      _setReadMarkerFuture = timeline!.setReadMarker().then((_) {
+        _setReadMarkerFuture = null;
+      });
+      // client!.updateIosBadge();
+    }
   }
 
   getUserName(User u) {
@@ -70,7 +96,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
 
   void updateView(index) {
     if (!mounted) return;
-    print("updateView updateView ===> ${timeline!.events.length}");
+    print("updateView ===> ${timeline!.events.length}");
     _msgController.add(timeline!.events.reversed.last.eventId);
     Timer(const Duration(milliseconds: 20), () {
       try {
@@ -85,8 +111,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       await im.currentState!.client.accountDataLoading;
       timeline = await room!.getTimeline(onInsert: updateView);
       if (timeline!.events.isNotEmpty) {
-        if (room!.markedUnread) room!.markUnread(false);
-        // setReadMarker();updateView
+        if (room!.isUnread) setReadMarker();
       }
       updateView(0);
       // when the scroll controller is attached we want to scroll to an event id, if specified
@@ -104,6 +129,44 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     }
     timeline!.requestKeys(onlineKeyBackupOnly: false);
     return true;
+  }
+
+  void recreateChat() async {
+    final room = this.room;
+    final userId = room?.directChatMatrixID;
+    if (room == null || userId == null) {
+      throw Exception(
+        'Try to recreate a room with is not a DM room. This should not be possible from the UI!',
+      );
+    }
+    final success = await showFutureLoadingDialog(
+      context: context,
+      future: () async {
+        final client = room.client;
+        final waitForSync = client.onSync.stream.firstWhere((s) => s.rooms?.leave?.containsKey(room.id) ?? false);
+        await room.leave();
+        await waitForSync;
+        return await client.startDirectChat(userId);
+      },
+    );
+    final roomId = success.result;
+    if (roomId == null) return;
+    // VRouter.of(context).toSegments(['rooms', roomId]);
+  }
+
+  void leaveChat() async {
+    final room = this.room;
+    if (room == null) {
+      throw Exception(
+        'Leave room button clicked while room is null. This should not be possible from the UI!',
+      );
+    }
+    final success = await showFutureLoadingDialog(
+      context: context,
+      future: room.leave,
+    );
+    if (success.error != null) return;
+    // VRouter.of(context).to('/rooms');
   }
 
   @override
@@ -204,7 +267,45 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 },
               ),
             ),
-            ChannelInputPage(room: room!),
+            room?.isAbandonedDMRoom == true
+                ? Container(
+                    color: ConstTheme.centerChannelColor.withOpacity(0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.all(24.w),
+                            foregroundColor: Theme.of(context).colorScheme.error,
+                          ),
+                          icon: Icon(
+                            Icons.archive_outlined,
+                            size: 20.w,
+                          ),
+                          onPressed: leaveChat,
+                          label: Text(
+                            L10n.of(context)!.leave,
+                            style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 15.w),
+                          ),
+                        ),
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.all(24.w),
+                          ),
+                          icon: Icon(
+                            Icons.forum_outlined,
+                            size: 20.w,
+                          ),
+                          onPressed: recreateChat,
+                          label: Text(
+                            L10n.of(context)!.reopenChat,
+                            style: TextStyle(fontSize: 15.w),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ChannelInputPage(room: room!),
           ],
         ),
       ),

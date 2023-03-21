@@ -158,14 +158,11 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                 InkWell(
                   onTap: submitAction,
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 15.w,
-                      horizontal: 30.w,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 30.w),
                     width: MediaQuery.of(context).size.width * 0.4,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: ConstTheme.centerChannelColor,
+                      color: ConstTheme.buttonBg,
                       borderRadius: BorderRadius.circular(5.w),
                     ),
                     child: Row(
@@ -175,7 +172,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                             child: Text(
                               '创建频道',
                               style: TextStyle(
-                                color: ConstTheme.centerChannelBg,
+                                color: ConstTheme.buttonColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 19.w,
                               ),
@@ -184,7 +181,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                         ),
                         Icon(
                           Icons.navigate_next,
-                          color: ConstTheme.centerChannelBg,
+                          color: ConstTheme.buttonColor,
                         )
                       ],
                     ),

@@ -1,3 +1,5 @@
+import 'package:asyou_app/pages/chain/import_sr25519_key.dart';
+import 'package:asyou_app/pages/channel/invitation.dart';
 import 'package:asyou_app/utils/screen.dart';
 
 import 'pages/channel/create_private.dart';
@@ -9,7 +11,6 @@ import 'package:go_router/go_router.dart';
 
 import 'components/window/virtual_window_frame.dart';
 import 'pages/channel/create.dart';
-import 'pages/channel/rename.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
 import 'pages/chain/sr25519_key.dart';
@@ -50,6 +51,12 @@ routers() {
       },
     ),
     GoRoute(
+      path: '/importSr25519key',
+      builder: (BuildContext context, GoRouterState state) {
+        return renderFram(const ImportSr25519KeyPage());
+      },
+    ),
+    GoRoute(
       path: '/select_org',
       builder: (BuildContext context, GoRouterState state) {
         return renderFram(const SelectOrgPage());
@@ -74,18 +81,18 @@ routers() {
       },
     ),
     GoRoute(
-      path: '/rename_channel/:id',
-      builder: (BuildContext context, GoRouterState state) {
-        return renderFram(RenameChannelPage(id: state.params['id'] ?? ""));
-      },
-    ),
-    GoRoute(
       path: '/channel_setting/:id/:t',
       builder: (BuildContext context, GoRouterState state) {
         return renderFram(ChannelSettingPage(
           id: state.params['id'] ?? "",
           t: state.params['t'] ?? "",
         ));
+      },
+    ),
+    GoRoute(
+      path: '/invitation/:id',
+      builder: (BuildContext context, GoRouterState state) {
+        return renderFram(InvitationPage(id: state.params['id'] ?? ""));
       },
     ),
     GoRoute(
@@ -113,6 +120,13 @@ getPage(String url, Function closeModel) {
       closeModel: closeModel,
       id: Uri.decodeComponent(ps[0]),
       t: Uri.decodeComponent(ps[1]),
+    );
+  } else if (url.indexOf("/invitation/") == 0) {
+    var pstr = url.replaceAll("/invitation/", "");
+    var ps = pstr.split("/");
+    return InvitationPage(
+      closeModel: closeModel,
+      id: Uri.decodeComponent(ps[0]),
     );
   }
 

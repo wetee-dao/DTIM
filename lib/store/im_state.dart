@@ -28,14 +28,6 @@ class ImState {
   // 服务器连接
   late link.Client client;
 
-  // 消息监听
-  // late xmpp.MessagesListener _messagesListener;
-
-  // 好友数据
-  // late xmpp.RosterManager rosterManager;
-  List<User> rosters = [];
-  final List<void Function(List<User>)> _rosterListener = [];
-
   StreamSubscription<String>? subscription;
 
   // 构建函数
@@ -138,8 +130,11 @@ class ImState {
         onNotification = client.onEvent.stream.where((e) {
           print("===========================================onNotification");
           return e.type == link.EventUpdateType.timeline &&
-              [link.EventTypes.Message, link.EventTypes.Sticker, link.EventTypes.Encrypted]
-                  .contains(e.content['type']) &&
+              [
+                link.EventTypes.Message,
+                link.EventTypes.Sticker,
+                link.EventTypes.Encrypted,
+              ].contains(e.content['type']) &&
               e.content['sender'] != client.userID;
         }).listen(showLocalNotification);
       });
@@ -153,16 +148,5 @@ class ImState {
     onLoginStateChanged?.cancel();
     onUiaRequest?.cancel();
     onNotification?.cancel();
-  }
-
-  // 添加监听用户变化句柄
-  rosterListen(void Function(List<User>) onData) {
-    onData(rosters);
-    _rosterListener.add(onData);
-  }
-
-  // 删除用户变化句柄
-  removeRosterListen(void Function(List<User>) onData) {
-    _rosterListener.remove(onData);
   }
 }

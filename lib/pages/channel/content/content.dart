@@ -80,6 +80,7 @@ class MessageContent extends StatelessWidget {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: Avatar(
+                  id: sender.id,
                   mxContent: sender.avatarUrl,
                   name: sender.calcDisplayname(),
                 ),

@@ -16,7 +16,7 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
-  flutter_rust_bridge: ^1.70.0
+  flutter_rust_bridge: 1.71.1
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
@@ -80,6 +80,7 @@ dependencies:
   desktop_notifications: ^0.6.3
   desktop_lifecycle: ^0.1.0
   bot_toast: ^4.0.3
+  badges: ^3.0.2
 
 dev_dependencies:
   flutter_test:

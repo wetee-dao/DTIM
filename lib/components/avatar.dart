@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
 
+import '../store/theme.dart';
+import '../utils/identicon.dart';
+import '../utils/screen.dart';
+import 'mxc_image.dart';
+
 // import '../../utils/string_color.dart';
 // import 'package:fluffychat/widgets/mxc_image.dart';
 
 class Avatar extends StatelessWidget {
   final Uri? mxContent;
   final String? name;
+  final String id;
   final double size;
   final void Function()? onTap;
   static const double defaultSize = 44;
@@ -15,6 +21,7 @@ class Avatar extends StatelessWidget {
   final double fontSize;
 
   const Avatar({
+    required this.id,
     this.mxContent,
     this.name,
     this.size = defaultSize,
@@ -45,16 +52,76 @@ class Avatar extends StatelessWidget {
         ),
       ),
     );
-    final borderRadius = BorderRadius.circular(size / 2);
-    final container = ClipRRect(
-      borderRadius: borderRadius,
-      child: Container(width: size, height: size, color: Theme.of(context).secondaryHeaderColor, child: textWidget),
-    );
+
+    Widget container;
+
+    if (!noPic) {
+      container = Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.w),
+          color: ConstTheme.centerChannelColor.withOpacity(0.1),
+        ),
+        padding: EdgeInsets.all(5.w),
+        alignment: Alignment.topLeft,
+        child: MxcImage(
+          key: Key(mxContent.toString()),
+          uri: mxContent,
+          fit: BoxFit.cover,
+          width: size,
+          height: size,
+          placeholder: (_) => textWidget,
+          cacheKey: mxContent.toString(),
+        ),
+      );
+    } else {
+      container = id == ""
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(5.w),
+              child: Container(
+                width: size,
+                height: size,
+                color: ConstTheme.centerChannelColor.withOpacity(0.1),
+                child: textWidget,
+              ),
+            )
+          : UserAvatar(id, size);
+    }
+
     if (onTap == null) return container;
     return InkWell(
       onTap: onTap,
-      borderRadius: borderRadius,
       child: container,
+    );
+  }
+}
+
+class UserAvatar extends StatelessWidget {
+  final String avatarSrc;
+  final double size;
+  final Color? bg;
+  final Color? color;
+  const UserAvatar(this.avatarSrc, this.size, {Key? key, this.bg, this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var imgw = (size * 0.7).toInt();
+    var imgbg = color ?? ConstTheme.centerChannelColor;
+    var boxBg = bg ?? ConstTheme.centerChannelColor.withOpacity(0.1);
+    var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
+    return Container(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
+      padding: EdgeInsets.all((size - imgw) / 2),
+      alignment: Alignment.topLeft,
+      width: size,
+      height: size,
+      child: Image.memory(
+        img,
+        width: imgw.toDouble(),
+        height: imgw.toDouble(),
+        fit: BoxFit.contain,
+      ),
     );
   }
 }

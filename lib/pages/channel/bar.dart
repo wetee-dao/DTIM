@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
@@ -120,9 +121,16 @@ class _ChannelBarState extends State<ChannelBar> {
                     ),
                     SizedBox(width: 10.w),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        await showFutureLoadingDialog(
+                          context: globalCtx(),
+                          future: () async {
+                            await widget.room.setFavourite(!widget.room.isFavourite);
+                          },
+                        );
+                      },
                       child: Icon(
-                        Icons.star_border,
+                        widget.room.isFavourite ? Icons.star_half_rounded : Icons.star_border_rounded,
                         color: ConstTheme.centerChannelColor.withAlpha(155),
                         size: 18.w,
                       ),
@@ -134,8 +142,10 @@ class _ChannelBarState extends State<ChannelBar> {
                     SizedBox(width: 2.w),
                     InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(3.w)),
-                      onTap: () =>
-                          showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(widget.room.id)}/member"),
+                      onTap: () => showModelOrPage(
+                        context,
+                        "/channel_setting/${Uri.encodeComponent(widget.room.id)}/member",
+                      ),
                       child: Row(
                         children: [
                           SizedBox(width: 3.w),

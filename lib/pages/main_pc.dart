@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:asyou_app/pages/channel_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -10,6 +9,7 @@ import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
 import '../store/theme.dart';
+import 'org.dart';
 
 class PCPage extends StatefulWidget {
   const PCPage({Key? key}) : super(key: key);
@@ -151,7 +151,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
             ),
           ),
           const Flexible(
-            child: ChannelListPage(),
+            child: OrgPage(),
           ),
           GestureDetector(
             child: MouseRegion(

@@ -139,15 +139,24 @@ class _MsgState extends State<Msg> {
 
   renderBody(link.Event event) {
     if (event.type == link.EventTypes.Encryption) {
-      return Row(
-        children: [
-          Icon(Icons.lock_outline, color: ConstTheme.mentionBg, size: 19.w),
-          SizedBox(width: 5.w),
-          Text(
-            "启用了E2E加密",
-            style: TextStyle(fontSize: 16.w, color: ConstTheme.centerChannelColor),
-          )
-        ],
+      return Container(
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.w),
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.lock_outline, color: ConstTheme.mentionBg, size: 19.w),
+            SizedBox(width: 5.w),
+            Text(
+              "启用了E2E加密",
+              style: TextStyle(fontSize: 16.w, color: ConstTheme.centerChannelColor),
+            )
+          ],
+        ),
       );
     }
     if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {

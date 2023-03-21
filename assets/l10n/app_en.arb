@@ -614,5 +614,16 @@
   "next": "Next",
   "openChat": "Open Chat",
   "markAsRead": "Mark as read",
+  "leave": "Leave",
+  "reopenChat": "Reopen chat",
+  "group": "Group",
+  "inviteContactToGroup": "Invite contact to {groupName}",
+  "@inviteContactToGroup": {
+    "type": "text",
+    "placeholders": {
+      "groupName": {}
+    }
+  },
+  "contactHasBeenInvitedToTheGroup": "Contact has been invited to the group",
   "oopsSomethingWentWrong": "Oops, something went wrong…"
 }

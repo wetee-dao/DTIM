@@ -12,5 +12,5 @@ anyhow = "1.0.66"
 serde = "1.0.143"
 serde_json = "1.0.83"
 tokio = { version = "1.20.1", features = ["full"] }
-flutter_rust_bridge = "1.68.0"
+flutter_rust_bridge = "1.71.1"
 asyou_rust_sdk = { git = "https://github.com/dao-entrance/rust-sdk.git" }

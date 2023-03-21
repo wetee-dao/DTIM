@@ -69,8 +69,8 @@ class IMProvider with ChangeNotifier {
         password: password,
         identifier: link.AuthenticationUserIdentifier(user: user.address),
       );
-      await client.setDisplayName(client.userID!, user.name);
     }
+    await client.setDisplayName(client.userID!, user.name);
     print(client.userID);
 
     connections[userName] = client;
