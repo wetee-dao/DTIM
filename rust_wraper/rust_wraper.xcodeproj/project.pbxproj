@@ -194,6 +194,7 @@
 				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
 				CARGO_XCODE_CARGO_FILE_NAME = librust_wraper.dylib;
 				DYLIB_COMPATIBILITY_VERSION = 0;
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = rust_wraper;
 				SUPPORTED_PLATFORMS = macosx;
 			};
@@ -219,6 +220,7 @@
 				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
 				CARGO_XCODE_CARGO_FILE_NAME = librust_wraper.dylib;
 				DYLIB_COMPATIBILITY_VERSION = 0;
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = rust_wraper;
 				SUPPORTED_PLATFORMS = macosx;
 			};

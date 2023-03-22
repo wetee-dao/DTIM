@@ -7,7 +7,7 @@
 		<string>me.asyou.asyou_app</string>
 	</array> 
 	<key>com.apple.security.app-sandbox</key>
-	<true/>
+	<false/>
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
 	<key>com.apple.security.network.server</key>

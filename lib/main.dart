@@ -85,6 +85,7 @@ class App extends StatelessWidget {
           routeInformationParser: _router.routeInformationParser,
           routerDelegate: _router.routerDelegate,
           localizationsDelegates: L10n.localizationsDelegates,
+          locale: const Locale('en'),
           supportedLocales: L10n.supportedLocales,
           theme: ThemeData.light().copyWith(
             primaryColor: ConstTheme.centerChannelBg,
