@@ -36,7 +36,7 @@ class _SettingPageState extends State<SettingPage> {
   final settingNavs = [
     SettingNav("通知", Icons.notifications),
     SettingNav("主题", Icons.notifications),
-    SettingNav("语言和地区", Icons.notifications),
+    // SettingNav("语言和地区", Icons.notifications),
     // SettingNav("音频和视频", Icons.notifications),
     // SettingNav("隐私和可见性", Icons.notifications),
     // SettingNav("高级", Icons.notifications),
