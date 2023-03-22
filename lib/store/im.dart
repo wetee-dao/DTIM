@@ -89,7 +89,7 @@ class IMProvider with ChangeNotifier {
         await client.uiaRequestBackground((auth) {
           return client.register(
             username: me!.address,
-            password: "xxxxxxxxx",
+            password: sign.substring(0, 10),
             initialDeviceDisplayName: platformGet(),
             auth: auth,
           );
