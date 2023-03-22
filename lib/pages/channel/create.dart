@@ -86,109 +86,107 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                 context.pop();
               },
             ),
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.4,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                TextFormField(
-                  style: TextStyle(
+      body: Padding(
+        padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 10.w),
+              TextFormField(
+                style: TextStyle(
+                  color: ConstTheme.centerChannelColor,
+                ),
+                decoration: InputDecoration(
+                  hintText: '频道名称',
+                  hintStyle: TextStyle(
+                    fontSize: 14.w,
                     color: ConstTheme.centerChannelColor,
                   ),
-                  decoration: InputDecoration(
-                    hintText: '频道名称',
-                    hintStyle: TextStyle(
-                      fontSize: 14.w,
-                      color: ConstTheme.centerChannelColor,
-                    ),
-                    filled: true,
-                    fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
-                    border: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.text_fields,
-                      color: ConstTheme.centerChannelColor,
-                    ),
+                  filled: true,
+                  fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.text_fields,
+                    color: ConstTheme.centerChannelColor,
                   ),
-                  onSaved: (v) {
-                    _data.groupName = v ?? "";
-                  },
-                  validator: (value) {
-                    RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                    if (!reg.hasMatch(value ?? "")) {
-                      return '请输入中文、英文、数字、下划线组成昵称';
-                    }
-                    if (value == null || value.isEmpty) {
-                      return '名称不能为空';
-                    }
-                    return null;
-                  },
                 ),
-                SizedBox(height: 10.w),
-                SwitchFormField(
-                  initialValue: _data.preset == link.CreateRoomPreset.publicChat,
-                  decoration: InputDecoration(
-                    hintText: '是否公开',
-                    hintStyle: TextStyle(
-                      fontSize: 14.w,
-                      color: ConstTheme.centerChannelColor,
-                    ),
-                    filled: true,
-                    fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
-                    border: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.public,
-                      color: ConstTheme.centerChannelColor,
-                    ),
+                onSaved: (v) {
+                  _data.groupName = v ?? "";
+                },
+                validator: (value) {
+                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
+                  if (!reg.hasMatch(value ?? "")) {
+                    return '请输入中文、英文、数字、下划线组成昵称';
+                  }
+                  if (value == null || value.isEmpty) {
+                    return '名称不能为空';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10.w),
+              SwitchFormField(
+                initialValue: _data.preset == link.CreateRoomPreset.publicChat,
+                decoration: InputDecoration(
+                  hintText: '是否公开',
+                  hintStyle: TextStyle(
+                    fontSize: 14.w,
+                    color: ConstTheme.centerChannelColor,
                   ),
-                  onSaved: (v) {
-                    if (v == null) {
-                      _data.preset = link.CreateRoomPreset.privateChat;
-                      return;
-                    }
-                    _data.preset = v ? link.CreateRoomPreset.publicChat : link.CreateRoomPreset.privateChat;
-                  },
-                  validator: (value) {
-                    return null;
-                  },
+                  filled: true,
+                  fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.public,
+                    color: ConstTheme.centerChannelColor,
+                  ),
                 ),
-                SizedBox(height: 50.w),
-                InkWell(
-                  onTap: submitAction,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 30.w),
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: ConstTheme.buttonBg,
-                      borderRadius: BorderRadius.circular(5.w),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              '创建频道',
-                              style: TextStyle(
-                                color: ConstTheme.buttonColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 19.w,
-                              ),
+                onSaved: (v) {
+                  if (v == null) {
+                    _data.preset = link.CreateRoomPreset.privateChat;
+                    return;
+                  }
+                  _data.preset = v ? link.CreateRoomPreset.publicChat : link.CreateRoomPreset.privateChat;
+                },
+                validator: (value) {
+                  return null;
+                },
+              ),
+              SizedBox(height: 50.w),
+              InkWell(
+                onTap: submitAction,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 30.w),
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: ConstTheme.buttonBg,
+                    borderRadius: BorderRadius.circular(5.w),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            '创建频道',
+                            style: TextStyle(
+                              color: ConstTheme.buttonColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 19.w,
                             ),
                           ),
                         ),
-                        Icon(
-                          Icons.navigate_next,
-                          color: ConstTheme.buttonColor,
-                        )
-                      ],
-                    ),
+                      ),
+                      Icon(
+                        Icons.navigate_next,
+                        color: ConstTheme.buttonColor,
+                      )
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -163,8 +163,9 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                                 style: TextStyle(
                                   color: ConstTheme.centerChannelColor.withOpacity(0.6),
                                   fontWeight: FontWeight.w600,
+                                  fontSize: 12.w,
                                 ),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.left,
                               ),
                               Text(
                                 userList[index].userId,
@@ -174,8 +175,9 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                                 style: TextStyle(
                                   color: ConstTheme.centerChannelColor,
                                   fontWeight: FontWeight.w600,
+                                  fontSize: 10.w,
                                 ),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.left,
                               ),
                             ],
                           ),

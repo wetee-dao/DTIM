@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ import 'utils/screen.dart';
 final botToastBuilder = BotToastInit();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
   // 数据库初始化
   await initDB();
   var winsystem = SystemApi.create().get();
