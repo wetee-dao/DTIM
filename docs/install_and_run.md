@@ -1,4 +1,4 @@
-# DAO-entrance phase 1 - Milestone 1
+# DAO-entrance phase 1 - Milestone 2
 > NOTE Window flutter_rust_bridge is not ready
 
 This repository is for the submission of milestone 2 of the Web 3 Foundation Grant
