@@ -1,5 +1,5 @@
 use anyhow;
-use asyou_rust_sdk::{account, Client};
+use asyou_rust_sdk::{account, Client,model::account::KeyringJSON};
 
 // use std::sync::Arc;
 // pub enum Platform {
@@ -35,6 +35,17 @@ pub fn get_seed_phrase(seed_str: String, name: String, password: String) -> anyh
     let res = account::get_seed_phrase(seed_str, name, password)?;
     let jstr = serde_json::to_string(&res)?;
     Ok(jstr)
+}
+
+pub fn add_keyring(keyring_str: String, password: String) -> anyhow::Result<bool, anyhow::Error> {
+    let keyring: KeyringJSON = serde_json::from_str(&keyring_str).unwrap();
+    account::add_keyring(keyring, password)?;
+    Ok(true)
+}
+
+pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String, anyhow::Error> {
+    let addr = account::sign_from_address(address, ctx)?;
+    return Ok(addr);
 }
 
 #[derive(Debug, Clone)]

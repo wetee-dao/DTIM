@@ -1,8 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
-
-import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -21,8 +20,6 @@ class ImportSr25519KeyPage extends StatefulWidget {
   State<ImportSr25519KeyPage> createState() => _ImportSr25519KeyPageState();
 }
 
-const titles = ["第一步：输入助记词", "第二步：完成导入"];
-
 class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with WindowListener {
   int step = 0;
   String _name = "";
@@ -38,9 +35,10 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
 
   @override
   Widget build(BuildContext context) {
+    var titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup3];
     return Scaffold(
       appBar: LocalAppBar(
-        title: "创建波卡生态加密账户",
+        title: L10n.of(context)!.signUp,
         onBack: () {
           if (step == 0) {
             context.pop();
@@ -60,7 +58,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '导入区块链账户',
+                L10n.of(context)!.importAccount,
                 style: TextStyle(
                   fontSize: 32.w,
                   color: ConstTheme.centerChannelColor,
@@ -116,7 +114,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 13.w),
                 decoration: InputDecoration(
                   label: null,
-                  hintText: '',
+                  hintText: L10n.of(context)!.inputMnemonic,
                   hintStyle: TextStyle(
                     height: 1.5,
                     color: ConstTheme.centerChannelColor,
@@ -212,7 +210,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 color: ConstTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: '账户昵称',
+                hintText: L10n.of(context)!.accountName,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: ConstTheme.centerChannelColor,
@@ -231,10 +229,10 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               validator: (value) {
                 RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
                 if (!reg.hasMatch(value ?? "")) {
-                  return '请输入中文、英文、数字、下划线组成昵称';
+                  return L10n.of(context)!.accountNameRule;
                 }
                 if (value == null || value.isEmpty) {
-                  return '昵称不能为空';
+                  return L10n.of(context)!.accountNameNotNull;
                 }
                 return null;
               },
@@ -247,7 +245,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                hintText: '账户密码',
+                hintText: L10n.of(context)!.accountPasswd,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: ConstTheme.centerChannelColor,
@@ -266,7 +264,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               validator: (value) {
                 RegExp reg = RegExp(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$');
                 if (!reg.hasMatch(value ?? "")) {
-                  return '密码不能为纯数字或字母，不少于6位';
+                  return L10n.of(context)!.accountPasswdRule;
                 }
                 return null;
               },
@@ -278,7 +276,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               ),
               obscureText: true,
               decoration: InputDecoration(
-                hintText: '再次输入密码',
+                hintText: L10n.of(context)!.accountPasswd2,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: ConstTheme.centerChannelColor,
@@ -296,7 +294,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               },
               validator: (value) {
                 if (_passwordController.text != value) {
-                  return "两次输入密码不一致";
+                  return L10n.of(context)!.accountPasswdNoeq;
                 }
                 return null;
               },
@@ -325,10 +323,9 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
 
                   //保存在本地
                   AccountApi.create().addUser(initUser);
-
                   BotToast.showText(text: '账户创建成功，稍后您需要选择您的组织连接web3网络', duration: const Duration(seconds: 2));
 
-                  rootNavigatorKey.currentContext?.go("/select_org");
+                  rootNavigatorKey.currentContext?.pop();
                 });
               },
               child: Container(

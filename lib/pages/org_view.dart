@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:expandable/expandable.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import './org_menu.dart';
@@ -34,7 +35,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
   final StreamController<bool> menuStreamController = StreamController<bool>();
   double leftWidth = 200.w;
   IMProvider? im;
-  Org? org;
+  AccountOrg? org;
   String channelId = "";
   String directId = "";
   List<link.Room> channels = [];
@@ -50,11 +51,11 @@ class _OrgViewPageState extends State<OrgViewPage> {
       menuStreamController.add(menuController.menuIsShowing);
     });
 
-    () async {
+    Timer(const Duration(milliseconds: 300), () {
       im = context.read<IMProvider>();
       im!.addListener(onImInit);
       onImInit();
-    }();
+    });
   }
 
   @override
@@ -100,9 +101,11 @@ class _OrgViewPageState extends State<OrgViewPage> {
     if (id == channelId) {
       return;
     }
-    setState(() => channelId = id);
-    if (channelId.isNotEmpty) {
-      widget.onChannel(channelId);
+    if (mounted) {
+      setState(() => channelId = id);
+      if (channelId.isNotEmpty) {
+        widget.onChannel(channelId);
+      }
     }
   }
 
@@ -141,7 +144,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         child: Row(
                           children: [
                             Text(
-                              org != null ? org!.name ?? "" : '',
+                              org != null ? org!.orgName ?? "" : '',
                               style: TextStyle(
                                 color: ConstTheme.sidebarText,
                                 fontWeight: FontWeight.w800,
@@ -181,7 +184,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '频道',
+                  L10n.of(context)!.channel,
                   style: TextStyle(
                     color: ConstTheme.sidebarText.withAlpha(155),
                     fontWeight: FontWeight.w800,
@@ -244,7 +247,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '私信',
+                  L10n.of(context)!.directChat,
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 14.w,

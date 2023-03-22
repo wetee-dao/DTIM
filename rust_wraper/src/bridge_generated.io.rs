@@ -21,6 +21,24 @@ pub extern "C" fn wire_get_seed_phrase(
     wire_get_seed_phrase_impl(port_, seed_str, name, password)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_add_keyring(
+    port_: i64,
+    keyring_str: *mut wire_uint_8_list,
+    password: *mut wire_uint_8_list,
+) {
+    wire_add_keyring_impl(port_, keyring_str, password)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_sign_from_address(
+    port_: i64,
+    address: *mut wire_uint_8_list,
+    ctx: *mut wire_uint_8_list,
+) {
+    wire_sign_from_address_impl(port_, address, ctx)
+}
+
 // Section: allocate functions
 
 #[no_mangle]

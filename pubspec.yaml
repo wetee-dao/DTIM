@@ -51,6 +51,7 @@ dependencies:
   # matrix 连接库
   matrix: ^0.18.0
   matrix_link_text: ^1.0.2
+  flutter_matrix_html: ^1.1.0
   # 加载框
   future_loading_dialog: ^0.2.3
   # 日期格式化插件
@@ -63,9 +64,10 @@ dependencies:
   adaptive_dialog: ^1.8.2
   # 缩略图
   flutter_blurhash: ^0.7.0
+  # 视频播放器
   video_player: ^2.6.0
   universal_html: ^2.2.1
-  flutter_matrix_html: ^1.1.0
+
   chewie: ^1.4.0
   flutter_map: ^3.1.0
   latlong2: ^0.8.1

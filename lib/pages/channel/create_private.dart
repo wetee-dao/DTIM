@@ -46,7 +46,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
         await client.searchUserDirectory(search != "" ? "%$search" : "", limit: 10);
 
     setState(() {
-      userList = response.results;
+      userList = response.results.where((u) => u.userId != client.userID).toList();
     });
   }
 
@@ -283,6 +283,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                       future: () async {
                         await client.startDirectChat("${id.text}:${org.domain}");
                         BotToast.showText(text: '创建私信成功', duration: const Duration(seconds: 2));
+                        // ignore: use_build_context_synchronously
                         globalCtx().pop();
                       },
                     );

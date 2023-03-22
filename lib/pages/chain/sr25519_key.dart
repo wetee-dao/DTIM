@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
-
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
@@ -20,8 +20,6 @@ class Sr25519KeyPage extends StatefulWidget {
   @override
   State<Sr25519KeyPage> createState() => _Sr25519KeyPageState();
 }
-
-const titles = ["第一步：生成助记词", "第二步：完成创建"];
 
 class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
   List<String> seeds = [];
@@ -47,9 +45,10 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
+    var titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup2];
     return Scaffold(
       appBar: LocalAppBar(
-        title: "创建波卡生态加密账户",
+        title: L10n.of(context)!.signUp,
         onBack: () {
           if (step == 0) {
             context.pop();
@@ -69,7 +68,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '创建区块链账户',
+                L10n.of(context)!.generate,
                 style: TextStyle(
                   fontSize: 32.w,
                   color: ConstTheme.centerChannelColor,
@@ -132,7 +131,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               Clipboard.setData(ClipboardData(
                 text: seeds.join(" "),
               )).then((value) {
-                BotToast.showText(text: '助记词复制成功', duration: const Duration(seconds: 2));
+                BotToast.showText(text: L10n.of(context)!.mnemonicCopied, duration: const Duration(seconds: 2));
               });
             },
             child: Row(
@@ -144,7 +143,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 ),
                 SizedBox(width: 5.w),
                 Text(
-                  "复制到剪贴板",
+                  L10n.of(context)!.copyClipboard,
                   style: TextStyle(
                     fontSize: 14.w,
                     color: ConstTheme.centerChannelColor,
@@ -172,7 +171,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               Expanded(
                 // margin: EdgeInsets.only(left: 5.w),
                 child: Text(
-                  "请写下你的钱包助记词，放在安全的地方。这个助记词可以用来恢复你的钱包。小心保管，以免失去你的资产。",
+                  L10n.of(context)!.mnemonicNote,
                   style: TextStyle(
                     fontSize: 12.w,
                     color: ConstTheme.linkColor.withOpacity(0.7),
@@ -205,7 +204,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   Expanded(
                     child: Center(
                       child: Text(
-                        '下一步',
+                        L10n.of(context)!.next,
                         style: TextStyle(
                           color: ConstTheme.centerChannelBg,
                           fontWeight: FontWeight.w600,
@@ -234,7 +233,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 color: ConstTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: '账户昵称',
+                hintText: L10n.of(context)!.accountName,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: ConstTheme.centerChannelColor,
@@ -253,10 +252,10 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               validator: (value) {
                 RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
                 if (!reg.hasMatch(value ?? "")) {
-                  return '请输入中文、英文、数字、下划线组成昵称';
+                  return L10n.of(context)!.accountNameRule;
                 }
                 if (value == null || value.isEmpty) {
-                  return '昵称不能为空';
+                  return L10n.of(context)!.accountNameNotNull;
                 }
                 return null;
               },
@@ -269,7 +268,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                hintText: '账户密码',
+                hintText: L10n.of(context)!.accountPasswd,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: ConstTheme.centerChannelColor,
@@ -288,7 +287,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               validator: (value) {
                 RegExp reg = RegExp(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$');
                 if (!reg.hasMatch(value ?? "")) {
-                  return '密码不能为纯数字或字母，不少于6位';
+                  return L10n.of(context)!.accountPasswdRule;
                 }
                 return null;
               },
@@ -300,7 +299,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               ),
               obscureText: true,
               decoration: InputDecoration(
-                hintText: '再次输入密码',
+                hintText: L10n.of(context)!.accountPasswd2,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: ConstTheme.centerChannelColor,
@@ -318,7 +317,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               },
               validator: (value) {
                 if (_passwordController.text != value) {
-                  return "两次输入密码不一致";
+                  return L10n.of(context)!.accountPasswdNoeq;
                 }
                 return null;
               },
@@ -347,10 +346,9 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
 
                   //保存在本地
                   AccountApi.create().addUser(initUser);
+                  BotToast.showText(text: L10n.of(context)!.accountCreated, duration: const Duration(seconds: 2));
 
-                  BotToast.showText(text: '账户创建成功，稍后您需要选择您的组织连接web3网络', duration: const Duration(seconds: 2));
-
-                  rootNavigatorKey.currentContext?.go("/select_org");
+                  rootNavigatorKey.currentContext?.pop();
                 });
               },
               child: Container(
@@ -369,7 +367,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                     Expanded(
                       child: Center(
                         child: Text(
-                          '创建本地账户',
+                          L10n.of(context)!.createAccount,
                           style: TextStyle(
                             color: ConstTheme.centerChannelBg,
                             fontWeight: FontWeight.w600,

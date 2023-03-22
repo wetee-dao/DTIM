@@ -21,6 +21,14 @@ class AccountOrgApi {
     return storeBox.getAll();
   }
 
+  List<AccountOrg> listByAccount(String address) {
+    final query = storeBox.query(AccountOrg_.withAddr.equals(address)).build();
+    var storeOrgs = query.find();
+    query.close();
+
+    return storeOrgs;
+  }
+
   List<AccountOrg> accountSyncOrgs(
     String address,
     List<String> fs,

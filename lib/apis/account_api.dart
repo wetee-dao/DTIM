@@ -24,6 +24,10 @@ class AccountApi {
     return u;
   }
 
+  remove(int id) {
+    return storeBox.remove(id);
+  }
+
   List<Account> getUsers() {
     final builder = storeBox.query();
     final query = builder.build();

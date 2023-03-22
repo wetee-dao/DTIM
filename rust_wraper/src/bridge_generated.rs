@@ -64,6 +64,42 @@ fn wire_get_seed_phrase_impl(
         },
     )
 }
+fn wire_add_keyring_impl(
+    port_: MessagePort,
+    keyring_str: impl Wire2Api<String> + UnwindSafe,
+    password: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "add_keyring",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_keyring_str = keyring_str.wire2api();
+            let api_password = password.wire2api();
+            move |task_callback| add_keyring(api_keyring_str, api_password)
+        },
+    )
+}
+fn wire_sign_from_address_impl(
+    port_: MessagePort,
+    address: impl Wire2Api<String> + UnwindSafe,
+    ctx: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "sign_from_address",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_address = address.wire2api();
+            let api_ctx = ctx.wire2api();
+            move |task_callback| sign_from_address(api_address, api_ctx)
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks

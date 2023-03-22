@@ -25,7 +25,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
 
   double leftWidth = 200.w;
   IMProvider? im;
-  Org? org;
+  AccountOrg? org;
   User? receiverUser;
   String channelId = "";
   List<User> users = [];

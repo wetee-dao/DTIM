@@ -279,6 +279,7 @@
       "username": {}
     }
   },
+  "password": "Password",
   "changePassword": "Change password",
   "@changePassword": {
     "type": "text",
@@ -625,5 +626,33 @@
     }
   },
   "contactHasBeenInvitedToTheGroup": "Contact has been invited to the group",
+  "signUp": "Sign up for a polkadot-js compatible account",
+  "tooManyUsers": "Too many users",
+  "generate": "Generate encrypted account",
+  "welcome": "Welcome to use DAOEnt web3 collaboration software to move your office into the metaverse!",
+  "importAccount": "Import blockchain account",
+  "selectOrg": "Please select organization ",
+  "selectOrgOk": "Organization selected successfully ",
+  "singup1": "Step 1: Generation of mnemonics ",
+  "singup2": "Step 2: Complete creation ",
+  "singup3": "Step 2: Complete import ",
+  "mnemonicCopied": "mnemonic word copied successfully ",
+  "copyClipboard": "Copy to clipboard ",
+  "mnemonicNote": "Please write down your wallet mnemonic and put it in a safe place. This mnemonic can be used to restore your wallet. Take care not to lose your assets.",
+  "accountName": "Account nickname ",
+  "accountPasswd": "Account password ",
+  "accountPasswd2": "Enter the password again ",
+  "accountCreated": "Account created successfully, you will later need to select your organization to connect to web3 network ",
+  "createAccount": "Create local account ",
+  "accountNameRule": "Please enter Chinese, English, numbers, and underscores to form a nickname ",
+  "accountNameNotNull": "Nickname cannot be empty ",
+  "accountPasswdRule": "The password cannot be pure numbers or letters with at least 6 characters ",
+  "accountPasswdNoeq": "Password inconsistency between two entries",
+  "inputMnemonic": "Enter account mnemonic",
+  "channel": "Channel",
+  "directChat": "Direct chat",
+  "chatDetal": "Info",
+  "chatMemeber": "Member",
+  "chatE2e": "Encrypt",
   "oopsSomethingWentWrong": "Oops, something went wrong…"
 }

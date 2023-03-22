@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../router.dart';
+import '../store/im.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
@@ -20,6 +22,7 @@ class PCPage extends StatefulWidget {
 
 class _PCPageState extends State<PCPage> with WindowListener {
   late List<AccountOrg> aorgs;
+  late IMProvider im;
   double rightWidth = 200.w;
   String rightUrl = "";
 
@@ -29,7 +32,8 @@ class _PCPageState extends State<PCPage> with WindowListener {
     if (isPc()) {
       windowManager.addListener(this);
     }
-    aorgs = AccountOrgApi.create().listAll();
+    im = context.read<IMProvider>();
+    aorgs = AccountOrgApi.create().listByAccount(im.me!.address);
   }
 
   @override
@@ -132,6 +136,19 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     ),
                   ),
                   Flexible(child: Container()),
+                  InkWell(
+                    onTap: () {
+                      im.logout();
+                    },
+                    child: SizedBox(
+                      width: 40.w,
+                      height: 40.w,
+                      child: Icon(
+                        Icons.logout_rounded,
+                        color: ConstTheme.sidebarText,
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);

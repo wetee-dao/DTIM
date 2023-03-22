@@ -20,7 +20,7 @@ import 'preloader.dart';
 import 'store/theme.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-globalCtx() {
+BuildContext globalCtx() {
   return rootNavigatorKey.currentContext!;
 }
 
@@ -59,7 +59,8 @@ routers() {
     GoRoute(
       path: '/select_org',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const SelectOrgPage());
+        var auto = state.queryParams["auto"];
+        return renderFram(SelectOrgPage(auto: auto ?? ""));
       },
     ),
     GoRoute(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -35,7 +36,6 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
   late TabController _tabController;
   late PageController _pageController;
   // , '权限'
-  final List<String> _titleList = <String>['关于', '成员', '加密'];
   late List<Widget> pageItems;
 
   @override
@@ -44,18 +44,18 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
     im = context.read<IMProvider>();
     room = im.currentState!.client.getRoomById(widget.id);
 
-    var index = typeMap[widget.t];
-    _tabController = TabController(vsync: this, length: _titleList.length, initialIndex: index!);
-    _pageController = PageController(initialPage: index);
-    _tabController.addListener(() {
-      _pageController.jumpToPage(_tabController.index);
-    });
-
     pageItems = [
       ChatDetails(id: room!.id),
       ChannelMemberPage(id: room!.id),
       ChatEncryptionSettings(roomId: room!.id),
     ];
+
+    var index = typeMap[widget.t];
+    _tabController = TabController(vsync: this, length: pageItems.length, initialIndex: index!);
+    _pageController = PageController(initialPage: index);
+    _tabController.addListener(() {
+      _pageController.jumpToPage(_tabController.index);
+    });
   }
 
   @override
@@ -65,6 +65,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
 
   @override
   Widget build(BuildContext context) {
+    var _titleList = <String>[L10n.of(context)!.chatDetal, L10n.of(context)!.chatMemeber, L10n.of(context)!.chatE2e];
     return Scaffold(
       backgroundColor: ConstTheme.centerChannelBg,
       appBar: widget.closeModel == null

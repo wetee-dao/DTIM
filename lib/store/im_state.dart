@@ -18,9 +18,9 @@ import '../utils/local_notifications_extension.dart';
 class ImState {
   // 用户
   late Account _user;
-  late Org _org;
+  late AccountOrg _org;
   Account get user => _user;
-  Org get org => _org;
+  AccountOrg get org => _org;
 
   // 外部事件触发器
   late Function _onchange;
@@ -33,7 +33,7 @@ class ImState {
   // 构建函数
   ImState(
     link.Client connection,
-    Org org,
+    AccountOrg org,
     Account user,
     Function onchange,
   ) {
@@ -148,5 +148,9 @@ class ImState {
     onLoginStateChanged?.cancel();
     onUiaRequest?.cancel();
     onNotification?.cancel();
+  }
+
+  void dispose() {
+    _cancelSubs();
   }
 }

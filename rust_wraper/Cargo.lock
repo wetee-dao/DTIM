@@ -208,7 +208,6 @@ dependencies = [
 [[package]]
 name = "asyou_rust_sdk"
 version = "0.5.0"
-source = "git+https://github.com/dao-entrance/rust-sdk.git#6c3596da9e8e9d60b4864fe3e6b8d1af4e8a9cd1"
 dependencies = [
  "anyhow",
  "base64 0.13.1",

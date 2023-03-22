@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../models/account.dart';
 import '../objectbox.g.dart';
@@ -17,48 +17,27 @@ import '../store/im.dart';
 import '../store/theme.dart';
 
 class SelectOrgPage extends StatefulWidget {
-  const SelectOrgPage({Key? key}) : super(key: key);
+  final String auto;
+  const SelectOrgPage({Key? key, required this.auto}) : super(key: key);
 
   @override
   State<SelectOrgPage> createState() => _SelectOrgPageState();
 }
 
-List<Org> orgs = [
-  Org(
-    "asyoume",
-    name: "我门",
-    desc: "we3 在线协作，分布式办公软件",
-    color: "#000000",
-    domain: "im.tc.asyou.me",
-    avater: "https://www.asyou.me/static/temp/images/icon-152x152.png",
-    img: "https://www.asyou.me/static/temp/images/banner.jpg",
-    homeUrl: "www.asyou.me/",
-    chainUrl: "wss://chain.asyou.me/",
-  )
-];
-
 class _SelectOrgPageState extends State<SelectOrgPage> {
   StreamSubscription<Query<AccountOrg>>? subscription;
   List<String> selected = [];
   List<Account> accounts = [];
-  String currentAddress = "";
-  IMProvider? im;
+  // String currentAddress = "";
+  late IMProvider im;
 
   @override
   void initState() {
     accounts = AccountApi.create().getUsers();
-    currentAddress = accounts[0].address;
+    // currentAddress = accounts[0].address;
     Future.delayed(Duration.zero).then((value) async {
       im = context.read<IMProvider>();
-      var aorgs = AccountOrgApi.create().listAll();
-
-      if (aorgs.isNotEmpty) {
-        // 登录账户
-        im!.login(aorgs[0].account.target!, orgs[0]);
-        im!.setCurrent(aorgs[0].account.target!, orgs[0]);
-        onImInit();
-      }
-      im!.addListener(onImInit);
+      await gotoOrg();
     });
 
     super.initState();
@@ -70,18 +49,33 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     beforeLeave();
   }
 
+  Future<void> gotoOrg() async {
+    var orgs = AccountOrgApi.create().listByAccount(im.me!.address);
+    print(orgs);
+    // 登录账户
+    if (orgs.isNotEmpty) {
+      await im.connect(orgs[0]);
+      im.setCurrent(orgs[0]);
+      if (isPc()) {
+        // ignore: use_build_context_synchronously
+        globalCtx().go("/pc");
+      } else {
+        // ignore: use_build_context_synchronously
+        globalCtx().go("/mobile");
+      }
+    }
+  }
+
   Future<void> beforeLeave() async {
     if (subscription != null) {
       await subscription!.cancel();
     }
-    if (im != null) {
-      im!.removeListener(onImInit);
-    }
+    im.removeListener(onImInit);
     return;
   }
 
   onImInit() {
-    if (im!.current == null || im!.currentState == null) {
+    if (im.current == null || im.currentState == null) {
       if (isPc()) {
         context.go("/pc");
       } else {
@@ -89,18 +83,18 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
       }
       return;
     }
-    final queryStream = AccountOrgApi.create().storeBox.query(AccountOrg_.withAddr.equals(currentAddress)).watch();
-    subscription = queryStream.listen((query) {
-      var qmsgs = query.find();
-      print(qmsgs);
-    });
+    // final queryStream = AccountOrgApi.create().storeBox.query(AccountOrg_.withAddr.equals(currentAddress)).watch();
+    // subscription = queryStream.listen((query) {
+    //   var qmsgs = query.find();
+    //   print(qmsgs);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: LocalAppBar(
-        title: "请选择组织",
+        title: L10n.of(context)!.selectOrg,
         tools: Row(
           children: [
             ElevatedButton(
@@ -117,19 +111,18 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               ),
               onPressed: () async {
                 if (selected.isEmpty) {
-                  BotToast.showText(text: '请选择组织', duration: const Duration(seconds: 2));
+                  BotToast.showText(text: L10n.of(context)!.selectOrg, duration: const Duration(seconds: 2));
                   return;
                 }
+
                 AccountOrgApi.create().accountSyncOrgs(
-                  currentAddress,
+                  im.me!.address,
                   selected,
                   orgs,
                 );
-                await showOkAlertDialog(
-                  context: context,
-                  title: '提示',
-                  message: '组织选中成功',
-                );
+
+                await gotoOrg();
+                BotToast.showText(text: L10n.of(context)!.selectOrgOk, duration: const Duration(seconds: 2));
                 if (isPc()) {
                   rootNavigatorKey.currentContext?.go("/pc");
                 } else {
@@ -137,7 +130,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 }
               },
               child: Text(
-                '确定',
+                L10n.of(context)!.ok,
                 style: TextStyle(color: ConstTheme.buttonColor),
               ),
             ),
