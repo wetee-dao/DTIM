@@ -130,8 +130,8 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 }
               },
               child: Text(
-                L10n.of(context)!.ok,
-                style: TextStyle(color: ConstTheme.buttonColor),
+                L10n.of(context)!.ok.toUpperCase(),
+                style: TextStyle(color: ConstTheme.buttonColor, fontSize: 16.w),
               ),
             ),
             SizedBox(width: 10.w),

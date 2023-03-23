@@ -31,7 +31,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
   void initState() {
     super.initState();
     im = context.read<IMProvider>();
-    id.text = "@user_id";
+    id.text = "";
     getList();
   }
 

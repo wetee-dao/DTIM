@@ -53,7 +53,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
     Timer(const Duration(milliseconds: 300), () {
       im = context.read<IMProvider>();
-      im!.addListener(onImInit);
+      // im!.addListener(onImInit);
       onImInit();
     });
   }

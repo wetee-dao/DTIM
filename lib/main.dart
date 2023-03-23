@@ -97,7 +97,7 @@ class App extends StatelessWidget {
             ),
             dialogTheme: DialogTheme(
               backgroundColor: ConstTheme.sidebarBg,
-              titleTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 14.w),
+              titleTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 16.w),
               contentTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 13.w),
               surfaceTintColor: Colors.transparent,
               shape: RoundedRectangleBorder(

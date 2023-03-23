@@ -54,7 +54,7 @@ class IMProvider with ChangeNotifier {
     });
     connectionStates = {};
     connections = {};
-    globalCtx().push("/");
+    globalCtx().go("/");
   }
 
   // 连接账户
@@ -89,14 +89,14 @@ class IMProvider with ChangeNotifier {
         await client.uiaRequestBackground((auth) {
           return client.register(
             username: me!.address,
-            password: sign.substring(0, 10),
+            password: "12345678",
+            // password: sign.substring(0, 10),
             initialDeviceDisplayName: platformGet(),
             auth: auth,
           );
         });
       } catch (e) {
-        print(e);
-        print("注册出现错误");
+        print("注册出现错误 => " + e.toString());
       }
 
       // 登陆节点
@@ -107,8 +107,7 @@ class IMProvider with ChangeNotifier {
           identifier: link.AuthenticationUserIdentifier(user: me!.address),
         );
       } catch (e) {
-        print(e);
-        print("登陆节点错误");
+        print("登陆节点错误 => " + e.toString());
       }
     }
     await client.setDisplayName(client.userID!, me!.name);

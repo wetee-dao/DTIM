@@ -47,7 +47,11 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
     final roomID = await showFutureLoadingDialog(
       context: context,
       future: () async {
-        final roomId = await client!.createGroupChat(groupName: _data.groupName, preset: _data.preset);
+        final roomId = await client!.createGroupChat(
+          groupName: _data.groupName,
+          preset: _data.preset,
+          visibility: link.Visibility.public,
+        );
         return roomId;
       },
     );
