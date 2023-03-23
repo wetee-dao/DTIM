@@ -62,6 +62,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
         future: () async {
           await im.connect(orgs[0]);
           im.setCurrent(orgs[0]);
+          BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
             // ignore: use_build_context_synchronously
             globalCtx().go("/pc");
@@ -130,12 +131,6 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 );
 
                 await gotoOrg();
-                BotToast.showText(text: L10n.of(context)!.selectOrgOk, duration: const Duration(seconds: 2));
-                if (isPc()) {
-                  rootNavigatorKey.currentContext?.go("/pc");
-                } else {
-                  rootNavigatorKey.currentContext?.go("/mobile");
-                }
               },
               child: Text(
                 L10n.of(context)!.ok.toUpperCase(),

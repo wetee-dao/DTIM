@@ -141,16 +141,16 @@ class ImState {
     }
   }
 
-  void _cancelSubs() {
+  _cancelSubs() async {
     print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<_cancelSubs");
-    onRoomKeyRequestSub?.cancel();
-    onKeyVerificationRequestSub?.cancel();
-    onLoginStateChanged?.cancel();
-    onUiaRequest?.cancel();
-    onNotification?.cancel();
+    await onRoomKeyRequestSub?.cancel();
+    await onKeyVerificationRequestSub?.cancel();
+    await onLoginStateChanged?.cancel();
+    await onUiaRequest?.cancel();
+    await onNotification?.cancel();
   }
 
-  void dispose() {
-    _cancelSubs();
+  dispose() async {
+    await _cancelSubs();
   }
 }

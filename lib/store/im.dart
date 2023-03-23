@@ -47,11 +47,12 @@ class IMProvider with ChangeNotifier {
     password = "";
     me = null;
     _currentId = "";
-    connections.forEach((key, value) {
-      value.dispose();
+    connections.forEach((key, value) async {
+      await value.logout();
+      await value.dispose();
     });
-    connectionStates.forEach((key, value) {
-      value.dispose();
+    connectionStates.forEach((key, value) async {
+      await value.dispose();
     });
     connectionStates = {};
     connections = {};
@@ -93,13 +94,12 @@ class IMProvider with ChangeNotifier {
     // await client.checkHomeserver(Uri.http(org.domain!, ''));
     await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
 
-    print("client.isLogged() => ${client.isLogged()}");
     if (!client.isLogged()) {
       try {
         await client.uiaRequestBackground((auth) {
           return client.register(
             username: me!.address,
-            password: sign,
+            password: "$signCtx||$sign",
             initialDeviceDisplayName: platformGet(),
             auth: auth,
           );
@@ -107,23 +107,24 @@ class IMProvider with ChangeNotifier {
       } catch (e) {
         print("注册出现错误 => $e");
       }
-
-      printError("登陆节点");
-
-      // 登陆节点
+    }
+    if (!client.isLogged()) {
       try {
         await client.login(
           link.LoginType.mLoginPassword,
           identifier: link.AuthenticationUserIdentifier(user: me!.address),
-          token: signCtx,
           password: sign,
         );
       } catch (e) {
-        print("登陆节点错误 => $e");
+        print("注册出现错误 => $e");
       }
     }
+
     if (client.userID != null) {
       await client.setDisplayName(client.userID!, me!.name);
+    }
+    if (!client.isLogged()) {
+      throw "连接错误";
     }
 
     connections[userName] = client;
