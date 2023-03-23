@@ -91,8 +91,8 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    // await client.checkHomeserver(Uri.http(org.domain!, ''));
-    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
+    await client.checkHomeserver(Uri.http(org.domain!, ''));
+    // await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
 
     if (!client.isLogged()) {
       try {
