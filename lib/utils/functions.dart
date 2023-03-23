@@ -30,6 +30,14 @@ String getUserShortName(String id) {
   return "${userId.substring(0, 11)}...${userId.substring(userId.length - 11, userId.length)}";
 }
 
+void printWarning(String text) {
+  print('\x1B[33m$text\x1B[0m');
+}
+
+void printError(String text) {
+  print('\x1B[31m$text\x1B[0m');
+}
+
 extension StringExtension on String {
   String fisrtUpperCase() {
     if (isEmpty) {

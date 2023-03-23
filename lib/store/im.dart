@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../models/models.dart';
 import '../rust_wraper.io.dart';
+import '../utils/functions.dart';
 import '../utils/screen.dart';
 import './im_state.dart';
 
@@ -13,6 +14,7 @@ class IMProvider with ChangeNotifier {
   // 当前账户
   String _currentId = "";
   String password = "";
+  String signCtx = "";
   String sign = "";
 
   // 当前账户
@@ -28,12 +30,10 @@ class IMProvider with ChangeNotifier {
   Future<bool> login(Account user, String password) async {
     password = password;
     me = user;
-    await api.addKeyring(keyringStr: user.chainData, password: password);
+    signCtx = "${"{\"t\"${DateTime.now().millisecondsSinceEpoch}"}\"t\"}";
     try {
-      sign = await api.signFromAddress(
-        address: user.address,
-        ctx: "${"{\"t\"${DateTime.now().millisecondsSinceEpoch}"}\"t\"}",
-      );
+      await api.addKeyring(keyringStr: user.chainData, password: password);
+      sign = await api.signFromAddress(address: user.address, ctx: signCtx);
     } catch (e) {
       print(e);
       throw "密码错误";
@@ -46,6 +46,7 @@ class IMProvider with ChangeNotifier {
   logout() {
     password = "";
     me = null;
+    _currentId = "";
     connections.forEach((key, value) {
       value.dispose();
     });
@@ -61,7 +62,17 @@ class IMProvider with ChangeNotifier {
   Future<bool> connect(AccountOrg org) async {
     // 构建账户密码
     var userName = '${me!.address}@${org.domain}/${platformGet()}';
-    print("userName => $userName");
+
+    printError("connect => $userName");
+
+    // 删除已有的连接
+    if (connections[userName] != null) {
+      connections[userName]!.dispose();
+    }
+    if (connectionStates[userName] != null) {
+      connectionStates[userName]!.dispose();
+    }
+
     final client = link.Client(
       userName,
       databaseBuilder: (_) async {
@@ -77,11 +88,10 @@ class IMProvider with ChangeNotifier {
       },
     );
 
-    print("org.domain => ${org.domain}");
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http(org.domain!, ''));
-    // await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
+    // await client.checkHomeserver(Uri.http(org.domain!, ''));
+    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
 
     print("client.isLogged() => ${client.isLogged()}");
     if (!client.isLogged()) {
@@ -89,28 +99,32 @@ class IMProvider with ChangeNotifier {
         await client.uiaRequestBackground((auth) {
           return client.register(
             username: me!.address,
-            password: "12345678",
-            // password: sign.substring(0, 10),
+            password: sign,
             initialDeviceDisplayName: platformGet(),
             auth: auth,
           );
         });
       } catch (e) {
-        print("注册出现错误 => " + e.toString());
+        print("注册出现错误 => $e");
       }
+
+      printError("登陆节点");
 
       // 登陆节点
       try {
         await client.login(
           link.LoginType.mLoginPassword,
-          password: sign,
           identifier: link.AuthenticationUserIdentifier(user: me!.address),
+          token: signCtx,
+          password: sign,
         );
       } catch (e) {
-        print("登陆节点错误 => " + e.toString());
+        print("登陆节点错误 => $e");
       }
     }
-    await client.setDisplayName(client.userID!, me!.name);
+    if (client.userID != null) {
+      await client.setDisplayName(client.userID!, me!.name);
+    }
 
     connections[userName] = client;
     connectionStates[userName] = ImState(client, org, me!, stateChange);

@@ -20,8 +20,8 @@ abstract class AppConfig {
   static const Color primaryColorLight = Color(0xFFCCBDEA);
   static const Color secondaryColor = Color(0xFF41a2bc);
 
-  static const String appId = 'im.fluffychat.FluffyChat';
-  static const String appOpenUrlScheme = 'im.fluffychat';
+  static const String appId = 'daoent';
+  static const String appOpenUrlScheme = 'daoent';
   static const bool enableSentry = true;
   static bool renderHtml = true;
   static bool hideRedactedEvents = false;
@@ -35,13 +35,13 @@ abstract class AppConfig {
   static const bool hideTypingUsernames = false;
   static const bool hideAllStateEvents = false;
   static const String inviteLinkPrefix = 'https://matrix.to/#/';
-  static const String deepLinkPrefix = 'im.fluffychat://chat/';
+  static const String deepLinkPrefix = 'x://chat/';
   static const String schemePrefix = 'matrix:';
   static const String pushNotificationsChannelId = 'fluffychat_push';
   static const String pushNotificationsChannelName = 'FluffyChat push channel';
   static const String pushNotificationsChannelDescription = 'Push notifications for FluffyChat';
   static const String pushNotificationsAppId = 'chat.fluffy.fluffychat';
-  static const String pushNotificationsGatewayUrl = 'https://push.fluffychat.im/_matrix/push/v1/notify';
+  static const String pushNotificationsGatewayUrl = 'https://daoent/_matrix/push/v1/notify';
   static const String pushNotificationsPusherFormat = 'event_id_only';
   static const String emojiFontName = 'Noto Emoji';
   static const String emojiFontUrl = 'https://github.com/googlefonts/noto-emoji/';

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
+import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -37,7 +38,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     // currentAddress = accounts[0].address;
     Future.delayed(Duration.zero).then((value) async {
       im = context.read<IMProvider>();
-      await gotoOrg();
+      if (widget.auto == "t") {
+        await gotoOrg();
+      }
     });
 
     super.initState();
@@ -54,15 +57,20 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     print(orgs);
     // 登录账户
     if (orgs.isNotEmpty) {
-      await im.connect(orgs[0]);
-      im.setCurrent(orgs[0]);
-      if (isPc()) {
-        // ignore: use_build_context_synchronously
-        globalCtx().go("/pc");
-      } else {
-        // ignore: use_build_context_synchronously
-        globalCtx().go("/mobile");
-      }
+      showFutureLoadingDialog(
+        context: context,
+        future: () async {
+          await im.connect(orgs[0]);
+          im.setCurrent(orgs[0]);
+          if (isPc()) {
+            // ignore: use_build_context_synchronously
+            globalCtx().go("/pc");
+          } else {
+            // ignore: use_build_context_synchronously
+            globalCtx().go("/mobile");
+          }
+        },
+      );
     }
   }
 
