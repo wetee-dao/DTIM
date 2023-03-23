@@ -225,7 +225,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                                     AppConfig.borderRadius,
                                   ),
                                 ),
-                                color: Theme.of(context).colorScheme.primaryContainer,
+                                color: ConstTheme.centerChannelBg,
                                 child: Padding(
                                   padding: EdgeInsets.all(4.w),
                                   child: Text(
@@ -233,7 +233,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color: ConstTheme.centerChannelColor,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -245,7 +245,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                         subtitle: Text(
                           deviceKeys[i].ed25519Key?.beautified ?? L10n.of(context)!.unknownEncryptionAlgorithm,
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: ConstTheme.centerChannelColor,
                             fontSize: 13.w,
                           ),
                         ),

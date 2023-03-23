@@ -132,8 +132,8 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: L10n.of(context)!.passphraseOrKey,
-                  prefixStyle: TextStyle(color: Theme.of(context).primaryColor),
-                  suffixStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  prefixStyle: TextStyle(color: ConstTheme.centerChannelBg),
+                  suffixStyle: TextStyle(color: ConstTheme.centerChannelBg),
                   border: const OutlineInputBorder(),
                 ),
               ),

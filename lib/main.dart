@@ -88,31 +88,34 @@ class App extends StatelessWidget {
           localizationsDelegates: L10n.localizationsDelegates,
           locale: const Locale('en'),
           supportedLocales: L10n.supportedLocales,
-          theme: ThemeData.light().copyWith(
-            primaryColor: ConstTheme.centerChannelBg,
-            colorScheme: const ColorScheme.light().copyWith(
-              primary: ConstTheme.centerChannelColor,
-              secondary: ConstTheme.centerChannelColor.withAlpha(155),
-              error: ConstTheme.errorTextColor,
-            ),
-            dialogTheme: DialogTheme(
-              backgroundColor: ConstTheme.sidebarBg,
-              titleTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 16.w),
-              contentTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 13.w),
-              surfaceTintColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3.w),
-              ),
-              actionsPadding: EdgeInsets.only(bottom: 20.w, right: 15.w),
-            ),
-            textTheme: TextTheme(
-              titleMedium: TextStyle(color: ConstTheme.centerChannelColor),
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
-              hintStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
-            ),
-          ),
+          theme: ConstTheme.dark.color.value == Colors.black.value
+              ? ThemeData.dark(useMaterial3: true)
+              : ThemeData.light(useMaterial3: true),
+          // theme: ThemeData.light().copyWith(
+          // primaryColor: ConstTheme.centerChannelBg,
+          // colorScheme: const ColorScheme.light().copyWith(
+          //   primary: ConstTheme.centerChannelColor,
+          //   secondary: ConstTheme.centerChannelColor.withAlpha(155),
+          //   error: ConstTheme.errorTextColor,
+          // ),
+          // dialogTheme: DialogTheme(
+          //   backgroundColor: ConstTheme.sidebarBg,
+          //   titleTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 16.w),
+          //   contentTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 13.w),
+          //   surfaceTintColor: Colors.transparent,
+          //   shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.circular(3.w),
+          //   ),
+          //   actionsPadding: EdgeInsets.only(bottom: 20.w, right: 15.w),
+          // ),
+          // textTheme: TextTheme(
+          //   titleMedium: TextStyle(color: ConstTheme.centerChannelColor),
+          // ),
+          // inputDecorationTheme: InputDecorationTheme(
+          //   labelStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
+          //   hintStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
+          // ),
+          // ),
           builder: (context, child) {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);

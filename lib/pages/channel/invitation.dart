@@ -214,7 +214,7 @@ class _InvitationPageState extends State<InvitationPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: ConstTheme.centerChannelColor,
                       ),
                     ),
                     onTap: () => inviteAction(context, contacts[i].id),

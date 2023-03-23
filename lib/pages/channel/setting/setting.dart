@@ -96,15 +96,12 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
             child: TabBar(
               controller: _tabController,
               labelColor: ConstTheme.sidebarHeaderTextColor,
-              labelStyle: TextStyle(fontSize: 13.w),
+              labelStyle: TextStyle(fontSize: 13.w, color: ConstTheme.sidebarHeaderTextColor),
+              unselectedLabelStyle: TextStyle(fontSize: 13.w, color: ConstTheme.sidebarHeaderTextColor),
               labelPadding: const EdgeInsets.only(left: 0, right: 0),
               tabs: _titleList.map((e) => Tab(text: e)).toList(),
+              dividerColor: Colors.transparent,
               indicator: MaterialIndicator(
-                height: 4.w,
-                topLeftRadius: 6.w,
-                topRightRadius: 6.w,
-                horizontalPadding: 20.w,
-                tabPosition: TabPosition.bottom,
                 color: ConstTheme.sidebarTextActiveBorder,
               ),
             ),

@@ -105,14 +105,17 @@ class ThemePrew extends StatelessWidget {
                         : ConstTheme.centerChannelColor,
                   ),
                   SizedBox(width: 5.w),
-                  Text(
-                    theme["codeTheme"]!,
-                    style: TextStyle(
-                      color: ConstTheme.centerChannelColor,
-                      fontSize: 14.w,
-                      height: 1.2,
+                  Expanded(
+                    child: Text(
+                      theme["codeTheme"]!,
+                      style: TextStyle(
+                        color: ConstTheme.centerChannelColor,
+                        fontSize: 14.w,
+                        height: 1.2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

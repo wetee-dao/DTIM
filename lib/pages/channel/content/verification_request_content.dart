@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 
+import '../../../store/theme.dart';
+
 class VerificationRequestContent extends StatelessWidget {
   final Event event;
   final Timeline timeline;
@@ -27,7 +29,7 @@ class VerificationRequestContent extends StatelessWidget {
       padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.w),
-        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+        color: ConstTheme.centerChannelColor.withOpacity(0.1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -36,7 +38,7 @@ class VerificationRequestContent extends StatelessWidget {
           Icon(
             Icons.lock_outlined,
             size: 16.w,
-            color: canceled ? Colors.red : (fullyDone ? Colors.green : Theme.of(context).colorScheme.primary),
+            color: canceled ? Colors.red : (fullyDone ? Colors.green : ConstTheme.centerChannelColor),
           ),
           const SizedBox(width: 8),
           Text(
@@ -45,7 +47,7 @@ class VerificationRequestContent extends StatelessWidget {
                 : (fullyDone
                     ? L10n.of(context)!.verifySuccess
                     : (started ? L10n.of(context)!.loadingPleaseWait : L10n.of(context)!.newVerificationRequest)),
-            style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 14.w),
+            style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 14.w),
           )
         ],
       ),

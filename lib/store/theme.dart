@@ -516,6 +516,8 @@ class ConstTheme {
   static ColorRef errorTextColor = ColorRef(hexToColor(themes[currentTheme]["errorTextColor"]!));
   static ColorRef mentionHighlightBg = ColorRef(hexToColor(themes[currentTheme]["mentionHighlightBg"]!));
   static ColorRef mentionHighlightLink = ColorRef(hexToColor(themes[currentTheme]["mentionHighlightLink"]!));
+  static ColorRef dark = ColorRef(
+      themes[currentTheme]["type"] != null && themes[currentTheme]["type"] == "dark" ? Colors.black : Colors.white);
 }
 
 setTheme(String name) {
@@ -544,6 +546,8 @@ setTheme(String name) {
     ConstTheme.errorTextColor: ColorRef(hexToColor(themes[index]["errorTextColor"]!)),
     ConstTheme.mentionHighlightBg: ColorRef(hexToColor(themes[index]["mentionHighlightBg"]!)),
     ConstTheme.mentionHighlightLink: ColorRef(hexToColor(themes[index]["mentionHighlightLink"]!)),
+    ConstTheme.dark:
+        ColorRef(themes[index]["type"] != null && themes[index]["type"] == "dark" ? Colors.black : Colors.white)
   };
 
   SystemApi.create().saveTheme(name);

@@ -7,6 +7,7 @@ import 'package:matrix_link_text/link_text.dart';
 import 'package:provider/provider.dart';
 
 import '../store/im.dart';
+import '../store/theme.dart';
 import '../utils/url_launcher.dart';
 import 'avatar.dart';
 import '../utils/localized_extension.dart';
@@ -151,7 +152,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
                     title: Text(
                       L10n.of(context)!.groupDescription,
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: ConstTheme.centerChannelColor,
                       ),
                     ),
                     subtitle: LinkText(

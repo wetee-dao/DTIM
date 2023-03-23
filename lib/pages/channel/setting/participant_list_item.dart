@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 
+import '../../../store/theme.dart';
 import '../../../utils/adaptive_bottom_sheet.dart';
 import '../../../components/avatar.dart';
 
@@ -46,17 +47,17 @@ class ParticipantListItem extends StatelessWidget {
                 ),
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: ConstTheme.centerChannelBg,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: ConstTheme.centerChannelColor,
                   ),
                 ),
                 child: Text(
                   permissionBatch,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: ConstTheme.centerChannelColor,
                   ),
                 ),
               ),

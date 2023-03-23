@@ -276,7 +276,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.all(24.w),
-                            foregroundColor: Theme.of(context).colorScheme.error,
+                            foregroundColor: ConstTheme.errorTextColor,
                           ),
                           icon: Icon(
                             Icons.archive_outlined,
@@ -285,7 +285,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                           onPressed: leaveChat,
                           label: Text(
                             L10n.of(context)!.leave,
-                            style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 15.w),
+                            style: TextStyle(color: ConstTheme.errorTextColor, fontSize: 15.w),
                           ),
                         ),
                         TextButton.icon(

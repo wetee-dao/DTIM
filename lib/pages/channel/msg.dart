@@ -143,7 +143,7 @@ class _MsgState extends State<Msg> {
         padding: EdgeInsets.all(8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.w),
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+          color: ConstTheme.centerChannelColor.withOpacity(0.1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

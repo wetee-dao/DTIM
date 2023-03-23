@@ -100,11 +100,12 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                     GridView.builder(
                       shrinkWrap: true,
                       itemCount: themesCurr.length,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 20,
                         crossAxisSpacing: 20,
-                        childAspectRatio: 1.4,
+                        childAspectRatio: 1.35,
                       ),
                       itemBuilder: (_, index) => ThemePrew(
                         theme: themesCurr[index],

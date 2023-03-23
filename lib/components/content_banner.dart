@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 
+import '../store/theme.dart';
 import './mxc_image.dart';
 
 class ContentBanner extends StatelessWidget {
@@ -30,7 +31,7 @@ class ContentBanner extends StatelessWidget {
       height: height,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
+        color: ConstTheme.centerChannelBg,
       ),
       child: Stack(
         children: <Widget>[
