@@ -50,3 +50,4 @@ app.*.map.json
 **/build/
 
 exts/xmpp_dart
+libolm.3.dylib
