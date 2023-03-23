@@ -30,7 +30,7 @@ class IMProvider with ChangeNotifier {
   Future<bool> login(Account user, String password) async {
     password = password;
     me = user;
-    signCtx = "${"{\"t\"${DateTime.now().millisecondsSinceEpoch}"}\"t\"}";
+    signCtx = "${"{\"t\":\"${DateTime.now().millisecondsSinceEpoch}"}\"}";
     try {
       await api.addKeyring(keyringStr: user.chainData, password: password);
       sign = await api.signFromAddress(address: user.address, ctx: signCtx);
@@ -91,8 +91,8 @@ class IMProvider with ChangeNotifier {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http(org.domain!, ''));
-    // await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
+    // await client.checkHomeserver(Uri.http(org.domain!, ''));
+    await client.checkHomeserver(Uri.http("127.0.0.1:8008", ''));
 
     if (!client.isLogged()) {
       try {
@@ -113,7 +113,7 @@ class IMProvider with ChangeNotifier {
         await client.login(
           link.LoginType.mLoginPassword,
           identifier: link.AuthenticationUserIdentifier(user: me!.address),
-          password: sign,
+          password: "$signCtx||$sign",
         );
       } catch (e) {
         print("注册出现错误 => $e");
