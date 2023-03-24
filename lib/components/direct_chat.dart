@@ -40,7 +40,8 @@ class _DirectChatsState extends State<DirectChats> {
         var room = channelsList[index];
         final displayname = getUserShortName(room.getLocalizedDisplayname());
         return HoverListItem(
-          key: Key(channelsList[index].id),
+          key: Key(room.id),
+          subkey: "DirectChat$index",
           ishover: index == hover,
           color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
           hoverColor: ConstTheme.sidebarText.withOpacity(0.08),

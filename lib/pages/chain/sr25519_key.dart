@@ -183,6 +183,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           ),
           SizedBox(height: 50.w),
           InkWell(
+            key: const Key("goNext"),
             onTap: () {
               setState(() {
                 step = 1;
@@ -229,6 +230,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
         child: Column(
           children: [
             TextFormField(
+              key: const Key("nick"),
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
               ),
@@ -262,6 +264,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             ),
             SizedBox(height: 10.w),
             TextFormField(
+              key: const Key("passwd"),
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
               ),
@@ -294,6 +297,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             ),
             SizedBox(height: 10.w),
             TextFormField(
+              key: const Key("passwd2"),
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
               ),
@@ -324,6 +328,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             ),
             SizedBox(height: 50.w),
             InkWell(
+              key: const Key("keyDone"),
               onTap: () {
                 if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
                   return;

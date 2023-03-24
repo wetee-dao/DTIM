@@ -7,6 +7,7 @@ class HoverListItem extends StatefulWidget {
   final VoidCallback onPressed;
   final Widget? trailing;
   final Widget child;
+  final String subkey;
 
   const HoverListItem({
     Key? key,
@@ -16,6 +17,7 @@ class HoverListItem extends StatefulWidget {
     this.color,
     this.hoverColor,
     this.ishover,
+    required this.subkey,
   }) : super(key: key);
 
   @override
@@ -40,10 +42,10 @@ class HoverListItemState extends State<HoverListItem> {
         });
       },
       child: GestureDetector(
+        key: Key(widget.subkey),
         behavior: HitTestBehavior.translucent,
         onTap: () => widget.onPressed(),
         child: Container(
-          key: widget.key,
           color: calcHover ? widget.hoverColor : widget.color,
           child: widget.trailing == null
               ? widget.child

@@ -116,6 +116,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
           Expanded(
             flex: 1,
             child: TextField(
+              key: const Key("chatInput"),
               controller: _msgController,
               style: TextStyle(
                 color: ConstTheme.centerChannelColor,
@@ -218,7 +219,8 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
             ),
           ),
           SizedBox(width: 10.w),
-          GestureDetector(
+          InkWell(
+            key: const Key("chatSendIcon"),
             onTap: () {
               if (_msgController.text == "") return;
               widget.room.sendTextEvent(_msgController.text);

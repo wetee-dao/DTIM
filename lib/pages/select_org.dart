@@ -54,7 +54,6 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
   Future<void> gotoOrg() async {
     var orgs = AccountOrgApi.create().listByAccount(im.me!.address);
-    print(orgs);
     // 登录账户
     if (orgs.isNotEmpty) {
       showFutureLoadingDialog(
@@ -142,7 +141,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
         ),
       ),
       backgroundColor: ConstTheme.centerChannelBg,
-      body: Row(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -255,65 +254,29 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                   );
                 },
               ),
-              // Wrap(
-              //   spacing: 10.w,
-              //   runSpacing: 10.w,
-              //   runAlignment: WrapAlignment.start,
-              //   alignment: WrapAlignment.start,
-              //   crossAxisAlignment: WrapCrossAlignment.start,
-              //   children: [
-              //     for (var i = 0; i < orgs.length; i++)
-              //       InkWell(
-              //         onTap: () {},
-              //         child: Container(
-              //           // margin: EdgeInsets.all(10.w),
-              //           decoration: BoxDecoration(
-              //             color: ConstTheme.sidebarBg.withAlpha(50),
-              //           ),
-              //           width: 200.w,
-              //           // height: 100.w,
-              //           child: Column(
-              //             mainAxisAlignment: MainAxisAlignment.start,
-              //             children: [
-              //               Image.network(
-              //                 orgs[i].avater ?? "",
-              //                 width: double.infinity,
-              //                 fit: BoxFit.cover,
-              //                 height: 150.w,
-              //               ),
-              //               Padding(
-              //                 padding: EdgeInsets.symmetric(
-              //                     vertical: 15.w, horizontal: 10.w),
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     Text(
-              //
-              //                       orgs[i].name ?? "",
-              //                       style: TextStyle(
-              //                         color: ConstTheme.centerChannelColor,
-              //                         fontSize: 16.w,
-              //                       ),
-              //                     ),
-              //                     Text(
-              //
-              //                       orgs[i].desc ?? "",
-              //                       style: TextStyle(
-              //                         color: ConstTheme.centerChannelColor,
-              //                         fontSize: 12.w,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               )
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //   ],
-              // ),
             ),
-          )
+          ),
+          InkWell(
+            key: const Key("orgOk"),
+            onTap: () async {
+              if (selected.isEmpty) {
+                BotToast.showText(text: L10n.of(context)!.selectOrg, duration: const Duration(seconds: 2));
+                return;
+              }
+
+              AccountOrgApi.create().accountSyncOrgs(
+                im.me!.address,
+                selected,
+                orgs,
+              );
+
+              await gotoOrg();
+            },
+            child: Text(
+              "xxxxx",
+              style: TextStyle(color: ConstTheme.centerChannelBg, fontSize: 16.w),
+            ),
+          ),
         ],
       ),
     );

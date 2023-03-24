@@ -194,6 +194,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                 Row(
                   children: [
                     GestureDetector(
+                      key: const Key("create_channel"),
                       onTap: () async {
                         showModelOrPage(
                           context,
@@ -257,6 +258,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                 Row(
                   children: [
                     GestureDetector(
+                      key: const Key("create_private"),
                       onTap: () async {
                         showModelOrPage(
                           context,

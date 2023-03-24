@@ -38,6 +38,7 @@ class _ChatListState extends State<ChatList> {
         final chat = channelsList[index];
         return HoverListItem(
           key: Key(chat.id),
+          subkey: "DirectChat${chat.id}",
           ishover: index == hover,
           color: currentId == chat.id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
           hoverColor: ConstTheme.sidebarText.withOpacity(0.08),

@@ -135,12 +135,15 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         SizedBox(width: 8.w),
                         IconButton(
+                          key: Key("${room.roomId}_join"),
                           onPressed: () async {
                             final client = im.currentState!.client;
                             await showFutureLoadingDialog(
                               context: globalCtx(),
                               future: () async {
                                 await client.joinRoomById(rooms[index].roomId);
+                                // ignore: use_build_context_synchronously
+                                globalCtx().pop();
                               },
                             );
                           },

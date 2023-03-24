@@ -89,6 +89,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^2.0.0
   objectbox_generator: any
   freezed: ^2.2.0

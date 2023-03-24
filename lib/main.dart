@@ -17,7 +17,7 @@ import 'store/theme.dart';
 import 'utils/screen.dart';
 
 final botToastBuilder = BotToastInit();
-void main() async {
+void main({bool test = false}) async {
   WidgetsFlutterBinding.ensureInitialized();
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
   // 数据库初始化
@@ -35,6 +35,10 @@ void main() async {
 
     if (winsystem != null) {
       winSize = Size(winsystem.width, winsystem.height);
+    }
+
+    if (test) {
+      winSize = const Size(1400, 1000);
     }
 
     // 等待桌面初始化

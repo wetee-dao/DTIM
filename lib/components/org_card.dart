@@ -37,6 +37,7 @@ class OrgCard extends StatelessWidget {
         color: ConstTheme.centerChannelColor.withOpacity(0.1),
       ),
       child: InkWell(
+        key: Key("${org.hash}Card"),
         onTap: () => onSelect(!selected),
         child: Stack(
           alignment: Alignment.center,

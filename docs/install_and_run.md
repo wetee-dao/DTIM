@@ -57,3 +57,8 @@ This repository is for the submission of milestone 2 of the Web 3 Foundation Gra
     OR
     $ flutter run -d macos
     ```
+
+### RUN E2E 测试
+```
+flutter test integration_test/main_test.dart
+```

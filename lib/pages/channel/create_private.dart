@@ -43,7 +43,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
   void getList() async {
     final client = im.currentState!.client;
     link.SearchUserDirectoryResponse response =
-        await client.searchUserDirectory(search != "" ? "%$search" : "", limit: 10);
+        await client.searchUserDirectory(search != "" ? "%$search" : "", limit: 1000000);
 
     setState(() {
       userList = response.results.where((u) => u.userId != client.userID).toList();
@@ -183,6 +183,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                           ),
                         ),
                         IconButton(
+                          key: Key("createPrivate$index"),
                           onPressed: () async {
                             final client = im.currentState!.client;
                             await showFutureLoadingDialog(
@@ -261,6 +262,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
             ),
             alignment: Alignment.center,
             child: TextField(
+              key: const Key("cratePrivateInput"),
               controller: id,
               autofocus: false,
               keyboardType: TextInputType.text,
@@ -276,6 +278,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),
                 suffixIcon: IconButton(
+                  key: const Key("cratePrivateSend"),
                   icon: Icon(Icons.send_rounded, color: ConstTheme.sidebarText),
                   onPressed: () async {
                     final client = im.currentState!.client;

@@ -20,6 +20,7 @@ JumpTo(
     ),
     alignment: Alignment.center,
     child: TextField(
+      key: const Key("topSearch"),
       onTap: toFunc,
       style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
       autofocus: autofocus,
