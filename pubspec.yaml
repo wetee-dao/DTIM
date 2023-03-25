@@ -30,7 +30,7 @@ dependencies:
   # 路由
   go_router: ^6.0.9
   # 主题
-  themed: ^4.0.0
+  adaptive_theme: ^3.2.0
   # 桌面客户端样式
   window_manager: ^0.3.0
   # nosql 数据库
@@ -85,7 +85,7 @@ dependencies:
   badges: ^3.0.2
   flutter_olm: ^1.2.0
   flutter_openssl_crypto: ^0.1.0
-  adaptive_theme: ^3.2.0
+
 
 dev_dependencies:
   flutter_test:
