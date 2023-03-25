@@ -85,6 +85,7 @@ dependencies:
   badges: ^3.0.2
   flutter_olm: ^1.2.0
   flutter_openssl_crypto: ^0.1.0
+  adaptive_theme: ^3.2.0
 
 dev_dependencies:
   flutter_test:

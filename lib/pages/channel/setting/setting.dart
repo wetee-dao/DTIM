@@ -65,9 +65,10 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     var _titleList = <String>[L10n.of(context)!.chatDetal, L10n.of(context)!.chatMemeber, L10n.of(context)!.chatE2e];
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
@@ -91,18 +92,18 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
         children: [
           Container(
             height: 35.w,
-            color: ConstTheme.sidebarHeaderBg,
+            color: constTheme.sidebarHeaderBg,
             padding: EdgeInsets.only(right: 300.w),
             child: TabBar(
               controller: _tabController,
-              labelColor: ConstTheme.sidebarHeaderTextColor,
-              labelStyle: TextStyle(fontSize: 13.w, color: ConstTheme.sidebarHeaderTextColor),
-              unselectedLabelStyle: TextStyle(fontSize: 13.w, color: ConstTheme.sidebarHeaderTextColor),
+              labelColor: constTheme.sidebarHeaderTextColor,
+              labelStyle: TextStyle(fontSize: 13.w, color: constTheme.sidebarHeaderTextColor),
+              unselectedLabelStyle: TextStyle(fontSize: 13.w, color: constTheme.sidebarHeaderTextColor),
               labelPadding: const EdgeInsets.only(left: 0, right: 0),
               tabs: _titleList.map((e) => Tab(text: e)).toList(),
               dividerColor: Colors.transparent,
               indicator: MaterialIndicator(
-                color: ConstTheme.sidebarTextActiveBorder,
+                color: constTheme.sidebarTextActiveBorder,
               ),
             ),
           ),

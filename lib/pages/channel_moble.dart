@@ -75,10 +75,11 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ConstTheme.sidebarHeaderBg,
+        backgroundColor: constTheme.sidebarHeaderBg,
         leading: InkWell(
           onTap: () => Scaffold.of(context).openDrawer(),
           child: Padding(
@@ -95,7 +96,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
               child: Text(
                 'AN',
                 style: TextStyle(
-                  color: ConstTheme.sidebarHeaderTextColor,
+                  color: constTheme.sidebarHeaderTextColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
@@ -108,7 +109,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w600,
-            color: ConstTheme.sidebarHeaderTextColor,
+            color: constTheme.sidebarHeaderTextColor,
           ),
         ),
         actions: [
@@ -120,7 +121,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
               ),
               icon: Icon(
                 Icons.filter_list,
-                color: ConstTheme.sidebarHeaderTextColor,
+                color: constTheme.sidebarHeaderTextColor,
               ),
               onSelected: (value) {},
               itemBuilder: (context) => [
@@ -171,7 +172,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
           ),
         ],
       ),
-      backgroundColor: ConstTheme.sidebarBg,
+      backgroundColor: constTheme.sidebarBg,
       body: SingleChildScrollView(
         child: Center(
           child: Column(

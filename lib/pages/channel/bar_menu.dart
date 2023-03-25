@@ -72,14 +72,14 @@ menuRender(controller, link.Room room) {
       })
     ]
   ];
-
+  final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
   return Container(
     width: 200.w,
     margin: EdgeInsets.all(5.w),
     decoration: BoxDecoration(
-      border: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
+      border: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
       borderRadius: BorderRadius.circular(3.w),
-      color: ConstTheme.centerChannelBg,
+      color: constTheme.centerChannelBg,
       boxShadow: <BoxShadow>[
         BoxShadow(
           color: Colors.black.withOpacity(0.2),
@@ -112,7 +112,7 @@ menuRender(controller, link.Room room) {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: i != menuItems.length - 1 && j == menuItems[i].length - 1
-                          ? BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))
+                          ? BorderSide(color: constTheme.sidebarText.withOpacity(0.08))
                           : BorderSide.none,
                     ),
                   ),
@@ -122,7 +122,7 @@ menuRender(controller, link.Room room) {
                         child: Text(
                           menuItems[i][j].title,
                           style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
+                            color: constTheme.centerChannelColor,
                             fontSize: 13.w,
                           ),
                         ),

@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:themed/themed.dart';
+// import 'package:themed/themed.dart';
 
 import '../apis/apis.dart';
 
+// 主题列表
 const themes = [
   {
     //0
@@ -493,66 +495,104 @@ const themes = [
 
 int currentTheme = 16;
 
-class ConstTheme {
-  static ColorRef sidebarBg = ColorRef(hexToColor(themes[currentTheme]["sidebarBg"]!));
-  static ColorRef sidebarText = ColorRef(hexToColor(themes[currentTheme]["sidebarText"]!));
-  static ColorRef sidebarUnreadText = ColorRef(hexToColor(themes[currentTheme]["sidebarUnreadText"]!));
-  static ColorRef sidebarTextHoverBg = ColorRef(hexToColor(themes[currentTheme]["sidebarTextHoverBg"]!));
-  static ColorRef sidebarTextActiveBorder = ColorRef(hexToColor(themes[currentTheme]["sidebarTextActiveBorder"]!));
-  static ColorRef sidebarTextActiveColor = ColorRef(hexToColor(themes[currentTheme]["sidebarTextActiveColor"]!));
-  static ColorRef sidebarHeaderBg = ColorRef(hexToColor(themes[currentTheme]["sidebarHeaderBg"]!));
-  static ColorRef sidebarHeaderTextColor = ColorRef(hexToColor(themes[currentTheme]["sidebarHeaderTextColor"]!));
-  static ColorRef onlineIndicator = ColorRef(hexToColor(themes[currentTheme]["onlineIndicator"]!));
-  static ColorRef awayIndicator = ColorRef(hexToColor(themes[currentTheme]["awayIndicator"]!));
-  static ColorRef dndIndicator = ColorRef(hexToColor(themes[currentTheme]["dndIndicator"]!));
-  static ColorRef mentionBg = ColorRef(hexToColor(themes[currentTheme]["mentionBg"]!));
-  static ColorRef mentionColor = ColorRef(hexToColor(themes[currentTheme]["mentionColor"]!));
-  static ColorRef centerChannelBg = ColorRef(hexToColor(themes[currentTheme]["centerChannelBg"]!));
-  static ColorRef centerChannelColor = ColorRef(hexToColor(themes[currentTheme]["centerChannelColor"]!));
-  static ColorRef newMessageSeparator = ColorRef(hexToColor(themes[currentTheme]["newMessageSeparator"]!));
-  static ColorRef linkColor = ColorRef(hexToColor(themes[currentTheme]["linkColor"]!));
-  static ColorRef buttonBg = ColorRef(hexToColor(themes[currentTheme]["buttonBg"]!));
-  static ColorRef buttonColor = ColorRef(hexToColor(themes[currentTheme]["buttonColor"]!));
-  static ColorRef errorTextColor = ColorRef(hexToColor(themes[currentTheme]["errorTextColor"]!));
-  static ColorRef mentionHighlightBg = ColorRef(hexToColor(themes[currentTheme]["mentionHighlightBg"]!));
-  static ColorRef mentionHighlightLink = ColorRef(hexToColor(themes[currentTheme]["mentionHighlightLink"]!));
-  static ColorRef dark = ColorRef(
-      themes[currentTheme]["type"] != null && themes[currentTheme]["type"] == "dark" ? Colors.black : Colors.white);
-}
+ThemeData setTheme(String name) {
+  currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);
 
-setTheme(String name) {
-  var index = themes.indexWhere((t) => t["codeTheme"] == name);
-
-  Map<ThemeRef, Object> newTheme = {
-    ConstTheme.sidebarBg: ColorRef(hexToColor(themes[index]["sidebarBg"]!)),
-    ConstTheme.sidebarText: ColorRef(hexToColor(themes[index]["sidebarText"]!)),
-    ConstTheme.sidebarUnreadText: ColorRef(hexToColor(themes[index]["sidebarUnreadText"]!)),
-    ConstTheme.sidebarTextHoverBg: ColorRef(hexToColor(themes[index]["sidebarTextHoverBg"]!)),
-    ConstTheme.sidebarTextActiveBorder: ColorRef(hexToColor(themes[index]["sidebarTextActiveBorder"]!)),
-    ConstTheme.sidebarTextActiveColor: ColorRef(hexToColor(themes[index]["sidebarTextActiveColor"]!)),
-    ConstTheme.sidebarHeaderBg: ColorRef(hexToColor(themes[index]["sidebarHeaderBg"]!)),
-    ConstTheme.sidebarHeaderTextColor: ColorRef(hexToColor(themes[index]["sidebarHeaderTextColor"]!)),
-    ConstTheme.onlineIndicator: ColorRef(hexToColor(themes[index]["onlineIndicator"]!)),
-    ConstTheme.awayIndicator: ColorRef(hexToColor(themes[index]["awayIndicator"]!)),
-    ConstTheme.dndIndicator: ColorRef(hexToColor(themes[index]["dndIndicator"]!)),
-    ConstTheme.mentionBg: ColorRef(hexToColor(themes[index]["mentionBg"]!)),
-    ConstTheme.mentionColor: ColorRef(hexToColor(themes[index]["mentionColor"]!)),
-    ConstTheme.centerChannelBg: ColorRef(hexToColor(themes[index]["centerChannelBg"]!)),
-    ConstTheme.centerChannelColor: ColorRef(hexToColor(themes[index]["centerChannelColor"]!)),
-    ConstTheme.newMessageSeparator: ColorRef(hexToColor(themes[index]["newMessageSeparator"]!)),
-    ConstTheme.linkColor: ColorRef(hexToColor(themes[index]["linkColor"]!)),
-    ConstTheme.buttonBg: ColorRef(hexToColor(themes[index]["buttonBg"]!)),
-    ConstTheme.buttonColor: ColorRef(hexToColor(themes[index]["buttonColor"]!)),
-    ConstTheme.errorTextColor: ColorRef(hexToColor(themes[index]["errorTextColor"]!)),
-    ConstTheme.mentionHighlightBg: ColorRef(hexToColor(themes[index]["mentionHighlightBg"]!)),
-    ConstTheme.mentionHighlightLink: ColorRef(hexToColor(themes[index]["mentionHighlightLink"]!)),
-    ConstTheme.dark:
-        ColorRef(themes[index]["type"] != null && themes[index]["type"] == "dark" ? Colors.black : Colors.white)
-  };
+  // Map<ThemeRef, Object> newTheme = {
+  //    hexToColor(t["sidebarBg: hexToColor(themes[index]["sidebarBg"]!)),
+  //    hexToColor(t["sidebarText: hexToColor(themes[index]["sidebarText"]!)),
+  //    hexToColor(t["sidebarUnreadText: hexToColor(themes[index]["sidebarUnreadText"]!)),
+  //    hexToColor(t["sidebarTextHoverBg: hexToColor(themes[index]["sidebarTextHoverBg"]!)),
+  //    hexToColor(t["sidebarTextActiveBorder: hexToColor(themes[index]["sidebarTextActiveBorder"]!)),
+  //    hexToColor(t["sidebarTextActiveColor: hexToColor(themes[index]["sidebarTextActiveColor"]!)),
+  //    hexToColor(t["sidebarHeaderBg: hexToColor(themes[index]["sidebarHeaderBg"]!)),
+  //    hexToColor(t["sidebarHeaderTextColor: hexToColor(themes[index]["sidebarHeaderTextColor"]!)),
+  //    hexToColor(t["onlineIndicator: hexToColor(themes[index]["onlineIndicator"]!)),
+  //    hexToColor(t["awayIndicator: hexToColor(themes[index]["awayIndicator"]!)),
+  //    hexToColor(t["dndIndicator: hexToColor(themes[index]["dndIndicator"]!)),
+  //    hexToColor(t["mentionBg: hexToColor(themes[index]["mentionBg"]!)),
+  //    hexToColor(t["mentionColor: hexToColor(themes[index]["mentionColor"]!)),
+  //    hexToColor(t["centerChannelBg: hexToColor(themes[index]["centerChannelBg"]!)),
+  //    hexToColor(t["centerChannelColor: hexToColor(themes[index]["centerChannelColor"]!)),
+  //    hexToColor(t["newMessageSeparator: hexToColor(themes[index]["newMessageSeparator"]!)),
+  //    hexToColor(t["linkColor: hexToColor(themes[index]["linkColor"]!)),
+  //    hexToColor(t["buttonBg: hexToColor(themes[index]["buttonBg"]!)),
+  //    hexToColor(t["buttonColor: hexToColor(themes[index]["buttonColor"]!)),
+  //    hexToColor(t["errorTextColor: hexToColor(themes[index]["errorTextColor"]!)),
+  //    hexToColor(t["mentionHighlightBg: hexToColor(themes[index]["mentionHighlightBg"]!)),
+  //    hexToColor(t["mentionHighlightLink: hexToColor(themes[index]["mentionHighlightLink"]!)),
+  //    hexToColor(t["dark:
+  //       ColorRef(themes[index]["type"] != null && themes[index]["type"] == "dark" ? Colors.black : Colors.white)
+  // };
 
   SystemApi.create().saveTheme(name);
+  return theme();
+  // Themed.currentTheme = newTheme;
+}
 
-  Themed.currentTheme = newTheme;
+ThemeData theme() {
+  var t = themes[currentTheme];
+
+  return ThemeData(
+    useMaterial3: true,
+    brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
+    // colorScheme: const ColorScheme.light().copyWith(
+    //   brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
+    //   primary: hexToColor(t["centerChannelColor,"]!),
+    //   secondary: hexToColor(t["centerChannelColor"]!).withAlpha(155),
+    //   error: hexToColor(t["errorTextColor"]!),
+    //   background: hexToColor(t["centerChannelBg"]!),
+    // ),
+    // dialogTheme: DialogTheme(
+    //   backgroundColor: hexToColor(t["sidebarBg"]!),
+    //   titleTextStyle: TextStyle(color: hexToColor(t["sidebarText"]!), fontSize: 16.w),
+    //   contentTextStyle: TextStyle(color: hexToColor(t["sidebarText"]!), fontSize: 13.w),
+    //   surfaceTintColor: Colors.transparent,
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(3.w),
+    //   ),
+    // ),
+    // textTheme: TextTheme(
+    //   titleMedium: TextStyle(color: hexToColor(t["centerChannelColor)"]!)),
+    // ),
+    // inputDecorationTheme: InputDecorationTheme(
+    //   labelStyle: TextStyle(height: 1.5, color: hexToColor(t["centerChannelColor)"]!)),
+    //   hintStyle: TextStyle(height: 1.5, color: hexToColor(t["centerChannelColor)"]!)),
+    // ),
+    // appBarTheme: AppBarTheme(
+    //   backgroundColor: hexToColor(t["sidebarHeaderBg"]!),
+    //   foregroundColor: hexToColor(t["sidebarHeaderTextColor"]!),
+    // ),
+    extensions: [getExtTheme(currentTheme)],
+  );
+}
+
+ExtColors getExtTheme(i) {
+  var t = themes[i];
+  return ExtColors(
+    sidebarBg: hexToColor(t["sidebarBg"]!),
+    sidebarText: hexToColor(t["sidebarText"]!),
+    sidebarUnreadText: hexToColor(t["sidebarUnreadText"]!),
+    sidebarTextHoverBg: hexToColor(t["sidebarTextHoverBg"]!),
+    sidebarTextActiveBorder: hexToColor(t["sidebarTextActiveBorder"]!),
+    sidebarTextActiveColor: hexToColor(t["sidebarTextActiveColor"]!),
+    sidebarHeaderBg: hexToColor(t["sidebarHeaderBg"]!),
+    sidebarHeaderTextColor: hexToColor(t["sidebarHeaderTextColor"]!),
+    onlineIndicator: hexToColor(t["onlineIndicator"]!),
+    awayIndicator: hexToColor(t["awayIndicator"]!),
+    dndIndicator: hexToColor(t["dndIndicator"]!),
+    mentionBg: hexToColor(t["mentionBg"]!),
+    mentionColor: hexToColor(t["mentionColor"]!),
+    centerChannelBg: hexToColor(t["centerChannelBg"]!),
+    centerChannelColor: hexToColor(t["centerChannelColor"]!),
+    newMessageSeparator: hexToColor(t["newMessageSeparator"]!),
+    linkColor: hexToColor(t["linkColor"]!),
+    buttonBg: hexToColor(t["buttonBg"]!),
+    buttonColor: hexToColor(t["buttonColor"]!),
+    errorTextColor: hexToColor(t["errorTextColor"]!),
+    mentionHighlightBg: hexToColor(t["mentionHighlightBg"]!),
+    mentionHighlightLink: hexToColor(t["mentionHighlightLink"]!),
+  );
 }
 
 setThemeIndex(String name) {
@@ -566,4 +606,70 @@ setThemeIndex(String name) {
 Color hexToColor(String code) {
   Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+}
+
+@immutable
+class ExtColors extends ThemeExtension<ExtColors> {
+  final Color sidebarBg;
+  final Color sidebarText;
+  final Color sidebarUnreadText;
+  final Color sidebarTextHoverBg;
+  final Color sidebarTextActiveBorder;
+  final Color sidebarTextActiveColor;
+  final Color sidebarHeaderBg;
+  final Color sidebarHeaderTextColor;
+  final Color onlineIndicator;
+  final Color awayIndicator;
+  final Color dndIndicator;
+  final Color mentionBg;
+  final Color mentionColor;
+  final Color centerChannelBg;
+  final Color centerChannelColor;
+  final Color newMessageSeparator;
+  final Color linkColor;
+  final Color buttonBg;
+  final Color buttonColor;
+  final Color errorTextColor;
+  final Color mentionHighlightBg;
+  final Color mentionHighlightLink;
+  // final bool dark = themes[currentTheme]["type"] != null && themes[currentTheme]["type"] == "dark";
+
+  const ExtColors({
+    required this.sidebarBg,
+    required this.sidebarText,
+    required this.sidebarUnreadText,
+    required this.sidebarTextHoverBg,
+    required this.sidebarTextActiveBorder,
+    required this.sidebarTextActiveColor,
+    required this.sidebarHeaderBg,
+    required this.sidebarHeaderTextColor,
+    required this.onlineIndicator,
+    required this.awayIndicator,
+    required this.dndIndicator,
+    required this.mentionBg,
+    required this.mentionColor,
+    required this.centerChannelBg,
+    required this.centerChannelColor,
+    required this.newMessageSeparator,
+    required this.linkColor,
+    required this.buttonBg,
+    required this.buttonColor,
+    required this.errorTextColor,
+    required this.mentionHighlightBg,
+    required this.mentionHighlightLink,
+  });
+
+  @override
+  ExtColors copyWith() {
+    // 补充默认值
+    return this;
+  }
+
+  @override
+  ExtColors lerp(ThemeExtension<ExtColors>? other, double t) {
+    if (other is! ExtColors) {
+      return this;
+    }
+    return this;
+  }
 }

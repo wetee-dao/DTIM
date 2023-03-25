@@ -39,6 +39,7 @@ class _MobilePageState extends State<MobilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       drawer: WidgetDrawer(),
       body: PageView(
@@ -50,9 +51,9 @@ class _MobilePageState extends State<MobilePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _page,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: ConstTheme.sidebarTextActiveBorder,
-        unselectedItemColor: ConstTheme.sidebarText,
-        backgroundColor: ConstTheme.sidebarBg,
+        selectedItemColor: constTheme.sidebarTextActiveBorder,
+        unselectedItemColor: constTheme.sidebarText,
+        backgroundColor: constTheme.sidebarBg,
         showUnselectedLabels: true,
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w600,

@@ -20,11 +20,12 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return moveWindow(
       Container(
         height: _height + windowButton,
         padding: EdgeInsets.only(top: windowButton),
-        color: ConstTheme.sidebarHeaderBg,
+        color: constTheme.sidebarHeaderBg,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,7 +35,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
                 padding: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: Icon(
                   Icons.arrow_back,
-                  color: ConstTheme.sidebarHeaderTextColor,
+                  color: constTheme.sidebarHeaderTextColor,
                   size: 25.w,
                 ),
               ),
@@ -48,7 +49,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             Text(
               _title,
-              style: TextStyle(color: ConstTheme.sidebarHeaderTextColor, fontSize: 14.w),
+              style: TextStyle(color: constTheme.sidebarHeaderTextColor, fontSize: 14.w),
             ),
             Expanded(child: Container()),
             tools != null

@@ -37,6 +37,7 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DevicePlatform platform;
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (this.platform == null || this.platform == DevicePlatform.device) {
       platform = PlatformUtils.detectPlatform(context);
     } else {
@@ -44,7 +45,7 @@ class SettingsList extends StatelessWidget {
     }
 
     return Container(
-      color: ConstTheme.centerChannelBg,
+      color: constTheme.centerChannelBg,
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
       child: ListView.builder(

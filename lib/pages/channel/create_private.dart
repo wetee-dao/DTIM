@@ -52,8 +52,9 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "添加私信",
@@ -85,7 +86,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
           //         margin: EdgeInsets.only(top: 10.w, bottom: 10.w),
           //         padding: EdgeInsets.only(left: 10.w),
           //         decoration: BoxDecoration(
-          //           color: ConstTheme.sidebarText.withOpacity(0.1),
+          //           color: constTheme.sidebarText.withOpacity(0.1),
           //           borderRadius: BorderRadius.all(Radius.circular(3.w)),
           //         ),
           //         alignment: Alignment.center,
@@ -94,15 +95,15 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
           //           onSubmitted: (value) => {getList()},
           //           autofocus: true,
           //           keyboardType: TextInputType.text,
-          //           style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+          //           style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
           //           decoration: InputDecoration(
           //             label: null,
           //             hintText: '查找用户',
           //             hintStyle: TextStyle(
           //               height: 1.5,
-          //               color: ConstTheme.sidebarText.withAlpha(155),
+          //               color: constTheme.sidebarText.withAlpha(155),
           //             ),
-          //             suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
+          //             suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText.withAlpha(155)),
           //             contentPadding: const EdgeInsets.all(0),
           //             border: const OutlineInputBorder(borderSide: BorderSide.none),
           //           ),
@@ -120,7 +121,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
           //           child: Text(
           //             '搜索',
           //             style: TextStyle(
-          //               color: ConstTheme.centerChannelColor,
+          //               color: constTheme.centerChannelColor,
           //               fontWeight: FontWeight.w400,
           //               fontSize: 16.w,
           //             ),
@@ -161,7 +162,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false,
                                 style: TextStyle(
-                                  color: ConstTheme.centerChannelColor.withOpacity(0.6),
+                                  color: constTheme.centerChannelColor.withOpacity(0.6),
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12.w,
                                 ),
@@ -173,7 +174,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false,
                                 style: TextStyle(
-                                  color: ConstTheme.centerChannelColor,
+                                  color: constTheme.centerChannelColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 10.w,
                                 ),
@@ -196,7 +197,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                             );
                           },
                           icon: Icon(Icons.send_rounded, size: 20.w),
-                          color: ConstTheme.centerChannelColor,
+                          color: constTheme.centerChannelColor,
                         ),
                         SizedBox(width: 15.w),
                       ],
@@ -206,7 +207,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                     ),
                     Divider(
                       height: 1.w,
-                      color: ConstTheme.centerChannelColor.withOpacity(0.04),
+                      color: constTheme.centerChannelColor.withOpacity(0.04),
                     ),
                   ],
                 );
@@ -215,7 +216,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
           ),
 
           Container(
-            color: ConstTheme.centerChannelColor.withOpacity(0.04),
+            color: constTheme.centerChannelColor.withOpacity(0.04),
             padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
             child: Row(
               children: [
@@ -224,7 +225,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                     margin: EdgeInsets.only(left: 15.w),
                     child: Text(
                       "复制ID：${im.currentState!.client.userID}",
-                      style: TextStyle(color: ConstTheme.centerChannelColor, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: constTheme.centerChannelColor, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -237,7 +238,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                       BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
                     });
                   },
-                  icon: Icon(Icons.copy, size: 16.w, color: ConstTheme.centerChannelColor),
+                  icon: Icon(Icons.copy, size: 16.w, color: constTheme.centerChannelColor),
                 ),
                 SizedBox(width: 5.w),
               ],
@@ -249,7 +250,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
             margin: EdgeInsets.only(left: 15.w),
             child: Text(
               "或者输入用户id开始聊天",
-              style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155)),
+              style: TextStyle(color: constTheme.sidebarText.withAlpha(155)),
             ),
           ),
           Container(
@@ -257,7 +258,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
             margin: EdgeInsets.all(10.w),
             padding: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
-              color: ConstTheme.sidebarText.withOpacity(0.1),
+              color: constTheme.sidebarText.withOpacity(0.1),
               borderRadius: BorderRadius.all(Radius.circular(3.w)),
             ),
             alignment: Alignment.center,
@@ -267,19 +268,19 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               autofocus: false,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.go,
-              style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+              style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
                 hintText: '@username',
                 hintStyle: TextStyle(
                   height: 1.5,
-                  color: ConstTheme.sidebarText.withAlpha(155),
+                  color: constTheme.sidebarText.withAlpha(155),
                 ),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),
                 suffixIcon: IconButton(
                   key: const Key("cratePrivateSend"),
-                  icon: Icon(Icons.send_rounded, color: ConstTheme.sidebarText),
+                  icon: Icon(Icons.send_rounded, color: constTheme.sidebarText),
                   onPressed: () async {
                     final client = im.currentState!.client;
                     final org = im.currentState!.org;

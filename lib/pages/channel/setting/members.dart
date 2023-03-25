@@ -52,8 +52,9 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,7 +63,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
           //   margin: EdgeInsets.only(top: 10.w, bottom: 10.w, left: 15.w, right: 15.w),
           //   padding: EdgeInsets.only(left: 10.w),
           //   decoration: BoxDecoration(
-          //     color: ConstTheme.sidebarText.withOpacity(0.1),
+          //     color: constTheme.sidebarText.withOpacity(0.1),
           //     borderRadius: BorderRadius.all(Radius.circular(3.w)),
           //   ),
           //   alignment: Alignment.center,
@@ -70,19 +71,19 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
           //     onTap: () {},
           //     autofocus: true,
           //     keyboardType: TextInputType.text,
-          //     style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+          //     style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
           //     decoration: InputDecoration(
           //       label: null,
           //       hintText: '查找频道',
           //       hintStyle: TextStyle(
           //         height: 1.5,
-          //         color: ConstTheme.sidebarText.withAlpha(155),
+          //         color: constTheme.sidebarText.withAlpha(155),
           //       ),
-          //       // suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
+          //       // suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText.withAlpha(155)),
           //       contentPadding: const EdgeInsets.all(0),
           //       border: const OutlineInputBorder(borderSide: BorderSide.none),
           //       suffixIcon: IconButton(
-          //         icon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText),
+          //         icon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText),
           //         onPressed: () async {},
           //       ),
           //     ),
@@ -117,7 +118,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                                 maxLines: 2,
                                 softWrap: false,
                                 style: TextStyle(
-                                  color: ConstTheme.centerChannelColor.withOpacity(0.6),
+                                  color: constTheme.centerChannelColor.withOpacity(0.6),
                                   fontWeight: FontWeight.w600,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -128,7 +129,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                                 maxLines: 2,
                                 softWrap: false,
                                 style: TextStyle(
-                                  color: ConstTheme.centerChannelColor,
+                                  color: constTheme.centerChannelColor,
                                   fontWeight: FontWeight.w600,
                                   overflow: TextOverflow.ellipsis,
                                 ),

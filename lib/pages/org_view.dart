@@ -112,6 +112,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -135,8 +136,8 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         padding: EdgeInsets.only(left: 10.w, right: 7.w, top: 2.w, bottom: 2.w),
                         decoration: BoxDecoration(
                           color: snapshot.data != null && snapshot.data!
-                              ? ConstTheme.sidebarText.withOpacity(0.25)
-                              : ConstTheme.sidebarText.withOpacity(0.1),
+                              ? constTheme.sidebarText.withOpacity(0.25)
+                              : constTheme.sidebarText.withOpacity(0.1),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(3.w),
                             bottomLeft: Radius.circular(3.w),
@@ -147,7 +148,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                             Text(
                               org != null ? org!.orgName ?? "" : '',
                               style: TextStyle(
-                                color: ConstTheme.sidebarText,
+                                color: constTheme.sidebarText,
                                 fontWeight: FontWeight.w800,
                                 fontSize: 15.w,
                                 height: 1.3,
@@ -155,7 +156,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                             ),
                             Icon(
                               Icons.keyboard_arrow_down_outlined,
-                              color: ConstTheme.sidebarText,
+                              color: constTheme.sidebarText,
                               size: 16.w,
                             ),
                           ],
@@ -177,7 +178,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
           ),
           Divider(
             height: 1,
-            color: ConstTheme.sidebarText.withOpacity(0.08),
+            color: constTheme.sidebarText.withOpacity(0.08),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.w),
@@ -187,7 +188,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                 Text(
                   L10n.of(context)!.channel,
                   style: TextStyle(
-                    color: ConstTheme.sidebarText.withAlpha(155),
+                    color: constTheme.sidebarText.withAlpha(155),
                     fontWeight: FontWeight.w800,
                     fontSize: 14.w,
                   ),
@@ -207,7 +208,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                       child: Icon(
                         Icons.add,
                         size: 20.w,
-                        color: ConstTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText.withAlpha(155),
                       ),
                     ),
                     SizedBox(width: 5.w),
@@ -222,7 +223,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                             ? Icons.keyboard_arrow_down_outlined
                             : Icons.keyboard_arrow_up_outlined,
                         size: 25.w,
-                        color: ConstTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText.withAlpha(155),
                       ),
                     ),
                   ],
@@ -241,7 +242,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
           if (channels.isNotEmpty) SizedBox(height: 10.w),
           Divider(
             height: 1,
-            color: ConstTheme.sidebarText.withOpacity(0.05),
+            color: constTheme.sidebarText.withOpacity(0.05),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.w),
@@ -253,7 +254,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 14.w,
-                    color: ConstTheme.sidebarText.withAlpha(155),
+                    color: constTheme.sidebarText.withAlpha(155),
                   ),
                 ),
                 Row(
@@ -271,7 +272,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                       child: Icon(
                         Icons.add,
                         size: 20.w,
-                        color: ConstTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText.withAlpha(155),
                       ),
                     ),
                     SizedBox(width: 5.w),
@@ -286,7 +287,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                             ? Icons.keyboard_arrow_down_outlined
                             : Icons.keyboard_arrow_up_outlined,
                         size: 25.w,
-                        color: ConstTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText.withAlpha(155),
                       ),
                     ),
                   ],
@@ -305,7 +306,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
           if (channels.isNotEmpty) SizedBox(height: 10.w),
           Divider(
             height: 1,
-            color: ConstTheme.sidebarText.withOpacity(0.05),
+            color: constTheme.sidebarText.withOpacity(0.05),
           ),
         ],
       ),

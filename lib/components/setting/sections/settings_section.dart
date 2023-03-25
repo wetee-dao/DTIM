@@ -23,6 +23,7 @@ class SettingsSection extends AbstractSettingsSection {
 
   Widget buildSectionBody(BuildContext context) {
     final tileList = buildTileList();
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
 
     if (title == null) {
       return tileList;
@@ -33,7 +34,7 @@ class SettingsSection extends AbstractSettingsSection {
       children: [
         Container(
           width: double.maxFinite,
-          color: ConstTheme.centerChannelBg,
+          color: constTheme.centerChannelBg,
           padding: EdgeInsetsDirectional.only(
             top: 24.w,
             bottom: 10.w,
@@ -42,14 +43,14 @@ class SettingsSection extends AbstractSettingsSection {
           ),
           child: DefaultTextStyle(
             style: TextStyle(
-              color: ConstTheme.centerChannelColor,
+              color: constTheme.centerChannelColor,
               fontSize: 16.w,
             ),
             child: title!,
           ),
         ),
         Container(
-          color: ConstTheme.centerChannelBg,
+          color: constTheme.centerChannelBg,
           child: tileList,
         ),
       ],

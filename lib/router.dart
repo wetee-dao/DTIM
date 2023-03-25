@@ -142,11 +142,12 @@ renderFram(Widget page) {
 }
 
 showModelOrPage(context, url, {double width = 520, double height = 550}) {
+  final constTheme = Theme.of(context).extension<ExtColors>()!;
   if (isPc()) {
     showDialog(
       context: context,
       useSafeArea: true,
-      barrierColor: ConstTheme.sidebarHeaderTextColor.withOpacity(0.06),
+      barrierColor: constTheme.sidebarHeaderTextColor.withOpacity(0.06),
       builder: (context) {
         var media = MediaQuery.of(context);
         var bottom = media.size.height - 30.w - height.w;
@@ -160,7 +161,7 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
           width: width.w,
           height: height.w,
           decoration: BoxDecoration(
-            color: ConstTheme.centerChannelBg,
+            color: constTheme.centerChannelBg,
             boxShadow: <BoxShadow>[
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),

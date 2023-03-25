@@ -71,9 +71,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   selectAccountType() {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     showModalBottomSheet(
       context: context,
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       builder: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -90,7 +91,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                 width: MediaQuery.of(context).size.width * 0.8,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -99,7 +100,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                     Text(
                       L10n.of(context)!.signUp,
                       style: TextStyle(
-                        color: ConstTheme.centerChannelBg,
+                        color: constTheme.centerChannelBg,
                         fontWeight: FontWeight.bold,
                         fontSize: 19.w,
                       ),
@@ -136,8 +137,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Center(
         child: _loading
             ? moveWindow(
@@ -174,7 +176,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   L10n.of(context)!.generate,
                                   style: TextStyle(
                                     fontSize: 32.w,
-                                    color: ConstTheme.centerChannelColor,
+                                    color: constTheme.centerChannelColor,
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
@@ -182,7 +184,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   L10n.of(context)!.welcome,
                                   style: TextStyle(
                                     fontSize: 14.w,
-                                    color: ConstTheme.centerChannelColor.withOpacity(0.7),
+                                    color: constTheme.centerChannelColor.withOpacity(0.7),
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
@@ -199,7 +201,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                         padding: EdgeInsets.symmetric(horizontal: 15.w),
                                         margin: EdgeInsets.only(bottom: 10.w),
                                         decoration: BoxDecoration(
-                                          color: ConstTheme.centerChannelColor.withOpacity(0.05),
+                                          color: constTheme.centerChannelColor.withOpacity(0.05),
                                           borderRadius: BorderRadius.circular(5.w),
                                         ),
                                         child: Row(
@@ -218,14 +220,14 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                   Text(
                                                     accounts[i].name!,
                                                     style: TextStyle(
-                                                      color: ConstTheme.centerChannelColor,
+                                                      color: constTheme.centerChannelColor,
                                                       fontSize: 16.w,
                                                     ),
                                                   ),
                                                   Text(
                                                     accounts[i].address,
                                                     style: TextStyle(
-                                                      color: ConstTheme.centerChannelColor,
+                                                      color: constTheme.centerChannelColor,
                                                       fontSize: 12.w,
                                                     ),
                                                   )
@@ -237,7 +239,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                               height: 40.w,
                                               width: 40.w,
                                               decoration: BoxDecoration(
-                                                color: ConstTheme.linkColor.withOpacity(0.3),
+                                                color: constTheme.linkColor.withOpacity(0.3),
                                                 borderRadius: BorderRadius.circular(25.w),
                                               ),
                                               child: IconButton(
@@ -270,7 +272,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 icon: Icon(
                                                   Icons.login,
                                                   size: 18.w,
-                                                  color: ConstTheme.centerChannelColor,
+                                                  color: constTheme.centerChannelColor,
                                                 ),
                                               ),
                                             ),
@@ -279,7 +281,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                               height: 40.w,
                                               width: 40.w,
                                               decoration: BoxDecoration(
-                                                color: ConstTheme.errorTextColor.withOpacity(0.3),
+                                                color: constTheme.errorTextColor.withOpacity(0.3),
                                                 borderRadius: BorderRadius.circular(25.w),
                                               ),
                                               child: IconButton(
@@ -305,7 +307,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 icon: Icon(
                                                   Icons.close,
                                                   size: 18.w,
-                                                  color: ConstTheme.centerChannelColor,
+                                                  color: constTheme.centerChannelColor,
                                                 ),
                                               ),
                                             ),
@@ -331,13 +333,13 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             width: double.maxFinite,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: ConstTheme.centerChannelColor,
+                              color: constTheme.centerChannelColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
                               L10n.of(context)!.generate,
                               style: TextStyle(
-                                color: ConstTheme.centerChannelBg,
+                                color: constTheme.centerChannelBg,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 19.w,
                               ),
@@ -367,7 +369,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             child: Text(
                               L10n.of(context)!.importAccount,
                               style: TextStyle(
-                                color: ConstTheme.centerChannelColor,
+                                color: constTheme.centerChannelColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.w,
                               ),
@@ -383,7 +385,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   if (isPc())
                     Expanded(
                       child: moveWindow(Container(
-                        color: ConstTheme.sidebarBg,
+                        color: constTheme.sidebarBg,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -397,7 +399,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                     child: Icon(
                                       Icons.close,
                                       size: 25.w,
-                                      color: ConstTheme.sidebarText,
+                                      color: constTheme.sidebarText,
                                     ),
                                   ),
                                 ),

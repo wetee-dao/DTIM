@@ -68,8 +68,9 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.sidebarBg,
+      backgroundColor: constTheme.sidebarBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "首选项",
@@ -99,7 +100,7 @@ class _SettingPageState extends State<SettingPage> {
             padding: EdgeInsets.only(top: 15.w),
             decoration: BoxDecoration(
               border: Border(
-                right: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.08)),
+                right: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08)),
               ),
             ),
             child: ListView.builder(
@@ -110,8 +111,8 @@ class _SettingPageState extends State<SettingPage> {
               itemBuilder: (context, index) {
                 return HoverListItem(
                   subkey: settingNavs[index].name,
-                  color: currentId == index ? ConstTheme.centerChannelColor.withOpacity(0.08) : Colors.transparent,
-                  hoverColor: ConstTheme.sidebarTextActiveBorder.withOpacity(0.08),
+                  color: currentId == index ? constTheme.centerChannelColor.withOpacity(0.08) : Colors.transparent,
+                  hoverColor: constTheme.sidebarTextActiveBorder.withOpacity(0.08),
                   onPressed: () async {
                     onSelect(index);
                   },
@@ -120,7 +121,7 @@ class _SettingPageState extends State<SettingPage> {
                       border: Border(
                         left: BorderSide(
                           width: 2.w,
-                          color: currentId == index ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
+                          color: currentId == index ? constTheme.sidebarTextActiveBorder : Colors.transparent,
                         ),
                       ),
                     ),
@@ -132,7 +133,7 @@ class _SettingPageState extends State<SettingPage> {
                         Icon(
                           Icons.private_connectivity,
                           size: 24.w,
-                          color: ConstTheme.sidebarText.withAlpha(155),
+                          color: constTheme.sidebarText.withAlpha(155),
                         ),
                         SizedBox(width: 8.w),
                         Text(
@@ -140,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
                           style: TextStyle(
                             fontSize: 15.w,
                             fontWeight: FontWeight.normal,
-                            color: ConstTheme.sidebarText.withAlpha(155),
+                            color: constTheme.sidebarText.withAlpha(155),
                           ),
                         ),
                       ],

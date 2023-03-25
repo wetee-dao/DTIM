@@ -300,13 +300,14 @@ class _ButtonContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return OutlinedButton.icon(
       onPressed: onPressed,
       icon: icon,
       label: Text(label, overflow: TextOverflow.ellipsis),
       style: OutlinedButton.styleFrom(
         foregroundColor: textColor,
-        backgroundColor: ConstTheme.centerChannelColor.withOpacity(0.1),
+        backgroundColor: constTheme.centerChannelColor.withOpacity(0.1),
         padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
       ),
     );

@@ -18,9 +18,10 @@ class UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     var imgw = (avatarWidth * 0.7).toInt();
-    var imgbg = color ?? ConstTheme.centerChannelColor;
-    var boxBg = bg ?? ConstTheme.centerChannelColor.withOpacity(0.1);
+    var imgbg = color ?? constTheme.centerChannelColor;
+    var boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
     var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
@@ -54,9 +55,10 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     var imgw = (widget.avatarWidth * 0.7).toInt();
-    var imgbg = widget.color ?? ConstTheme.centerChannelColor;
-    var boxBg = widget.bg ?? ConstTheme.centerChannelColor.withOpacity(0.1);
+    var imgbg = widget.color ?? constTheme.centerChannelColor;
+    var boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
     var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.user.id), size: 50);
     return BasePopupMenu(
       verticalMargin: 5.w,
@@ -81,9 +83,9 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
         height: 170.w,
         padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(
-          color: ConstTheme.centerChannelBg,
+          color: constTheme.centerChannelBg,
           borderRadius: BorderRadius.all(Radius.circular(5.w)),
-          border: Border.all(color: ConstTheme.centerChannelColor.withOpacity(0.1)),
+          border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
         ),
         child: Column(
           children: [
@@ -95,8 +97,8 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                     getUserShortId(widget.user.id),
                     true,
                     65.w,
-                    bg: ConstTheme.sidebarText.withOpacity(0.1),
-                    color: ConstTheme.sidebarText,
+                    bg: constTheme.sidebarText.withOpacity(0.1),
+                    color: constTheme.sidebarText,
                   ),
                 ),
                 WidgetUserNameEmoji(getUserShortName(widget.user.displayName ?? "-"), null),
@@ -105,7 +107,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
             SizedBox(height: 15.w),
             Divider(
               height: 1.w,
-              color: ConstTheme.centerChannelColor.withOpacity(0.1),
+              color: constTheme.centerChannelColor.withOpacity(0.1),
             ),
             Padding(
               padding: EdgeInsets.only(top: 15.w),
@@ -113,16 +115,16 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {},
-                    icon: Icon(Icons.chat, size: 24.w, color: ConstTheme.centerChannelColor.withOpacity(0.5)),
+                    icon: Icon(Icons.chat, size: 24.w, color: constTheme.centerChannelColor.withOpacity(0.5)),
                     label: Text(
                       '消息',
-                      style: TextStyle(fontSize: 14.w, color: ConstTheme.centerChannelColor.withOpacity(0.5)),
+                      style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor.withOpacity(0.5)),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith((states) => ConstTheme.centerChannelBg),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => constTheme.centerChannelBg),
                       padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 12.w, horizontal: 30.w)),
                       side: MaterialStateProperty.all(BorderSide(
-                        color: ConstTheme.centerChannelColor.withOpacity(0.5),
+                        color: constTheme.centerChannelColor.withOpacity(0.5),
                         width: 1,
                       )),
                     ),

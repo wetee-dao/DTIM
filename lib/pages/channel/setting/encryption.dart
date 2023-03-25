@@ -100,26 +100,27 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return StreamBuilder<Object>(
       stream: room.client.onSync.stream.where(
         (s) => s.rooms?.join?[room.id] != null || s.deviceLists != null,
       ),
       builder: (context, _) => Scaffold(
-        backgroundColor: ConstTheme.centerChannelBg,
+        backgroundColor: constTheme.centerChannelBg,
         body: ListView(
           children: [
             Padding(
               padding: EdgeInsets.only(top: 10.w, bottom: 15.w),
               child: SwitchListTile(
                 secondary: CircleAvatar(
-                  foregroundColor: ConstTheme.buttonColor,
-                  backgroundColor: ConstTheme.buttonBg.withOpacity(0.6),
+                  foregroundColor: constTheme.buttonColor,
+                  backgroundColor: constTheme.buttonBg.withOpacity(0.6),
                   child: const Icon(Icons.lock_outlined),
                 ),
                 title: Text(
                   L10n.of(context)!.encryptThisChat,
                   style: TextStyle(
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                     fontSize: 14.w,
                   ),
                 ),
@@ -129,7 +130,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
             ),
             Divider(
               height: 1,
-              color: ConstTheme.centerChannelColor.withOpacity(0.08),
+              color: constTheme.centerChannelColor.withOpacity(0.08),
             ),
             // if (room.isDirectChat)
             //   Padding(
@@ -138,10 +139,10 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
             //       width: double.infinity,
             //       child: ElevatedButton.icon(
             //         style: ButtonStyle(
-            //           backgroundColor: MaterialStateProperty.resolveWith((states) => ConstTheme.centerChannelBg),
+            //           backgroundColor: MaterialStateProperty.resolveWith((states) => constTheme.centerChannelBg),
             //           padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 19.w, horizontal: 30.w)),
             //           side: MaterialStateProperty.all(BorderSide(
-            //             color: ConstTheme.centerChannelColor.withOpacity(0.5),
+            //             color: constTheme.centerChannelColor.withOpacity(0.5),
             //             width: 1,
             //           )),
             //         ),
@@ -150,7 +151,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
             //         label: Text(
             //           L10n.of(context)!.verifyStart,
             //           style: TextStyle(
-            //             color: ConstTheme.centerChannelColor,
+            //             color: constTheme.centerChannelColor,
             //             fontSize: 18.w,
             //           ),
             //         ),
@@ -164,7 +165,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                   L10n.of(context)!.deviceKeys,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                 ),
               ),
@@ -214,7 +215,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                             const SizedBox(width: 4),
                             Text(
                               deviceKeys[i].deviceId ?? L10n.of(context)!.unknownDevice,
-                              style: TextStyle(color: ConstTheme.centerChannelColor),
+                              style: TextStyle(color: constTheme.centerChannelColor),
                             ),
                             const SizedBox(width: 4),
                             Flexible(
@@ -225,7 +226,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                                     AppConfig.borderRadius,
                                   ),
                                 ),
-                                color: ConstTheme.centerChannelBg,
+                                color: constTheme.centerChannelBg,
                                 child: Padding(
                                   padding: EdgeInsets.all(4.w),
                                   child: Text(
@@ -233,7 +234,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      color: ConstTheme.centerChannelColor,
+                                      color: constTheme.centerChannelColor,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -245,7 +246,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                         subtitle: Text(
                           deviceKeys[i].ed25519Key?.beautified ?? L10n.of(context)!.unknownEncryptionAlgorithm,
                           style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
+                            color: constTheme.centerChannelColor,
                             fontSize: 13.w,
                           ),
                         ),
@@ -262,7 +263,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                     L10n.of(context)!.encryptionNotEnabled,
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
-                      color: ConstTheme.centerChannelColor,
+                      color: constTheme.centerChannelColor,
                     ),
                   ),
                 ),

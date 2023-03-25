@@ -94,6 +94,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     User? user;
     final directChatId = widget.request.client.getDirectChatFromUserId(widget.request.userId);
     if (directChatId != null) {
@@ -109,7 +110,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
         final textEditingController = TextEditingController();
         String input;
         body = Container(
-          color: ConstTheme.centerChannelBg,
+          color: constTheme.centerChannelBg,
           margin: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -132,8 +133,8 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: L10n.of(context)!.passphraseOrKey,
-                  prefixStyle: TextStyle(color: ConstTheme.centerChannelBg),
-                  suffixStyle: TextStyle(color: ConstTheme.centerChannelBg),
+                  prefixStyle: TextStyle(color: constTheme.centerChannelBg),
+                  suffixStyle: TextStyle(color: constTheme.centerChannelBg),
                   border: const OutlineInputBorder(),
                 ),
               ),

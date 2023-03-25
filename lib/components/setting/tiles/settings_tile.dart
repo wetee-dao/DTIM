@@ -53,6 +53,7 @@ class SettingsTile extends AbstractSettingsTile {
   @override
   Widget build(BuildContext context) {
     final scaleFactor = MediaQuery.of(context).textScaleFactor;
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
 
     final cantShowAnimation =
         tileType == SettingsTileType.switchTile ? onToggle == null && onPressed == null : onPressed == null;
@@ -71,7 +72,7 @@ class SettingsTile extends AbstractSettingsTile {
                     onPressed?.call(context);
                   }
                 },
-          highlightColor: ConstTheme.centerChannelColor.lighter(),
+          highlightColor: constTheme.centerChannelColor.lighter(),
           child: Row(
             children: [
               if (leading != null)
@@ -79,7 +80,7 @@ class SettingsTile extends AbstractSettingsTile {
                   padding: const EdgeInsetsDirectional.only(start: 24),
                   child: IconTheme(
                     data: IconTheme.of(context).copyWith(
-                      color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                      color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                     ),
                     child: leading!,
                   ),
@@ -97,7 +98,7 @@ class SettingsTile extends AbstractSettingsTile {
                     children: [
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                          color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           fontSize: 13.w,
                           fontWeight: FontWeight.w400,
                         ),
@@ -108,7 +109,7 @@ class SettingsTile extends AbstractSettingsTile {
                           padding: EdgeInsets.only(top: 4.0),
                           child: DefaultTextStyle(
                             style: TextStyle(
-                              color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                              color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                             ),
                             child: value!,
                           ),
@@ -118,7 +119,7 @@ class SettingsTile extends AbstractSettingsTile {
                           padding: EdgeInsets.only(top: 4.0),
                           child: DefaultTextStyle(
                             style: TextStyle(
-                              color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                              color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                             ),
                             child: description!,
                           ),
@@ -136,7 +137,7 @@ class SettingsTile extends AbstractSettingsTile {
                       child: Switch(
                         value: initialValue!,
                         onChanged: onToggle,
-                        activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                        activeColor: enabled ? activeSwitchColor : constTheme.centerChannelColor.darker(2),
                       ),
                     ),
                   ],
@@ -147,7 +148,7 @@ class SettingsTile extends AbstractSettingsTile {
                   child: Switch(
                     value: initialValue!,
                     onChanged: onToggle,
-                    activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                    activeColor: enabled ? activeSwitchColor : constTheme.centerChannelColor.darker(2),
                   ),
                 )
               else if (trailing != null)

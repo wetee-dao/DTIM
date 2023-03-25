@@ -33,6 +33,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     var fallbackLetters = '@';
     final name = this.name;
     if (name != null) {
@@ -61,7 +62,7 @@ class Avatar extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.w),
-          color: ConstTheme.centerChannelColor.withOpacity(0.1),
+          color: constTheme.centerChannelColor.withOpacity(0.1),
         ),
         padding: EdgeInsets.all(5.w),
         alignment: Alignment.topLeft,
@@ -82,7 +83,7 @@ class Avatar extends StatelessWidget {
               child: Container(
                 width: size,
                 height: size,
-                color: ConstTheme.centerChannelColor.withOpacity(0.1),
+                color: constTheme.centerChannelColor.withOpacity(0.1),
                 child: textWidget,
               ),
             )
@@ -106,9 +107,10 @@ class UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     var imgw = (size * 0.7).toInt();
-    var imgbg = color ?? ConstTheme.centerChannelColor;
-    var boxBg = bg ?? ConstTheme.centerChannelColor.withOpacity(0.1);
+    var imgbg = color ?? constTheme.centerChannelColor;
+    var boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
     var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),

@@ -40,6 +40,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     var themesCurr = themes.where((t) => t["type"] == type).toList();
     return IgnorePointer(
       ignoring: !enabled,
@@ -52,7 +53,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                 padding: const EdgeInsetsDirectional.only(start: 24),
                 child: IconTheme(
                   data: IconTheme.of(context).copyWith(
-                    color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                    color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                   ),
                   child: leading!,
                 ),
@@ -70,7 +71,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                   children: [
                     DefaultTextStyle(
                       style: TextStyle(
-                        color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                        color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                         fontSize: 13.w,
                         fontWeight: FontWeight.w400,
                       ),
@@ -81,7 +82,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                         padding: EdgeInsets.only(top: 4.w),
                         child: DefaultTextStyle(
                           style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           ),
                           child: value!,
                         ),
@@ -91,7 +92,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                         padding: EdgeInsets.only(top: 4.w),
                         child: DefaultTextStyle(
                           style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           ),
                           child: description!,
                         ),

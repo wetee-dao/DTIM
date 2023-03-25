@@ -332,6 +332,7 @@ class ChatDetailsController extends State<ChatDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     members ??= client.getRoomById(roomId!)!.getParticipants();
     final room = client.getRoomById(roomId!);
     if (room == null) {
@@ -347,8 +348,8 @@ class ChatDetailsController extends State<ChatDetails> {
 
     final titleStyle = TextStyle(
       fontSize: 14,
-      color: ConstTheme.centerChannelColor,
-      decorationColor: ConstTheme.centerChannelColor,
+      color: constTheme.centerChannelColor,
+      decorationColor: constTheme.centerChannelColor,
     );
 
     members!.removeWhere((u) => u.membership == Membership.leave);
@@ -386,7 +387,7 @@ class ChatDetailsController extends State<ChatDetails> {
               ),
 
               PopupMenuButton(
-                color: ConstTheme.centerChannelBg,
+                color: constTheme.centerChannelBg,
                 onSelected: setJoinRulesAction,
                 position: PopupMenuPosition.under,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<JoinRules>>[
@@ -422,7 +423,7 @@ class ChatDetailsController extends State<ChatDetails> {
               ),
 
               PopupMenuButton(
-                color: ConstTheme.centerChannelBg,
+                color: constTheme.centerChannelBg,
                 onSelected: setHistoryVisibilityAction,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<HistoryVisibility>>[
                   if (room.canChangeHistoryVisibility)
@@ -478,7 +479,7 @@ class ChatDetailsController extends State<ChatDetails> {
 
               if (room.joinRules == JoinRules.public)
                 PopupMenuButton(
-                  color: ConstTheme.centerChannelBg,
+                  color: constTheme.centerChannelBg,
                   onSelected: setGuestAccessAction,
                   itemBuilder: (BuildContext context) => <PopupMenuEntry<GuestAccess>>[
                     if (room.canChangeGuestAccess)
@@ -538,7 +539,7 @@ class ChatDetailsController extends State<ChatDetails> {
               //           )
               //         : L10n.of(context)!.emptyChat,
               //     style: TextStyle(
-              //       color: ConstTheme.centerChannelColor,
+              //       color: constTheme.centerChannelColor,
               //       fontWeight: FontWeight.bold,
               //     ),
               //   ),
@@ -547,7 +548,7 @@ class ChatDetailsController extends State<ChatDetails> {
               //     ? ListTile(
               //         title: Text(L10n.of(context)!.inviteContact),
               //         leading: CircleAvatar(
-              //           backgroundColor: ConstTheme.centerChannelBg,
+              //           backgroundColor: constTheme.centerChannelBg,
               //           foregroundColor: Colors.white,
               //           radius: 5.w,
               //           child: const Icon(Icons.add_outlined),
@@ -585,24 +586,25 @@ class ChatDetailsController extends State<ChatDetails> {
   }
 
   renderTile(IconData ico, String title, String subtitle, {void Function()? onTap}) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     final titleStyle = TextStyle(
       fontSize: 14,
       height: 1.3,
-      color: ConstTheme.centerChannelColor,
-      decorationColor: ConstTheme.centerChannelColor,
+      color: constTheme.centerChannelColor,
+      decorationColor: constTheme.centerChannelColor,
     );
 
     return Container(
       margin: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w),
       decoration: BoxDecoration(
-        color: ConstTheme.centerChannelColor.withOpacity(0.1),
+        color: constTheme.centerChannelColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(5.w),
       ),
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundColor: ConstTheme.centerChannelBg,
-          foregroundColor: ConstTheme.centerChannelColor,
+          backgroundColor: constTheme.centerChannelBg,
+          foregroundColor: constTheme.centerChannelColor,
           child: Icon(ico),
         ),
         title: Text(
@@ -616,7 +618,7 @@ class ChatDetailsController extends State<ChatDetails> {
         trailing: onTap != null
             ? Icon(
                 Icons.edit_outlined,
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
                 size: 14.w,
               )
             : null,

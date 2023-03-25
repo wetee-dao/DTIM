@@ -14,6 +14,7 @@ class ParticipantListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     final membershipBatch = <Membership, String>{
       Membership.join: '',
       Membership.ban: L10n.of(context)!.banned,
@@ -47,17 +48,17 @@ class ParticipantListItem extends StatelessWidget {
                 ),
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color: ConstTheme.centerChannelBg,
+                  color: constTheme.centerChannelBg,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                 ),
                 child: Text(
                   permissionBatch,
                   style: TextStyle(
                     fontSize: 14,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                 ),
               ),

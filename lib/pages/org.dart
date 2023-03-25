@@ -28,15 +28,16 @@ class _OrgPageState extends State<OrgPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.sidebarBg,
+      backgroundColor: constTheme.sidebarBg,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             height: double.maxFinite,
             width: leftWidth,
-            color: ConstTheme.sidebarBg,
+            color: constTheme.sidebarBg,
             child: OrgViewPage(key: const Key("OrgViewPage"), onChannel: setChannelId),
           ),
           GestureDetector(
@@ -45,7 +46,7 @@ class _OrgPageState extends State<OrgPage> {
               child: SizedBox(
                 width: 1.w,
                 height: double.infinity,
-                child: Container(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
               ),
             ),
             onPanUpdate: (details) {
@@ -65,11 +66,11 @@ class _OrgPageState extends State<OrgPage> {
                   )
                 : moveWindow(
                     Container(
-                      color: ConstTheme.centerChannelBg,
+                      color: constTheme.centerChannelBg,
                       child: Center(
                         child: Text(
                           "Join DAO and run any app in web3",
-                          style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 18.w),
+                          style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
                         ),
                       ),
                     ),

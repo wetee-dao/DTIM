@@ -100,6 +100,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       appBar: LocalAppBar(
         title: L10n.of(context)!.selectOrg,
@@ -110,12 +111,12 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 backgroundColor: MaterialStateProperty.resolveWith((states) {
                   //设置按下时的背景颜色
                   if (states.contains(MaterialState.pressed)) {
-                    return ConstTheme.buttonBg;
+                    return constTheme.buttonBg;
                   }
                   //默认不使用背景颜色
-                  return ConstTheme.buttonBg.withOpacity(0.8);
+                  return constTheme.buttonBg.withOpacity(0.8);
                 }),
-                // backgroundColor: ConstTheme.mentionBg,
+                // backgroundColor: constTheme.mentionBg,
               ),
               onPressed: () async {
                 if (selected.isEmpty) {
@@ -133,14 +134,14 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               },
               child: Text(
                 L10n.of(context)!.ok.toUpperCase(),
-                style: TextStyle(color: ConstTheme.buttonColor, fontSize: 16.w),
+                style: TextStyle(color: constTheme.buttonColor, fontSize: 16.w),
               ),
             ),
             SizedBox(width: 10.w),
           ],
         ),
       ),
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -148,7 +149,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           // Container(
           //   height: double.maxFinite,
           //   width: 260.w,
-          //   color: ConstTheme.sidebarBg,
+          //   color: constTheme.sidebarBg,
           //   child: Column(
           //     mainAxisAlignment: MainAxisAlignment.start,
           //     children: [
@@ -169,11 +170,11 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //                 left: BorderSide(
           //                   width: 5.w,
           //                   color: accounts[i].address == currentAddress
-          //                       ? ConstTheme.sidebarTextActiveBorder
-          //                       : ConstTheme.sidebarBg,
+          //                       ? constTheme.sidebarTextActiveBorder
+          //                       : constTheme.sidebarBg,
           //                 ),
           //               ),
-          //               color: accounts[i].address == currentAddress ? ConstTheme.centerChannelBg : null,
+          //               color: accounts[i].address == currentAddress ? constTheme.centerChannelBg : null,
           //             ),
           //             child: Row(
           //               children: [
@@ -184,14 +185,14 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //                       ? Text(
           //                           accounts[i].name!,
           //                           style: TextStyle(
-          //                             color: ConstTheme.sidebarHeaderTextColor,
+          //                             color: constTheme.sidebarHeaderTextColor,
           //                             fontSize: 16.w,
           //                           ),
           //                         )
           //                       : Text(
           //                           accounts[i].address,
           //                           style: TextStyle(
-          //                             color: ConstTheme.sidebarHeaderTextColor,
+          //                             color: constTheme.sidebarHeaderTextColor,
           //                             fontSize: 12.w,
           //                           ),
           //                         ),
@@ -208,7 +209,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //             border: Border(
           //               top: BorderSide(
           //                 width: 1.w,
-          //                 color: ConstTheme.sidebarText.withOpacity(0.05),
+          //                 color: constTheme.sidebarText.withOpacity(0.05),
           //               ),
           //             ),
           //           ),
@@ -217,12 +218,12 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //             children: [
           //               Icon(
           //                 Icons.add,
-          //                 color: ConstTheme.sidebarHeaderTextColor,
+          //                 color: constTheme.sidebarHeaderTextColor,
           //               ),
           //               Text(
           //                 "添加帐号",
           //                 style: TextStyle(
-          //                   color: ConstTheme.sidebarHeaderTextColor,
+          //                   color: constTheme.sidebarHeaderTextColor,
           //                   fontSize: 14.w,
           //                 ),
           //               )
@@ -274,7 +275,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
             },
             child: Text(
               "xxxxx",
-              style: TextStyle(color: ConstTheme.centerChannelBg, fontSize: 16.w),
+              style: TextStyle(color: constTheme.centerChannelBg, fontSize: 16.w),
             ),
           ),
         ],

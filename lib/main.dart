@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:asyou_app/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -79,12 +80,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    printInfo("重新渲染");
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<IMProvider>(create: (_) => im),
-      ],
-      child: Themed(
+    return AdaptiveTheme(
+      initial: AdaptiveThemeMode.light,
+      light: theme(),
+      builder: (light, dark) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider<IMProvider>(create: (_) => im),
+        ],
         child: MaterialApp.router(
           title: '我门',
           debugShowCheckedModeBanner: false,
@@ -94,37 +96,7 @@ class App extends StatelessWidget {
           localizationsDelegates: L10n.localizationsDelegates,
           locale: const Locale('en'),
           supportedLocales: L10n.supportedLocales,
-          // theme: ConstTheme.dark.color.value == Colors.black.value
-          //     ? ThemeData.dark(useMaterial3: true)
-          //     : ThemeData.light(useMaterial3: true),
-          theme: ThemeData(
-            useMaterial3: true,
-            brightness: ConstTheme.dark.color.value == Colors.black.value ? Brightness.dark : Brightness.light,
-            primaryColor: ConstTheme.centerChannelBg,
-            colorScheme: const ColorScheme.light().copyWith(
-              brightness: ConstTheme.dark.color.value == Colors.black.value ? Brightness.dark : Brightness.light,
-              primary: ConstTheme.centerChannelColor,
-              secondary: ConstTheme.centerChannelColor.withAlpha(155),
-              error: ConstTheme.errorTextColor,
-            ),
-            dialogTheme: DialogTheme(
-              backgroundColor: ConstTheme.sidebarBg,
-              titleTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 16.w),
-              contentTextStyle: TextStyle(color: ConstTheme.sidebarText, fontSize: 13.w),
-              surfaceTintColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3.w),
-              ),
-              actionsPadding: EdgeInsets.only(bottom: 20.w, right: 15.w),
-            ),
-            textTheme: TextTheme(
-              titleMedium: TextStyle(color: ConstTheme.centerChannelColor),
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              labelStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
-              hintStyle: TextStyle(height: 1.5, color: ConstTheme.centerChannelColor),
-            ),
-          ),
+          theme: light,
           builder: (context, child) {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);

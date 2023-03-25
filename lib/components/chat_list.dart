@@ -29,6 +29,7 @@ class _ChatListState extends State<ChatList> {
     final channelsList = widget.channelsList;
     final currentId = widget.currentId;
     final onSelect = widget.onSelect;
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -40,8 +41,8 @@ class _ChatListState extends State<ChatList> {
           key: Key(chat.id),
           subkey: "DirectChat${chat.id}",
           ishover: index == hover,
-          color: currentId == chat.id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
-          hoverColor: ConstTheme.sidebarText.withOpacity(0.08),
+          color: currentId == chat.id ? constTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
+          hoverColor: constTheme.sidebarText.withOpacity(0.08),
           onPressed: () async {
             onSelect(chat.id);
           },
@@ -53,8 +54,8 @@ class _ChatListState extends State<ChatList> {
               final offset = e.globalPosition;
               final result = await showMenu(
                 context: context,
-                color: ConstTheme.sidebarBg,
-                shape: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                color: constTheme.sidebarBg,
+                shape: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
                 position: RelativeRect.fromLTRB(
                   offset.dx,
                   offset.dy,
@@ -129,7 +130,7 @@ class _ChatListState extends State<ChatList> {
             child: Container(
               height: 29.w,
               padding: EdgeInsets.only(right: 12.w, left: 12.w),
-              child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
+              child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(155)),
             ),
           ),
           child: Container(
@@ -137,7 +138,7 @@ class _ChatListState extends State<ChatList> {
               border: Border(
                 left: BorderSide(
                   width: 2.w,
-                  color: currentId == chat.id ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
+                  color: currentId == chat.id ? constTheme.sidebarTextActiveBorder : Colors.transparent,
                 ),
               ),
             ),
@@ -157,7 +158,7 @@ class _ChatListState extends State<ChatList> {
                       chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
                       size: chat.encrypted ? 24.w : 19.w,
                       color:
-                          chat.isUnreadOrInvited ? ConstTheme.sidebarUnreadText : ConstTheme.sidebarText.withAlpha(155),
+                          chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText.withAlpha(155),
                     ),
                   ),
                 ),
@@ -169,7 +170,7 @@ class _ChatListState extends State<ChatList> {
                       fontSize: 15.w,
                       fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
                       color:
-                          chat.isUnreadOrInvited ? ConstTheme.sidebarUnreadText : ConstTheme.sidebarText.withAlpha(155),
+                          chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText.withAlpha(155),
                     ),
                   ),
                 ),
@@ -182,6 +183,7 @@ class _ChatListState extends State<ChatList> {
   }
 
   PopupMenuItem<String> renderItem(value, icon, name, {hideBorder = false}) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return PopupMenuItem<String>(
       padding: EdgeInsets.zero,
       height: 25.w,
@@ -190,15 +192,15 @@ class _ChatListState extends State<ChatList> {
         padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
           border: Border(
-              bottom: !hideBorder ? BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08)) : BorderSide.none),
+              bottom: !hideBorder ? BorderSide(color: constTheme.sidebarText.withOpacity(0.08)) : BorderSide.none),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(width: 10.w),
-            Icon(icon, color: ConstTheme.sidebarText.withOpacity(0.7), size: 16.w),
+            Icon(icon, color: constTheme.sidebarText.withOpacity(0.7), size: 16.w),
             SizedBox(width: 6.w),
-            Text(name, style: TextStyle(color: ConstTheme.sidebarText.withOpacity(0.7), fontSize: 12.w, height: 1)),
+            Text(name, style: TextStyle(color: constTheme.sidebarText.withOpacity(0.7), fontSize: 12.w, height: 1)),
             SizedBox(width: 10.w),
           ],
         ),

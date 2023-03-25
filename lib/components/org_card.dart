@@ -22,6 +22,7 @@ class OrgCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return AnimatedContainer(
       width: 200.w,
       height: 240.w,
@@ -30,11 +31,11 @@ class OrgCard extends StatelessWidget {
       decoration: BoxDecoration(
         // border: Border.all(
         //   color: selected
-        //       ? (color ?? ConstTheme.mentionBg)
-        //       : (color ?? ConstTheme.sidebarBg.withAlpha(50)),
+        //       ? (color ?? constTheme.mentionBg)
+        //       : (color ?? constTheme.sidebarBg.withAlpha(50)),
         //   width: 4.w,
         // ),
-        color: ConstTheme.centerChannelColor.withOpacity(0.1),
+        color: constTheme.centerChannelColor.withOpacity(0.1),
       ),
       child: InkWell(
         key: Key("${org.hash}Card"),
@@ -63,14 +64,14 @@ class OrgCard extends StatelessWidget {
                         Text(
                           org.name ?? "",
                           style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
+                            color: constTheme.centerChannelColor,
                             fontSize: 16.w,
                           ),
                         ),
                         Text(
                           org.desc ?? "",
                           style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
+                            color: constTheme.centerChannelColor,
                             fontSize: 12.w,
                           ),
                         ),
@@ -80,7 +81,7 @@ class OrgCard extends StatelessWidget {
                 ],
               ),
             ),
-            selected ? Container(color: ConstTheme.sidebarTextActiveBorder.withOpacity(0.3)) : Container(),
+            selected ? Container(color: constTheme.sidebarTextActiveBorder.withOpacity(0.3)) : Container(),
             AnimatedCheckmark(
               active: selected,
               color: Colors.white,

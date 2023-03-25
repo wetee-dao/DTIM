@@ -53,12 +53,13 @@ class _ChannelBarState extends State<ChannelBar> {
   Widget build(BuildContext context) {
     final actualMembersCount =
         (widget.room.summary.mInvitedMemberCount ?? 0) + (widget.room.summary.mJoinedMemberCount ?? 0);
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
 
     return moveWindow(
       Container(
         height: widget._height,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.08))),
+          border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -89,7 +90,7 @@ class _ChannelBarState extends State<ChannelBar> {
                             padding: EdgeInsets.only(left: 6.w, right: 3.w, top: 2.w, bottom: 2.w),
                             decoration: BoxDecoration(
                               color: snapshot.data != null && snapshot.data!
-                                  ? ConstTheme.centerChannelColor.withOpacity(0.1)
+                                  ? constTheme.centerChannelColor.withOpacity(0.1)
                                   : Colors.transparent,
                               borderRadius: BorderRadius.all(Radius.circular(3.w)),
                             ),
@@ -99,8 +100,8 @@ class _ChannelBarState extends State<ChannelBar> {
                                   getUserShortName(displayname).toUpperCase(),
                                   style: TextStyle(
                                     color: snapshot.data != null && snapshot.data!
-                                        ? ConstTheme.centerChannelColor
-                                        : ConstTheme.centerChannelColor,
+                                        ? constTheme.centerChannelColor
+                                        : constTheme.centerChannelColor,
                                     fontSize: 17.w,
                                     height: 1.4,
                                   ),
@@ -108,8 +109,8 @@ class _ChannelBarState extends State<ChannelBar> {
                                 Icon(
                                   Icons.keyboard_arrow_down_outlined,
                                   color: snapshot.data != null && snapshot.data!
-                                      ? ConstTheme.centerChannelColor
-                                      : ConstTheme.centerChannelColor,
+                                      ? constTheme.centerChannelColor
+                                      : constTheme.centerChannelColor,
                                   size: 18.w,
                                 ),
                               ],
@@ -131,7 +132,7 @@ class _ChannelBarState extends State<ChannelBar> {
                       },
                       child: Icon(
                         widget.room.isFavourite ? Icons.star_half_rounded : Icons.star_border_rounded,
-                        color: ConstTheme.centerChannelColor.withAlpha(155),
+                        color: constTheme.centerChannelColor.withAlpha(155),
                         size: 18.w,
                       ),
                     ),
@@ -151,13 +152,13 @@ class _ChannelBarState extends State<ChannelBar> {
                           SizedBox(width: 3.w),
                           Icon(
                             Icons.group,
-                            color: ConstTheme.centerChannelColor.withAlpha(155),
+                            color: constTheme.centerChannelColor.withAlpha(155),
                             size: 18.w,
                           ),
                           SizedBox(width: 3.w),
                           Text(
                             actualMembersCount.toString(),
-                            style: TextStyle(fontSize: 12.w, color: ConstTheme.centerChannelColor.withAlpha(155)),
+                            style: TextStyle(fontSize: 12.w, color: constTheme.centerChannelColor.withAlpha(155)),
                           ),
                           SizedBox(width: 4.w),
                         ],
@@ -167,7 +168,7 @@ class _ChannelBarState extends State<ChannelBar> {
                     Text(
                       widget.room.topic,
                       style: TextStyle(
-                        color: ConstTheme.centerChannelColor.withAlpha(155),
+                        color: constTheme.centerChannelColor.withAlpha(155),
                         fontSize: 13,
                         height: 1,
                       ),

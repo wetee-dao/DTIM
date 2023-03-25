@@ -83,6 +83,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     final roomAlias = this.roomAlias;
     return SafeArea(
       child: Scaffold(
@@ -152,7 +153,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
                     title: Text(
                       L10n.of(context)!.groupDescription,
                       style: TextStyle(
-                        color: ConstTheme.centerChannelColor,
+                        color: constTheme.centerChannelColor,
                       ),
                     ),
                     subtitle: LinkText(

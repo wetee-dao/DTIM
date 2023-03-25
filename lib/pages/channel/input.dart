@@ -73,6 +73,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       height: 66.w,
       // margin: EdgeInsets.only(
@@ -83,14 +84,14 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
       // ),
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
       decoration: BoxDecoration(
-        color: ConstTheme.centerChannelBg,
+        color: constTheme.centerChannelBg,
         // boxShadow: <BoxShadow>[
         //   BoxShadow(
         //     color: Colors.red.withOpacity(0.8),
         //     blurRadius: 2,
         //   ),
         // ],
-        border: Border(top: BorderSide(color: ConstTheme.centerChannelColor.withOpacity(0.08))),
+        border: Border(top: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,12 +102,12 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
             width: 25.w,
             height: 25.w,
             decoration: BoxDecoration(
-              color: ConstTheme.centerChannelColor.withAlpha(150),
+              color: constTheme.centerChannelColor.withAlpha(150),
               borderRadius: BorderRadius.circular(25.w),
             ),
             child: Icon(
               Icons.add,
-              color: ConstTheme.centerChannelBg,
+              color: constTheme.centerChannelBg,
               size: 20.w,
             ),
           ),
@@ -119,7 +120,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               key: const Key("chatInput"),
               controller: _msgController,
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
                 fontSize: 15.w,
               ),
               autofocus: false,
@@ -128,7 +129,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 hintText: '发送消息至 ${widget.room.name}',
                 hintStyle: TextStyle(
                   height: 1.5,
-                  color: ConstTheme.sidebarText.withAlpha(155),
+                  color: constTheme.sidebarText.withAlpha(155),
                 ),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(
@@ -141,7 +142,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   msg = e;
                 });
               },
-              cursorColor: ConstTheme.centerChannelColor,
+              cursorColor: constTheme.centerChannelColor,
               focusNode: _msgNode,
             ),
           ),
@@ -160,7 +161,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   snapshot.data != null && snapshot.data!
                       ? Icons.emoji_emotions_outlined
                       : Icons.sentiment_satisfied_alt_outlined,
-                  color: ConstTheme.centerChannelColor.withAlpha(150),
+                  color: constTheme.centerChannelColor.withAlpha(150),
                   size: 25.w,
                 );
               },
@@ -170,9 +171,9 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               height: 300.w,
               margin: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                border: Border.all(color: ConstTheme.centerChannelColor.withOpacity(0.08)),
+                border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.08)),
                 borderRadius: BorderRadius.circular(3.w),
-                color: ConstTheme.centerChannelBg,
+                color: constTheme.centerChannelBg,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
@@ -193,11 +194,11 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   horizontalSpacing: 0,
                   gridPadding: EdgeInsets.zero,
                   initCategory: Category.RECENT,
-                  bgColor: ConstTheme.centerChannelBg,
-                  indicatorColor: ConstTheme.centerChannelColor,
-                  iconColor: ConstTheme.centerChannelColor,
-                  iconColorSelected: ConstTheme.sidebarTextActiveBorder,
-                  backspaceColor: ConstTheme.centerChannelColor,
+                  bgColor: constTheme.centerChannelBg,
+                  indicatorColor: constTheme.centerChannelColor,
+                  iconColor: constTheme.centerChannelColor,
+                  iconColorSelected: constTheme.sidebarTextActiveBorder,
+                  backspaceColor: constTheme.centerChannelColor,
                   skinToneDialogBgColor: Colors.white,
                   skinToneIndicatorColor: Colors.grey,
                   enableSkinTones: true,
@@ -206,7 +207,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   replaceEmojiOnLimitExceed: false,
                   noRecents: Text(
                     'No Recents',
-                    style: TextStyle(fontSize: 20.w, color: ConstTheme.centerChannelColor),
+                    style: TextStyle(fontSize: 20.w, color: constTheme.centerChannelColor),
                     textAlign: TextAlign.center,
                   ),
                   loadingIndicator: const SizedBox.shrink(),
@@ -231,7 +232,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
             },
             child: Icon(
               Icons.send,
-              color: ConstTheme.centerChannelColor.withAlpha(150),
+              color: constTheme.centerChannelColor.withAlpha(150),
               size: 25.w,
             ),
           ),

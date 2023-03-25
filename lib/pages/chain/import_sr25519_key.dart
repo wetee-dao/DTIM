@@ -35,7 +35,8 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
 
   @override
   Widget build(BuildContext context) {
-    var titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup3];
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup3];
     return Scaffold(
       appBar: LocalAppBar(
         title: L10n.of(context)!.signUp,
@@ -49,7 +50,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
           }
         },
       ),
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.4,
@@ -61,7 +62,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 L10n.of(context)!.importAccount,
                 style: TextStyle(
                   fontSize: 32.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -69,7 +70,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 titles[step],
                 style: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor.withOpacity(0.7),
+                  color: constTheme.centerChannelColor.withOpacity(0.7),
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -85,6 +86,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
   }
 
   Widget stepRender(int s) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (s == 0) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -93,7 +95,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
           Container(
             padding: EdgeInsets.all(5.w),
             decoration: BoxDecoration(
-              color: ConstTheme.centerChannelColor.withOpacity(0.1),
+              color: constTheme.centerChannelColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(5.w),
             ),
             child: Container(
@@ -111,13 +113,13 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 maxLines: 6,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.go,
-                style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 13.w),
+                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
                 decoration: InputDecoration(
                   label: null,
                   hintText: L10n.of(context)!.inputMnemonic,
                   hintStyle: TextStyle(
                     height: 1.5,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                     fontSize: 14.w,
                   ),
                   contentPadding: const EdgeInsets.all(0),
@@ -137,7 +139,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 child: Icon(
                   Icons.warning,
                   size: 14.w,
-                  color: ConstTheme.linkColor,
+                  color: constTheme.linkColor,
                 ),
               ),
               SizedBox(width: 5.w),
@@ -147,7 +149,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   "请写下你的钱包助记词，放在安全的地方。这个助记词可以用来恢复你的钱包。小心保管，以免失去你的资产。",
                   style: TextStyle(
                     fontSize: 12.w,
-                    color: ConstTheme.linkColor.withOpacity(0.7),
+                    color: constTheme.linkColor.withOpacity(0.7),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -173,7 +175,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               width: MediaQuery.of(context).size.width * 0.4,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
                 borderRadius: BorderRadius.circular(5.w),
               ),
               child: Row(
@@ -183,7 +185,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                       child: Text(
                         '下一步',
                         style: TextStyle(
-                          color: ConstTheme.centerChannelBg,
+                          color: constTheme.centerChannelBg,
                           fontWeight: FontWeight.bold,
                           fontSize: 19.w,
                         ),
@@ -192,7 +194,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   ),
                   Icon(
                     Icons.navigate_next,
-                    color: ConstTheme.centerChannelBg,
+                    color: constTheme.centerChannelBg,
                   )
                 ],
               ),
@@ -207,20 +209,20 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
           children: [
             TextFormField(
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
                 hintText: L10n.of(context)!.accountName,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.sidebarBg.withOpacity(0.2),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.account_balance_wallet,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
               ),
               onSaved: (v) {
@@ -240,7 +242,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
             SizedBox(height: 10.w),
             TextFormField(
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
               ),
               controller: _passwordController,
               obscureText: true,
@@ -248,14 +250,14 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 hintText: L10n.of(context)!.accountPasswd,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.sidebarBg.withOpacity(0.2),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
               ),
               onSaved: (v) {
@@ -272,21 +274,21 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
             SizedBox(height: 10.w),
             TextFormField(
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
               ),
               obscureText: true,
               decoration: InputDecoration(
                 hintText: L10n.of(context)!.accountPasswd2,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.sidebarBg.withOpacity(0.2),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
               ),
               onSaved: (v) {
@@ -336,7 +338,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 width: MediaQuery.of(context).size.width * 0.4,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Row(
@@ -346,7 +348,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                         child: Text(
                           '创建本地账户',
                           style: TextStyle(
-                            color: ConstTheme.centerChannelBg,
+                            color: constTheme.centerChannelBg,
                             fontWeight: FontWeight.w600,
                             fontSize: 19.w,
                           ),
@@ -355,7 +357,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                     ),
                     Icon(
                       Icons.navigate_next,
-                      color: ConstTheme.centerChannelBg,
+                      color: constTheme.centerChannelBg,
                     )
                   ],
                 ),

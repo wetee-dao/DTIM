@@ -61,6 +61,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (!isPc() || Platform.isMacOS) {
       return widget.child;
     }
@@ -80,7 +81,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                 },
                 child: Icon(
                   Icons.remove,
-                  color: ConstTheme.centerChannelColor.withAlpha(150),
+                  color: constTheme.centerChannelColor.withAlpha(150),
                   size: 20.w,
                 ),
               ),
@@ -93,7 +94,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                   },
                   child: Icon(
                     Icons.filter_none,
-                    color: ConstTheme.centerChannelColor.withAlpha(150),
+                    color: constTheme.centerChannelColor.withAlpha(150),
                     size: 13.w,
                   ),
                 ),
@@ -108,7 +109,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                     height: 10.w,
                     margin: EdgeInsets.all(5.w),
                     decoration: BoxDecoration(
-                      border: Border.all(color: ConstTheme.centerChannelColor.withAlpha(150), width: 2.w),
+                      border: Border.all(color: constTheme.centerChannelColor.withAlpha(150), width: 2.w),
                     ),
                   ),
                 ),
@@ -120,7 +121,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                 },
                 child: Icon(
                   Icons.close,
-                  color: ConstTheme.centerChannelColor.withAlpha(150),
+                  color: constTheme.centerChannelColor.withAlpha(150),
                   size: 20.w,
                 ),
               ),

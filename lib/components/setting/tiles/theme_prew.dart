@@ -11,6 +11,7 @@ class ThemePrew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return InkWell(
       onTap: () {
         onTap(theme["codeTheme"]!);
@@ -19,9 +20,9 @@ class ThemePrew extends StatelessWidget {
         width: 185.w,
         height: 145.w,
         decoration: BoxDecoration(
-          color: ConstTheme.centerChannelBg,
+          color: constTheme.centerChannelBg,
           borderRadius: BorderRadius.circular(4.w),
-          border: Border.all(color: ConstTheme.centerChannelColor.withAlpha(50), width: 1.w),
+          border: Border.all(color: constTheme.centerChannelColor.withAlpha(50), width: 1.w),
         ),
         child: Column(
           children: [
@@ -91,7 +92,7 @@ class ThemePrew extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: ConstTheme.centerChannelColor.withAlpha(50), width: 1.w)),
+                border: Border(top: BorderSide(color: constTheme.centerChannelColor.withAlpha(50), width: 1.w)),
               ),
               padding: EdgeInsets.all(10.w),
               child: Row(
@@ -101,15 +102,15 @@ class ThemePrew extends StatelessWidget {
                     selected == theme["codeTheme"]! ? Icons.check_circle : Icons.radio_button_unchecked,
                     size: 14.w,
                     color: selected == theme["codeTheme"]!
-                        ? ConstTheme.mentionHighlightLink
-                        : ConstTheme.centerChannelColor,
+                        ? constTheme.mentionHighlightLink
+                        : constTheme.centerChannelColor,
                   ),
                   SizedBox(width: 5.w),
                   Expanded(
                     child: Text(
                       theme["codeTheme"]!,
                       style: TextStyle(
-                        color: ConstTheme.centerChannelColor,
+                        color: constTheme.centerChannelColor,
                         fontSize: 14.w,
                         height: 1.2,
                         overflow: TextOverflow.ellipsis,

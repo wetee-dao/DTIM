@@ -27,11 +27,12 @@ class ContentBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final onEdit = this.onEdit;
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       height: height,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: ConstTheme.centerChannelBg,
+        color: constTheme.centerChannelBg,
       ),
       child: Stack(
         children: <Widget>[

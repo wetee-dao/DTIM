@@ -28,6 +28,7 @@ class _DirectChatsState extends State<DirectChats> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     final channelsList = widget.channelsList;
     final currentId = widget.currentId;
     final onSelect = widget.onSelect;
@@ -43,8 +44,8 @@ class _DirectChatsState extends State<DirectChats> {
           key: Key(room.id),
           subkey: "DirectChat$index",
           ishover: index == hover,
-          color: currentId == channelsList[index].id ? ConstTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
-          hoverColor: ConstTheme.sidebarText.withOpacity(0.08),
+          color: currentId == channelsList[index].id ? constTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
+          hoverColor: constTheme.sidebarText.withOpacity(0.08),
           onPressed: () async {
             onSelect(channelsList[index].id);
           },
@@ -56,8 +57,8 @@ class _DirectChatsState extends State<DirectChats> {
               final offset = e.globalPosition;
               final result = await showMenu(
                 context: context,
-                color: ConstTheme.sidebarBg,
-                shape: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                color: constTheme.sidebarBg,
+                shape: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
                 position: RelativeRect.fromLTRB(
                   offset.dx,
                   offset.dy,
@@ -108,19 +109,19 @@ class _DirectChatsState extends State<DirectChats> {
             child: Container(
               height: 29.w,
               padding: EdgeInsets.only(right: 6.w, left: 12.w),
-              child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
+              child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(155)),
             ),
           ),
           // child: Container(
           //   margin: EdgeInsets.only(right: 12.w),
-          //   child: Icon(Icons.adaptive.more, size: 17.w, color: ConstTheme.sidebarText.withAlpha(155)),
+          //   child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(155)),
           // ),),
           child: Container(
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
                   width: 2.w,
-                  color: currentId == channelsList[index].id ? ConstTheme.sidebarTextActiveBorder : Colors.transparent,
+                  color: currentId == channelsList[index].id ? constTheme.sidebarTextActiveBorder : Colors.transparent,
                 ),
               ),
             ),
@@ -132,21 +133,21 @@ class _DirectChatsState extends State<DirectChats> {
                   padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
                   child: badges.Badge(
                     showBadge: room.isUnread,
-                    badgeStyle: badges.BadgeStyle(badgeColor: ConstTheme.sidebarUnreadText),
+                    badgeStyle: badges.BadgeStyle(badgeColor: constTheme.sidebarUnreadText),
                     badgeContent: Text(
                       room.notificationCount.toString(),
                       style: TextStyle(
                         fontSize: 10.w,
                         fontWeight: FontWeight.bold,
-                        color: ConstTheme.centerChannelBg,
+                        color: constTheme.centerChannelBg,
                       ),
                     ),
                     child: UserAvatar(
                       room.directChatMatrixID ?? "-",
                       true,
                       28.w,
-                      bg: ConstTheme.sidebarText.withOpacity(0.1),
-                      color: ConstTheme.sidebarText,
+                      bg: constTheme.sidebarText.withOpacity(0.1),
+                      color: constTheme.sidebarText,
                     ),
                   ),
                 ),
@@ -162,6 +163,7 @@ class _DirectChatsState extends State<DirectChats> {
   }
 
   PopupMenuItem<String> renderItem(value, icon, name, {hideBorder = false}) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return PopupMenuItem<String>(
       padding: EdgeInsets.zero,
       height: 25.w,
@@ -170,15 +172,15 @@ class _DirectChatsState extends State<DirectChats> {
         padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
           border: Border(
-              bottom: !hideBorder ? BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08)) : BorderSide.none),
+              bottom: !hideBorder ? BorderSide(color: constTheme.sidebarText.withOpacity(0.08)) : BorderSide.none),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(width: 10.w),
-            Icon(icon, color: ConstTheme.sidebarText.withOpacity(0.7), size: 16.w),
+            Icon(icon, color: constTheme.sidebarText.withOpacity(0.7), size: 16.w),
             SizedBox(width: 6.w),
-            Text(name, style: TextStyle(color: ConstTheme.sidebarText.withOpacity(0.7), fontSize: 12.w, height: 1)),
+            Text(name, style: TextStyle(color: constTheme.sidebarText.withOpacity(0.7), fontSize: 12.w, height: 1)),
             SizedBox(width: 10.w),
           ],
         ),

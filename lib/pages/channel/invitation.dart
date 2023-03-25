@@ -145,8 +145,9 @@ class _InvitationPageState extends State<InvitationPage> {
   Widget build(BuildContext context) {
     final room = client.getRoomById(roomId!)!;
     final groupName = room.name.isEmpty ? L10n.of(context)!.group : room.name;
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "# $groupName",
@@ -214,7 +215,7 @@ class _InvitationPageState extends State<InvitationPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: ConstTheme.centerChannelColor,
+                        color: constTheme.centerChannelColor,
                       ),
                     ),
                     onTap: () => inviteAction(context, contacts[i].id),

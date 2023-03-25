@@ -46,8 +46,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "搜索频道",
@@ -76,22 +77,22 @@ class _SearchPageState extends State<SearchPage> {
             //   margin: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w, bottom: 15.w),
             //   padding: EdgeInsets.only(left: 10.w),
             //   decoration: BoxDecoration(
-            //     color: ConstTheme.sidebarText.withOpacity(0.1),
+            //     color: constTheme.sidebarText.withOpacity(0.1),
             //     borderRadius: BorderRadius.all(Radius.circular(3.w)),
             //   ),
             //   alignment: Alignment.center,
             //   child: TextField(
             //     onTap: () {},
-            //     style: TextStyle(color: ConstTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+            //     style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
             //     autofocus: true,
             //     keyboardType: TextInputType.text,
             //     decoration: InputDecoration(
             //       hintText: '查找频道',
             //       hintStyle: TextStyle(
             //         height: 1.5,
-            //         color: ConstTheme.sidebarText.withAlpha(155),
+            //         color: constTheme.sidebarText.withAlpha(155),
             //       ),
-            //       suffixIcon: Icon(Icons.search, size: 20.w, color: ConstTheme.sidebarText.withAlpha(155)),
+            //       suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText.withAlpha(155)),
             //       contentPadding: const EdgeInsets.all(0),
             //       border: const OutlineInputBorder(borderSide: BorderSide.none),
             //       label: null,
@@ -118,7 +119,7 @@ class _SearchPageState extends State<SearchPage> {
                             child: Icon(
                               Icons.all_inclusive_sharp,
                               size: 25.w,
-                              color: ConstTheme.centerChannelColor,
+                              color: constTheme.centerChannelColor,
                             ),
                           ),
                         ),
@@ -127,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
                           child: Text(
                             room.name ?? "",
                             style: TextStyle(
-                              color: ConstTheme.centerChannelColor,
+                              color: constTheme.centerChannelColor,
                               fontWeight: FontWeight.w600,
                               fontSize: 13.w,
                             ),
@@ -148,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
                             );
                           },
                           icon: const Icon(Icons.control_point_duplicate_rounded),
-                          color: ConstTheme.centerChannelColor,
+                          color: constTheme.centerChannelColor,
                         )
                       ],
                     ),
@@ -183,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
             //                     overflow: TextOverflow.ellipsis,
             //                     softWrap: false,
             //                     style: TextStyle(
-            //                       color: ConstTheme.centerChannelColor,
+            //                       color: constTheme.centerChannelColor,
             //                       fontWeight: FontWeight.w600,
             //                     ),
             //                     textAlign: TextAlign.center,
@@ -201,7 +202,7 @@ class _SearchPageState extends State<SearchPage> {
             // SizedBox(height: 10.w),
             // Divider(
             //   height: 5.w,
-            //   color: ConstTheme.centerChannelColor.withOpacity(0.1),
+            //   color: constTheme.centerChannelColor.withOpacity(0.1),
             // ),
           ],
         ),

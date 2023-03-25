@@ -18,10 +18,11 @@ class _DirectMessagePageState extends State<DirectMessagePage> {
   List userList = [];
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ConstTheme.centerChannelBg,
+        backgroundColor: constTheme.centerChannelBg,
         automaticallyImplyLeading: false,
         title: const Text(
           'Direct Messages',

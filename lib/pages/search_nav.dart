@@ -35,10 +35,11 @@ class _SearchPageNavState extends State<SearchPageNav> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: ConstTheme.sidebarBg,
+        backgroundColor: constTheme.sidebarBg,
         title: SizedBox(
           width: MediaQuery.of(context).size.width * 0.95,
           child: Row(
@@ -64,7 +65,7 @@ class _SearchPageNavState extends State<SearchPageNav> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
-                      color: ConstTheme.centerChannelColor,
+                      color: constTheme.centerChannelColor,
                       size: 21.w,
                     ),
                     hintText: 'Enter a search item',
@@ -73,7 +74,7 @@ class _SearchPageNavState extends State<SearchPageNav> {
                       fontWeight: FontWeight.w400,
                       height: 0.5,
                     ),
-                    fillColor: ConstTheme.centerChannelColor,
+                    fillColor: constTheme.centerChannelColor,
                     filled: true,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),

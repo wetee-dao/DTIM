@@ -172,6 +172,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   @override
   Widget build(BuildContext context) {
     if (room == null) return Container();
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       appBar: ChannelBar(
         room: room!,
@@ -181,13 +182,13 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             children: [
               // Icon(
               //   Icons.meeting_room_outlined,
-              //   color: ConstTheme.centerChannelColor.withAlpha(150),
+              //   color: constTheme.centerChannelColor.withAlpha(150),
               //   size: 19.w,
               // ),
               // SizedBox(width: 10.w),
               // Icon(
               //   Icons.task_outlined,
-              //   color: ConstTheme.centerChannelColor.withAlpha(150),
+              //   color: constTheme.centerChannelColor.withAlpha(150),
               //   size: 19.w,
               // ),
               SizedBox(width: 10.w),
@@ -202,11 +203,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         room!.encrypted ? Icons.lock_outline : Icons.lock_open,
                         size: 19.w,
                         color: room!.joinRules != link.JoinRules.public && !room!.encrypted
-                            ? ConstTheme.centerChannelColor.withAlpha(150)
+                            ? constTheme.centerChannelColor.withAlpha(150)
                             : room!.joinRules != link.JoinRules.public &&
                                     snapshot.data == link.EncryptionHealthState.unverifiedDevices
-                                ? ConstTheme.mentionBg
-                                : ConstTheme.centerChannelColor.withAlpha(150),
+                                ? constTheme.mentionBg
+                                : constTheme.centerChannelColor.withAlpha(150),
                       ),
                       onPressed: () {
                         showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/e2e");
@@ -222,7 +223,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 },
                 child: Icon(
                   Icons.info_outline,
-                  color: ConstTheme.centerChannelColor.withAlpha(150),
+                  color: constTheme.centerChannelColor.withAlpha(150),
                   size: 19.w,
                 ),
               ),
@@ -231,9 +232,9 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
           ),
         ),
       ),
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Container(
-        color: ConstTheme.centerChannelBg,
+        color: constTheme.centerChannelBg,
         child: Column(
           children: [
             Expanded(
@@ -269,14 +270,14 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             ),
             room?.isAbandonedDMRoom == true
                 ? Container(
-                    color: ConstTheme.centerChannelColor.withOpacity(0.05),
+                    color: constTheme.centerChannelColor.withOpacity(0.05),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.all(24.w),
-                            foregroundColor: ConstTheme.errorTextColor,
+                            foregroundColor: constTheme.errorTextColor,
                           ),
                           icon: Icon(
                             Icons.archive_outlined,
@@ -285,7 +286,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                           onPressed: leaveChat,
                           label: Text(
                             L10n.of(context)!.leave,
-                            style: TextStyle(color: ConstTheme.errorTextColor, fontSize: 15.w),
+                            style: TextStyle(color: constTheme.errorTextColor, fontSize: 15.w),
                           ),
                         ),
                         TextButton.icon(
@@ -313,6 +314,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   }
 
   renderCreate(link.Event event) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (event.type == link.EventTypes.RoomCreate) {
       return Padding(
         padding: EdgeInsets.all(20.w),
@@ -322,7 +324,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             Text(
               "# ${room!.getLocalizedDisplayname().fisrtUpperCase()}",
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 20.w,
               ),
@@ -341,7 +343,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 ],
               )} 创建此频道，这是${room!.isDirectChat ? "聊天" : "频道"}的开头。",
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 14.w,
               ),

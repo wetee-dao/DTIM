@@ -67,8 +67,9 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "创建频道",
@@ -99,20 +100,20 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
               SizedBox(height: 10.w),
               TextFormField(
                 style: TextStyle(
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 decoration: InputDecoration(
                   hintText: '频道名称',
                   hintStyle: TextStyle(
                     fontSize: 14.w,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                   filled: true,
-                  fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
+                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.text_fields,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                 ),
                 onSaved: (v) {
@@ -136,14 +137,14 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                   hintText: '是否公开',
                   hintStyle: TextStyle(
                     fontSize: 14.w,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                   filled: true,
-                  fillColor: ConstTheme.centerChannelColor.withOpacity(0.1),
+                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.public,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                 ),
                 onSaved: (v) {
@@ -165,7 +166,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                   width: MediaQuery.of(context).size.width * 0.4,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: ConstTheme.buttonBg,
+                    color: constTheme.buttonBg,
                     borderRadius: BorderRadius.circular(5.w),
                   ),
                   child: Row(
@@ -175,7 +176,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                           child: Text(
                             '创建频道',
                             style: TextStyle(
-                              color: ConstTheme.buttonColor,
+                              color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 19.w,
                             ),
@@ -184,7 +185,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                       ),
                       Icon(
                         Icons.navigate_next,
-                        color: ConstTheme.buttonColor,
+                        color: constTheme.buttonColor,
                       )
                     ],
                   ),

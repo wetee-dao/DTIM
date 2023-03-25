@@ -42,6 +42,7 @@ class SelectTile extends AbstractSettingsTile {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return IgnorePointer(
       ignoring: !enabled,
       child: Material(
@@ -53,7 +54,7 @@ class SelectTile extends AbstractSettingsTile {
                 padding: const EdgeInsetsDirectional.only(start: 24),
                 child: IconTheme(
                   data: IconTheme.of(context).copyWith(
-                    color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                    color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                   ),
                   child: leading!,
                 ),
@@ -71,7 +72,7 @@ class SelectTile extends AbstractSettingsTile {
                   children: [
                     DefaultTextStyle(
                       style: TextStyle(
-                        color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                        color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                         fontSize: 13.w,
                         fontWeight: FontWeight.w400,
                       ),
@@ -82,7 +83,7 @@ class SelectTile extends AbstractSettingsTile {
                         padding: EdgeInsets.only(top: 4.w),
                         child: DefaultTextStyle(
                           style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           ),
                           child: value!,
                         ),
@@ -92,7 +93,7 @@ class SelectTile extends AbstractSettingsTile {
                         padding: EdgeInsets.only(top: 4.w),
                         child: DefaultTextStyle(
                           style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           ),
                           child: description!,
                         ),

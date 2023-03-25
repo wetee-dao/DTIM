@@ -30,12 +30,13 @@ List<List<ItemModel>> menuItems = [
 ];
 
 orgMenuRender(controller) {
+  final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
   return Container(
     width: 200.w,
     margin: EdgeInsets.all(5.w),
     decoration: BoxDecoration(
-      border: Border.all(color: ConstTheme.sidebarText.withOpacity(0.08)),
-      color: ConstTheme.centerChannelBg,
+      border: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
+      color: constTheme.centerChannelBg,
       boxShadow: <BoxShadow>[
         BoxShadow(
           color: Colors.black.withOpacity(0.2),
@@ -69,7 +70,7 @@ orgMenuRender(controller) {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: i != menuItems.length - 1 && j == menuItems[i].length - 1
-                          ? BorderSide(color: ConstTheme.sidebarText.withOpacity(0.08))
+                          ? BorderSide(color: constTheme.sidebarText.withOpacity(0.08))
                           : BorderSide.none,
                     ),
                   ),
@@ -79,7 +80,7 @@ orgMenuRender(controller) {
                         child: Text(
                           menuItems[i][j].title,
                           style: TextStyle(
-                            color: ConstTheme.centerChannelColor,
+                            color: constTheme.centerChannelColor,
                             fontSize: 13.w,
                           ),
                         ),

@@ -1,3 +1,4 @@
+import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 
 import '../../store/theme.dart';
@@ -18,6 +19,7 @@ class SwitchFormField extends FormField<bool> {
           validator: validator,
           initialValue: initialValue ?? false,
           builder: (state) {
+            final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
             void onSwitchChanged(bool value) {
               state.didChange(value);
             }
@@ -27,7 +29,7 @@ class SwitchFormField extends FormField<bool> {
                   hintText: '',
                   hintStyle: TextStyle(
                     fontSize: 14.w,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                   ),
                 );
             return InputDecorator(
@@ -41,7 +43,7 @@ class SwitchFormField extends FormField<bool> {
                   ),
                   SizedBox(width: 20.w),
                   Switch(
-                    activeColor: ConstTheme.sidebarTextActiveBorder,
+                    activeColor: constTheme.sidebarTextActiveBorder,
                     onChanged: onSwitchChanged,
                     value: state.value ?? false,
                   ),

@@ -16,10 +16,11 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return moveWindow(
       Container(
         height: _height,
-        color: ConstTheme.sidebarHeaderBg,
+        color: constTheme.sidebarHeaderBg,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,7 +28,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(width: 15.w),
             Text(
               _title,
-              style: TextStyle(color: ConstTheme.sidebarHeaderTextColor, fontSize: 14.w),
+              style: TextStyle(color: constTheme.sidebarHeaderTextColor, fontSize: 14.w),
             ),
             Expanded(child: Container()),
             tools != null
@@ -39,7 +40,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
             InkWell(
               child: Icon(
                 Icons.close,
-                color: ConstTheme.sidebarHeaderTextColor,
+                color: constTheme.sidebarHeaderTextColor,
                 size: 25.w,
               ),
               onTap: () {

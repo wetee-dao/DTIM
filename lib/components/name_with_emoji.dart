@@ -1,3 +1,4 @@
+import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
@@ -7,12 +8,13 @@ import '../utils/screen.dart';
 // ignore: non_constant_identifier_names
 WidgetUserNameEmoji(String name, String? emoji) {
   var parser = EmojiParser();
+  final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
 
   return RichText(
     text: TextSpan(
       text: name,
       style: TextStyle(
-        color: ConstTheme.sidebarText.withAlpha(155),
+        color: constTheme.sidebarText.withAlpha(155),
         fontWeight: FontWeight.normal,
         fontSize: 15.w,
         overflow: TextOverflow.ellipsis,

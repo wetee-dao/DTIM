@@ -12,7 +12,6 @@ class Switchtile extends AbstractSettingsTile {
   Widget? value;
   bool? initialValue;
   final bool enabled;
-  Color activeSwitchColor = ConstTheme.mentionHighlightLink;
   final Widget? trailing;
 
   Switchtile({
@@ -28,13 +27,16 @@ class Switchtile extends AbstractSettingsTile {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    Color activeSwitchColor = constTheme.mentionHighlightLink;
+
     return IgnorePointer(
       ignoring: !enabled,
       child: InkWell(
         onTap: () {
           onToggle?.call(initialValue!);
         },
-        highlightColor: ConstTheme.centerChannelColor.lighter(),
+        highlightColor: constTheme.centerChannelColor.lighter(),
         child: Row(
           children: [
             if (leading != null)
@@ -42,7 +44,7 @@ class Switchtile extends AbstractSettingsTile {
                 padding: const EdgeInsetsDirectional.only(start: 24),
                 child: IconTheme(
                   data: IconTheme.of(context).copyWith(
-                    color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                    color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                   ),
                   child: leading!,
                 ),
@@ -60,7 +62,7 @@ class Switchtile extends AbstractSettingsTile {
                   children: [
                     DefaultTextStyle(
                       style: TextStyle(
-                        color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                        color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                         fontSize: 13.w,
                         fontWeight: FontWeight.w400,
                       ),
@@ -71,7 +73,7 @@ class Switchtile extends AbstractSettingsTile {
                         padding: EdgeInsets.only(top: 4.w),
                         child: DefaultTextStyle(
                           style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           ),
                           child: value!,
                         ),
@@ -81,7 +83,7 @@ class Switchtile extends AbstractSettingsTile {
                         padding: EdgeInsets.only(top: 4.w),
                         child: DefaultTextStyle(
                           style: TextStyle(
-                            color: enabled ? ConstTheme.centerChannelColor : ConstTheme.centerChannelColor.darker(2),
+                            color: enabled ? constTheme.centerChannelColor : constTheme.centerChannelColor.darker(2),
                           ),
                           child: description!,
                         ),
@@ -99,8 +101,8 @@ class Switchtile extends AbstractSettingsTile {
                     child: Switch(
                       value: initialValue!,
                       onChanged: onToggle,
-                      inactiveTrackColor: ConstTheme.centerChannelColor,
-                      activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                      inactiveTrackColor: constTheme.centerChannelColor,
+                      activeColor: enabled ? activeSwitchColor : constTheme.centerChannelColor.darker(2),
                     ),
                   ),
                 ],
@@ -111,8 +113,8 @@ class Switchtile extends AbstractSettingsTile {
                 child: Switch(
                   value: initialValue!,
                   onChanged: onToggle,
-                  inactiveTrackColor: ConstTheme.centerChannelColor,
-                  activeColor: enabled ? activeSwitchColor : ConstTheme.centerChannelColor.darker(2),
+                  inactiveTrackColor: constTheme.centerChannelColor,
+                  activeColor: enabled ? activeSwitchColor : constTheme.centerChannelColor.darker(2),
                 ),
               )
           ],

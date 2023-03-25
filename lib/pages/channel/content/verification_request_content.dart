@@ -18,6 +18,7 @@ class VerificationRequestContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     final events = event.aggregatedEvents(timeline, 'm.reference');
     final done = events.where((e) => e.type == EventTypes.KeyVerificationDone);
     final start = events.where((e) => e.type == EventTypes.KeyVerificationStart);
@@ -29,7 +30,7 @@ class VerificationRequestContent extends StatelessWidget {
       padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.w),
-        color: ConstTheme.centerChannelColor.withOpacity(0.1),
+        color: constTheme.centerChannelColor.withOpacity(0.1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -38,7 +39,7 @@ class VerificationRequestContent extends StatelessWidget {
           Icon(
             Icons.lock_outlined,
             size: 16.w,
-            color: canceled ? Colors.red : (fullyDone ? Colors.green : ConstTheme.centerChannelColor),
+            color: canceled ? Colors.red : (fullyDone ? Colors.green : constTheme.centerChannelColor),
           ),
           const SizedBox(width: 8),
           Text(
@@ -47,7 +48,7 @@ class VerificationRequestContent extends StatelessWidget {
                 : (fullyDone
                     ? L10n.of(context)!.verifySuccess
                     : (started ? L10n.of(context)!.loadingPleaseWait : L10n.of(context)!.newVerificationRequest)),
-            style: TextStyle(color: ConstTheme.centerChannelColor, fontSize: 14.w),
+            style: TextStyle(color: constTheme.centerChannelColor, fontSize: 14.w),
           )
         ],
       ),

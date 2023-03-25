@@ -46,8 +46,9 @@ class _PCPageState extends State<PCPage> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: ConstTheme.sidebarHeaderBg,
+      backgroundColor: constTheme.sidebarHeaderBg,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -60,7 +61,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
               width: 65.w,
               height: double.maxFinite,
               decoration: BoxDecoration(
-                color: ConstTheme.sidebarHeaderBg,
+                color: constTheme.sidebarHeaderBg,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,10 +75,10 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       height: 46.w,
                       margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
                       decoration: BoxDecoration(
-                        color: ConstTheme.sidebarText.withOpacity(0.16),
+                        color: constTheme.sidebarText.withOpacity(0.16),
                         borderRadius: BorderRadius.circular(8.w),
                         border: Border.all(
-                          color: ConstTheme.sidebarTextActiveBorder,
+                          color: constTheme.sidebarTextActiveBorder,
                           width: 3.w,
                         ),
                       ),
@@ -87,10 +88,10 @@ class _PCPageState extends State<PCPage> with WindowListener {
                         decoration: BoxDecoration(
                           color: aorgs[i].orgColor != null
                               ? hexToColor(aorgs[i].orgColor!)
-                              : ConstTheme.sidebarText.withOpacity(0.02),
+                              : constTheme.sidebarText.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(8.w),
                           border: Border.all(
-                            color: ConstTheme.sidebarHeaderBg,
+                            color: constTheme.sidebarHeaderBg,
                             width: 3.w,
                           ),
                         ),
@@ -103,7 +104,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                                       aorgs[i].orgName ?? "",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: ConstTheme.sidebarHeaderTextColor,
+                                        color: constTheme.sidebarHeaderTextColor,
                                         fontSize: 14.w,
                                       ),
                                     ),
@@ -130,7 +131,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
                       child: Icon(
                         Icons.add,
-                        color: ConstTheme.sidebarText,
+                        color: constTheme.sidebarText,
                         size: 25.w,
                       ),
                     ),
@@ -145,7 +146,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       height: 40.w,
                       child: Icon(
                         Icons.logout_rounded,
-                        color: ConstTheme.sidebarText,
+                        color: constTheme.sidebarText,
                       ),
                     ),
                   ),
@@ -159,7 +160,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       margin: EdgeInsets.fromLTRB(0, 12.w, 0, 12.w),
                       child: Icon(
                         Icons.settings,
-                        color: ConstTheme.sidebarText,
+                        color: constTheme.sidebarText,
                       ),
                     ),
                   ),
@@ -176,7 +177,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
               child: SizedBox(
                 width: 1.w,
                 height: double.infinity,
-                child: Container(color: ConstTheme.sidebarText.withOpacity(0.08)),
+                child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
               ),
             ),
             onPanUpdate: (details) {

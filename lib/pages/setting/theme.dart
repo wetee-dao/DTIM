@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../apis/system_api.dart';
@@ -64,14 +65,22 @@ class _ThemePageState extends State<ThemePage> {
                 title: const Text('浅色主题'),
                 initialValue: theme,
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
-                onToggle: (String v) => {setTheme(v)},
+                onToggle: (String v) {
+                  AdaptiveTheme.of(context).setTheme(
+                    light: setTheme(v),
+                  );
+                },
               ),
               ThemeSettingsTile(
                 title: const Text('深色主题'),
                 initialValue: theme,
                 type: "dark",
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
-                onToggle: (String v) => {setTheme(v)},
+                onToggle: (String v) {
+                  AdaptiveTheme.of(context).setTheme(
+                    light: setTheme(v),
+                  );
+                },
               ),
             ],
           ),

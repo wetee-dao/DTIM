@@ -45,7 +45,8 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
-    var titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup2];
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup2];
     return Scaffold(
       appBar: LocalAppBar(
         title: L10n.of(context)!.signUp,
@@ -59,7 +60,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           }
         },
       ),
-      backgroundColor: ConstTheme.centerChannelBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.4,
@@ -71,7 +72,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 L10n.of(context)!.generate,
                 style: TextStyle(
                   fontSize: 32.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -79,7 +80,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 titles[step],
                 style: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor.withOpacity(0.7),
+                  color: constTheme.centerChannelColor.withOpacity(0.7),
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -95,6 +96,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
   }
 
   Widget stepRender(int s) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (s == 0) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -103,7 +105,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           Container(
             padding: EdgeInsets.all(5.w),
             decoration: BoxDecoration(
-              color: ConstTheme.sidebarBg,
+              color: constTheme.sidebarBg,
               borderRadius: BorderRadius.circular(5.w),
             ),
             child: Wrap(
@@ -115,7 +117,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                       seeds[i],
                       style: TextStyle(
                         fontSize: 14.w,
-                        color: ConstTheme.centerChannelColor,
+                        color: constTheme.centerChannelColor,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -139,14 +141,14 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 Icon(
                   Icons.copy_all,
                   size: 20.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 SizedBox(width: 5.w),
                 Text(
                   L10n.of(context)!.copyClipboard,
                   style: TextStyle(
                     fontSize: 14.w,
-                    color: ConstTheme.centerChannelColor,
+                    color: constTheme.centerChannelColor,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -164,7 +166,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 child: Icon(
                   Icons.warning,
                   size: 14.w,
-                  color: ConstTheme.linkColor,
+                  color: constTheme.linkColor,
                 ),
               ),
               SizedBox(width: 5.w),
@@ -174,7 +176,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   L10n.of(context)!.mnemonicNote,
                   style: TextStyle(
                     fontSize: 12.w,
-                    color: ConstTheme.linkColor.withOpacity(0.7),
+                    color: constTheme.linkColor.withOpacity(0.7),
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -197,7 +199,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               width: MediaQuery.of(context).size.width * 0.4,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
                 borderRadius: BorderRadius.circular(5.w),
               ),
               child: Row(
@@ -207,7 +209,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                       child: Text(
                         L10n.of(context)!.next,
                         style: TextStyle(
-                          color: ConstTheme.centerChannelBg,
+                          color: constTheme.centerChannelBg,
                           fontWeight: FontWeight.w600,
                           fontSize: 19.w,
                         ),
@@ -216,7 +218,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   ),
                   Icon(
                     Icons.navigate_next,
-                    color: ConstTheme.centerChannelBg,
+                    color: constTheme.centerChannelBg,
                   )
                 ],
               ),
@@ -232,20 +234,20 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             TextFormField(
               key: const Key("nick"),
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
                 hintText: L10n.of(context)!.accountName,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.sidebarBg.withOpacity(0.2),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.account_balance_wallet,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
               ),
               onSaved: (v) {
@@ -266,7 +268,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             TextFormField(
               key: const Key("passwd"),
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
               ),
               controller: _passwordController,
               obscureText: true,
@@ -274,14 +276,14 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 hintText: L10n.of(context)!.accountPasswd,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.sidebarBg.withOpacity(0.2),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
               ),
               onSaved: (v) {
@@ -299,21 +301,21 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             TextFormField(
               key: const Key("passwd2"),
               style: TextStyle(
-                color: ConstTheme.centerChannelColor,
+                color: constTheme.centerChannelColor,
               ),
               obscureText: true,
               decoration: InputDecoration(
                 hintText: L10n.of(context)!.accountPasswd2,
                 hintStyle: TextStyle(
                   fontSize: 14.w,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: ConstTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.sidebarBg.withOpacity(0.2),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                 ),
               ),
               onSaved: (v) {
@@ -364,7 +366,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 width: MediaQuery.of(context).size.width * 0.4,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: ConstTheme.centerChannelColor,
+                  color: constTheme.centerChannelColor,
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Row(
@@ -374,7 +376,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                         child: Text(
                           L10n.of(context)!.createAccount,
                           style: TextStyle(
-                            color: ConstTheme.centerChannelBg,
+                            color: constTheme.centerChannelBg,
                             fontWeight: FontWeight.w600,
                             fontSize: 19.w,
                           ),
@@ -383,7 +385,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                     ),
                     Icon(
                       Icons.navigate_next,
-                      color: ConstTheme.centerChannelBg,
+                      color: constTheme.centerChannelBg,
                     )
                   ],
                 ),
