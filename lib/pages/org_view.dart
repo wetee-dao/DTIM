@@ -72,6 +72,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
       return;
     }
     client = im!.currentState!.client;
+    // listen to room state events
     _onRoom = client.onRoomState.stream.listen((event) {
       if (["m.room.history_visibility", "m.room.join_rules", "m.room.power_levels"].contains(event.body)) {
         return;
@@ -97,7 +98,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
     }
   }
 
-  setChannelId(id) {
+  void setChannelId(String id) {
     if (id == channelId) {
       return;
     }
