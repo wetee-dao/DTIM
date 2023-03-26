@@ -128,7 +128,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     child: Container(
                       width: 40.w,
                       height: 40.w,
-                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, 6.w, 0, 0),
                       child: Icon(
                         Icons.add,
                         color: constTheme.sidebarText,
@@ -146,6 +146,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       height: 40.w,
                       child: Icon(
                         Icons.logout_rounded,
+                        size: 22.w,
                         color: constTheme.sidebarText,
                       ),
                     ),
@@ -157,9 +158,10 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     child: Container(
                       width: 40.w,
                       height: 40.w,
-                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 12.w),
+                      margin: EdgeInsets.fromLTRB(0, 6.w, 0, 12.w),
                       child: Icon(
                         Icons.settings,
+                        size: 22.w,
                         color: constTheme.sidebarText,
                       ),
                     ),
