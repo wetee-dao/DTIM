@@ -109,7 +109,7 @@ class _DirectChatsState extends State<DirectChats> {
             child: Container(
               height: 29.w,
               padding: EdgeInsets.only(right: 6.w, left: 12.w),
-              child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(155)),
+              child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(180)),
             ),
           ),
           // child: Container(

@@ -14,7 +14,7 @@ WidgetUserNameEmoji(String name, String? emoji) {
     text: TextSpan(
       text: name,
       style: TextStyle(
-        color: constTheme.sidebarText.withAlpha(155),
+        color: constTheme.sidebarText.withAlpha(180),
         fontWeight: FontWeight.normal,
         fontSize: 15.w,
         overflow: TextOverflow.ellipsis,

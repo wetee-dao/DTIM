@@ -158,7 +158,7 @@ class _ChatListState extends State<ChatList> {
                       chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
                       size: chat.encrypted ? 24.w : 19.w,
                       color:
-                          chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText.withAlpha(155),
+                          chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText.withAlpha(180),
                     ),
                   ),
                 ),
@@ -170,7 +170,7 @@ class _ChatListState extends State<ChatList> {
                       fontSize: 15.w,
                       fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
                       color:
-                          chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText.withAlpha(155),
+                          chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText.withAlpha(180),
                     ),
                   ),
                 ),

@@ -188,7 +188,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                 Text(
                   L10n.of(context)!.channel,
                   style: TextStyle(
-                    color: constTheme.sidebarText.withAlpha(155),
+                    color: constTheme.sidebarText,
                     fontWeight: FontWeight.w800,
                     fontSize: 14.w,
                   ),
@@ -208,7 +208,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                       child: Icon(
                         Icons.add,
                         size: 20.w,
-                        color: constTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText,
                       ),
                     ),
                     SizedBox(width: 5.w),
@@ -223,7 +223,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                             ? Icons.keyboard_arrow_down_outlined
                             : Icons.keyboard_arrow_up_outlined,
                         size: 25.w,
-                        color: constTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText,
                       ),
                     ),
                   ],
@@ -254,7 +254,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 14.w,
-                    color: constTheme.sidebarText.withAlpha(155),
+                    color: constTheme.sidebarText,
                   ),
                 ),
                 Row(
@@ -272,7 +272,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                       child: Icon(
                         Icons.add,
                         size: 20.w,
-                        color: constTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText,
                       ),
                     ),
                     SizedBox(width: 5.w),
@@ -287,7 +287,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                             ? Icons.keyboard_arrow_down_outlined
                             : Icons.keyboard_arrow_up_outlined,
                         size: 25.w,
-                        color: constTheme.sidebarText.withAlpha(155),
+                        color: constTheme.sidebarText,
                       ),
                     ),
                   ],
