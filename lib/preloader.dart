@@ -324,24 +324,26 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             ),
                           ),
                         ),
-                        InkWell(
-                          key: const Key("selectAccountType"),
-                          onTap: () => selectAccountType(),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
-                            margin: EdgeInsets.symmetric(horizontal: 30.w),
-                            width: double.maxFinite,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: constTheme.centerChannelColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              L10n.of(context)!.generate,
-                              style: TextStyle(
-                                color: constTheme.centerChannelBg,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 19.w,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 30.w),
+                          child: InkWell(
+                            key: const Key("selectAccountType"),
+                            onTap: () => selectAccountType(),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                              width: double.maxFinite,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: constTheme.centerChannelColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                L10n.of(context)!.generate,
+                                style: TextStyle(
+                                  color: constTheme.centerChannelBg,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 19.w,
+                                ),
                               ),
                             ),
                           ),

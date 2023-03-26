@@ -498,36 +498,8 @@ int currentTheme = 16;
 ThemeData setTheme(String name) {
   currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);
 
-  // Map<ThemeRef, Object> newTheme = {
-  //    hexToColor(t["sidebarBg: hexToColor(themes[index]["sidebarBg"]!)),
-  //    hexToColor(t["sidebarText: hexToColor(themes[index]["sidebarText"]!)),
-  //    hexToColor(t["sidebarUnreadText: hexToColor(themes[index]["sidebarUnreadText"]!)),
-  //    hexToColor(t["sidebarTextHoverBg: hexToColor(themes[index]["sidebarTextHoverBg"]!)),
-  //    hexToColor(t["sidebarTextActiveBorder: hexToColor(themes[index]["sidebarTextActiveBorder"]!)),
-  //    hexToColor(t["sidebarTextActiveColor: hexToColor(themes[index]["sidebarTextActiveColor"]!)),
-  //    hexToColor(t["sidebarHeaderBg: hexToColor(themes[index]["sidebarHeaderBg"]!)),
-  //    hexToColor(t["sidebarHeaderTextColor: hexToColor(themes[index]["sidebarHeaderTextColor"]!)),
-  //    hexToColor(t["onlineIndicator: hexToColor(themes[index]["onlineIndicator"]!)),
-  //    hexToColor(t["awayIndicator: hexToColor(themes[index]["awayIndicator"]!)),
-  //    hexToColor(t["dndIndicator: hexToColor(themes[index]["dndIndicator"]!)),
-  //    hexToColor(t["mentionBg: hexToColor(themes[index]["mentionBg"]!)),
-  //    hexToColor(t["mentionColor: hexToColor(themes[index]["mentionColor"]!)),
-  //    hexToColor(t["centerChannelBg: hexToColor(themes[index]["centerChannelBg"]!)),
-  //    hexToColor(t["centerChannelColor: hexToColor(themes[index]["centerChannelColor"]!)),
-  //    hexToColor(t["newMessageSeparator: hexToColor(themes[index]["newMessageSeparator"]!)),
-  //    hexToColor(t["linkColor: hexToColor(themes[index]["linkColor"]!)),
-  //    hexToColor(t["buttonBg: hexToColor(themes[index]["buttonBg"]!)),
-  //    hexToColor(t["buttonColor: hexToColor(themes[index]["buttonColor"]!)),
-  //    hexToColor(t["errorTextColor: hexToColor(themes[index]["errorTextColor"]!)),
-  //    hexToColor(t["mentionHighlightBg: hexToColor(themes[index]["mentionHighlightBg"]!)),
-  //    hexToColor(t["mentionHighlightLink: hexToColor(themes[index]["mentionHighlightLink"]!)),
-  //    hexToColor(t["dark:
-  //       ColorRef(themes[index]["type"] != null && themes[index]["type"] == "dark" ? Colors.black : Colors.white)
-  // };
-
   SystemApi.create().saveTheme(name);
   return theme();
-  // Themed.currentTheme = newTheme;
 }
 
 ThemeData theme() {
@@ -536,6 +508,7 @@ ThemeData theme() {
   return ThemeData(
     useMaterial3: true,
     brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
+    primarySwatch: Colors.grey,
     // colorScheme: const ColorScheme.light().copyWith(
     //   brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
     //   primary: hexToColor(t["centerChannelColor,"]!),

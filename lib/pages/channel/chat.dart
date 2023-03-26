@@ -217,11 +217,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 },
               ),
               SizedBox(width: 10.w),
-              InkWell(
-                onTap: () async {
+              IconButton(
+                onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
                 },
-                child: Icon(
+                icon: Icon(
                   Icons.info_outline,
                   color: constTheme.centerChannelColor.withAlpha(150),
                   size: 19.w,

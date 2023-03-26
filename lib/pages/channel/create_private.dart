@@ -75,6 +75,36 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            color: constTheme.centerChannelColor.withOpacity(0.04),
+            padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w),
+                    child: Text(
+                      "复制分享：${im.currentState!.client.userID}",
+                      style: TextStyle(color: constTheme.centerChannelColor, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    final client = im.currentState!.client;
+                    Clipboard.setData(ClipboardData(
+                      text: client.userID,
+                    )).then((value) {
+                      BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
+                    });
+                  },
+                  icon: Icon(Icons.copy, size: 16.w, color: constTheme.centerChannelColor),
+                ),
+                SizedBox(width: 5.w),
+              ],
+            ),
+          ),
+
           SizedBox(height: 5.w),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,51 +245,21 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
             ),
           ),
 
+          // SizedBox(height: 13.w),
+          // Container(
+          //   margin: EdgeInsets.only(left: 15.w),
+          //   child: Text(
+          //     "或者输入用户id开始聊天",
+          //     style: TextStyle(color: constTheme.sidebarText.withAlpha(155)),
+          //   ),
+          // ),
           Container(
-            color: constTheme.centerChannelColor.withOpacity(0.04),
-            padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 15.w),
-                    child: Text(
-                      "复制ID：${im.currentState!.client.userID}",
-                      style: TextStyle(color: constTheme.centerChannelColor, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    final client = im.currentState!.client;
-                    Clipboard.setData(ClipboardData(
-                      text: client.userID,
-                    )).then((value) {
-                      BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
-                    });
-                  },
-                  icon: Icon(Icons.copy, size: 16.w, color: constTheme.centerChannelColor),
-                ),
-                SizedBox(width: 5.w),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 13.w),
-          Container(
-            margin: EdgeInsets.only(left: 15.w),
-            child: Text(
-              "或者输入用户id开始聊天",
-              style: TextStyle(color: constTheme.sidebarText.withAlpha(155)),
-            ),
-          ),
-          Container(
-            height: 40.w,
-            margin: EdgeInsets.all(10.w),
+            height: 55.w,
+            // margin: EdgeInsets.all(10.w),
             padding: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
               color: constTheme.sidebarText.withOpacity(0.1),
-              borderRadius: BorderRadius.all(Radius.circular(3.w)),
+              // borderRadius: BorderRadius.all(Radius.circular(3.w)),
             ),
             alignment: Alignment.center,
             child: TextField(
@@ -271,7 +271,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
-                hintText: '@username',
+                hintText: '输入id邀请 比如：@username',
                 hintStyle: TextStyle(
                   height: 1.5,
                   color: constTheme.sidebarText.withAlpha(155),
@@ -298,7 +298,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               ),
             ),
           ),
-          SizedBox(height: 15.w),
+          // SizedBox(height: 15.w),
         ],
       ),
     );
