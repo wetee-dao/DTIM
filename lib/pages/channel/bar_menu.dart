@@ -60,7 +60,6 @@ menuRender(controller, link.Room room) {
               okLabel: L10n.of(globalCtx())!.next,
               cancelLabel: L10n.of(globalCtx())!.cancel,
             )) {
-          // BotToast.showLoading();
           showFutureLoadingDialog(
             context: globalCtx(),
             future: () async {

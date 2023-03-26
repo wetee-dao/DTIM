@@ -162,7 +162,7 @@ class _ChatListState extends State<ChatList> {
                     ),
                   ),
                 ),
-                SizedBox(width: 5.w),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
                     chat.getLocalizedDisplayname(),

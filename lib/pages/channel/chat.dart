@@ -198,6 +198,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   return FutureBuilder<link.EncryptionHealthState>(
                     future: room!.calcEncryptionHealthState(),
                     builder: (BuildContext context, snapshot) => IconButton(
+                      padding: EdgeInsets.all(3.w),
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
                         room!.encrypted ? Icons.lock_outline : Icons.lock_open,
@@ -216,7 +217,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   );
                 },
               ),
-              SizedBox(width: 10.w),
               IconButton(
                 onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
@@ -227,7 +227,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   size: 19.w,
                 ),
               ),
-              SizedBox(width: 20.w),
+              SizedBox(width: 5.w),
             ],
           ),
         ),

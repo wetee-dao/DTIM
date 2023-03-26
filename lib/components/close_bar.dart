@@ -128,7 +128,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
             ],
           ),
         ),
-        SizedBox(height: 8.w),
+        SizedBox(height: 3.w),
         widget.child
       ],
     );

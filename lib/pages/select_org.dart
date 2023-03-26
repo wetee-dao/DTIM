@@ -57,6 +57,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     // 登录账户
     if (orgs.isNotEmpty) {
       showFutureLoadingDialog(
+        title: "连接中...",
         context: context,
         future: () async {
           await im.connect(orgs[0]);
