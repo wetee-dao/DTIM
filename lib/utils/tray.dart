@@ -28,6 +28,7 @@ showtray() async {
 
   await trayManager.setContextMenu(Menu(items: items));
   trayManager.addListener(TrayManagerListener());
+  windowManager.setPreventClose(true);
 }
 
 class TrayManagerListener implements TrayListener {

@@ -138,6 +138,11 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
       SystemApi.create().save(value.width, value.height);
     });
   }
+
+  @override
+  void onWindowClose() async {
+    windowManager.hide();
+  }
 }
 
 // ignore: non_constant_identifier_names
