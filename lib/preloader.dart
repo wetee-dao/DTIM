@@ -291,8 +291,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                       await im.login(accounts[i], input[0]);
                                                       const storage = FlutterSecureStorage();
                                                       await storage.write(
-                                                          key: "login_state",
-                                                          value: "${accounts[i].address},${input[0]}");
+                                                        key: "login_state",
+                                                        value: "${accounts[i].address},${input[0]}",
+                                                      );
                                                       // ignore: use_build_context_synchronously
                                                       globalCtx().push("/select_org?auto=t");
                                                     },
