@@ -108,10 +108,10 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    var imgw = (size * 0.7).toInt();
-    var imgbg = color ?? constTheme.centerChannelColor;
-    var boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
+    final imgw = (size * 0.7).toInt();
+    final imgbg = color ?? constTheme.centerChannelColor;
+    final boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
       padding: EdgeInsets.all((size - imgw) / 2),

@@ -24,9 +24,9 @@ class _ThemePageState extends State<ThemePage> {
 
   @override
   void initState() {
-    var store = SystemApi.create().store();
+    final store = SystemApi.create().store();
     Query<System> query = store.query(System_.id.equals(1)).build();
-    var sys = query.findFirst();
+    final sys = query.findFirst();
     if (sys != null && sys.theme != "") {
       theme = sys.theme;
     }

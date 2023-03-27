@@ -7,7 +7,7 @@ import '../utils/screen.dart';
 
 // ignore: non_constant_identifier_names
 MentionCard(MentionModel mentionElement, int index) {
-  var parser = EmojiParser();
+  final parser = EmojiParser();
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,

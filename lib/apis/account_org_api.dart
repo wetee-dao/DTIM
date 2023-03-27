@@ -23,7 +23,7 @@ class AccountOrgApi {
 
   List<AccountOrg> listByAccount(String address) {
     final query = storeBox.query(AccountOrg_.withAddr.equals(address)).build();
-    var storeOrgs = query.find();
+    final storeOrgs = query.find();
     query.close();
 
     return storeOrgs;
@@ -34,14 +34,14 @@ class AccountOrgApi {
     List<String> fs,
     List<Org> orgs,
   ) {
-    var accountStoreBox = Box<Account>(DB!);
-    var aquery = accountStoreBox.query(Account_.address.equals(address)).build();
-    var account = aquery.findUnique();
+    final accountStoreBox = Box<Account>(DB!);
+    final aquery = accountStoreBox.query(Account_.address.equals(address)).build();
+    final account = aquery.findUnique();
     aquery.close();
 
     // 查询当前的团队
     final query = storeBox.query(AccountOrg_.withAddr.equals(address)).build();
-    var storeOrgs = query.find();
+    final storeOrgs = query.find();
     query.close();
 
     // 删除不需要的数据
@@ -66,10 +66,10 @@ class AccountOrgApi {
           storeIndex = j;
         }
       }
-      var org = getOrgFromList(orgs, fs[i]);
+      final org = getOrgFromList(orgs, fs[i]);
       if (storeIndex == -1) {
         if (org != null) {
-          var at = AccountOrg(org.hash);
+          final at = AccountOrg(org.hash);
           at.orgName = org.name;
           at.orgAvater = org.avater;
           at.orgImg = org.img;

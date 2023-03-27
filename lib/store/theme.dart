@@ -503,7 +503,7 @@ ThemeData setTheme(String name) {
 }
 
 ThemeData theme() {
-  var t = themes[currentTheme];
+  final t = themes[currentTheme];
 
   return ThemeData(
     useMaterial3: true,
@@ -541,7 +541,7 @@ ThemeData theme() {
 }
 
 ExtColors getExtTheme(i) {
-  var t = themes[i];
+  final t = themes[i];
   return ExtColors(
     sidebarBg: hexToColor(t["sidebarBg"]!),
     sidebarText: hexToColor(t["sidebarText"]!),
@@ -572,7 +572,7 @@ setThemeIndex(String name) {
   if (name == "") {
     return;
   }
-  var index = themes.indexWhere((t) => t["codeTheme"] == name);
+  final index = themes.indexWhere((t) => t["codeTheme"] == name);
   currentTheme = index;
 }
 

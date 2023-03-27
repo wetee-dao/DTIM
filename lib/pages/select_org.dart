@@ -53,7 +53,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   }
 
   Future<void> gotoOrg() async {
-    var orgs = AccountOrgApi.create().listByAccount(im.me!.address);
+    final orgs = AccountOrgApi.create().listByAccount(im.me!.address);
     // 登录账户
     if (orgs.isNotEmpty) {
       showFutureLoadingDialog(
@@ -94,7 +94,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     }
     // final queryStream = AccountOrgApi.create().storeBox.query(AccountOrg_.withAddr.equals(currentAddress)).watch();
     // subscription = queryStream.listen((query) {
-    //   var qmsgs = query.find();
+    //   final qmsgs = query.find();
     //   print(qmsgs);
     // });
   }
@@ -154,7 +154,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //   child: Column(
           //     mainAxisAlignment: MainAxisAlignment.start,
           //     children: [
-          //       for (var i = 0; i < accounts.length; i++)
+          //       for (final i = 0; i < accounts.length; i++)
           //         InkWell(
           //           onTap: () {
           //             setState(() {

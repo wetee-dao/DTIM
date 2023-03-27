@@ -312,12 +312,12 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 api.getSeedPhrase(seedStr: seed.text, name: _name, password: _password).then((accountStr) async {
                   print(accountStr);
                   // 解码区块链账户问题
-                  var chainData = ChainData.fromJson(
+                  final chainData = ChainData.fromJson(
                     convert.jsonDecode(accountStr),
                   );
 
                   // 创建账户
-                  var initUser = Account();
+                  final initUser = Account();
                   initUser.name = chainData.meta["name"];
                   initUser.address = chainData.address;
                   initUser.domain = "";

@@ -7,7 +7,7 @@ import '../utils/screen.dart';
 
 // ignore: non_constant_identifier_names
 WidgetUserNameEmoji(String name, String? emoji) {
-  var parser = EmojiParser();
+  final parser = EmojiParser();
   final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
 
   return RichText(

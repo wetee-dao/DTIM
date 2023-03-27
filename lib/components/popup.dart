@@ -153,7 +153,7 @@ class BasePopupMenuState extends State<BasePopupMenu> {
             Offset offset = event.localPosition;
 
             // 扩大鼠标面积
-            var childRectWrap = Rect.fromLTRB(
+            final childRectWrap = Rect.fromLTRB(
               childRect.left - 10.w,
               childRect.top - 10.w,
               childRect.right + 10.w,
@@ -178,7 +178,7 @@ class BasePopupMenuState extends State<BasePopupMenu> {
             Offset offset = event.localPosition;
 
             // 扩大鼠标面积
-            var childRectWrap = Rect.fromLTRB(
+            final childRectWrap = Rect.fromLTRB(
               childRect.left - 10.w,
               childRect.top - 10.w,
               childRect.right + 10.w,

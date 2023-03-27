@@ -8,7 +8,7 @@ extension StreamExtension on Stream {
     Timer? timer;
     var gotMessage = false;
     // as we call our inline-defined function recursively we need to make sure that the
-    // variable exists prior of creating the function. Silly dart.
+    // finaliable exists prior of creating the function. Silly dart.
     Function? onMessage;
     // callback to determine if we should send out an update
     onMessage = () {

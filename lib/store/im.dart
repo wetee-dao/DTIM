@@ -62,7 +62,7 @@ class IMProvider with ChangeNotifier {
   // 连接账户
   Future<bool> connect(AccountOrg org) async {
     // 构建账户密码
-    var userName = '${me!.address}@${org.domain}/${platformGet()}';
+    final userName = '${me!.address}@${org.domain}/${platformGet()}';
 
     printError("connect => $userName");
 
@@ -154,7 +154,7 @@ class IMProvider with ChangeNotifier {
   //   if (connections[_currentId] == null) {
   //     throw Exception('连接错误');
   //   }
-  //   var rosterHandler = xmpp.RosterManager.getInstance(connections[_currentId]!);
+  //   final rosterHandler = xmpp.RosterManager.getInstance(connections[_currentId]!);
   //   return rosterHandler.getRoster();
   // }
 }

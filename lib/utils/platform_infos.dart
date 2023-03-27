@@ -33,7 +33,7 @@ abstract class PlatformInfos {
       '${AppConfig.applicationName} ${isWeb ? 'web' : Platform.operatingSystem}${kReleaseMode ? '' : 'Debug'}';
 
   static Future<String> getVersion() async {
-    var version = kIsWeb ? 'Web' : 'Unknown';
+    final version = kIsWeb ? 'Web' : 'Unknown';
     return version;
   }
 

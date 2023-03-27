@@ -19,10 +19,10 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    var imgw = (avatarWidth * 0.7).toInt();
-    var imgbg = color ?? constTheme.centerChannelColor;
-    var boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
+    final imgw = (avatarWidth * 0.7).toInt();
+    final imgbg = color ?? constTheme.centerChannelColor;
+    final boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
       padding: EdgeInsets.all((avatarWidth - imgw) / 2),
@@ -56,10 +56,10 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    var imgw = (widget.avatarWidth * 0.7).toInt();
-    var imgbg = widget.color ?? constTheme.centerChannelColor;
-    var boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    var img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.user.id), size: 50);
+    final imgw = (widget.avatarWidth * 0.7).toInt();
+    final imgbg = widget.color ?? constTheme.centerChannelColor;
+    final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.user.id), size: 50);
     return BasePopupMenu(
       verticalMargin: 5.w,
       horizontalMargin: 0,

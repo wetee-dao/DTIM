@@ -30,7 +30,7 @@ extension ColorUtil on Color {
   Color average(Color color, [double value = 0.5]) => Color.lerp(this, color, _limit(value))!;
   Color decolorize([double value = 1]) {
     int average = (red + green + blue) ~/ 3;
-    var color = Color.fromARGB(alpha, average, average, average);
+    final color = Color.fromARGB(alpha, average, average, average);
     return Color.lerp(this, color, _limit(value))!;
   }
 

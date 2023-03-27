@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:image/image.dart';
 
-var colourCache = <String, List<List<int>>>{};
+final colourCache = <String, List<List<int>>>{};
 
 class Identicon {
   late int _rows;
@@ -28,17 +28,17 @@ class Identicon {
   }
 
   _bitIsOne(int n, List<int> hashBytes) {
-    var scale = 16;
+    final scale = 16;
     return hashBytes[n ~/ (scale / 2)] >> ((scale / 2) - ((n % (scale / 2)) + 1)).toInt() & 1 == 1;
   }
 
   List<int> _createImage(List<List<bool>> matrix, int width, int height, int pad) {
-    var image = Image(width + (pad * 2), height + (pad * 2));
+    final image = Image(width + (pad * 2), height + (pad * 2));
     // image
     //     .fill(Color.fromRgba(_bgColour![0], _bgColour![1], _bgColour![2], 255));
 
-    var blockWidth = width ~/ _cols;
-    var blockHeight = height ~/ _rows;
+    final blockWidth = width ~/ _cols;
+    final blockHeight = height ~/ _rows;
 
     for (int row = 0; row < matrix.length; row++) {
       for (int col = 0; col < matrix[row].length; col++) {
@@ -59,13 +59,13 @@ class Identicon {
   }
 
   _createMatrix(List<int> byteList) {
-    var cells = (_rows * _cols / 2 + _cols % 2).toInt();
-    var matrix = List.generate(_rows, (_) => List.generate(_cols, (_) => false));
+    final cells = (_rows * _cols / 2 + _cols % 2).toInt();
+    final matrix = List.generate(_rows, (_) => List.generate(_cols, (_) => false));
 
     for (int n = 0; n < cells; n++) {
       if (_bitIsOne(n, byteList.getRange(1, byteList.length).toList())) {
-        var row = n % _rows;
-        var col = n ~/ _cols;
+        final row = n % _rows;
+        final col = n ~/ _cols;
         matrix[row][_cols - col - 1] = true;
         matrix[row][col] = true;
       }
@@ -75,30 +75,30 @@ class Identicon {
 
   Uint8List generate(String text, {int size = 36}) {
     size = toSize(size);
-    var bytesLength = 16;
-    var hexDigest = _digest(utf8.encode(text)).toString();
+    final bytesLength = 16;
+    final hexDigest = _digest(utf8.encode(text)).toString();
 
-    var hexDigestByteList = List<int>.generate(bytesLength, (int i) {
+    final hexDigestByteList = List<int>.generate(bytesLength, (int i) {
       return int.parse(hexDigest.substring(i * 2, i * 2 + 2), radix: bytesLength);
     });
 
-    var matrix = _createMatrix(hexDigestByteList);
-    var bt = _createImage(matrix, size, size, 0);
+    final matrix = _createMatrix(hexDigestByteList);
+    final bt = _createImage(matrix, size, size, 0);
     Uint8List bytes = Uint8List.fromList(bt);
     return bytes;
   }
 
   String generateBase64(String text, {int size = 36}) {
     size = toSize(size);
-    var bytesLength = 16;
-    var hexDigest = _digest(utf8.encode(text)).toString();
+    final bytesLength = 16;
+    final hexDigest = _digest(utf8.encode(text)).toString();
 
-    var hexDigestByteList = List<int>.generate(bytesLength, (int i) {
+    final hexDigestByteList = List<int>.generate(bytesLength, (int i) {
       return int.parse(hexDigest.substring(i * 2, i * 2 + 2), radix: bytesLength);
     });
 
-    var matrix = _createMatrix(hexDigestByteList);
-    var bt = _createImage(matrix, size, size, 0);
+    final matrix = _createMatrix(hexDigestByteList);
+    final bt = _createImage(matrix, size, size, 0);
     return "data:image/png;base64,${base64Encode(bt)}";
   }
 

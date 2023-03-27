@@ -38,7 +38,7 @@ class _DirectChatsState extends State<DirectChats> {
       scrollDirection: Axis.vertical,
       itemCount: channelsList.length,
       itemBuilder: (context, index) {
-        var room = channelsList[index];
+        final room = channelsList[index];
         final displayname = getUserShortName(room.getLocalizedDisplayname());
         return HoverListItem(
           key: Key(room.id),

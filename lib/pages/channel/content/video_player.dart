@@ -115,8 +115,8 @@ class EventVideoPlayerState extends State<EventVideoPlayer> {
                   else
                     BlurHash(hash: blurHash),
                   Center(
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.surface,
                       ),
                       icon: _isDownloading

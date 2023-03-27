@@ -30,8 +30,8 @@ class _MsgState extends State<Msg> {
 
   @override
   Widget build(BuildContext context) {
-    var event = widget.event;
-    var showAvatar = isShowAvatar(event, widget.preEvent);
+    final event = widget.event;
+    final showAvatar = isShowAvatar(event, widget.preEvent);
     var showDate = false;
     if (event.type == link.EventTypes.RoomMember ||
         event.type == link.EventTypes.RoomPowerLevels ||

@@ -100,7 +100,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutlinedButton.icon(
+              child: ElevatedButton.icon(
                 onPressed: () => _joinRoom(context),
                 label: Text(L10n.of(context)!.joinRoom),
                 icon: const Icon(Icons.login_outlined),

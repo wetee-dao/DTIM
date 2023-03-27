@@ -50,7 +50,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
       ChatEncryptionSettings(roomId: room!.id),
     ];
 
-    var index = typeMap[widget.t];
+    final index = typeMap[widget.t];
     _tabController = TabController(vsync: this, length: pageItems.length, initialIndex: index!);
     _pageController = PageController(initialPage: index);
     _tabController.addListener(() {
@@ -66,7 +66,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    var _titleList = <String>[L10n.of(context)!.chatDetal, L10n.of(context)!.chatMemeber, L10n.of(context)!.chatE2e];
+    final titleList = <String>[L10n.of(context)!.chatDetal, L10n.of(context)!.chatMemeber, L10n.of(context)!.chatE2e];
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
@@ -97,10 +97,11 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
             child: TabBar(
               controller: _tabController,
               labelColor: constTheme.sidebarHeaderTextColor,
-              labelStyle: TextStyle(fontSize: 13.w, color: constTheme.sidebarHeaderTextColor),
-              unselectedLabelStyle: TextStyle(fontSize: 13.w, color: constTheme.sidebarHeaderTextColor),
+              unselectedLabelColor: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
+              labelStyle: TextStyle(fontSize: 13.w),
+              unselectedLabelStyle: TextStyle(fontSize: 13.w),
               labelPadding: const EdgeInsets.only(left: 0, right: 0),
-              tabs: _titleList.map((e) => Tab(text: e)).toList(),
+              tabs: titleList.map((e) => Tab(text: e)).toList(),
               dividerColor: Colors.transparent,
               indicator: MaterialIndicator(
                 color: constTheme.sidebarTextActiveBorder,
@@ -112,7 +113,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
               physics: const BouncingScrollPhysics(),
               controller: _pageController,
               onPageChanged: (index) {},
-              itemCount: _titleList.length,
+              itemCount: titleList.length,
               itemBuilder: (context, index) {
                 return pageItems[index];
               },

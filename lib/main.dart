@@ -22,7 +22,7 @@ void main({bool test = false}) async {
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
   // 数据库初始化
   await initDB();
-  var winsystem = SystemApi.create().get();
+  final winsystem = SystemApi.create().get();
   if (winsystem != null) {
     setThemeIndex(winsystem.theme);
   }

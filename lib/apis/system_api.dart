@@ -18,9 +18,9 @@ class SystemApi {
   }
 
   System save(double width, double height) {
-    var sys = get();
+    final sys = get();
     if (sys == null) {
-      var u = System(width: width, height: height, theme: "");
+      final u = System(width: width, height: height, theme: "");
       final id = storeBox.put(u);
       u.id = id;
       return u;
@@ -38,7 +38,7 @@ class SystemApi {
   }
 
   System saveTheme(String theme) {
-    var sys = get();
+    final sys = get();
 
     sys!.theme = theme;
     storeBox.put(sys);

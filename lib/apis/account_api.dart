@@ -31,7 +31,7 @@ class AccountApi {
   List<Account> getUsers() {
     final builder = storeBox.query();
     final query = builder.build();
-    var us = query.find();
+    final us = query.find();
     query.close();
     return us;
   }

@@ -59,7 +59,7 @@ routers() {
     GoRoute(
       path: '/select_org',
       builder: (BuildContext context, GoRouterState state) {
-        var auto = state.queryParams["auto"];
+        final auto = state.queryParams["auto"];
         return renderFram(SelectOrgPage(auto: auto ?? ""));
       },
     ),
@@ -115,16 +115,16 @@ getPage(String url, Function closeModel) {
   } else if (url == "/create_private") {
     return CreatePrivatePage(closeModel: closeModel);
   } else if (url.indexOf("/channel_setting/") == 0) {
-    var pstr = url.replaceAll("/channel_setting/", "");
-    var ps = pstr.split("/");
+    final pstr = url.replaceAll("/channel_setting/", "");
+    final ps = pstr.split("/");
     return ChannelSettingPage(
       closeModel: closeModel,
       id: Uri.decodeComponent(ps[0]),
       t: Uri.decodeComponent(ps[1]),
     );
   } else if (url.indexOf("/invitation/") == 0) {
-    var pstr = url.replaceAll("/invitation/", "");
-    var ps = pstr.split("/");
+    final pstr = url.replaceAll("/invitation/", "");
+    final ps = pstr.split("/");
     return InvitationPage(
       closeModel: closeModel,
       id: Uri.decodeComponent(ps[0]),
@@ -149,8 +149,8 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
       useSafeArea: true,
       barrierColor: constTheme.sidebarHeaderTextColor.withOpacity(0.06),
       builder: (context) {
-        var media = MediaQuery.of(context);
-        var bottom = media.size.height - 30.w - height.w;
+        final media = MediaQuery.of(context);
+        final bottom = media.size.height - 30.w - height.w;
         return Container(
           margin: EdgeInsets.only(
             left: (media.size.width - width.w) / 2,

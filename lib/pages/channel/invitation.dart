@@ -39,7 +39,7 @@ class _InvitationPageState extends State<InvitationPage> {
   void initState() {
     super.initState();
 
-    var im = context.read<IMProvider>();
+    final im = context.read<IMProvider>();
     client = im.currentState!.client;
   }
 

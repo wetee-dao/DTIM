@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:asyou_app/router.dart';
 import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,10 +85,11 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
       },
     );
     if (valid.error != null) {
+      // ignore: use_build_context_synchronously
       await showOkAlertDialog(
         useRootNavigator: false,
         context: context,
-        message: L10n.of(context)!.incorrectPassphraseOrKey,
+        message: L10n.of(globalCtx())!.incorrectPassphraseOrKey,
       );
     }
   }

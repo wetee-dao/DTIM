@@ -3,7 +3,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 
 // ignore: non_constant_identifier_names
 WidgetLastStatus(String emoji, String title, String subtitle, IconData iconData) {
-  var parser = EmojiParser();
+  final parser = EmojiParser();
   return ListTile(
     leading: Text(
       parser.emojify(emoji).toString(),

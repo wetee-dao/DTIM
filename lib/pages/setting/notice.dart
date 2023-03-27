@@ -144,7 +144,7 @@ class _NoticePageState extends State<NoticePage> {
             title: Text(L10n.of(context)!.pushRules),
             tiles: [
               if (!client.allPushNotificationsMuted) ...{
-                for (var item in NoticeItem.items)
+                for (final item in NoticeItem.items)
                   Switchtile(
                     initialValue: getNotificationSetting(item) ?? true,
                     title: Text(item.title(context)),
@@ -157,7 +157,7 @@ class _NoticePageState extends State<NoticePage> {
           SettingsSection(
             title: Text(L10n.of(context)!.devices),
             tiles: [
-              for (var pusher in pushers) ...{
+              for (final pusher in pushers) ...{
                 PusherTile(pusher, onToggle: (p) => onPusherTap(p)),
               }
             ],

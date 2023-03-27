@@ -38,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
 
   void getList() async {
     final client = im.currentState!.client;
-    var roomResp = await client.getPublicRooms();
+    final roomResp = await client.getPublicRooms();
     setState(() {
       rooms = roomResp.chunk;
     });
@@ -106,7 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
-                  var room = rooms[index];
+                  final room = rooms[index];
                   return Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     padding: EdgeInsets.only(bottom: 10.w, left: 15.w, right: 15.w),

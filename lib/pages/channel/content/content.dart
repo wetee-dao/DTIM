@@ -301,14 +301,17 @@ class _ButtonContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    return OutlinedButton.icon(
+    return ElevatedButton.icon(
       onPressed: onPressed,
       icon: icon,
       label: Text(label, overflow: TextOverflow.ellipsis),
-      style: OutlinedButton.styleFrom(
+      style: ElevatedButton.styleFrom(
         foregroundColor: textColor,
         backgroundColor: constTheme.centerChannelColor.withOpacity(0.1),
         padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5.w)),
+        ),
       ),
     );
   }

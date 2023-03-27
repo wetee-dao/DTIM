@@ -40,7 +40,7 @@ class ThemeSettingsTile extends AbstractSettingsTile {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    var themesCurr = themes.where((t) => t["type"] == type).toList();
+    final themesCurr = themes.where((t) => t["type"] == type).toList();
     return IgnorePointer(
       ignoring: !enabled,
       child: Material(
@@ -141,7 +141,7 @@ class CurrThemeSettingsTile extends AbstractSettingsTile {
 
   @override
   Widget build(BuildContext context) {
-    var themesCurr = themes.where((t) => t["codeTheme"] == theme).toList();
+    final themesCurr = themes.where((t) => t["codeTheme"] == theme).toList();
     return Row(
       children: [
         SizedBox(width: 24.w),

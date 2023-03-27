@@ -85,7 +85,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
   }
 
   getRoom() {
-    var clist = client.rooms.toList();
+    final clist = client.rooms.toList();
 
     setState(() {
       channels = clist.where((c) => !c.isDirectChat).toList();
