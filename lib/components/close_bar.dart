@@ -117,7 +117,9 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  windowManager.close();
+                  // windowManager.close();
+                  // windowManager.minimize();
+                  windowManager.hide();
                 },
                 child: Icon(
                   Icons.close,

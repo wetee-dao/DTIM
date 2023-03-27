@@ -115,7 +115,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {},
-                    icon: Icon(Icons.chat, size: 24.w, color: constTheme.centerChannelColor.withOpacity(0.5)),
+                    icon: Icon(Icons.chat, size: 20.w, color: constTheme.centerChannelColor.withOpacity(0.5)),
                     label: Text(
                       '消息',
                       style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor.withOpacity(0.5)),
@@ -123,10 +123,6 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith((states) => constTheme.centerChannelBg),
                       padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 12.w, horizontal: 30.w)),
-                      side: MaterialStateProperty.all(BorderSide(
-                        color: constTheme.centerChannelColor.withOpacity(0.5),
-                        width: 1,
-                      )),
                     ),
                   ),
                 ],
