@@ -61,7 +61,7 @@ class ProfileBottomSheet extends StatelessWidget {
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton.icon(
+                  child: ElevatedButton.icon(
                     onPressed: () => _startDirectChat(context),
                     icon: Icon(Icons.adaptive.share_outlined),
                     label: Text(L10n.of(context)!.share),
