@@ -32,11 +32,11 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             InkWell(
               child: Padding(
-                padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                padding: EdgeInsets.only(left: 10.w / 60.w * _height),
                 child: Icon(
                   Icons.arrow_back,
                   color: constTheme.sidebarHeaderTextColor,
-                  size: 25.w,
+                  size: 25.w / 60.w * _height,
                 ),
               ),
               onTap: () {

@@ -44,7 +44,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
       return;
     }
     _formKey.currentState!.save();
-    final roomID = await showFutureLoadingDialog(
+    await showFutureLoadingDialog(
       context: context,
       future: () async {
         final roomId = await client!.createGroupChat(
@@ -92,29 +92,21 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
               },
             ),
       body: Padding(
-        padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        padding: EdgeInsets.only(left: 15.w, right: 15.w),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: 10.w),
+              SizedBox(height: 15.w),
               TextFormField(
-                style: TextStyle(
-                  color: constTheme.centerChannelColor,
-                ),
+                style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
                   hintText: '频道名称',
-                  hintStyle: TextStyle(
-                    fontSize: 14.w,
-                    color: constTheme.centerChannelColor,
-                  ),
+                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.text_fields,
-                    color: constTheme.centerChannelColor,
-                  ),
+                  prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
                   _data.groupName = v ?? "";
@@ -135,17 +127,11 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                 initialValue: _data.preset == link.CreateRoomPreset.publicChat,
                 decoration: InputDecoration(
                   hintText: '是否公开',
-                  hintStyle: TextStyle(
-                    fontSize: 14.w,
-                    color: constTheme.centerChannelColor,
-                  ),
+                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.public,
-                    color: constTheme.centerChannelColor,
-                  ),
+                  prefixIcon: Icon(Icons.public, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
                   if (v == null) {

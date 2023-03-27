@@ -508,7 +508,7 @@ ThemeData theme() {
   return ThemeData(
     useMaterial3: true,
     brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
-    primarySwatch: Colors.grey,
+
     // colorScheme: const ColorScheme.light().copyWith(
     //   brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
     //   primary: hexToColor(t["centerChannelColor,"]!),

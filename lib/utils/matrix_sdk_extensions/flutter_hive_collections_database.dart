@@ -32,8 +32,7 @@ class FlutterHiveCollectionsDatabase extends HiveCollectionsDatabase {
       if (kIsWeb) throw MissingPluginException();
 
       const secureStorage = FlutterSecureStorage();
-      final containsEncryptionKey =
-          await secureStorage.read(key: _cipherStorageKey) != null;
+      final containsEncryptionKey = await secureStorage.read(key: _cipherStorageKey) != null;
       if (!containsEncryptionKey) {
         // do not try to create a buggy secure storage for new Linux users
         if (Platform.isLinux) throw MissingPluginException();
@@ -50,14 +49,10 @@ class FlutterHiveCollectionsDatabase extends HiveCollectionsDatabase {
 
       hiverCipher = HiveAesCipher(base64Url.decode(rawEncryptionKey));
     } on MissingPluginException catch (_) {
-      const FlutterSecureStorage()
-          .delete(key: _cipherStorageKey)
-          .catchError((_) {});
+      const FlutterSecureStorage().delete(key: _cipherStorageKey).catchError((_) {});
       Logs().i('Hive encryption is not supported on this platform');
     } catch (e, s) {
-      const FlutterSecureStorage()
-          .delete(key: _cipherStorageKey)
-          .catchError((_) {});
+      const FlutterSecureStorage().delete(key: _cipherStorageKey).catchError((_) {});
       Logs().w('Unable to init Hive encryption', e, s);
     }
 
@@ -127,8 +122,7 @@ class FlutterHiveCollectionsDatabase extends HiveCollectionsDatabase {
   Future<Uint8List?> getFile(Uri mxcUri) async {
     if (!supportsFileStoring) return null;
     final tempDirectory = await _getFileStoreDirectory();
-    final file =
-        File('$tempDirectory/${Uri.encodeComponent(mxcUri.toString())}');
+    final file = File('$tempDirectory/${Uri.encodeComponent(mxcUri.toString())}');
     if (await file.exists() == false) return null;
     final bytes = await file.readAsBytes();
     return bytes;
@@ -138,8 +132,7 @@ class FlutterHiveCollectionsDatabase extends HiveCollectionsDatabase {
   Future storeFile(Uri mxcUri, Uint8List bytes, int time) async {
     if (!supportsFileStoring) return null;
     final tempDirectory = await _getFileStoreDirectory();
-    final file =
-        File('$tempDirectory/${Uri.encodeComponent(mxcUri.toString())}');
+    final file = File('$tempDirectory/${Uri.encodeComponent(mxcUri.toString())}');
     if (await file.exists()) return;
     await file.writeAsBytes(bytes);
     return;

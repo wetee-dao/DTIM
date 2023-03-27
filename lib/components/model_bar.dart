@@ -41,7 +41,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
               child: Icon(
                 Icons.close,
                 color: constTheme.sidebarHeaderTextColor,
-                size: 25.w,
+                size: 25.w / 50.w * _height,
               ),
               onTap: () {
                 if (onBack != null) {

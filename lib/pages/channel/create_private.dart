@@ -58,12 +58,14 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "添加私信",
+              height: 50.w,
               onBack: () {
                 context.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
               title: "添加私信",
+              height: 50.w,
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -77,7 +79,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
         children: [
           Container(
             color: constTheme.sidebarHeaderBg,
-            padding: EdgeInsets.only(bottom: 5.w),
+            padding: EdgeInsets.only(bottom: 10.w),
             child: Row(
               children: [
                 Expanded(
@@ -98,9 +100,9 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                       BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
                     });
                   },
-                  icon: Icon(Icons.copy, size: 16.w, color: constTheme.sidebarHeaderTextColor),
+                  icon: Icon(Icons.copy, size: 20.w, color: constTheme.sidebarHeaderTextColor),
                 ),
-                SizedBox(width: 5.w),
+                SizedBox(width: 15.w),
               ],
             ),
           ),
@@ -191,7 +193,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
           Container(
             height: 55.w,
             // margin: EdgeInsets.all(10.w),
-            padding: EdgeInsets.only(left: 15.w),
+            padding: EdgeInsets.only(left: 15.w, right: 15.w),
             decoration: BoxDecoration(
               color: constTheme.sidebarText.withOpacity(0.1),
             ),
@@ -205,7 +207,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
-                hintText: '输入id邀请 比如：@username',
+                hintText: '输入id邀请,如：@username',
                 hintStyle: TextStyle(
                   height: 1.5,
                   color: constTheme.sidebarText.withAlpha(155),

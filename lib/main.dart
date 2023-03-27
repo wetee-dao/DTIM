@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:asyou_app/utils/tray.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,7 @@ void main({bool test = false}) async {
         await windowManager.setAsFrameless();
       }
       await windowManager.show();
+      await showtray();
       await windowManager.focus();
     });
   } else {

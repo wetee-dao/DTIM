@@ -20,7 +20,7 @@ dependencies:
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
-  entry: ^0.0.6
+  # entry: ^0.0.6
   # 英文扩展包
   english_words: ^4.0.0
   # 表情包
@@ -85,6 +85,7 @@ dependencies:
   badges: ^3.0.2
   flutter_olm: ^1.2.0
   flutter_openssl_crypto: ^0.1.0
+  tray_manager: ^0.2.0
 
 
 dev_dependencies:
@@ -109,6 +110,7 @@ flutter:
   assets:
     - assets/
     - assets/l10n/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

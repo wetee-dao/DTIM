@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:asyou_app/router.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:future_loading_dialog/future_loading_dialog.dart';
 
 import 'components/avatar.dart';
@@ -48,6 +50,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       });
     }
     getList();
+    if (accounts.isNotEmpty) {
+      autoLogin();
+    }
   }
 
   @override
@@ -55,7 +60,27 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     super.didChangeDependencies();
   }
 
-  getList() {
+  autoLogin() async {
+    const storage = FlutterSecureStorage();
+    storage.read(key: "login_state").then((value) async {
+      if (value != null) {
+        final v = value.split(",");
+        final account = accounts.firstWhereOrNull((a) => a.address == v[0]);
+        if (account != null) {
+          await showFutureLoadingDialog(
+            context: globalCtx(),
+            future: () async {
+              await im.login(account, v[1]);
+              // ignore: use_build_context_synchronously
+              globalCtx().push("/select_org?auto=t");
+            },
+          );
+        }
+      }
+    });
+  }
+
+  getList() async {
     setState(() {
       accounts = AccountApi.create().getUsers();
     });
@@ -264,6 +289,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                     context: globalCtx(),
                                                     future: () async {
                                                       await im.login(accounts[i], input[0]);
+                                                      const storage = FlutterSecureStorage();
+                                                      await storage.write(
+                                                          key: "login_state",
+                                                          value: "${accounts[i].address},${input[0]}");
                                                       // ignore: use_build_context_synchronously
                                                       globalCtx().push("/select_org?auto=t");
                                                     },

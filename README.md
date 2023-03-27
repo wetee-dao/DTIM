@@ -63,3 +63,9 @@ We provide DAO templates the substrate pallet and ink! Smart contracts:
 7. Hot-swap voting management.
 8. Contribution value and medal management.
 9. Level management.
+
+
+### 打包需集成
+ - https://pub.flutter-io.cn/packages/tray_manager
+ - https://pub.flutter-io.cn/packages/window_manager
+ - https://cjycode.com/flutter_rust_bridge/quickstart.html

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -138,7 +139,9 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   ),
                   Flexible(child: Container()),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
+                      const storage = FlutterSecureStorage();
+                      await storage.delete(key: "login_state");
                       im.logout();
                     },
                     child: SizedBox(
