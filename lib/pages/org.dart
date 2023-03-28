@@ -30,7 +30,7 @@ class _OrgPageState extends State<OrgPage> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: constTheme.sidebarBg,
+      backgroundColor: constTheme.centerChannelBg,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -43,10 +43,16 @@ class _OrgPageState extends State<OrgPage> {
           GestureDetector(
             child: MouseRegion(
               cursor: SystemMouseCursors.resizeColumn,
-              child: SizedBox(
-                width: 1.w,
-                height: double.infinity,
-                child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
+              child: Row(
+                children: [
+                  Container(
+                    color: constTheme.centerChannelColor.withOpacity(0.08),
+                    // color: Colors.red,
+                    width: 1.w,
+                    height: double.infinity,
+                  ),
+                  SizedBox(width: 1.w, height: double.infinity),
+                ],
               ),
             ),
             onPanUpdate: (details) {

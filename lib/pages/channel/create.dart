@@ -2,7 +2,6 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -44,7 +43,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
       return;
     }
     _formKey.currentState!.save();
-    await showFutureLoadingDialog(
+    await waitFutureLoading(
       context: context,
       future: () async {
         final roomId = await client!.createGroupChat(

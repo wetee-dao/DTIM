@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart';
 
+import '../../components/components.dart';
 import 'matrix_file_extension.dart';
 import '../size_string.dart';
 
 extension LocalizedBody on Event {
-  Future<LoadingDialogResult<MatrixFile?>> _getFile(BuildContext context) => showFutureLoadingDialog(
+  Future<LoadingDialogResult<MatrixFile?>> _getFile(BuildContext context) => waitFutureLoading(
         context: context,
         future: downloadAndDecryptAttachment,
       );

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +12,7 @@ import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/localized_extension.dart';
 import '../../components/app_bar.dart';
 import '../../components/avatar.dart';
+import '../../components/components.dart';
 import '../../components/model_bar.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
@@ -78,7 +78,7 @@ class _InvitationPageState extends State<InvitationPage> {
         )) {
       return;
     }
-    final success = await showFutureLoadingDialog(
+    final success = await waitFutureLoading(
       context: globalCtx(),
       future: () => room.invite(id),
     );

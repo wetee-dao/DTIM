@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
@@ -123,7 +122,7 @@ class _ChannelBarState extends State<ChannelBar> {
                     SizedBox(width: 10.w),
                     GestureDetector(
                       onTap: () async {
-                        await showFutureLoadingDialog(
+                        await waitFutureLoading(
                           context: globalCtx(),
                           future: () async {
                             await widget.room.setFavourite(!widget.room.isFavourite);

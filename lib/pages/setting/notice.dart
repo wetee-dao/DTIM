@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 
+import '../../components/components.dart';
 import '../../components/setting/settings_ui.dart';
 import '../../router.dart';
 import '../../store/im.dart';
@@ -68,7 +68,7 @@ class _NoticePageState extends State<NoticePage> {
   }
 
   void setNotificationSetting(NoticeItem item, bool enabled) {
-    showFutureLoadingDialog(
+    waitFutureLoading(
       context: context,
       future: () => client.setPushRuleEnabled(
         'global',
@@ -94,7 +94,7 @@ class _NoticePageState extends State<NoticePage> {
     );
     if (delete != true) return;
 
-    final success = await showFutureLoadingDialog(
+    final success = await waitFutureLoading(
       context: globalCtx(),
       future: () => client.deletePusher(
         PusherId(
@@ -129,7 +129,7 @@ class _NoticePageState extends State<NoticePage> {
             tiles: [
               Switchtile(
                 initialValue: !client.allPushNotificationsMuted,
-                onToggle: (_) => showFutureLoadingDialog(
+                onToggle: (_) => waitFutureLoading(
                   context: context,
                   future: () => client.setMuteAllPushNotifications(
                     !client.allPushNotificationsMuted,

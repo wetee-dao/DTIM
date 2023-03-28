@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 
 import 'components/avatar.dart';
+import 'components/components.dart';
 import 'store/theme.dart';
 import 'utils/screen.dart';
 import 'package:go_router/go_router.dart';
@@ -42,16 +42,17 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   void initState() {
     super.initState();
     im = context.read<IMProvider>();
+    getList();
+    if (accounts.isNotEmpty) {
+      autoLogin();
+    }
     if (im.connections.keys.isEmpty) {
       Timer(const Duration(milliseconds: 2000), () {
+        if (!mounted) return;
         setState(() {
           _loading = false;
         });
       });
-    }
-    getList();
-    if (accounts.isNotEmpty) {
-      autoLogin();
     }
   }
 
@@ -67,7 +68,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         final v = value.split(",");
         final account = accounts.firstWhereOrNull((a) => a.address == v[0]);
         if (account != null) {
-          await showFutureLoadingDialog(
+          await waitFutureLoading(
             context: globalCtx(),
             future: () async {
               await im.login(account, v[1]);
@@ -285,7 +286,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                     ],
                                                   );
                                                   if (input == null) return;
-                                                  await showFutureLoadingDialog(
+                                                  await waitFutureLoading(
                                                     context: globalCtx(),
                                                     future: () async {
                                                       await im.login(accounts[i], input[0]);

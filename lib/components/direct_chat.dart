@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:badges/badges.dart' as badges;
 
@@ -10,6 +9,7 @@ import '../store/theme.dart';
 import '../utils/functions.dart';
 import '../utils/screen.dart';
 import 'hover_list_item.dart';
+import 'loading.dart';
 
 class DirectChats extends StatefulWidget {
   final List<link.Room> channelsList;
@@ -79,7 +79,7 @@ class _DirectChatsState extends State<DirectChats> {
               if (result != null) {
                 switch (result) {
                   case "f1":
-                    await showFutureLoadingDialog(
+                    await waitFutureLoading(
                       context: globalCtx(),
                       future: () async {
                         await room.setFavourite(!room.isFavourite);
@@ -87,7 +87,7 @@ class _DirectChatsState extends State<DirectChats> {
                     );
                     break;
                   case "f2":
-                    await showFutureLoadingDialog(
+                    await waitFutureLoading(
                       context: globalCtx(),
                       future: () => room.pushRuleState == link.PushRuleState.notify
                           ? room.setPushRuleState(link.PushRuleState.dontNotify)

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart';
 import 'package:matrix_link_text/link_text.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,7 @@ import '../store/theme.dart';
 import '../utils/url_launcher.dart';
 import 'avatar.dart';
 import '../utils/localized_extension.dart';
+import 'loading.dart';
 
 class PublicRoomBottomSheet extends StatelessWidget {
   final String? roomAlias;
@@ -34,7 +34,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
     final chunk = this.chunk;
     final navigator = Navigator.of(context);
 
-    final result = await showFutureLoadingDialog<String>(
+    final result = await waitFutureLoading<String>(
       context: context,
       future: () async {
         if (chunk != null && client.getRoomById(chunk.roomId) != null) {

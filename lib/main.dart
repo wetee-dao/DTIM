@@ -44,6 +44,7 @@ void main({bool test = false}) async {
 
     // 等待桌面初始化
     await windowManager.ensureInitialized();
+    await windowManager.hide();
     WindowOptions windowOptions = WindowOptions(
       size: winSize,
       minimumSize: const Size(800, 550),

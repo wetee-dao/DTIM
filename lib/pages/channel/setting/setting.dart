@@ -105,6 +105,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
               dividerColor: Colors.transparent,
               indicator: MaterialIndicator(
                 color: constTheme.sidebarTextActiveBorder,
+                strokeWidth: 10,
               ),
             ),
           ),

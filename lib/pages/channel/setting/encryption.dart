@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/encryption.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/components.dart';
 import '../../../config/app_config.dart';
 import '../../../router.dart';
 import '../../../store/im.dart';
@@ -76,7 +76,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
       cancelLabel: L10n.of(context)!.cancel,
     );
     if (consent != OkCancelResult.ok) return;
-    await showFutureLoadingDialog(
+    await waitFutureLoading(
       context: globalCtx(),
       future: () => room.enableEncryption(),
     );
