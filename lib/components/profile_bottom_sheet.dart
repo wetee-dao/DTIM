@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 // import 'package:vrouter/vrouter.dart';
 
 import '../store/im.dart';
 import './avatar.dart';
+import 'loading.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
   final String userId;
@@ -22,7 +22,7 @@ class ProfileBottomSheet extends StatelessWidget {
   void _startDirectChat(BuildContext context) async {
     final im = context.read<IMProvider>();
     final client = im.currentState!.client;
-    final result = await showFutureLoadingDialog<String>(
+    final result = await waitFutureLoading<String>(
       context: context,
       future: () => client.startDirectChat(userId),
     );

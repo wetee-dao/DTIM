@@ -4,16 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
-import 'package:matrix_link_text/link_text.dart';
 import 'package:provider/provider.dart';
 
+import '../../../components/components.dart';
 import '../../../router.dart';
 import '../../../store/im.dart';
 import '../../../store/theme.dart';
-import '../../../utils/url_launcher.dart';
 import '../../../utils/screen.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/platform_infos.dart';
@@ -62,7 +60,7 @@ class ChatDetailsController extends State<ChatDetails> {
       ],
     );
     if (input == null) return;
-    final success = await showFutureLoadingDialog(
+    final success = await waitFutureLoading(
       context: globalCtx(),
       future: () => room.setName(input.single),
     );
@@ -79,13 +77,13 @@ class ChatDetailsController extends State<ChatDetails> {
     // The current endpoint doesnt seem to be implemented in Synapse. This may
     // change in the future and then we just need to switch to this api call:
     //
-    // final aliases = await showFutureLoadingDialog(
+    // final aliases = await waitFutureLoading(
     //   context: context,
     //   future: () => room.client.requestRoomAliases(room.id),
     // );
     //
     // While this is not working we use the unstable api:
-    final aliases = await showFutureLoadingDialog(
+    final aliases = await waitFutureLoading(
       context: context,
       future: () => room!.client
           .request(
@@ -149,13 +147,13 @@ class ChatDetailsController extends State<ChatDetails> {
         );
         break;
       case AliasActions.delete:
-        await showFutureLoadingDialog(
+        await waitFutureLoading(
           context: globalCtx(),
           future: () => room.client.deleteRoomAlias(select),
         );
         break;
       case AliasActions.setCanonical:
-        await showFutureLoadingDialog(
+        await waitFutureLoading(
           context: globalCtx(),
           future: () => room.client.setRoomStateWithKey(
             room.id,
@@ -190,7 +188,7 @@ class ChatDetailsController extends State<ChatDetails> {
       ],
     );
     if (input == null) return;
-    await showFutureLoadingDialog(
+    await waitFutureLoading(
       context: globalCtx(),
       future: () => room.client.setRoomAlias('#${input.single}:${domain!}', room.id),
     );
@@ -214,7 +212,7 @@ class ChatDetailsController extends State<ChatDetails> {
       ],
     );
     if (input == null) return;
-    final success = await showFutureLoadingDialog(
+    final success = await waitFutureLoading(
       context: globalCtx(),
       future: () => room.setDescription(input.single),
     );
@@ -227,17 +225,17 @@ class ChatDetailsController extends State<ChatDetails> {
     }
   }
 
-  void setGuestAccessAction(GuestAccess guestAccess) => showFutureLoadingDialog(
+  void setGuestAccessAction(GuestAccess guestAccess) => waitFutureLoading(
         context: context,
         future: () => client.getRoomById(roomId!)!.setGuestAccess(guestAccess),
       );
 
-  void setHistoryVisibilityAction(HistoryVisibility historyVisibility) => showFutureLoadingDialog(
+  void setHistoryVisibilityAction(HistoryVisibility historyVisibility) => waitFutureLoading(
         context: context,
         future: () => client.getRoomById(roomId!)!.setHistoryVisibility(historyVisibility),
       );
 
-  void setJoinRulesAction(JoinRules joinRule) => showFutureLoadingDialog(
+  void setJoinRulesAction(JoinRules joinRule) => waitFutureLoading(
         context: context,
         future: () => client.getRoomById(roomId!)!.setJoinRules(joinRule),
       );
@@ -286,7 +284,7 @@ class ChatDetailsController extends State<ChatDetails> {
           );
     if (action == null) return;
     if (action == AvatarAction.remove) {
-      await showFutureLoadingDialog(
+      await waitFutureLoading(
         context: globalCtx(),
         future: () => room!.setAvatar(null),
       );
@@ -311,7 +309,7 @@ class ChatDetailsController extends State<ChatDetails> {
         name: result.fileName!,
       );
     }
-    await showFutureLoadingDialog(
+    await waitFutureLoading(
       context: globalCtx(),
       future: () => room!.setAvatar(file),
     );
@@ -319,7 +317,7 @@ class ChatDetailsController extends State<ChatDetails> {
 
   void requestMoreMembersAction() async {
     final room = client.getRoomById(roomId!);
-    final participants = await showFutureLoadingDialog(
+    final participants = await waitFutureLoading(
       context: context,
       future: () => room!.requestParticipants(),
     );

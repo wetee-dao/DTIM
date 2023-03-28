@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 import 'package:punycode/punycode.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../components/components.dart';
 import '../config/app_config.dart';
 import '../store/im.dart';
 import './adaptive_bottom_sheet.dart';
@@ -114,7 +114,7 @@ class UrlLauncher {
       final servers = <String>{};
       if (room == null && roomIdOrAlias.sigil == '#') {
         // we were unable to find the room locally...so resolve it
-        final response = await showFutureLoadingDialog(
+        final response = await waitFutureLoading(
           context: context,
           future: () => client.getRoomIdByAlias(roomIdOrAlias),
         );
@@ -159,7 +159,7 @@ class UrlLauncher {
             ) ==
             OkCancelResult.ok) {
           roomId = roomIdOrAlias;
-          final response = await showFutureLoadingDialog(
+          final response = await waitFutureLoading(
             context: context,
             future: () => client.joinRoom(
               roomIdOrAlias,
@@ -168,7 +168,7 @@ class UrlLauncher {
           );
           if (response.error != null) return;
           // wait for two seconds so that it probably came down /sync
-          await showFutureLoadingDialog(
+          await waitFutureLoading(
             context: context,
             future: () => Future.delayed(const Duration(seconds: 2)),
           );

@@ -1,9 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../components/components.dart';
 import '../../utils/screen.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
@@ -24,7 +24,7 @@ menuRender(controller, link.Room room) {
     // [ItemModel('移动至...')], ItemModel('通知偏好'),
     [
       ItemModel(room.pushRuleState == link.PushRuleState.notify ? "静音频道" : "取消静音", onTap: (link.Room room) async {
-        await showFutureLoadingDialog(
+        await waitFutureLoading(
           context: globalCtx(),
           future: () => room.pushRuleState == link.PushRuleState.notify
               ? room.setPushRuleState(link.PushRuleState.dontNotify)
@@ -60,7 +60,7 @@ menuRender(controller, link.Room room) {
               okLabel: L10n.of(globalCtx())!.next,
               cancelLabel: L10n.of(globalCtx())!.cancel,
             )) {
-          showFutureLoadingDialog(
+          waitFutureLoading(
             context: globalCtx(),
             future: () async {
               await room.leave();

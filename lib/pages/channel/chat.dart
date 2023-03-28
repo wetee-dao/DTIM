@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/close_bar.dart';
+import '../../components/components.dart';
 import '../../models/models.dart';
 import '../../router.dart';
 import '../../store/im.dart';
@@ -54,7 +54,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       room = im.currentState!.client.getRoomById(widget.channerlID);
       if (room!.membership == link.Membership.invite) {
         Timer(const Duration(milliseconds: 10), () {
-          showFutureLoadingDialog(
+          waitFutureLoading(
             context: context,
             future: () => room!.join(),
           );
@@ -139,7 +139,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
         'Try to recreate a room with is not a DM room. This should not be possible from the UI!',
       );
     }
-    final success = await showFutureLoadingDialog(
+    final success = await waitFutureLoading(
       context: context,
       future: () async {
         final client = room.client;
@@ -161,7 +161,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
         'Leave room button clicked while room is null. This should not be possible from the UI!',
       );
     }
-    final success = await showFutureLoadingDialog(
+    final success = await waitFutureLoading(
       context: context,
       future: room.leave,
     );

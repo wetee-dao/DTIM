@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -166,7 +165,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                           key: Key("createPrivate$index"),
                           onPressed: () async {
                             final client = im.currentState!.client;
-                            await showFutureLoadingDialog(
+                            await waitFutureLoading(
                               context: globalCtx(),
                               future: () async {
                                 await client.startDirectChat(userList[index].userId);
@@ -224,7 +223,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                   onPressed: () async {
                     final client = im.currentState!.client;
                     final org = im.currentState!.org;
-                    await showFutureLoadingDialog(
+                    await waitFutureLoading(
                       context: globalCtx(),
                       future: () async {
                         await client.startDirectChat("${id.text}:${org.domain}");

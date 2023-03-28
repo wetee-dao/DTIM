@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:matrix/encryption.dart';
 import 'package:matrix/matrix.dart';
 
+import '../../../components/components.dart';
 import '../../../utils/adaptive_bottom_sheet.dart';
 import '../../../components/avatar.dart';
 
@@ -69,7 +69,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
   Future<void> checkInput(String input) async {
     if (input.isEmpty) return;
 
-    final valid = await showFutureLoadingDialog(
+    final valid = await waitFutureLoading(
       context: context,
       future: () async {
         // make sure the loading spinner shows before we test the keys

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -139,7 +138,7 @@ class _SearchPageState extends State<SearchPage> {
                           key: Key("${room.roomId}_join"),
                           onPressed: () async {
                             final client = im.currentState!.client;
-                            await showFutureLoadingDialog(
+                            await waitFutureLoading(
                               context: globalCtx(),
                               future: () async {
                                 await client.joinRoomById(rooms[index].roomId);

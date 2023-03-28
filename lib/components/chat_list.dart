@@ -1,6 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -8,6 +7,7 @@ import '../router.dart';
 import '../store/theme.dart';
 import '../utils/screen.dart';
 import 'hover_list_item.dart';
+import 'loading.dart';
 
 class ChatList extends StatefulWidget {
   final List<link.Room> channelsList;
@@ -78,7 +78,7 @@ class _ChatListState extends State<ChatList> {
               if (result != null) {
                 switch (result) {
                   case "f1":
-                    await showFutureLoadingDialog(
+                    await waitFutureLoading(
                       context: globalCtx(),
                       future: () async {
                         await chat.setFavourite(!chat.isFavourite);
@@ -86,7 +86,7 @@ class _ChatListState extends State<ChatList> {
                     );
                     break;
                   case "f2":
-                    await showFutureLoadingDialog(
+                    await waitFutureLoading(
                       context: globalCtx(),
                       future: () => chat.pushRuleState == link.PushRuleState.notify
                           ? chat.setPushRuleState(link.PushRuleState.dontNotify)
@@ -112,7 +112,7 @@ class _ChatListState extends State<ChatList> {
                           okLabel: L10n.of(globalCtx())!.next,
                           cancelLabel: L10n.of(globalCtx())!.cancel,
                         )) {
-                      showFutureLoadingDialog(
+                      waitFutureLoading(
                         context: globalCtx(),
                         future: () async {
                           await chat.leave();

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:future_loading_dialog/future_loading_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -56,7 +55,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     final orgs = AccountOrgApi.create().listByAccount(im.me!.address);
     // 登录账户
     if (orgs.isNotEmpty) {
-      showFutureLoadingDialog(
+      waitFutureLoading(
         title: "连接中...",
         context: context,
         future: () async {
