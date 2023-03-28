@@ -5,8 +5,9 @@ import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
 showtray() async {
+  print("window.platformBrightness => " + window.platformBrightness.toString());
   await trayManager.setIcon(
-    'assets/images/top_bar${window.platformBrightness == Brightness.dark ? "_dark" : ""}${Platform.isWindows ? '.ico' : '.png'}',
+    'assets/images/top_bar${(window.platformBrightness != Brightness.dark && Platform.isWindows) ? "" : "_dark"}${Platform.isWindows ? '.ico' : '.png'}',
   );
 
   List<MenuItem> items = [
@@ -28,12 +29,15 @@ showtray() async {
 
   await trayManager.setContextMenu(Menu(items: items));
   trayManager.addListener(TrayManagerListener());
-  windowManager.setPreventClose(true);
+  await windowManager.setPreventClose(true);
 }
 
 class TrayManagerListener implements TrayListener {
   @override
-  void onTrayIconMouseDown() {}
+  void onTrayIconMouseDown() {
+    windowManager.show();
+  }
+
   @override
   void onTrayIconMouseUp() {}
   @override

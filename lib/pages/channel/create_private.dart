@@ -86,7 +86,11 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                     margin: EdgeInsets.only(left: 15.w),
                     child: Text(
                       "复制分享：${im.currentState!.client.userID}",
-                      style: TextStyle(color: constTheme.sidebarHeaderTextColor, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: constTheme.sidebarHeaderTextColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.w,
+                      ),
                     ),
                   ),
                 ),
