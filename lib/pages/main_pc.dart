@@ -105,7 +105,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                                       aorgs[i].orgName ?? "",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: constTheme.sidebarHeaderTextColor,
+                                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
                                         fontSize: 14.w,
                                       ),
                                     ),
@@ -132,7 +132,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       margin: EdgeInsets.fromLTRB(0, 6.w, 0, 0),
                       child: Icon(
                         Icons.add,
-                        color: constTheme.sidebarText,
+                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
                         size: 25.w,
                       ),
                     ),
@@ -150,7 +150,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       child: Icon(
                         Icons.logout_rounded,
                         size: 22.w,
-                        color: constTheme.sidebarText,
+                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
                       ),
                     ),
                   ),
@@ -165,7 +165,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       child: Icon(
                         Icons.settings,
                         size: 22.w,
-                        color: constTheme.sidebarText,
+                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
                       ),
                     ),
                   ),

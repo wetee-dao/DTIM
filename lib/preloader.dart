@@ -303,7 +303,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 icon: Icon(
                                                   Icons.login,
                                                   size: 18.w,
-                                                  color: constTheme.centerChannelColor,
+                                                  color: constTheme.centerChannelBg,
                                                 ),
                                               ),
                                             ),
@@ -338,7 +338,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 icon: Icon(
                                                   Icons.close,
                                                   size: 18.w,
-                                                  color: constTheme.centerChannelColor,
+                                                  color: constTheme.centerChannelBg,
                                                 ),
                                               ),
                                             ),

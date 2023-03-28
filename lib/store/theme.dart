@@ -336,7 +336,7 @@ const themes = [
     "sidebarTextHoverBg": "#ededed",
     "sidebarTextActiveBorder": "#e7412a",
     "sidebarTextActiveColor": "#ffffff",
-    "sidebarHeaderBg": "#f3f3f3",
+    "sidebarHeaderBg": "#dbdbdb9e",
     "sidebarHeaderTextColor": "#564f4d",
     "onlineIndicator": "#8da600",
     "mentionBg": "#0ea7b5",

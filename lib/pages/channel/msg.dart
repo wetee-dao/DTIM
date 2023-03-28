@@ -174,7 +174,7 @@ class _MsgState extends State<Msg> {
     //     ),
     //   );
     // }
-    return MessageContent(event, textColor: constTheme.centerChannelColor);
+    return MessageContent(event, textColor: constTheme.centerChannelColor.withOpacity(0.5));
   }
 
   buildDayTag(event) {

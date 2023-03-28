@@ -304,14 +304,18 @@ class _ButtonContent extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: icon,
-      label: Text(label, overflow: TextOverflow.ellipsis),
+      label: Text(label, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.w)),
       style: ElevatedButton.styleFrom(
         foregroundColor: textColor,
-        backgroundColor: constTheme.centerChannelColor.withOpacity(0.1),
+        backgroundColor: constTheme.centerChannelColor.withOpacity(0.08),
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.w)),
+          side: BorderSide.none,
         ),
+        elevation: 0,
       ),
     );
   }
