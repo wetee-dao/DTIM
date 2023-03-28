@@ -331,7 +331,7 @@ const themes = [
     //11
     "type": 'light',
     "sidebarBg": "#fafafa",
-    "sidebarText": "#564f4d",
+    "sidebarText": "#000000",
     "sidebarUnreadText": "#564f4d",
     "sidebarTextHoverBg": "#ededed",
     "sidebarTextActiveBorder": "#e7412a",
@@ -345,7 +345,7 @@ const themes = [
     "mentionBj": "#ffffff",
     "mentionColor": "#1e325c",
     "centerChannelBg": "#ffffff",
-    "centerChannelColor": "#3f4350",
+    "centerChannelColor": "#000000",
     "newMessageSeparator": "#cc8f00",
     "linkColor": "#386fe5",
     "buttonBg": "#1c58d9",
