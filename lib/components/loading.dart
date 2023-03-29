@@ -80,11 +80,8 @@ class _LoadingDialogState<T> extends State<LoadingDialog> {
         children: [
           exception == null
               ? const CircularProgressIndicator.adaptive()
-              : const Icon(
-                  Icons.error_outline_outlined,
-                  color: Colors.red,
-                ),
-          const SizedBox(width: 15),
+              : const Icon(Icons.error_outline_outlined, color: Colors.red),
+          const SizedBox(width: 20),
           Expanded(
             child: Text(
               titleLabel,
