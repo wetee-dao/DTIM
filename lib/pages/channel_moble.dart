@@ -90,14 +90,15 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                // color: constTheme.centerChannelColor.shade300,
+                color: constTheme.sidebarHeaderTextColor.withOpacity(0.16),
                 borderRadius: BorderRadius.circular(7),
               ),
               child: Text(
                 'AN',
                 style: TextStyle(
                   color: constTheme.sidebarHeaderTextColor,
-                  fontSize: 20,
+                  fontSize: 16.w,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -115,9 +116,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
         actions: [
           PopupMenuButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(10.w)),
               ),
               icon: Icon(
                 Icons.filter_list,
@@ -134,7 +133,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
                             children: [
                               Icon(
                                 Icons.done,
-                                color: Colors.grey,
+                                color: constTheme.centerChannelColor,
                                 size: 18,
                               ),
                               SizedBox(width: 10),
@@ -143,7 +142,7 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
                           ),
                           Icon(
                             Icons.list_alt,
-                            color: Colors.grey,
+                            color: constTheme.centerChannelColor,
                           ),
                         ],
                       ),
@@ -155,260 +154,214 @@ class _ChannelMoblePageState extends State<ChannelMoblePage> {
                         children: [
                           Row(
                             children: [
-                              SizedBox(width: 30),
+                              SizedBox(width: 30.w),
                               Text('Recent Activity'),
                             ],
                           ),
                           Icon(
                             Icons.access_time,
-                            color: Colors.grey,
+                            color: constTheme.centerChannelColor,
                           ),
                         ],
                       ),
                     ),
                   ]),
           SizedBox(
-            width: 15,
+            width: 15.w,
           ),
         ],
       ),
       backgroundColor: constTheme.sidebarBg,
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              // JumpTo(false, MediaQuery.of(context).size.width - 40, () {}),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 15,
-                ),
-                child: Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width - 40,
-                  child: TextField(
-                    onTap: () {},
-                    autofocus: false,
-                    keyboardType: false ? TextInputType.text : TextInputType.none,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
+        child: Column(
+          children: [
+            // JumpTo(false, MediaQuery.of(context).size.width - 40, () {}),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 15.w,
+                vertical: 15.w,
+              ),
+              child: SizedBox(
+                height: 50.w,
+                width: double.maxFinite,
+                child: TextField(
+                  onTap: () {},
+                  autofocus: false,
+                  keyboardType: false ? TextInputType.text : TextInputType.none,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.w)),
+                      borderSide: BorderSide(
+                        color: constTheme.sidebarText.withOpacity(0.2),
+                        width: 1,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      hintText: 'Jump to...',
-                      hintStyle: TextStyle(
-                        height: 0.9,
-                      ),
-                      border: InputBorder.none,
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.blue),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    hintText: 'Jump to...',
+                    hintStyle: const TextStyle(height: 1.4),
+                    border: InputBorder.none,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  children: [
-                    Transform(
-                      transform: Matrix4.rotationY(math.pi),
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.message_outlined,
-                        color: Colors.grey.shade500,
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 15),
+            //   child: Row(
+            //     children: [
+            //       Transform(
+            //         transform: Matrix4.rotationY(math.pi),
+            //         alignment: Alignment.center,
+            //         child: Icon(
+            //           Icons.message_outlined,
+            //           color: constTheme.centerChannelColor.shade500,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 15,
+            //       ),
+            //       InkWell(
+            //         onTap: () {},
+            //         child: Text(
+            //           'Threads',
+            //           style: TextStyle(
+            //             color: Colors.black54,
+            //             fontSize: 18,
+            //             fontWeight: FontWeight.w400,
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            Divider(
+              height: 30,
+              color: constTheme.sidebarText.withOpacity(0.08),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Text(
+                      'Channels',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
                       ),
                     ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        'Threads',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Divider(
-                height: 30,
-                color: Colors.black45,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text(
-                        'Channels',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Text(
-                            '+',
-                            style: TextStyle(
-                              fontSize: 23,
-                              color: Colors.grey.shade500,
-                            ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Text(
+                          '+',
+                          style: TextStyle(
+                            fontSize: 23,
+                            color: constTheme.centerChannelColor,
                           ),
-                          SizedBox(width: 15),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _controllerChannels.toggle();
-                              });
-                            },
-                            icon: Icon(
-                              _controllerChannels.expanded
-                                  ? Icons.keyboard_arrow_down_outlined
-                                  : Icons.arrow_forward_ios_outlined,
-                              size: _controllerChannels.expanded ? 25 : 17,
-                            ),
-                            color: Colors.grey.shade500,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expandable(
-                controller: _controllerChannels,
-                collapsed: SizedBox(),
-                expanded: ChatList(channels, channelId, (id) {
-                  if (id == channelId) {
-                    return;
-                  }
-                  setState(() {
-                    channelId = id;
-                  });
-                }),
-              ),
-              Divider(
-                height: 30,
-                color: Colors.black45,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text(
-                        'Starred',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
                         ),
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        children: [
-                          SizedBox(width: 15),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _controllerStarred.toggle();
-                              });
-                            },
-                            icon: Icon(
-                              _controllerStarred.expanded
-                                  ? Icons.keyboard_arrow_down_outlined
-                                  : Icons.arrow_forward_ios_outlined,
-                              size: _controllerStarred.expanded ? 25 : 17,
-                            ),
-                            color: Colors.grey.shade500,
+                        SizedBox(width: 15),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _controllerChannels.toggle();
+                            });
+                          },
+                          icon: Icon(
+                            _controllerChannels.expanded
+                                ? Icons.keyboard_arrow_down_outlined
+                                : Icons.arrow_forward_ios_outlined,
+                            size: _controllerChannels.expanded ? 25 : 17,
                           ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // ExpandablePanel(
-              //   controller: _controllerStarred,
-              //   collapsed: SizedBox(),
-              //   expanded: ChannelsList(channelsListTwo),
-              // ),
-              Divider(
-                height: 30,
-                color: Colors.black45,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text(
-                        'Direct Messages',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
+                          color: constTheme.centerChannelColor,
                         ),
-                      ),
+                      ],
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          SizedBox(width: 15),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _controllerUsers.toggle();
-                              });
-                            },
-                            icon: Icon(
-                              _controllerUsers.expanded
-                                  ? Icons.keyboard_arrow_down_outlined
-                                  : Icons.arrow_forward_ios_outlined,
-                              size: _controllerUsers.expanded ? 25 : 17,
-                            ),
-                            color: Colors.grey.shade500,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  )
+                ],
               ),
-              // ExpandablePanel(
-              //   controller: _controllerUsers,
-              //   collapsed: const SizedBox(),
-              //   expanded: usersList(
-              //     users,
-              //     receiverUser,
-              //     (index) => {
-              //       setState(() {
-              //         receiverUser = users[index];
-              //       })
-              //     },
-              //   ),
-              // ),
-            ],
-          ),
+            ),
+            Expandable(
+              controller: _controllerChannels,
+              collapsed: const SizedBox(),
+              expanded: ChatList(channels, channelId, (id) {
+                if (id == channelId) {
+                  return;
+                }
+                setState(() {
+                  channelId = id;
+                });
+              }),
+            ),
+            Divider(
+              height: 30,
+              color: constTheme.sidebarText.withOpacity(0.08),
+            ),
+            // ExpandablePanel(
+            //   controller: _controllerStarred,
+            //   collapsed: SizedBox(),
+            //   expanded: ChannelsList(channelsListTwo),
+            // ),
+            // Divider(
+            //   height: 30,
+            //   color: constTheme.sidebarText.withOpacity(0.08),
+            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Text(
+                      'Direct Messages',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _controllerUsers.toggle();
+                            });
+                          },
+                          icon: Icon(
+                            _controllerUsers.expanded
+                                ? Icons.keyboard_arrow_down_outlined
+                                : Icons.arrow_forward_ios_outlined,
+                            size: _controllerUsers.expanded ? 25 : 17,
+                          ),
+                          color: constTheme.centerChannelColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // ExpandablePanel(
+            //   controller: _controllerUsers,
+            //   collapsed: const SizedBox(),
+            //   expanded: usersList(
+            //     users,
+            //     receiverUser,
+            //     (index) => {
+            //       setState(() {
+            //         receiverUser = users[index];
+            //       })
+            //     },
+            //   ),
+            // ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

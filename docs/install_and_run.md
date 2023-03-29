@@ -50,6 +50,9 @@ This repository is for the submission of milestone 2 of the Web 3 Foundation Gra
     $ flutter config --enable-macos-desktop
     $ flutter config --enable-linux-desktop
     $ flutter config --enable-windows-desktop
+    $ apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+    $ apt install libsecret-1-dev libjsoncpp-dev  libolm3 libclang-dev  libayatana-appindicator3-dev
+    $ cargo install flutter_rust_bridge_codegen
     ```
 - run in macos/linux
     ```
