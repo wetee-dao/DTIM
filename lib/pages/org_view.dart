@@ -150,7 +150,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                               style: TextStyle(
                                 color: constTheme.sidebarText,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 15.w,
+                                fontSize: 13.w,
                                 height: 1.3,
                               ),
                             ),

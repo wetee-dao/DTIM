@@ -7,9 +7,6 @@ import '../utils/identicon.dart';
 import '../utils/screen.dart';
 import 'mxc_image.dart';
 
-// import '../../utils/string_color.dart';
-// import 'package:fluffychat/widgets/mxc_image.dart';
-
 class Avatar extends StatelessWidget {
   final Uri? mxContent;
   final String? name;

@@ -31,7 +31,7 @@ JumpTo(
         hintText: '搜索...',
         hintStyle: TextStyle(
           height: 1.5,
-          fontSize: 14.w,
+          fontSize: 13.w,
           color: constTheme.sidebarText.withAlpha(155),
         ),
         suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText.withAlpha(155)),

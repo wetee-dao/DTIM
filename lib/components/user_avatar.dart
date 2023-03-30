@@ -123,6 +123,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith((states) => constTheme.centerChannelBg),
                       padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 12.w, horizontal: 30.w)),
+                      shadowColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                     ),
                   ),
                 ],

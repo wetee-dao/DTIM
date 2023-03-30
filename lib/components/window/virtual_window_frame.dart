@@ -42,6 +42,10 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
   }
 
   Widget _buildVirtualWindowFrame(BuildContext context) {
+    if (Platform.isMacOS) {
+      return widget.child;
+    }
+
     return Container(
       margin: (_isMaximized || _isFullScreen) ? EdgeInsets.zero : EdgeInsets.all(kVirtualWindowFrameMargin),
       decoration: BoxDecoration(
@@ -55,13 +59,13 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
             ),
         ],
       ),
-      // child: widget.child,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 10.w,
-        ),
-        child: widget.child,
-      ),
+      child: widget.child,
+      // child: ClipRRect(
+      //   borderRadius: BorderRadius.circular(
+      //     (_isMaximized || _isFullScreen) ? 0 : 10.w,
+      //   ),
+      //   child: widget.child,
+      // ),
     );
   }
 
