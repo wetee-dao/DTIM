@@ -236,9 +236,14 @@ class _OrgViewPageState extends State<OrgViewPage> {
             key: const Key("room"),
             controller: _controllerChannels,
             collapsed: const SizedBox(),
-            expanded: ChatList(channels, channelId, (id) {
-              setChannelId(id);
-            }),
+            expanded: ChatList(
+              key: const Key("ChatList"),
+              channels,
+              channelId,
+              (id) {
+                setChannelId(id);
+              },
+            ),
           ),
           SizedBox(height: 5.w),
           Divider(
@@ -302,9 +307,14 @@ class _OrgViewPageState extends State<OrgViewPage> {
             key: const Key("droom"),
             controller: _controllerUsers,
             collapsed: const SizedBox(),
-            expanded: DirectChats(directChats, channelId, (id) {
-              setChannelId(id);
-            }),
+            expanded: DirectChats(
+              key: const Key("DirectChats"),
+              directChats,
+              channelId,
+              (id) {
+                setChannelId(id);
+              },
+            ),
           ),
           SizedBox(height: 5.w),
           Divider(

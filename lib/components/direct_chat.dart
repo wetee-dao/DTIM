@@ -28,6 +28,7 @@ class _DirectChatsState extends State<DirectChats> {
 
   @override
   Widget build(BuildContext context) {
+    print("DirectChatsDirectChatsDirectChatsDirectChats");
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final channelsList = widget.channelsList;
     final currentId = widget.currentId;
