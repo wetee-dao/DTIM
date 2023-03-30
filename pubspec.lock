@@ -217,6 +217,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.2"
+  callkeep:
+    dependency: "direct main"
+    description:
+      name: callkeep
+      sha256: "9e86e9632a603a61f7045c179ea5ca0ee4da0a49fc5f80c2fe09fb422b96d3c6"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.3"
   canonical_json:
     dependency: transitive
     description:
@@ -305,6 +313,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.0"
+  connectivity_plus:
+    dependency: "direct main"
+    description:
+      name: connectivity_plus
+      sha256: "8875e8ed511a49f030e313656154e4bbbcef18d68dfd32eb853fac10bce48e96"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.3"
+  connectivity_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_plus_platform_interface
+      sha256: cf1d1c28f4416f8c654d7dc3cd638ec586076255d407cef3ddbdaf178272a71a
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.2.4"
   convert:
     dependency: transitive
     description:
@@ -361,6 +385,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.3.0"
+  dart_webrtc:
+    dependency: transitive
+    description:
+      name: dart_webrtc
+      sha256: a8244b36b6b673649f489f4f13a011e6fb029de678f6c606dc3f072a088b6ea8
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.15"
   date_format:
     dependency: "direct main"
     description:
@@ -603,6 +635,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.3.2"
+  flutter_foreground_task:
+    dependency: "direct main"
+    description:
+      name: flutter_foreground_task
+      sha256: a7bafaec32e33ec1670906850241340fd721ae040ed23db03cb7216848afbbbc
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.1.0"
   flutter_highlight:
     dependency: transitive
     description:
@@ -672,6 +712,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.9"
+  flutter_ringtone_player:
+    dependency: "direct main"
+    description:
+      name: flutter_ringtone_player
+      sha256: "0b036416fda0654da52221989bd1a8ccd2876cea57f61ecc3a4fc272bd738c67"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.2.0"
   flutter_rust_bridge:
     dependency: "direct main"
     description:
@@ -746,6 +794,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webrtc:
+    dependency: "direct main"
+    description:
+      name: flutter_webrtc
+      sha256: "4eacac1b49c65fd225ea69f41b3c28fae55c1f2caba6d5f21a6de2bd43e6dc02"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.24"
   freezed:
     dependency: "direct dev"
     description:
@@ -1124,6 +1180,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
+  nm:
+    dependency: transitive
+    description:
+      name: nm
+      sha256: "2c9aae4127bdc8993206464fcc063611e0e36e72018696cd9631023a31b24254"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.0"
   objectbox:
     dependency: "direct main"
     description:
@@ -1300,6 +1364,46 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.11.1"
+  permission_handler:
+    dependency: "direct main"
+    description:
+      name: permission_handler
+      sha256: "33c6a1253d1f95fd06fa74b65b7ba907ae9811f9d5c1d3150e51417d04b8d6a8"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "10.2.0"
+  permission_handler_android:
+    dependency: transitive
+    description:
+      name: permission_handler_android
+      sha256: "8028362b40c4a45298f1cbfccd227c8dd6caf0e27088a69f2ba2ab15464159e2"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "10.2.0"
+  permission_handler_apple:
+    dependency: transitive
+    description:
+      name: permission_handler_apple
+      sha256: ee96ac32f5a8e6f80756e25b25b9f8e535816c8e6665a96b6d70681f8c4f7e85
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "9.0.8"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      sha256: "68abbc472002b5e6dfce47fe9898c6b7d8328d58b5d2524f75e277c07a97eb84"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.9.0"
+  permission_handler_windows:
+    dependency: transitive
+    description:
+      name: permission_handler_windows
+      sha256: f67cab14b4328574938ecea2db3475dad7af7ead6afab6338772c5f88963e38b
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.2"
   petitparser:
     dependency: transitive
     description:
@@ -1316,6 +1420,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.0"
+  platform_detect:
+    dependency: transitive
+    description:
+      name: platform_detect
+      sha256: "14afcb6ffcd93745e39a288db53d1d6522ea25d71f7993c13a367a86c437b54d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.7"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -1849,6 +1961,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  vibration:
+    dependency: "direct main"
+    description:
+      name: vibration
+      sha256: "1dc9d1a0d62b12f1276eb7146b21585db5fe01771b8ca0234fefdf74ba51f963"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.7.6"
   video_player:
     dependency: "direct main"
     description:

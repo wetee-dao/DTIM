@@ -84,6 +84,13 @@ dependencies:
   flutter_olm: ^1.2.0
   flutter_openssl_crypto: ^0.1.0
   tray_manager: ^0.2.0
+  callkeep: ^0.3.3
+  flutter_ringtone_player: ^3.2.0
+  permission_handler: ^10.2.0
+  flutter_foreground_task: ^4.1.0
+  flutter_webrtc: ^0.9.24
+  connectivity_plus: ^3.0.3
+  vibration: ^1.7.6
 
 
 dev_dependencies:

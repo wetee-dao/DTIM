@@ -1,11 +1,9 @@
-import 'dart:math' as math;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../components/chat_list.dart';
-import '../components/direct_chat.dart';
 import '../models/models.dart';
 import '../store/im.dart';
 import '../store/theme.dart';

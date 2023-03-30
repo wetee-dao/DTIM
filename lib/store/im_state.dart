@@ -13,6 +13,7 @@ import '../router.dart';
 import '../utils/platform_infos.dart';
 import '../utils/uia_request_manager.dart';
 import '../utils/local_notifications_extension.dart';
+import '../utils/voip_plugin.dart';
 
 // class ImState implements xmpp.ConnectionStateChangedListener {
 class ImState {
@@ -52,6 +53,19 @@ class ImState {
 
   String? get cachedPassword => _cachedPassword;
 
+  bool get webrtcIsSupported => PlatformInfos.isMobile || PlatformInfos.isWindows || PlatformInfos.isMacOS;
+
+  VoipPlugin? voipPlugin;
+
+  StreamSubscription? onRoomKeyRequestSub;
+  StreamSubscription? onKeyVerificationRequestSub;
+  StreamSubscription? onLoginStateChanged;
+  StreamSubscription? onUiaRequest;
+  StreamSubscription? onNotification;
+  int? linuxNotificationId;
+  late String currentClientSecret;
+  final linuxNotifications = PlatformInfos.isLinux ? NotificationsClient() : null;
+
   void _initWithStore() async {
     try {
       if (client.isLogged()) {
@@ -71,6 +85,11 @@ class ImState {
     }
   }
 
+  void setActiveClient() {
+    // TODO: Multi-client VoiP support
+    createVoipPlugin();
+  }
+
   set cachedPassword(String? p) {
     print('Password cached');
     _cachedPasswordClearTimer?.cancel();
@@ -80,15 +99,6 @@ class ImState {
       print('Cached Password cleared');
     });
   }
-
-  StreamSubscription? onRoomKeyRequestSub;
-  StreamSubscription? onKeyVerificationRequestSub;
-  StreamSubscription? onLoginStateChanged;
-  StreamSubscription? onUiaRequest;
-  StreamSubscription? onNotification;
-  int? linuxNotificationId;
-  late String currentClientSecret;
-  final linuxNotifications = PlatformInfos.isLinux ? NotificationsClient() : null;
 
   void _registerSubs() {
     print("===========================================_registerSubs");
@@ -139,6 +149,10 @@ class ImState {
         }).listen(showLocalNotification);
       });
     }
+  }
+
+  void createVoipPlugin() async {
+    voipPlugin = webrtcIsSupported ? VoipPlugin(client) : null;
   }
 
   _cancelSubs() async {

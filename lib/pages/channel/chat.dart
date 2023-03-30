@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:asyou_app/utils/localized_extension.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,7 @@ import '../../store/im.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
 import '../../objectbox.g.dart';
+import '../../utils/platform_infos.dart';
 import '../../utils/screen.dart';
 import 'bar.dart';
 import 'input.dart';
@@ -167,6 +170,64 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     );
     if (success.error != null) return;
     // VRouter.of(context).to('/rooms');
+  }
+
+  void onPhoneButtonTap() async {
+    // VoIP required Android SDK 21
+    // if (PlatformInfos.isAndroid) {
+    //   DeviceInfoPlugin().androidInfo.then((value) {
+    //     if (value.version.sdkInt < 21) {
+    //       Navigator.pop(context);
+    //       showOkAlertDialog(
+    //         context: context,
+    //         title: L10n.of(context)!.unsupportedAndroidVersion,
+    //         message: L10n.of(context)!.unsupportedAndroidVersionLong,
+    //         okLabel: L10n.of(context)!.close,
+    //       );
+    //     }
+    //   });
+    // }
+    final callType = await showModalActionSheet<link.CallType>(
+      context: context,
+      title: L10n.of(context)!.warning,
+      message: L10n.of(context)!.videoCallsBetaWarning,
+      cancelLabel: L10n.of(context)!.cancel,
+      actions: [
+        SheetAction(
+          label: L10n.of(context)!.voiceCall,
+          icon: Icons.phone_outlined,
+          key: link.CallType.kVoice,
+        ),
+        SheetAction(
+          label: L10n.of(context)!.videoCall,
+          icon: Icons.video_call_outlined,
+          key: link.CallType.kVideo,
+        ),
+      ],
+    );
+    if (callType == null) return;
+
+    final success = await waitFutureLoading(
+      context: globalCtx(),
+      future: () => im.currentState!.voipPlugin!.voip.requestTurnServerCredentials(),
+    );
+    if (success.result != null) {
+      final voipPlugin = im.currentState!.voipPlugin;
+      try {
+        await voipPlugin!.voip.inviteToCall(room!.id, callType);
+      } catch (e) {
+        ScaffoldMessenger.of(globalCtx()).showSnackBar(
+          SnackBar(content: Text(e.toLocalizedString(globalCtx()))),
+        );
+      }
+    } else {
+      await showOkAlertDialog(
+        context: globalCtx(),
+        title: L10n.of(globalCtx())!.unavailable,
+        okLabel: L10n.of(globalCtx())!.next,
+        useRootNavigator: false,
+      );
+    }
   }
 
   @override
