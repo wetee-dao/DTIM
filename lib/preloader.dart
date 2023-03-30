@@ -20,7 +20,6 @@ import 'package:window_manager/window_manager.dart';
 
 import 'apis/account_api.dart';
 import 'apis/apis.dart';
-import 'components/move_window.dart';
 import 'models/account.dart';
 import 'store/im.dart';
 

@@ -33,7 +33,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
   final BasePopupMenuController menuController = BasePopupMenuController();
   final StreamController<bool> menuStreamController = StreamController<bool>();
-  double leftWidth = 200.w;
   IMProvider? im;
   AccountOrg? org;
   String channelId = "";
@@ -185,12 +184,14 @@ class _OrgViewPageState extends State<OrgViewPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  L10n.of(context)!.channel,
-                  style: TextStyle(
-                    color: constTheme.sidebarText.withAlpha(180),
-                    fontWeight: FontWeight.w800,
-                    fontSize: 14.w,
+                Expanded(
+                  child: Text(
+                    L10n.of(context)!.channel,
+                    style: TextStyle(
+                      color: constTheme.sidebarText.withAlpha(180),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14.w,
+                    ),
                   ),
                 ),
                 Row(
@@ -249,12 +250,14 @@ class _OrgViewPageState extends State<OrgViewPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  L10n.of(context)!.directChat,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 14.w,
-                    color: constTheme.sidebarText.withAlpha(180),
+                Expanded(
+                  child: Text(
+                    L10n.of(context)!.directChat,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14.w,
+                      color: constTheme.sidebarText.withAlpha(180),
+                    ),
                   ),
                 ),
                 Row(
