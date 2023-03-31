@@ -17,7 +17,8 @@ void main() {
     app.main(test: true);
     await tester.pumpAndSettle();
 
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 6));
+    await tester.pumpAndSettle();
 
     try {
       var acount = find.byKey(const Key('auto_test_del'));
@@ -27,6 +28,8 @@ void main() {
       await tester.pumpAndSettle();
       // ignore: empty_catches
     } catch (exception) {}
+
+    await tester.pumpAndSettle();
 
     // 触发注册按钮点击
     await tester.tap(find.byKey(const Key('selectAccountType')));
@@ -151,6 +154,7 @@ login(WidgetTester tester) async {
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 3));
+  await tester.pumpAndSettle();
 
   // 触发注册按钮点击
   await tester.tap(find.byKey(const Key('auto_test')));

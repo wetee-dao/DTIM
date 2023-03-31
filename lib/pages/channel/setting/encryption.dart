@@ -12,6 +12,7 @@ import '../../../components/components.dart';
 import '../../../config/app_config.dart';
 import '../../../router.dart';
 import '../../../store/im.dart';
+import '../../../utils/functions.dart';
 import '../../../utils/string_ectenstion.dart';
 import 'key_verification_dialog.dart';
 
@@ -244,7 +245,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                           ],
                         ),
                         subtitle: Text(
-                          deviceKeys[i].ed25519Key?.beautified ?? L10n.of(context)!.unknownEncryptionAlgorithm,
+                          getUserShortId(deviceKeys[i].ed25519Key ?? L10n.of(context)!.unknownEncryptionAlgorithm),
                           style: TextStyle(
                             color: constTheme.centerChannelColor,
                             fontSize: 13.w,

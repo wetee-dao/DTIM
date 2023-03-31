@@ -37,10 +37,10 @@ abstract class AppConfig {
   static const String inviteLinkPrefix = 'https://matrix.to/#/';
   static const String deepLinkPrefix = 'x://chat/';
   static const String schemePrefix = 'matrix:';
-  static const String pushNotificationsChannelId = 'fluffychat_push';
-  static const String pushNotificationsChannelName = 'FluffyChat push channel';
-  static const String pushNotificationsChannelDescription = 'Push notifications for FluffyChat';
-  static const String pushNotificationsAppId = 'chat.fluffy.fluffychat';
+  static const String pushNotificationsChannelId = 'push';
+  static const String pushNotificationsChannelName = 'push channel';
+  static const String pushNotificationsChannelDescription = 'Push notifications';
+  static const String pushNotificationsAppId = 'chat';
   static const String pushNotificationsGatewayUrl = 'https://daoent/_matrix/push/v1/notify';
   static const String pushNotificationsPusherFormat = 'event_id_only';
   static const String emojiFontName = 'Noto Emoji';
