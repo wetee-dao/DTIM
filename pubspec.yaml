@@ -84,6 +84,7 @@ dependencies:
   flutter_olm: ^1.2.0
   flutter_openssl_crypto: ^0.1.0
   tray_manager: ^0.2.0
+  vs_scrollbar: ^0.2.1
 
 
 dev_dependencies:
