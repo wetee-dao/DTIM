@@ -1,1 +1,1 @@
-import './functions.dart';
+export './functions.dart';

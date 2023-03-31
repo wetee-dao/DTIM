@@ -15,4 +15,8 @@ extension SizeString on num {
       return '${size.toString()} GB';
     }
   }
+
+  static getSizeString(num i) {
+    return i.sizeString;
+  }
 }

@@ -13,8 +13,8 @@ extension ColorExtension on String {
 
 // 获取用户id
 String getUserShortId(String id) {
-  String userId = id.split(":")[0];
-  userId = userId.replaceAll("@", "");
+  String userId = id.split(":")[0]; // split the id into two parts, first part is the user id
+  userId = userId.replaceAll("@", ""); // remove the @ from the user id
   return userId;
 }
 

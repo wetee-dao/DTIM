@@ -44,7 +44,7 @@ extension ClientStoriesExtension on Client {
       powerLevelContentOverride: {"events_default": 100},
       name: 'Stories from ${userID!.localpart}',
       topic:
-          'This is a room for stories sharing, not unlike the similarly named features in other messaging networks. For best experience please use FluffyChat or minesTrix. Feature development can be followed on: https://github.com/matrix-org/matrix-doc/pull/3588',
+          'This is a room for stories sharing, not unlike the similarly named features in other messaging networks. For best experience please use  or minesTrix. Feature development can be followed on: https://github.com/matrix-org/matrix-doc/pull/3588',
       initialState: [
         StateEvent(
           type: EventTypes.Encryption,

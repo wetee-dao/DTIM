@@ -44,60 +44,63 @@ MentionCard(MentionModel mentionElement, int index) {
           ],
         ),
       ),
-      ListTile(
-        leading: UserAvatar(
-          key: const Key("user_"),
-          "xxx",
-          true,
-          40.w,
-        ),
-        title: Text(
-          mentionElement.user.name,
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
+      SizedBox(
+        height: 100,
+        child: ListTile(
+          leading: UserAvatar(
+            key: const Key("user_"),
+            "xxx",
+            true,
+            40.w,
           ),
-        ),
-        subtitle: RichText(
-          text: TextSpan(
-            text: 'xxx\n\n',
-            style: TextStyle(color: Colors.black87),
-            children: [
-              (mentionElement.emoji == null)
-                  ? WidgetSpan(child: SizedBox())
-                  : WidgetSpan(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        alignment: Alignment.center,
-                        child: RichText(
-                          text: TextSpan(
-                            text: parser.emojify(mentionElement.emoji!).toString(),
-                            style: TextStyle(
-                              fontSize: 19,
-                            ),
-                            children: [
-                              WidgetSpan(
-                                child: Transform.translate(
-                                  offset: const Offset(0.0, -2.0),
-                                  child: Text(' ' + (index + 1).toString(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600,
-                                      )),
-                                ),
-                              )
-                            ],
+          title: Text(
+            mentionElement.user.name,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: RichText(
+            text: TextSpan(
+              text: 'xxx\n\n',
+              style: TextStyle(color: Colors.black87),
+              children: [
+                (mentionElement.emoji == null)
+                    ? WidgetSpan(child: SizedBox())
+                    : WidgetSpan(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          alignment: Alignment.center,
+                          child: RichText(
+                            text: TextSpan(
+                              text: parser.emojify(mentionElement.emoji!).toString(),
+                              style: TextStyle(
+                                fontSize: 19,
+                              ),
+                              children: [
+                                WidgetSpan(
+                                  child: Transform.translate(
+                                    offset: const Offset(0.0, -2.0),
+                                    child: Text(' ' + (index + 1).toString(),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          width: 50,
+                          height: 30,
                         ),
-                        width: 50,
-                        height: 30,
-                      ),
-                    )
-            ],
+                      )
+              ],
+            ),
           ),
         ),
       ),
