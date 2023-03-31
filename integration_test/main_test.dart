@@ -154,6 +154,7 @@ login(WidgetTester tester) async {
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 3));
+  await tester.pumpAndSettle();
 
   // 触发注册按钮点击
   await tester.tap(find.byKey(const Key('auto_test')));
