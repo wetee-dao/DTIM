@@ -3,10 +3,12 @@ import 'package:flutter/widgets.dart';
 
 import './board_list.dart';
 
-typedef void OnDropItem(int? listIndex, int? itemIndex, int? oldListIndex, int? oldItemIndex, BoardItemState state);
-typedef void OnTapItem(int? listIndex, int? itemIndex, BoardItemState state);
-typedef void OnStartDragItem(int? listIndex, int? itemIndex, BoardItemState state);
-typedef void OnDragItem(int oldListIndex, int oldItemIndex, int newListIndex, int newItemIndex, BoardItemState state);
+typedef OnDropItem = void Function(
+    int? listIndex, int? itemIndex, int? oldListIndex, int? oldItemIndex, BoardItemState state);
+typedef OnTapItem = void Function(int? listIndex, int? itemIndex, BoardItemState state);
+typedef OnStartDragItem = void Function(int? listIndex, int? itemIndex, BoardItemState state);
+typedef OnDragItem = void Function(
+    int oldListIndex, int oldItemIndex, int newListIndex, int newItemIndex, BoardItemState state);
 
 class BoardItem extends StatefulWidget {
   final BoardListState? boardList;
@@ -86,7 +88,8 @@ class BoardItemState extends State<BoardItem> with AutomaticKeepAliveClientMixin
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => afterFirstLayout(context));
+    super.build(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) => afterFirstLayout(context));
     if (widget.boardList!.itemStates.length > widget.index!) {
       widget.boardList!.itemStates.removeAt(widget.index!);
     }

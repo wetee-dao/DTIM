@@ -6,6 +6,7 @@ import './board_list.dart';
 
 import './boardview_controller.dart';
 
+// ignore: must_be_immutable
 class BoardView extends StatefulWidget {
   final List<BoardList>? lists;
   final double width;
@@ -40,9 +41,9 @@ class BoardView extends StatefulWidget {
   }
 }
 
-typedef void OnDropBottomWidget(int? listIndex, int? itemIndex, double percentX);
-typedef void OnDropItem(int? listIndex, int? itemIndex);
-typedef void OnDropList(int? listIndex);
+typedef OnDropBottomWidget = void Function(int? listIndex, int? itemIndex, double percentX);
+typedef OnDropItem = void Function(int? listIndex, int? itemIndex);
+typedef OnDropList = void Function(int? listIndex);
 
 class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin {
   Widget? draggedItem;
@@ -313,11 +314,12 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print("dy:${dy}");
     print("topListY:${topListY}");
     print("bottomListY:${bottomListY}");
     if (boardViewController.hasClients) {
-      WidgetsBinding.instance!.addPostFrameCallback((Duration duration) {
+      WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
         try {
           boardViewController.position.didUpdateScrollPositionBy(0);
         } catch (e) {}
@@ -330,7 +332,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
       });
     }
     Widget listWidget = ListView.builder(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: widget.lists!.length,
       scrollDirection: Axis.horizontal,
       controller: boardViewController,
@@ -575,7 +577,7 @@ class BoardViewState extends State<BoardView> with AutomaticKeepAliveClientMixin
       if (widget.middleWidget != null) {
         stackWidgets.add(Container(key: _middleWidgetKey, child: widget.middleWidget));
       }
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (mounted) {
           setState(() {});
         }
