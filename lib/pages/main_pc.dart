@@ -130,59 +130,59 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   //     ),
                   //   ),
                   // ),
-                  if (aorgs.length > 1)
-                    for (var i = 0; i < aorgs.length; i++)
-                      Container(
-                        width: 40.w,
-                        height: 40.w,
-                        margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
+
+                  for (var i = 0; i < aorgs.length; i++)
+                    Container(
+                      width: 40.w,
+                      height: 40.w,
+                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
+                      decoration: BoxDecoration(
+                        color: constTheme.sidebarText.withOpacity(0.16),
+                        borderRadius: BorderRadius.circular(8.w),
+                        border: Border.all(
+                          color: constTheme.sidebarTextActiveBorder,
+                          width: 3.w,
+                        ),
+                      ),
+                      child: Container(
+                        width: 35.w,
+                        height: 35.w,
                         decoration: BoxDecoration(
-                          color: constTheme.sidebarText.withOpacity(0.16),
+                          color: aorgs[i].orgColor != null
+                              ? hexToColor(aorgs[i].orgColor!)
+                              : constTheme.sidebarText.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(8.w),
                           border: Border.all(
-                            color: constTheme.sidebarTextActiveBorder,
+                            color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                             width: 3.w,
                           ),
                         ),
-                        child: Container(
-                          width: 35.w,
-                          height: 35.w,
-                          decoration: BoxDecoration(
-                            color: aorgs[i].orgColor != null
-                                ? hexToColor(aorgs[i].orgColor!)
-                                : constTheme.sidebarText.withOpacity(0.02),
-                            borderRadius: BorderRadius.circular(8.w),
-                            border: Border.all(
-                              color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
-                              width: 3.w,
-                            ),
-                          ),
-                          child: aorgs[i].orgAvater == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    if (aorgs[i].orgAvater == null)
-                                      Text(
-                                        aorgs[i].orgName ?? "",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                                          fontSize: 14.w,
-                                        ),
+                        child: aorgs[i].orgAvater == null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (aorgs[i].orgAvater == null)
+                                    Text(
+                                      aorgs[i].orgName ?? "",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                                        fontSize: 14.w,
                                       ),
-                                  ],
-                                )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(3.w),
-                                  child: Image.network(
-                                    fit: BoxFit.cover,
-                                    aorgs[i].orgAvater!,
-                                    width: 34.w,
-                                    height: 34.w,
-                                  ),
+                                    ),
+                                ],
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(3.w),
+                                child: Image.network(
+                                  fit: BoxFit.cover,
+                                  aorgs[i].orgAvater!,
+                                  width: 34.w,
+                                  height: 34.w,
                                 ),
-                        ),
+                              ),
                       ),
+                    ),
                   SizedBox(height: 20.w),
                 ],
               ),
