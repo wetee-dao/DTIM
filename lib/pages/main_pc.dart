@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../components/sider_bar.dart';
 import '../router.dart';
 import '../store/im.dart';
 import '../utils/screen.dart';
@@ -69,106 +70,155 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   if (Platform.isMacOS) SizedBox(height: 30.w),
-                  SizedBox(height: 5.w),
-                  for (var i = 0; i < aorgs.length; i++)
-                    Container(
-                      width: 46.w,
-                      height: 46.w,
-                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
-                      decoration: BoxDecoration(
-                        color: constTheme.sidebarText.withOpacity(0.16),
-                        borderRadius: BorderRadius.circular(8.w),
-                        border: Border.all(
-                          color: constTheme.sidebarTextActiveBorder,
-                          width: 3.w,
-                        ),
-                      ),
-                      child: Container(
+                  SizedBox(height: 12.w),
+                  Container(
+                    width: 48.w,
+                    height: 48.w,
+                    decoration: BoxDecoration(
+                      color: im.currentState!.org.orgColor != null
+                          ? hexToColor(im.currentState!.org.orgColor!)
+                          : constTheme.sidebarText.withOpacity(0.02),
+                      borderRadius: BorderRadius.circular(8.w),
+                    ),
+                    child: im.currentState!.org.orgAvater == null
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (im.currentState!.org.orgAvater == null)
+                                Text(
+                                  im.currentState!.org.orgName ?? "",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: constTheme.sidebarHeaderTextColor,
+                                    fontSize: 14.w,
+                                  ),
+                                ),
+                            ],
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(3.w),
+                            child: Image.network(
+                              fit: BoxFit.cover,
+                              im.currentState!.org.orgAvater!,
+                              width: 48.w,
+                              height: 48.w,
+                            ),
+                          ),
+                  ),
+                  SizedBox(height: 20.w),
+                  // InkWell(
+                  //   onTap: () {
+                  //     context.push("/select_org");
+                  //   },
+                  //   child: Container(
+                  //     width: 40.w,
+                  //     height: 40.w,
+                  //     margin: EdgeInsets.fromLTRB(0, 6.w, 0, 0),
+                  //     child: Icon(
+                  //       Icons.add,
+                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
+                  //       size: 25.w,
+                  //     ),
+                  //   ),
+                  // ),
+                  const SiderBarItem(
+                    Icons.message_rounded,
+                    "消息",
+                    selected: true,
+                  ),
+
+                  const SiderBarItem(
+                    Icons.workspaces_rounded,
+                    "DAO",
+                    selected: false,
+                  ),
+
+                  Flexible(child: Container()),
+                  // InkWell(
+                  //   onTap: () async {
+                  //     const storage = FlutterSecureStorage();
+                  //     await storage.delete(key: "login_state");
+                  //     im.logout();
+                  //   },
+                  //   child: SizedBox(
+                  //     width: 40.w,
+                  //     height: 40.w,
+                  //     child: Icon(
+                  //       Icons.logout_rounded,
+                  //       size: 22.w,
+                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                  //     ),
+                  //   ),
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
+                  //   },
+                  //   child: Container(
+                  //     width: 40.w,
+                  //     height: 40.w,
+                  //     margin: EdgeInsets.fromLTRB(0, 6.w, 0, 12.w),
+                  //     child: Icon(
+                  //       Icons.settings,
+                  //       size: 22.w,
+                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                  //     ),
+                  //   ),
+                  // ),
+                  if (aorgs.length > 1)
+                    for (var i = 0; i < aorgs.length; i++)
+                      Container(
                         width: 40.w,
                         height: 40.w,
+                        margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
                         decoration: BoxDecoration(
-                          color: aorgs[i].orgColor != null
-                              ? hexToColor(aorgs[i].orgColor!)
-                              : constTheme.sidebarText.withOpacity(0.02),
+                          color: constTheme.sidebarText.withOpacity(0.16),
                           borderRadius: BorderRadius.circular(8.w),
                           border: Border.all(
-                            color: constTheme.sidebarHeaderBg,
+                            color: constTheme.sidebarTextActiveBorder,
                             width: 3.w,
                           ),
                         ),
-                        child: aorgs[i].orgAvater == null
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (aorgs[i].orgAvater == null)
-                                    Text(
-                                      aorgs[i].orgName ?? "",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                                        fontSize: 14.w,
+                        child: Container(
+                          width: 35.w,
+                          height: 35.w,
+                          decoration: BoxDecoration(
+                            color: aorgs[i].orgColor != null
+                                ? hexToColor(aorgs[i].orgColor!)
+                                : constTheme.sidebarText.withOpacity(0.02),
+                            borderRadius: BorderRadius.circular(8.w),
+                            border: Border.all(
+                              color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
+                              width: 3.w,
+                            ),
+                          ),
+                          child: aorgs[i].orgAvater == null
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (aorgs[i].orgAvater == null)
+                                      Text(
+                                        aorgs[i].orgName ?? "",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                                          fontSize: 14.w,
+                                        ),
                                       ),
-                                    ),
-                                ],
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(3.w),
-                                child: Image.network(
-                                  fit: BoxFit.cover,
-                                  aorgs[i].orgAvater!,
-                                  width: 34.w,
-                                  height: 34.w,
+                                  ],
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(3.w),
+                                  child: Image.network(
+                                    fit: BoxFit.cover,
+                                    aorgs[i].orgAvater!,
+                                    width: 34.w,
+                                    height: 34.w,
+                                  ),
                                 ),
-                              ),
+                        ),
                       ),
-                    ),
-                  InkWell(
-                    onTap: () {
-                      context.push("/select_org");
-                    },
-                    child: Container(
-                      width: 40.w,
-                      height: 40.w,
-                      margin: EdgeInsets.fromLTRB(0, 6.w, 0, 0),
-                      child: Icon(
-                        Icons.add,
-                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
-                        size: 25.w,
-                      ),
-                    ),
-                  ),
-                  Flexible(child: Container()),
-                  InkWell(
-                    onTap: () async {
-                      const storage = FlutterSecureStorage();
-                      await storage.delete(key: "login_state");
-                      im.logout();
-                    },
-                    child: SizedBox(
-                      width: 40.w,
-                      height: 40.w,
-                      child: Icon(
-                        Icons.logout_rounded,
-                        size: 22.w,
-                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
-                    },
-                    child: Container(
-                      width: 40.w,
-                      height: 40.w,
-                      margin: EdgeInsets.fromLTRB(0, 6.w, 0, 12.w),
-                      child: Icon(
-                        Icons.settings,
-                        size: 22.w,
-                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 20.w),
                 ],
               ),
             ),
