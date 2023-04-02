@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -71,29 +72,30 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 children: [
                   if (Platform.isMacOS) SizedBox(height: 30.w),
                   SizedBox(height: 12.w),
-                  // InkWell(
-                  //   onTap: () {
-                  //     context.push("/select_org");
-                  //   },
-                  //   child: Container(
-                  //     width: 40.w,
-                  //     height: 40.w,
-                  //     margin: EdgeInsets.fromLTRB(0, 6.w, 0, 0),
-                  //     child: Icon(
-                  //       Icons.add,
-                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
-                  //       size: 25.w,
-                  //     ),
-                  //   ),
-                  // ),
+                  // 用户
+                  Container(
+                    width: 52.w,
+                    height: 52.w,
+                    margin: EdgeInsets.only(bottom: 10.w),
+                    child: UserAvatarWithPop(
+                      key: Key(im.currentState!.user.id.toString()),
+                      im.currentState!.client.userID ?? "-",
+                      "",
+                      true,
+                      52.w,
+                      bg: constTheme.sidebarText.withOpacity(0.05),
+                      color: constTheme.sidebarText,
+                    ),
+                  ),
+                  // 消息列表
                   const SiderBarItem(
-                    Icons.message_rounded,
+                    Appicon.wode4,
                     "消息",
                     selected: true,
                   ),
-
+                  // DAO管理
                   const SiderBarItem(
-                    Icons.workspaces_rounded,
+                    Appicon.shebei,
                     "DAO",
                     selected: false,
                   ),
@@ -130,7 +132,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   //     ),
                   //   ),
                   // ),
-
                   for (var i = 0; i < aorgs.length; i++)
                     Container(
                       width: 40.w,
@@ -191,26 +192,26 @@ class _PCPageState extends State<PCPage> with WindowListener {
           const Flexible(
             child: OrgPage(),
           ),
-          GestureDetector(
-            child: MouseRegion(
-              cursor: SystemMouseCursors.resizeColumn,
-              child: SizedBox(
-                width: 1.w,
-                height: double.infinity,
-                child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
-              ),
-            ),
-            onPanUpdate: (details) {
-              setState(() {
-                if (rightWidth - details.delta.dx < 180.w || rightWidth - details.delta.dx > 350.w) {
-                  return;
-                }
+          // GestureDetector(
+          //   child: MouseRegion(
+          //     cursor: SystemMouseCursors.resizeColumn,
+          //     child: SizedBox(
+          //       width: 1.w,
+          //       height: double.infinity,
+          //       child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
+          //     ),
+          //   ),
+          //   onPanUpdate: (details) {
+          //     setState(() {
+          //       if (rightWidth - details.delta.dx < 180.w || rightWidth - details.delta.dx > 350.w) {
+          //         return;
+          //       }
 
-                rightWidth = rightWidth - details.delta.dx;
-              });
-            },
-          ),
-          if (rightUrl != "") Container(width: rightWidth, height: double.maxFinite, color: Colors.red),
+          //       rightWidth = rightWidth - details.delta.dx;
+          //     });
+          //   },
+          // ),
+          // if (rightUrl != "") Container(width: rightWidth, height: double.maxFinite, color: Colors.red),
         ],
       ),
     );

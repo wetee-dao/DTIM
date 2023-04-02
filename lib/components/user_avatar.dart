@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:matrix/matrix.dart' as link;
 
 import '../store/theme.dart';
 import '../components/popup.dart';
@@ -38,13 +37,15 @@ class UserAvatar extends StatelessWidget {
 }
 
 class UserAvatarWithPop extends StatefulWidget {
-  final link.User user;
+  final String id;
+  final String name;
   final bool online;
   final double avatarWidth;
   final Color? bg;
   final Color? color;
 
-  const UserAvatarWithPop(this.user, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
+  const UserAvatarWithPop(this.id, this.name, this.online, this.avatarWidth, {Key? key, this.bg, this.color})
+      : super(key: key);
 
   @override
   State<UserAvatarWithPop> createState() => _UserAvatarWithPopState();
@@ -59,7 +60,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
     final imgw = (widget.avatarWidth * 0.7).toInt();
     final imgbg = widget.color ?? constTheme.centerChannelColor;
     final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.user.id), size: 50);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.id), size: 50);
     return BasePopupMenu(
       verticalMargin: 5.w,
       horizontalMargin: 0,
@@ -94,14 +95,14 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                 Padding(
                   padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
                   child: UserAvatar(
-                    getUserShortId(widget.user.id),
+                    getUserShortId(widget.id),
                     true,
                     65.w,
                     bg: constTheme.sidebarText.withOpacity(0.1),
                     color: constTheme.sidebarText,
                   ),
                 ),
-                WidgetUserNameEmoji(getUserShortName(widget.user.displayName ?? "-"), null),
+                WidgetUserNameEmoji(getUserShortName(widget.name), null),
               ],
             ),
             SizedBox(height: 15.w),

@@ -92,7 +92,8 @@ class _MsgState extends State<Msg> {
                   SizedBox(height: 10.w),
                   UserAvatarWithPop(
                     key: Key(user.id),
-                    user,
+                    user.id,
+                    user.displayName ?? "-",
                     true,
                     40.w,
                   ),

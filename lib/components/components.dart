@@ -6,3 +6,4 @@ export 'user_avatar.dart';
 export 'org_card.dart';
 export 'model_bar.dart';
 export 'loading.dart';
+export 'appicon.dart';
