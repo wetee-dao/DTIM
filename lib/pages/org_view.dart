@@ -178,152 +178,154 @@ class _OrgViewPageState extends State<OrgViewPage> {
           height: 1,
           color: constTheme.sidebarText.withOpacity(0.08),
         ),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 5.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        L10n.of(context)!.channel,
-                        style: TextStyle(
-                          color: constTheme.sidebarText.withAlpha(180),
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14.w,
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 5.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          L10n.of(context)!.channel,
+                          style: TextStyle(
+                            color: constTheme.sidebarText.withAlpha(180),
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14.w,
+                          ),
                         ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          key: const Key("create_channel"),
-                          onTap: () async {
-                            showModelOrPage(
-                              context,
-                              "/create_channel",
-                              width: 450.w,
-                              height: 300.w,
-                            );
-                          },
-                          child: Icon(
-                            Icons.add,
-                            size: 20.w,
+                      Row(
+                        children: [
+                          GestureDetector(
+                            key: const Key("create_channel"),
+                            onTap: () async {
+                              showModelOrPage(
+                                context,
+                                "/create_channel",
+                                width: 450.w,
+                                height: 300.w,
+                              );
+                            },
+                            child: Icon(
+                              Icons.add,
+                              size: 20.w,
+                              color: constTheme.sidebarText.withAlpha(180),
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _controllerChannels.toggle();
+                              });
+                            },
+                            child: Icon(
+                              _controllerChannels.expanded
+                                  ? Icons.keyboard_arrow_down_outlined
+                                  : Icons.keyboard_arrow_up_outlined,
+                              size: 25.w,
+                              color: constTheme.sidebarText.withAlpha(180),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                ExpandablePanel(
+                  key: const Key("room"),
+                  controller: _controllerChannels,
+                  collapsed: const SizedBox(),
+                  expanded: ChatList(
+                    key: const Key("ChatList"),
+                    channels,
+                    channelId,
+                    (id) {
+                      setChannelId(id);
+                    },
+                  ),
+                ),
+                SizedBox(height: 5.w),
+                Divider(
+                  height: 1,
+                  color: constTheme.sidebarText.withOpacity(0.05),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 5.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          L10n.of(context)!.directChat,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14.w,
                             color: constTheme.sidebarText.withAlpha(180),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _controllerChannels.toggle();
-                            });
-                          },
-                          child: Icon(
-                            _controllerChannels.expanded
-                                ? Icons.keyboard_arrow_down_outlined
-                                : Icons.keyboard_arrow_up_outlined,
-                            size: 25.w,
-                            color: constTheme.sidebarText.withAlpha(180),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              ExpandablePanel(
-                key: const Key("room"),
-                controller: _controllerChannels,
-                collapsed: const SizedBox(),
-                expanded: ChatList(
-                  key: const Key("ChatList"),
-                  channels,
-                  channelId,
-                  (id) {
-                    setChannelId(id);
-                  },
-                ),
-              ),
-              SizedBox(height: 5.w),
-              Divider(
-                height: 1,
-                color: constTheme.sidebarText.withOpacity(0.05),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 5.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        L10n.of(context)!.directChat,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14.w,
-                          color: constTheme.sidebarText.withAlpha(180),
                         ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          key: const Key("create_private"),
-                          onTap: () async {
-                            showModelOrPage(
-                              context,
-                              "/create_private",
-                              width: 550.w,
-                              height: 0.7.sh,
-                            );
-                          },
-                          child: Icon(
-                            Icons.add,
-                            size: 20.w,
-                            color: constTheme.sidebarText.withAlpha(180),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            key: const Key("create_private"),
+                            onTap: () async {
+                              showModelOrPage(
+                                context,
+                                "/create_private",
+                                width: 550.w,
+                                height: 0.7.sh,
+                              );
+                            },
+                            child: Icon(
+                              Icons.add,
+                              size: 20.w,
+                              color: constTheme.sidebarText.withAlpha(180),
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _controllerUsers.toggle();
-                            });
-                          },
-                          child: Icon(
-                            _controllerUsers.expanded
-                                ? Icons.keyboard_arrow_down_outlined
-                                : Icons.keyboard_arrow_up_outlined,
-                            size: 25.w,
-                            color: constTheme.sidebarText.withAlpha(180),
+                          SizedBox(width: 5.w),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _controllerUsers.toggle();
+                              });
+                            },
+                            child: Icon(
+                              _controllerUsers.expanded
+                                  ? Icons.keyboard_arrow_down_outlined
+                                  : Icons.keyboard_arrow_up_outlined,
+                              size: 25.w,
+                              color: constTheme.sidebarText.withAlpha(180),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              ExpandablePanel(
-                key: const Key("droom"),
-                controller: _controllerUsers,
-                collapsed: const SizedBox(),
-                expanded: DirectChats(
-                  key: const Key("DirectChats"),
-                  directChats,
-                  channelId,
-                  (id) {
-                    setChannelId(id);
-                  },
+                ExpandablePanel(
+                  key: const Key("droom"),
+                  controller: _controllerUsers,
+                  collapsed: const SizedBox(),
+                  expanded: DirectChats(
+                    key: const Key("DirectChats"),
+                    directChats,
+                    channelId,
+                    (id) {
+                      setChannelId(id);
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 5.w),
-              Divider(
-                height: 1,
-                color: constTheme.sidebarText.withOpacity(0.05),
-              ),
-            ],
+                SizedBox(height: 5.w),
+                Divider(
+                  height: 1,
+                  color: constTheme.sidebarText.withOpacity(0.05),
+                ),
+              ],
+            ),
           ),
         ),
       ],

@@ -70,7 +70,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  if (Platform.isMacOS) SizedBox(height: 30.w),
+                  if (Platform.isMacOS) SizedBox(height: 20.w),
                   SizedBox(height: 12.w),
                   // 用户
                   Container(
