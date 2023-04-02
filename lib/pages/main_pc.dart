@@ -1,20 +1,18 @@
 import 'dart:io';
 import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../components/sider_bar.dart';
-import '../router.dart';
 import '../store/im.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
 import '../store/theme.dart';
-import 'org.dart';
+import './dao/dao.dart';
+import './org/org.dart';
 
 class PCPage extends StatefulWidget {
   const PCPage({Key? key}) : super(key: key);
@@ -26,12 +24,25 @@ class PCPage extends StatefulWidget {
 class _PCPageState extends State<PCPage> with WindowListener {
   late List<AccountOrg> aorgs;
   late IMProvider im;
+  late PageController pageController;
+  int currentId = 0;
   double rightWidth = 200.w;
   String rightUrl = "";
+
+  final mainPages = [
+    const OrgPage(),
+    const DaoPage(),
+    // SettingNav("主题", Icons.notifications),
+  ];
+
+  void onPageChanged(int page) {
+    //   _page = page;
+  }
 
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
     if (isPc()) {
       windowManager.addListener(this);
     }
@@ -45,6 +56,11 @@ class _PCPageState extends State<PCPage> with WindowListener {
       windowManager.removeListener(this);
     }
     super.dispose();
+  }
+
+  onSelect(index) {
+    pageController.jumpToPage(index);
+    currentId = index;
   }
 
   @override
@@ -88,17 +104,13 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     ),
                   ),
                   // 消息列表
-                  const SiderBarItem(
-                    Appicon.wode4,
-                    "消息",
-                    selected: true,
-                  ),
+                  SiderBarItem(Appicon.wode4, "消息", selected: currentId == 0, onTap: () {
+                    onSelect(0);
+                  }),
                   // DAO管理
-                  const SiderBarItem(
-                    Appicon.shebei,
-                    "DAO",
-                    selected: false,
-                  ),
+                  SiderBarItem(Appicon.shebei, "DAO", selected: currentId == 1, onTap: () {
+                    onSelect(1);
+                  }),
                   // 设置
                   // SiderBarItem(
                   //   Icons.settings_applications,
@@ -108,7 +120,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
                   //   },
                   // ),
-
                   Flexible(child: Container()),
                   // InkWell(
                   //   onTap: () async {
@@ -145,27 +156,24 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     Container(
                       width: 40.w,
                       height: 40.w,
+                      padding: EdgeInsets.all(2.w),
                       margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
                       decoration: BoxDecoration(
-                        color: constTheme.sidebarText.withOpacity(0.16),
+                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.w),
                         border: Border.all(
                           color: constTheme.sidebarTextActiveBorder,
-                          width: 3.w,
+                          width: 2.w,
                         ),
                       ),
                       child: Container(
-                        width: 35.w,
-                        height: 35.w,
+                        width: 36.w,
+                        height: 36.w,
                         decoration: BoxDecoration(
                           color: aorgs[i].orgColor != null
                               ? hexToColor(aorgs[i].orgColor!)
                               : constTheme.sidebarText.withOpacity(0.02),
-                          borderRadius: BorderRadius.circular(8.w),
-                          border: Border.all(
-                            color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
-                            width: 3.w,
-                          ),
+                          borderRadius: BorderRadius.circular(4.w),
                         ),
                         child: aorgs[i].orgAvater == null
                             ? Column(
@@ -182,13 +190,15 @@ class _PCPageState extends State<PCPage> with WindowListener {
                                     ),
                                 ],
                               )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(3.w),
-                                child: Image.network(
-                                  fit: BoxFit.cover,
-                                  aorgs[i].orgAvater!,
-                                  width: 34.w,
-                                  height: 34.w,
+                            : Center(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(2.w),
+                                  child: Image.network(
+                                    fit: BoxFit.cover,
+                                    aorgs[i].orgAvater!,
+                                    width: 36.w,
+                                    height: 36.w,
+                                  ),
                                 ),
                               ),
                       ),
@@ -198,8 +208,13 @@ class _PCPageState extends State<PCPage> with WindowListener {
               ),
             ),
           ),
-          const Flexible(
-            child: OrgPage(),
+          Flexible(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              onPageChanged: onPageChanged,
+              children: mainPages,
+            ),
           ),
           // GestureDetector(
           //   child: MouseRegion(

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
-import '../router.dart';
+import '../../router.dart';
 
 class ItemModel {
   String title;

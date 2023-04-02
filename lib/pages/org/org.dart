@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../utils/screen.dart';
-import '../components/components.dart';
-import '../store/theme.dart';
-import 'channel/chat.dart';
+import '../../utils/screen.dart';
+import '../../components/components.dart';
+import '../../store/theme.dart';
+import '../channel/chat.dart';
 import 'org_view.dart';
 
 class OrgPage extends StatefulWidget {
@@ -13,7 +13,7 @@ class OrgPage extends StatefulWidget {
   State<OrgPage> createState() => _OrgPageState();
 }
 
-class _OrgPageState extends State<OrgPage> {
+class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
   String channelId = "";
   double leftWidth = 200.w;
 
@@ -27,7 +27,13 @@ class _OrgPageState extends State<OrgPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -86,4 +92,7 @@ class _OrgPageState extends State<OrgPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

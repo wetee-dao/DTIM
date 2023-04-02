@@ -54,9 +54,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void onPageChanged(int page) {
-    setState(() {
-      _page = page;
-    });
+    _page = page;
   }
 
   onSelect(index) {

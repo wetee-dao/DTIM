@@ -7,14 +7,14 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import './org_menu.dart';
-import '../router.dart';
-import '../utils/screen.dart';
-import '../components/jump_to.dart';
-import '../components/components.dart';
-import '../components/popup.dart';
-import '../models/models.dart';
-import '../store/im.dart';
-import '../store/theme.dart';
+import '../../router.dart';
+import '../../utils/screen.dart';
+import '../../components/jump_to.dart';
+import '../../components/components.dart';
+import '../../components/popup.dart';
+import '../../models/models.dart';
+import '../../store/im.dart';
+import '../../store/theme.dart';
 
 class OrgViewPage extends StatefulWidget {
   final Function(String) onChannel;
