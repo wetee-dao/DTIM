@@ -71,41 +71,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 children: [
                   if (Platform.isMacOS) SizedBox(height: 30.w),
                   SizedBox(height: 12.w),
-                  Container(
-                    width: 48.w,
-                    height: 48.w,
-                    decoration: BoxDecoration(
-                      color: im.currentState!.org.orgColor != null
-                          ? hexToColor(im.currentState!.org.orgColor!)
-                          : constTheme.sidebarText.withOpacity(0.02),
-                      borderRadius: BorderRadius.circular(8.w),
-                    ),
-                    child: im.currentState!.org.orgAvater == null
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (im.currentState!.org.orgAvater == null)
-                                Text(
-                                  im.currentState!.org.orgName ?? "",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: constTheme.sidebarHeaderTextColor,
-                                    fontSize: 14.w,
-                                  ),
-                                ),
-                            ],
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(3.w),
-                            child: Image.network(
-                              fit: BoxFit.cover,
-                              im.currentState!.org.orgAvater!,
-                              width: 48.w,
-                              height: 48.w,
-                            ),
-                          ),
-                  ),
-                  SizedBox(height: 20.w),
                   // InkWell(
                   //   onTap: () {
                   //     context.push("/select_org");
