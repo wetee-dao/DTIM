@@ -9,15 +9,16 @@ class SiderBarItem extends StatelessWidget {
   final IconData icon;
   final String name;
   final bool selected;
+  final Function? onTap;
 
-  const SiderBarItem(this.icon, this.name, {super.key, required this.selected});
+  const SiderBarItem(this.icon, this.name, {super.key, required this.selected, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return InkWell(
       onTap: () {
-        context.push("/select_org");
+        onTap?.call();
       },
       child: Container(
         width: 52.w,

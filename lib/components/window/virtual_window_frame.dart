@@ -59,13 +59,13 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
             ),
         ],
       ),
-      child: widget.child,
-      // child: ClipRRect(
-      //   borderRadius: BorderRadius.circular(
-      //     (_isMaximized || _isFullScreen) ? 0 : 10.w,
-      //   ),
-      //   child: widget.child,
-      // ),
+      // child: widget.child,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+          (_isMaximized || _isFullScreen) ? 0 : 4.w,
+        ),
+        child: widget.child,
+      ),
     );
   }
 

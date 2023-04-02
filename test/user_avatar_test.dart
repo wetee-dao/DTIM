@@ -30,17 +30,14 @@ void main() {
 
   testWidgets("test user_avatar.dart", (WidgetTester tester) async {
     initScreen(1200);
-    final client = Client(
-      "xxx",
-    );
-
     await tester.pumpWidget(
       MaterialApp(
         theme: theme(),
         navigatorKey: rootNavigatorKey,
-        home: Scaffold(
+        home: const Scaffold(
           body: UserAvatarWithPop(
-            User("xxxx", room: Room(id: "xxx", client: client)),
+            "1",
+            "name",
             true,
             40,
           ),

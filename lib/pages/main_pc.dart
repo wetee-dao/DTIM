@@ -99,6 +99,15 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     "DAO",
                     selected: false,
                   ),
+                  // 设置
+                  // SiderBarItem(
+                  //   Icons.settings_applications,
+                  //   "设置",
+                  //   selected: false,
+                  //   onTap: () {
+                  //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
+                  //   },
+                  // ),
 
                   Flexible(child: Container()),
                   // InkWell(

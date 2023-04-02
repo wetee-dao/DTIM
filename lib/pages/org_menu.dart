@@ -16,7 +16,9 @@ class ItemModel {
 List<List<ItemModel>> menuItems = [
   [
     // ItemModel('邀请人员'),
-    // ItemModel('组织设置'),
+    ItemModel('组织设置', onTap: (id) {
+      showModelOrPage(globalCtx(), "/setting", width: 0.7.sw, height: 0.8.sh);
+    }),
     // ItemModel('成员管理'),
     ItemModel('离开组织', onTap: (id) {
       // rootNavigatorKey.currentContext?.push("/select_org");
