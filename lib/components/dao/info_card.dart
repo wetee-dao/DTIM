@@ -27,6 +27,7 @@ class InfoCard extends StatelessWidget {
           Icon(
             icon,
             size: isPc() ? 35 : 28,
+            color: constTheme.centerChannelColor,
           ),
           SizedBox(
             height: SizeConfig.blockSizeHorizontal! * 2,

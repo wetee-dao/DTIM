@@ -13,11 +13,12 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Widget? tools;
   final Function? onBack;
-  // final double windowButton = Platform.isMacOS ? 18.w : 0;
-  final double windowButton = 0;
-  LocalAppBar({Key? key, this.onBack, this.tools, String? title, double? height, this.leading})
+  final bool _showMacosTop;
+  final double macosTop = Platform.isMacOS ? 18.w : 0;
+  LocalAppBar({Key? key, this.onBack, this.tools, String? title, double? height, bool? showMacosTop, this.leading})
       : _height = height ?? 60.w,
         _title = title ?? "",
+        _showMacosTop = showMacosTop ?? false,
         super(key: key);
 
   @override
@@ -25,8 +26,8 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return moveWindow(
       Container(
-        height: _height + windowButton,
-        padding: EdgeInsets.only(top: windowButton),
+        height: _height + (_showMacosTop ? macosTop : 0),
+        padding: EdgeInsets.only(top: macosTop),
         color: constTheme.sidebarHeaderBg,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -70,6 +71,6 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    return Size(100.sw, _height + windowButton);
+    return Size(100.sw, _height + (_showMacosTop ? macosTop : 0));
   }
 }
