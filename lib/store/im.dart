@@ -66,12 +66,28 @@ class IMProvider with ChangeNotifier {
 
     printError("connect => $userName");
 
-    // 删除已有的连接
+    // 已有的连接
     if (connections[userName] != null) {
-      connections[userName]!.dispose();
-    }
-    if (connectionStates[userName] != null) {
-      connectionStates[userName]!.dispose();
+      final client = connections[userName]!;
+      if (!client.isLogged()) {
+        try {
+          await client.login(
+            link.LoginType.mLoginPassword,
+            identifier: link.AuthenticationUserIdentifier(user: me!.address),
+            password: "$signCtx||$sign",
+          );
+        } catch (e) {
+          print("注册出现错误 => $e");
+        }
+      }
+
+      if (client.userID != null) {
+        await client.setDisplayName(client.userID!, me!.name);
+      }
+      if (!client.isLogged()) {
+        throw "连接错误";
+      }
+      return true;
     }
 
     final client = link.Client(
@@ -79,7 +95,6 @@ class IMProvider with ChangeNotifier {
       databaseBuilder: (_) async {
         final dir = await getApplicationSupportDirectory();
         print("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
-
         final db = link.HiveCollectionsDatabase(
           org.domain!.replaceAll(".", "_"),
           "${dir.path}/${me!.address}",
@@ -166,8 +181,10 @@ List<Org> orgs = [
     desc: "we3 在线协作，分布式办公软件",
     color: "#000000",
     domain: "im.tc.asyou.me",
-    avater: "https://www.asyou.me/static/temp/images/icon-152x152.png",
-    img: "https://www.asyou.me/static/temp/images/banner.jpg",
+    avater:
+        "https://storage.googleapis.com/assets.dework.xyz/uploads/6b8d19b4-cdfc-4251-ba82-de47f7875936/apple-touch-icon-152x152.png",
+    img:
+        "https://storage.googleapis.com/assets.dework.xyz/uploads/6b8d19b4-cdfc-4251-ba82-de47f7875936/apple-touch-icon-152x152.png",
     homeUrl: "www.asyou.me/",
     chainUrl: "wss://chain.asyou.me/",
   )

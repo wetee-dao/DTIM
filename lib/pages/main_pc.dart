@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../components/sider_bar.dart';
+import '../router.dart';
 import '../store/im.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
@@ -158,14 +160,14 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   // ),
                   // InkWell(
                   //   onTap: () {
-                  //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
+                  //     context.go("/select_org");
                   //   },
                   //   child: Container(
                   //     width: 40.w,
                   //     height: 40.w,
                   //     margin: EdgeInsets.fromLTRB(0, 6.w, 0, 12.w),
                   //     child: Icon(
-                  //       Icons.settings,
+                  //       Icons.add,
                   //       size: 22.w,
                   //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
                   //     ),
