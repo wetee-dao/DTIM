@@ -27,8 +27,13 @@ class _DirectChatsState extends State<DirectChats> {
   int hover = -1;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     print("DirectChatsDirectChatsDirectChatsDirectChats");
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final channelsList = widget.channelsList;
     final currentId = widget.currentId;
@@ -144,6 +149,7 @@ class _DirectChatsState extends State<DirectChats> {
                       ),
                     ),
                     child: UserAvatar(
+                      key: Key(room.directChatMatrixID ?? ""),
                       room.directChatMatrixID ?? "-",
                       true,
                       28.w,

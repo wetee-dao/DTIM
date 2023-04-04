@@ -55,7 +55,7 @@ dependencies:
   # 日期格式化插件
   date_format: ^2.0.7
   # easy_localization: ^3.0.1
-  path_provider: ^2.0.13
+  path_provider: ^2.0.14
   # 音频
   just_audio: ^0.9.31
   # 弹窗
@@ -85,6 +85,9 @@ dependencies:
   flutter_openssl_crypto: ^0.1.0
   tray_manager: ^0.2.0
   vs_scrollbar: ^0.2.1
+  equatable: ^2.0.5
+  appflowy_board: ^0.1.0
+  fl_chart: ^0.61.0
 
 
 dev_dependencies:

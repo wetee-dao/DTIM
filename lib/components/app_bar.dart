@@ -10,10 +10,11 @@ import 'move_window.dart';
 class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double _height;
   final String _title;
+  final Widget? leading;
   final Widget? tools;
   final Function? onBack;
   final double windowButton = Platform.isMacOS ? 18.w : 0;
-  LocalAppBar({Key? key, this.onBack, this.tools, String? title, double? height})
+  LocalAppBar({Key? key, this.onBack, this.tools, String? title, double? height, this.leading})
       : _height = height ?? 60.w,
         _title = title ?? "",
         super(key: key);
@@ -30,23 +31,25 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            InkWell(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10.w / 60.w * _height),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: constTheme.sidebarHeaderTextColor,
-                  size: 25.w / 60.w * _height,
+            leading ??
+                InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w / 60.w * _height),
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: constTheme.sidebarHeaderTextColor,
+                      size: 25.w / 60.w * _height,
+                    ),
+                  ),
+                  onTap: () {
+                    if (onBack != null) {
+                      onBack!();
+                      return;
+                    }
+                    context.pop();
+                  },
                 ),
-              ),
-              onTap: () {
-                if (onBack != null) {
-                  onBack!();
-                  return;
-                }
-                context.pop();
-              },
-            ),
+            SizedBox(width: 10.w),
             Text(
               _title,
               style: TextStyle(color: constTheme.sidebarHeaderTextColor, fontSize: 14.w),

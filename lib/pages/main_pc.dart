@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,11 @@ class PCPage extends StatefulWidget {
 }
 
 class _PCPageState extends State<PCPage> with WindowListener {
+  final StreamController<int> currentId = StreamController<int>();
   late List<AccountOrg> aorgs;
   late IMProvider im;
   late PageController pageController;
-  int currentId = 0;
+  // int currentId = 0;
   double rightWidth = 200.w;
   String rightUrl = "";
 
@@ -34,10 +36,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
     const DaoPage(),
     // SettingNav("主题", Icons.notifications),
   ];
-
-  void onPageChanged(int page) {
-    //   _page = page;
-  }
 
   @override
   void initState() {
@@ -48,6 +46,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
     }
     im = context.read<IMProvider>();
     aorgs = AccountOrgApi.create().listByAccount(im.me!.address);
+    currentId.add(0);
   }
 
   @override
@@ -60,7 +59,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
 
   onSelect(index) {
     pageController.jumpToPage(index);
-    currentId = index;
+    currentId.add(index);
   }
 
   @override
@@ -88,10 +87,11 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 children: [
                   if (Platform.isMacOS) SizedBox(height: 20.w),
                   SizedBox(height: 12.w),
+
                   // 用户
                   Container(
-                    width: 52.w,
-                    height: 52.w,
+                    width: 42.w,
+                    height: 42.w,
                     margin: EdgeInsets.only(bottom: 10.w),
                     child: UserAvatarWithPop(
                       key: Key(im.currentState!.user.id.toString()),
@@ -99,18 +99,18 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       "",
                       true,
                       52.w,
-                      bg: constTheme.sidebarText.withOpacity(0.05),
+                      bg: constTheme.sidebarText.withOpacity(0.1),
                       color: constTheme.sidebarText,
                     ),
                   ),
-                  // 消息列表
-                  SiderBarItem(Appicon.wode4, "消息", selected: currentId == 0, onTap: () {
-                    onSelect(0);
-                  }),
-                  // DAO管理
-                  SiderBarItem(Appicon.shebei, "DAO", selected: currentId == 1, onTap: () {
-                    onSelect(1);
-                  }),
+
+                  // Container(
+                  //   width: 8.w,
+                  //   height: 4.w,
+                  //   margin: EdgeInsets.only(top: 5.w, bottom: 10.w),
+                  //   decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
+                  // ),
+
                   // 设置
                   // SiderBarItem(
                   //   Icons.settings_applications,
@@ -120,7 +120,26 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
                   //   },
                   // ),
-                  Flexible(child: Container()),
+
+                  Flexible(
+                    child: StreamBuilder(
+                      stream: currentId.stream,
+                      builder: (BuildContext context, AsyncSnapshot<int> id) {
+                        return Column(
+                          children: [
+                            SiderBarItem(Appicon.wode4, "消息", selected: id.data == 0, onTap: () {
+                              onSelect(0);
+                            }),
+                            // DAO管理
+                            SiderBarItem(Appicon.organcode, "DAO", selected: id.data == 1, onTap: () {
+                              onSelect(1);
+                            }),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+
                   // InkWell(
                   //   onTap: () async {
                   //     const storage = FlutterSecureStorage();
@@ -212,7 +231,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
             child: PageView(
               physics: const NeverScrollableScrollPhysics(),
               controller: pageController,
-              onPageChanged: onPageChanged,
+              // onPageChanged: onPageChanged,
               children: mainPages,
             ),
           ),

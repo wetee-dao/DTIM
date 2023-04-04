@@ -7,32 +7,48 @@ import '../utils/identicon.dart';
 import '../utils/screen.dart';
 import 'name_with_emoji.dart';
 
-class UserAvatar extends StatelessWidget {
+class UserAvatar extends StatefulWidget {
   final String avatarSrc;
   final bool online;
   final double avatarWidth;
   final Color? bg;
   final Color? color;
+
   const UserAvatar(this.avatarSrc, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<UserAvatar> createState() => _UserAvatarState();
+}
+
+class _UserAvatarState extends State<UserAvatar> {
+  Widget? ctx;
+
+  buildCtx(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final imgw = (avatarWidth * 0.7).toInt();
-    final imgbg = color ?? constTheme.centerChannelColor;
-    final boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
-    return Container(
+    final imgw = (widget.avatarWidth * 0.7).toInt();
+    final imgbg = widget.color ?? constTheme.centerChannelColor;
+    final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(widget.avatarSrc, size: 50);
+    ctx = Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
-      padding: EdgeInsets.all((avatarWidth - imgw) / 2),
+      padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
       alignment: Alignment.topLeft,
       child: Image.memory(
         img,
-        width: imgw.toDouble(),
-        height: imgw.toDouble(),
+        cacheHeight: imgw,
+        cacheWidth: imgw,
         fit: BoxFit.contain,
       ),
     );
+    return ctx!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (ctx != null) {
+      return ctx!;
+    }
+    return buildCtx(context);
   }
 }
 
@@ -66,7 +82,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
       horizontalMargin: 0,
       showArrow: false,
       controller: menuController,
-      position: PreferredPosition.topLeft,
+      position: PreferredPosition.bottomLeft,
       pressType: PressType.mouseHover,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
