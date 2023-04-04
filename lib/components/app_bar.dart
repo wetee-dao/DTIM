@@ -13,7 +13,8 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Widget? tools;
   final Function? onBack;
-  final double windowButton = Platform.isMacOS ? 18.w : 0;
+  // final double windowButton = Platform.isMacOS ? 18.w : 0;
+  final double windowButton = 0;
   LocalAppBar({Key? key, this.onBack, this.tools, String? title, double? height, this.leading})
       : _height = height ?? 60.w,
         _title = title ?? "",

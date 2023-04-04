@@ -69,6 +69,7 @@ class _ThemePageState extends State<ThemePage> {
                   AdaptiveTheme.of(context).setTheme(
                     light: setTheme(v),
                   );
+                  setState(() {});
                 },
               ),
               ThemeSettingsTile(
@@ -80,6 +81,7 @@ class _ThemePageState extends State<ThemePage> {
                   AdaptiveTheme.of(context).setTheme(
                     light: setTheme(v),
                   );
+                  setState(() {});
                 },
               ),
             ],
