@@ -654,5 +654,21 @@
   "chatDetal": "Info",
   "chatMemeber": "Member",
   "chatE2e": "Encrypt",
+  "send": "Send",
+  "sendFile": "Send file",
+  "sendImage": "Send image",
+  "sendAudio": "Send audio",
+  "sendVideo": "Send video",
+  "send": "Send",
+  "countFiles": "{count} Dateien",
+  "@countFiles": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "sendOriginal": "Sende Original",
+  "openVideoCamera": "Video aufnehmen",
+  "unsupportedAndroidVersion": "Unsupported Android version",
+  "unsupportedAndroidVersionLong": "This feature requires a newer Android version. Please check for updates or Lineage OS support.",
   "oopsSomethingWentWrong": "Oops, something went wrong…"
 }

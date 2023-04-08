@@ -1,15 +1,28 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:asyou_app/router.dart';
+import 'package:asyou_app/utils/localized_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:record/record.dart';
 
 import '../../components/popup.dart';
+import '../../components/recording_dialog.dart';
+import '../../components/send_file_dialog.dart';
 import '../../models/models.dart';
 import '../../store/theme.dart';
 import '../../objectbox.g.dart';
+import '../../utils/platform_infos.dart';
 import '../../utils/screen.dart';
+import '../../utils/matrix_sdk_extensions/matrix_file_extension.dart';
 
 // ignore: must_be_immutable
 class ChannelInputPage extends StatefulWidget {
@@ -26,6 +39,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   final BasePopupMenuController emojiController = BasePopupMenuController();
   final StreamController<bool> emojiStreamController = StreamController<bool>();
   final TextEditingController _controller = TextEditingController();
+  link.Event? replyEvent;
 
   late final _msgNode = FocusNode(
     onKey: (FocusNode node, RawKeyEvent evt) {
@@ -71,6 +85,200 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
     return u.address;
   }
 
+  void onAddPopupMenuButtonSelected(String choice) {
+    if (choice == 'file') {
+      sendFileAction();
+    }
+    if (choice == 'image') {
+      sendImageAction();
+    }
+    if (choice == 'camera') {
+      openCameraAction();
+    }
+    if (choice == 'camera-video') {
+      openVideoCameraAction();
+    }
+    // if (choice == 'sticker') {
+    //   sendStickerAction();
+    // }
+    if (choice == 'location') {
+      sendLocationAction();
+    }
+  }
+
+  void sendFileAction() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+    await showDialog(
+      context: globalCtx(),
+      useRootNavigator: false,
+      builder: (c) => SendFileDialog(
+        files: result.files
+            .map(
+              (xfile) => link.MatrixFile(
+                bytes: xfile.bytes!,
+                name: xfile.name,
+              ).detectFileType,
+            )
+            .toList(),
+        room: widget.room,
+      ),
+    );
+  }
+
+  void sendImageAction() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+
+    await showDialog(
+      context: globalCtx(),
+      useRootNavigator: false,
+      builder: (c) => SendFileDialog(
+        files: result.files
+            .map(
+              (xfile) => link.MatrixFile(
+                bytes: xfile.bytes!,
+                name: xfile.name,
+              ).detectFileType,
+            )
+            .toList(),
+        room: widget.room,
+      ),
+    );
+  }
+
+  void openCameraAction() async {
+    // Make sure the textfield is unfocused before opening the camera
+    FocusScope.of(context).requestFocus(FocusNode());
+    final file = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (file == null) return;
+    final bytes = await file.readAsBytes();
+    await showDialog(
+      context: globalCtx(),
+      useRootNavigator: false,
+      builder: (c) => SendFileDialog(
+        files: [
+          link.MatrixImageFile(
+            bytes: bytes,
+            name: file.path,
+          )
+        ],
+        room: widget.room,
+      ),
+    );
+  }
+
+  void openVideoCameraAction() async {
+    // Make sure the textfield is unfocused before opening the camera
+    FocusScope.of(context).requestFocus(FocusNode());
+    final file = await ImagePicker().pickVideo(source: ImageSource.camera);
+    if (file == null) return;
+    final bytes = await file.readAsBytes();
+    await showDialog(
+      context: globalCtx(),
+      useRootNavigator: false,
+      builder: (c) => SendFileDialog(
+        files: [
+          link.MatrixVideoFile(
+            bytes: bytes,
+            name: file.path,
+          )
+        ],
+        room: widget.room,
+      ),
+    );
+  }
+
+  // void sendStickerAction() async {
+  //   final sticker = await showAdaptiveBottomSheet<link.ImagePackImageContent>(
+  //     context: context,
+  //     builder: (c) => StickerPickerDialog(room: widget.room),
+  //   );
+  //   if (sticker == null) return;
+  //   final eventContent = <String, dynamic>{
+  //     'body': sticker.body,
+  //     if (sticker.info != null) 'info': sticker.info,
+  //     'url': sticker.url.toString(),
+  //   };
+  //   // send the sticker
+  //   await widget.room.sendEvent(
+  //     eventContent,
+  //     type: link.EventTypes.Sticker,
+  //   );
+  // }
+
+  void voiceMessageAction() async {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    if (PlatformInfos.isAndroid) {
+      final info = await DeviceInfoPlugin().androidInfo;
+      if (info.version.sdkInt < 19) {
+        showOkAlertDialog(
+          context: globalCtx(),
+          title: L10n.of(globalCtx())!.unsupportedAndroidVersion,
+          message: L10n.of(globalCtx())!.unsupportedAndroidVersionLong,
+          okLabel: L10n.of(globalCtx())!.close,
+        );
+        return;
+      }
+    }
+
+    if (await Record().hasPermission() == false) return;
+    final result = await showDialog<RecordingResult>(
+      context: globalCtx(),
+      useRootNavigator: false,
+      barrierDismissible: false,
+      builder: (c) => const RecordingDialog(),
+    );
+    if (result == null) return;
+    final audioFile = File(result.path);
+    final file = link.MatrixAudioFile(
+      bytes: audioFile.readAsBytesSync(),
+      name: audioFile.path,
+    );
+    await widget.room.sendFileEvent(
+      file,
+      inReplyTo: replyEvent,
+      extraContent: {
+        'info': {
+          ...file.info,
+          'duration': result.duration,
+        },
+        'org.matrix.msc3245.voice': {},
+        'org.matrix.msc1767.audio': {
+          'duration': result.duration,
+          'waveform': result.waveform,
+        },
+      },
+    ).catchError((e) {
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            (e as Object).toLocalizedString(context),
+          ),
+        ),
+      );
+      return null;
+    });
+    setState(() {
+      replyEvent = null;
+    });
+  }
+
+  void sendLocationAction() async {
+    // await showDialog(
+    //   context: context,
+    //   useRootNavigator: false,
+    //   builder: (c) => SendLocationDialog(room: room),
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
@@ -97,19 +305,100 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            alignment: Alignment.center,
-            width: 25.w,
-            height: 25.w,
-            decoration: BoxDecoration(
-              color: constTheme.centerChannelColor.withAlpha(150),
-              borderRadius: BorderRadius.circular(25.w),
+          PopupMenuButton<String>(
+            icon: Container(
+              alignment: Alignment.center,
+              width: 25.w,
+              height: 25.w,
+              decoration: BoxDecoration(
+                color: constTheme.centerChannelColor.withAlpha(150),
+                borderRadius: BorderRadius.circular(25.w),
+              ),
+              child: Icon(
+                Icons.add,
+                color: constTheme.centerChannelBg,
+                size: 20.w,
+              ),
             ),
-            child: Icon(
-              Icons.add,
-              color: constTheme.centerChannelBg,
-              size: 20.w,
-            ),
+            onSelected: onAddPopupMenuButtonSelected,
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'file',
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    child: Icon(Icons.attachment_outlined),
+                  ),
+                  title: Text(L10n.of(context)!.sendFile),
+                  contentPadding: const EdgeInsets.all(0),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'image',
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    child: Icon(Icons.image_outlined),
+                  ),
+                  title: Text(L10n.of(context)!.sendImage),
+                  contentPadding: const EdgeInsets.all(0),
+                ),
+              ),
+              if (PlatformInfos.isMobile)
+                PopupMenuItem<String>(
+                  value: 'camera',
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.purple,
+                      foregroundColor: Colors.white,
+                      child: Icon(Icons.camera_alt_outlined),
+                    ),
+                    title: Text(L10n.of(context)!.openCamera),
+                    contentPadding: const EdgeInsets.all(0),
+                  ),
+                ),
+              if (PlatformInfos.isMobile)
+                PopupMenuItem<String>(
+                  value: 'camera-video',
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      child: Icon(Icons.videocam_outlined),
+                    ),
+                    title: Text(L10n.of(context)!.openVideoCamera),
+                    contentPadding: const EdgeInsets.all(0),
+                  ),
+                ),
+              // if (widget.room.getImagePacks(ImagePackUsage.sticker).isNotEmpty)
+              //   PopupMenuItem<String>(
+              //     value: 'sticker',
+              //     child: ListTile(
+              //       leading: const CircleAvatar(
+              //         backgroundColor: Colors.orange,
+              //         foregroundColor: Colors.white,
+              //         child: Icon(Icons.emoji_emotions_outlined),
+              //       ),
+              //       title: Text(L10n.of(context)!.sendSticker),
+              //       contentPadding: const EdgeInsets.all(0),
+              //     ),
+              //   ),
+              if (PlatformInfos.isMobile)
+                PopupMenuItem<String>(
+                  value: 'location',
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.brown,
+                      foregroundColor: Colors.white,
+                      child: Icon(Icons.gps_fixed_outlined),
+                    ),
+                    title: Text(L10n.of(context)!.shareLocation),
+                    contentPadding: const EdgeInsets.all(0),
+                  ),
+                ),
+            ],
           ),
           SizedBox(
             width: 10.w,

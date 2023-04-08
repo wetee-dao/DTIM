@@ -1,4 +1,6 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:badges/badges.dart' as badges;
 
@@ -79,7 +81,8 @@ class _DirectChatsState extends State<DirectChats> {
                     Icons.notifications,
                     room.pushRuleState == link.PushRuleState.notify ? "静音频道" : "取消静音",
                   ),
-                  renderItem("f3", Icons.settings, "设置")
+                  renderItem("f3", Icons.settings, "设置"),
+                  renderItem("f4", Icons.settings, "离开聊天")
                 ],
               );
               if (result != null) {
@@ -105,6 +108,25 @@ class _DirectChatsState extends State<DirectChats> {
                       globalCtx(),
                       "/channel_setting/${Uri.encodeComponent(channelsList[index].id)}/info",
                     );
+                    break;
+                  case "f4":
+                    if (OkCancelResult.ok ==
+                        await showOkCancelAlertDialog(
+                          useRootNavigator: false,
+                          title: "提示",
+                          message: "确认离开",
+                          context: globalCtx(),
+                          okLabel: L10n.of(globalCtx())!.next,
+                          cancelLabel: L10n.of(globalCtx())!.cancel,
+                        )) {
+                      waitFutureLoading(
+                        context: globalCtx(),
+                        future: () async {
+                          await room.leave();
+                          return true;
+                        },
+                      );
+                    } else {}
                     break;
                 }
               }

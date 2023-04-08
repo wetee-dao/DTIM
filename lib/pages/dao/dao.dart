@@ -46,6 +46,7 @@ class _DaoPageState extends State<DaoPage> {
           : LocalAppBar(
               height: 50.w,
               title: "Wetee DAO",
+              showMacosTop: false,
               leading: IconButton(
                 onPressed: () {
                   _drawerKey.currentState!.openDrawer();

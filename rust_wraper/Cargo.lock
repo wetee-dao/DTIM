@@ -148,7 +148,7 @@ dependencies = [
 [[package]]
 name = "asyou_rust_sdk"
 version = "0.5.0"
-source = "git+https://github.com/WeteeDAO/rust-sdk.git#9b9257f5c564b0b2e10d7553d8aab9998c6fc3ad"
+source = "git+https://github.com/WeteeDAO/wetee-rust-sdk.git#692a1959f03c4950ccfcc0a0e6039aa5b2ff1c09"
 dependencies = [
  "anyhow",
  "base64 0.13.1",

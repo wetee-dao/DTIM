@@ -9,6 +9,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
   flutter_secure_storage_linux
   objectbox_flutter_libs
+  record_linux
   screen_retriever
   tray_manager
   url_launcher_linux
