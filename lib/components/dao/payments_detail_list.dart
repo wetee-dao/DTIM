@@ -60,9 +60,9 @@ class PaymentsDetailList extends StatelessWidget {
           children: List.generate(
             recentActivities.length,
             (index) => PaymentListTile(
-              icon: recentActivities[index]["icon"],
-              amount: recentActivities[index]["amount"],
-              label: recentActivities[index]["label"],
+              icon: recentActivities[index].icon,
+              amount: recentActivities[index].amount,
+              label: recentActivities[index].label,
             ),
           ),
         ),
@@ -87,9 +87,9 @@ class PaymentsDetailList extends StatelessWidget {
           children: List.generate(
             upcomingPayments.length,
             (index) => PaymentListTile(
-              icon: upcomingPayments[index]["icon"],
-              amount: upcomingPayments[index]["amount"],
-              label: upcomingPayments[index]["label"],
+              icon: upcomingPayments[index].icon,
+              amount: upcomingPayments[index].amount,
+              label: upcomingPayments[index].label,
             ),
           ),
         ),
@@ -99,9 +99,22 @@ class PaymentsDetailList extends StatelessWidget {
 }
 
 const recentActivities = [
-  {"icon": 'assets/drop.svg', "label": 'Water Bill', "amount": "\$120"},
+  AmontItem(icon: Icons.home, label: 'Water Bill', amount: "\$120"),
 ];
 
 const upcomingPayments = [
-  {"icon": 'assets/home.svg', "label": 'Home Rent', "amount": "\$1500"},
+  AmontItem(icon: Icons.home, label: 'Home Rent', amount: "\$1500"),
 ];
+
+// AmontItem
+class AmontItem {
+  final IconData icon;
+  final String label;
+  final String amount;
+
+  const AmontItem({
+    required this.icon,
+    required this.label,
+    required this.amount,
+  });
+}

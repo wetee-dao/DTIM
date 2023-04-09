@@ -1,9 +1,11 @@
+import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:matrix/matrix.dart';
 
 import '../../../components/mxc_image.dart';
+import '../../../store/theme.dart';
 import '../../image_viewer/image_viewer.dart';
 
 class ImageBubble extends StatelessWidget {
@@ -77,6 +79,7 @@ class ImageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return InkWell(
       onTap: () => _onTap(context),
       child: Hero(
@@ -90,6 +93,8 @@ class ImageBubble extends StatelessWidget {
                     maxHeight: height,
                   )
                 : null,
+            decoration:
+                BoxDecoration(border: Border.all(width: 4.w, color: constTheme.centerChannelColor.withOpacity(0.1))),
             child: MxcImage(
               event: event,
               width: width,

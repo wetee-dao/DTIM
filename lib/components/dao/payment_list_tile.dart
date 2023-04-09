@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../store/theme.dart';
 
 class PaymentListTile extends StatelessWidget {
-  final String? icon;
+  final IconData? icon;
   final String? label;
   final String? amount;
   const PaymentListTile({
@@ -30,9 +30,9 @@ class PaymentListTile extends StatelessWidget {
           color: constTheme.centerChannelColor,
           borderRadius: BorderRadius.circular(15.w),
         ),
-        child: SvgPicture.asset(
+        child: Icon(
           icon!,
-          width: 20.w,
+          size: 20.w,
         ),
       ),
       title: PrimaryText(

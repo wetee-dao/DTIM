@@ -94,7 +94,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     margin: EdgeInsets.only(bottom: 10.w),
                     child: UserAvatar(
                       key: Key(im.currentState!.user.id.toString()),
-                      im.currentState!.client.userID ?? "-",
+                      im.me!.address,
                       // "",
                       true,
                       52.w,
