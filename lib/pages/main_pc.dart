@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../components/components.dart';
 import '../components/sider_bar.dart';
 import '../store/im.dart';
 import '../utils/screen.dart';

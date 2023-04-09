@@ -320,6 +320,8 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 size: 20.w,
               ),
             ),
+            iconSize: 25.w,
+            padding: EdgeInsets.zero,
             onSelected: onAddPopupMenuButtonSelected,
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
