@@ -23,7 +23,7 @@ class WidgetUserNameEmoji extends StatelessWidget {
       text: TextSpan(
         text: name,
         style: TextStyle(
-          color: constTheme.sidebarText.withAlpha(180),
+          color: constTheme.sidebarText,
           fontWeight: FontWeight.normal,
           fontSize: 15.w,
           overflow: TextOverflow.ellipsis,

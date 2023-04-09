@@ -183,8 +183,7 @@ List<Org> orgs = [
     domain: "im.tc.asyou.me",
     avater:
         "https://storage.googleapis.com/assets.dework.xyz/uploads/6b8d19b4-cdfc-4251-ba82-de47f7875936/apple-touch-icon-152x152.png",
-    img:
-        "https://storage.googleapis.com/assets.dework.xyz/uploads/6b8d19b4-cdfc-4251-ba82-de47f7875936/apple-touch-icon-152x152.png",
+    img: "https://wetee.app/static/web3/img/logo.png",
     homeUrl: "www.asyou.me/",
     chainUrl: "wss://chain.asyou.me/",
   )

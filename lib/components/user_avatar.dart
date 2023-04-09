@@ -82,8 +82,8 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final imgw = (widget.avatarWidth * 0.7).toInt();
-    final imgbg = widget.color ?? constTheme.centerChannelColor;
-    final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
+    final imgbg = widget.color ?? constTheme.centerChannelColor.withOpacity(0.04);
+    final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.04);
     final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.id), size: 50);
     return BasePopupMenu(
       verticalMargin: 5.w,

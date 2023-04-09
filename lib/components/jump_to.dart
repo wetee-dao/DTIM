@@ -24,7 +24,7 @@ JumpTo(
     child: TextField(
       key: const Key("topSearch"),
       onTap: toFunc,
-      style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+      style: TextStyle(color: constTheme.sidebarText, fontSize: 13.w),
       autofocus: autofocus,
       keyboardType: autofocus ? TextInputType.text : TextInputType.none,
       decoration: InputDecoration(
@@ -32,9 +32,9 @@ JumpTo(
         hintStyle: TextStyle(
           height: 1.5,
           fontSize: 13.w,
-          color: constTheme.sidebarText.withAlpha(155),
+          color: constTheme.sidebarText,
         ),
-        suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText.withAlpha(155)),
+        suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText),
         contentPadding: const EdgeInsets.all(0),
         border: const OutlineInputBorder(borderSide: BorderSide.none),
         label: null,

@@ -6,13 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import '../models/account.dart';
 import '../objectbox.g.dart';
 import '../router.dart';
 import '../utils/screen.dart';
 import '../apis/apis.dart';
 import '../components/components.dart';
-import '../models/org.dart';
+import '../models/models.dart';
 import '../store/im.dart';
 import '../store/theme.dart';
 

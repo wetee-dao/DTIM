@@ -50,11 +50,18 @@ class OrgCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Image.network(
-                    org.img ?? "",
+                  Container(
                     width: 206.w,
-                    fit: BoxFit.cover,
                     height: 150.w,
+                    decoration: BoxDecoration(
+                      color: org.color != null ? hexToColor(org.color!) : Colors.transparent,
+                    ),
+                    child: Image.network(
+                      org.img ?? "",
+                      width: 206.w,
+                      fit: BoxFit.cover,
+                      height: 150.w,
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
