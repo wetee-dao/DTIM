@@ -15,3 +15,8 @@ cd "$DIR/../"
 flutter_rust_bridge_codegen \
     -r $CRATE/src/api.rs \
     -d lib/bridge_generated.dart 
+
+cd "$DIR/../rust_wraper"
+
+# cargo build
+# cp -r "$DIR/../rust_wraper/target/debug/librust_wraper.so" "$DIR/../linux/shared/librust_wraper.so"

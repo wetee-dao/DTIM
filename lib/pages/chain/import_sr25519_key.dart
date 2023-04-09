@@ -309,7 +309,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 }
                 _formKey.currentState!.save();
 
-                api.getSeedPhrase(seedStr: seed.text, name: _name, password: _password).then((accountStr) async {
+                rustApi.getSeedPhrase(seedStr: seed.text, name: _name, password: _password).then((accountStr) async {
                   print(accountStr);
                   // 解码区块链账户问题
                   final chainData = ChainData.fromJson(

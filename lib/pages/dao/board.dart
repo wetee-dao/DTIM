@@ -1,4 +1,7 @@
+import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
+import '../../components/appicon.dart';
+import '../../components/dao/text.dart';
 import '../../store/theme.dart';
 
 class Kanban extends StatefulWidget {
@@ -7,79 +10,232 @@ class Kanban extends StatefulWidget {
 }
 
 class _KanbanState extends State<Kanban> {
+  final boardScrollController = ScrollController();
   List<String> list1 = ["list1_1", "list1_2", "list1_3"];
   List<String> list2 = ["list2_1", "list2_2"];
   List<String> list3 = ["list3_1", "list3_2"];
+  List<String> list4 = ["list3_1", "list3_2"];
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      // padding: EdgeInsets.only(top: 10),
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 30.w, right: 30.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 30.w),
+              PrimaryText(
+                text: 'Board',
+                size: 25.w,
+                fontWeight: FontWeight.w800,
+              ),
+              SizedBox(height: 8.w),
+              PrimaryText(
+                text: '工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目',
+                size: 14.w,
+              ),
+              SizedBox(height: 15.w),
+            ],
+          ),
+        ),
+        Divider(
+          height: 20,
+          color: constTheme.centerChannelColor.withOpacity(0.1),
+        ),
+        Expanded(
+          // child: Container(
+          //   color: Colors.blue,
+          //   height: double.maxFinite,
+          //   child: SingleChildScrollView(
+          //     scrollDirection: Axis.vertical,
+          //     child: Row(
+          //       children: [
+          //         _createListView("2023.Q1", list1),
+          //         _createListView("2023.Q2", list2),
+          //         _createListView("2023.Q3", list3),
+          //         _createListView("2023.Q4", list4),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // child: Container(
+          //   color: Colors.red,
+          // ),
+          child: Scrollbar(
+            radius: const Radius.circular(9),
+            // thickness: 4,
+            thumbVisibility: true,
+            controller: boardScrollController,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              controller: boardScrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(width: 20.w),
+                _createListView("To Do", Appicon.samlogoFCM, constTheme.centerChannelColor.withOpacity(0.5), list1),
+                _createListView("In Progress", Appicon.iconjinxingzhong, Colors.yellow.withOpacity(0.5), list2),
+                _createListView("In Review", Appicon.view, Colors.blueGrey.withOpacity(0.5), list3),
+                _createListView("Done", Appicon.done, Colors.green.withOpacity(0.5), list4),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _createListView(String name, IconData icon, Color color, List<String> items) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
-      padding: EdgeInsets.only(top: 10),
-      child: Row(
+      decoration: BoxDecoration(
+        color: constTheme.centerChannelColor.withOpacity(0.07),
+        borderRadius: BorderRadius.circular(5.w),
+      ),
+      width: 250.w,
+      margin: EdgeInsets.only(right: 10.w, bottom: 15.w),
+      height: double.maxFinite,
+      child: Column(
         children: [
-          _createListView(list1),
-          _createListView(list2),
-          _createListView(list3),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 10.w),
+              Icon(icon, color: color, size: 18.w),
+              Container(
+                height: 23.w,
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(10.w),
+                child: Text(
+                  name,
+                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 14.w),
+                ),
+              ),
+              Text(
+                items.length.toString(),
+                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 12.w),
+              ),
+            ],
+          ),
+          Expanded(
+            child: DragTarget<String>(
+              builder: (
+                BuildContext context,
+                List<dynamic> accepted,
+                List<dynamic> rejected,
+              ) {
+                return ListView.builder(
+                  itemCount: items.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(10),
+                  itemBuilder: (context, index) {
+                    return Draggable<String>(
+                      onDragCompleted: () {
+                        // 在拖动到DragTarget后删除数据
+                        setState(() {
+                          items.removeAt(index);
+                        });
+                      },
+                      feedback: Material(
+                        color: constTheme.centerChannelColor.withOpacity(0.05),
+                        child: item(items[index]),
+                      ),
+                      data: items[index],
+                      child: item(items[index]),
+                    );
+                  },
+                );
+              },
+              onAccept: (String data) {
+                setState(() {
+                  // 添加Draggable数据到list
+                  items.add(data);
+                });
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _createListView(List<String> _items) {
-    return SizedBox(
-      width: 200,
-      height: double.maxFinite,
-      child: DragTarget<String>(
-        builder: (
-          BuildContext context,
-          List<dynamic> accepted,
-          List<dynamic> rejected,
-        ) {
-          return ListView.builder(
-            itemCount: _items.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.all(10),
-            itemBuilder: (context, index) {
-              return Draggable<String>(
-                onDragCompleted: () {
-                  // 在拖动到DragTarget后删除数据
-                  setState(() {
-                    _items.removeAt(index);
-                  });
-                },
-                feedback: Material(
-                  child: Container(
-                    height: 60,
-                    width: 200,
-                    color: Colors.blueAccent,
-                    alignment: Alignment.center,
-                    child: Text(
-                      _items[index],
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+  item(data) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    return Container(
+      width: double.maxFinite,
+      padding: EdgeInsets.only(top: 10.w),
+      decoration: BoxDecoration(
+        color: constTheme.centerChannelColor.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(5.w),
+      ),
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(bottom: 5.w),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Text(
+                  data,
+                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 14.w),
+                  textAlign: TextAlign.left,
+                  // overflow: TextOverflow.ellipsis,
                 ),
-                data: _items[index],
-                child: Container(
-                  height: 50,
-                  width: 200,
-                  color: Colors.blueAccent,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 40.w,
+            child: Row(
+              children: [
+                SizedBox(width: 10.w),
+                Container(
+                  height: 18.w,
+                  width: 45.w,
+                  decoration: BoxDecoration(
+                    color: constTheme.buttonBg.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(5.w),
+                  ),
                   alignment: Alignment.center,
+                  margin: EdgeInsets.only(top: 5.w, bottom: 5.w),
                   child: Text(
-                    _items[index],
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    "TAG",
+                    style: TextStyle(color: constTheme.buttonColor, fontSize: 13.w),
                   ),
                 ),
-              );
-            },
-          );
-        },
-        onAccept: (String data) {
-          setState(() {
-            // 添加Draggable数据到list
-            _items.add(data);
-          });
-        },
+              ],
+            ),
+          ),
+          Divider(height: 1.w, color: constTheme.centerChannelBg.withOpacity(0.4)),
+          Container(
+            width: double.maxFinite,
+            height: 35.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.w), bottomRight: Radius.circular(5.w)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 20.w,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  margin: EdgeInsets.only(top: 5.w, bottom: 5.w, right: 10.w),
+                  child: Text(
+                    "Join",
+                    style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

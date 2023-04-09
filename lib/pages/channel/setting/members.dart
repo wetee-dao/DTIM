@@ -100,6 +100,9 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
+                    SizedBox(
+                      height: 8.w,
+                    ),
                     Row(
                       children: [
                         SizedBox(width: 15.w),
@@ -142,7 +145,11 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                       ],
                     ),
                     SizedBox(
-                      height: 10.w,
+                      height: 8.w,
+                    ),
+                    Divider(
+                      height: 1.w,
+                      color: constTheme.centerChannelColor.withOpacity(0.05),
                     ),
                   ],
                 );

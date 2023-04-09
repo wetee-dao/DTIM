@@ -1,5 +1,6 @@
 use anyhow;
-use asyou_rust_sdk::{account, Client,model::account::KeyringJSON};
+use asyou_rust_sdk::hander::balance::Balance;
+use asyou_rust_sdk::{account, model::account::KeyringJSON, Client};
 
 // use std::sync::Arc;
 // pub enum Platform {
@@ -9,7 +10,7 @@ use asyou_rust_sdk::{account, Client,model::account::KeyringJSON};
 // }
 
 #[tokio::main(flavor = "current_thread")]
-pub async fn connect(url: String) -> anyhow::Result<u32, anyhow::Error> {
+pub async fn connect(url: String) -> anyhow::Result<u32> {
     // 创建连接
     let client: Client = Client::new(url.to_string())?;
 
@@ -37,15 +38,35 @@ pub fn get_seed_phrase(seed_str: String, name: String, password: String) -> anyh
     Ok(jstr)
 }
 
-pub fn add_keyring(keyring_str: String, password: String) -> anyhow::Result<bool, anyhow::Error> {
+pub fn add_keyring(keyring_str: String, password: String) -> anyhow::Result<bool> {
     let keyring: KeyringJSON = serde_json::from_str(&keyring_str).unwrap();
     account::add_keyring(keyring, password)?;
     Ok(true)
 }
 
-pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String, anyhow::Error> {
+pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String> {
     let addr = account::sign_from_address(address, ctx)?;
     return Ok(addr);
+}
+
+#[tokio::main(flavor = "current_thread")]
+pub async fn r_client(client: u32) -> anyhow::Result<u32> {
+    let mut c = Client::from_index(client)?;
+    let (address, ss58address) = account::add_keyring_from_seed(
+        "gloom album notable jewel divorce never trouble lesson month neck sign harbor".to_string(),
+    )
+    .unwrap();
+
+    println!("address {:?}", ss58address);
+
+    let (block_number, _) = c.get_block_number().await.unwrap();
+    assert!(block_number > 0);
+
+    println!("block_number {:?}", block_number);
+
+    let mut balance = Balance::new(c);
+    let (free, _, _, _) = balance.amount(ss58address.clone()).await.unwrap();
+    Ok(0)
 }
 
 #[derive(Debug, Clone)]

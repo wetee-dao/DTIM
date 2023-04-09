@@ -44,6 +44,14 @@ class _UserAvatarState extends State<UserAvatar> {
   }
 
   @override
+  void didUpdateWidget(covariant UserAvatar oldWidget) {
+    if (oldWidget.color != widget.color) {
+      ctx = null;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (ctx != null) {
       return ctx!;

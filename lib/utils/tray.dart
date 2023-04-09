@@ -22,7 +22,7 @@ showtray() async {
       key: 'exit_app',
       label: 'Exit App',
       onClick: (e) {
-        windowManager.close();
+        windowManager.destroy();
       },
     ),
   ];

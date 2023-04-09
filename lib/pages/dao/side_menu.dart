@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../../store/theme.dart';
 
 class SideMenu extends StatelessWidget {
-  const SideMenu({
-    Key? key,
-  }) : super(key: key);
+  final int id;
+  final Function(int) onTap;
+  const SideMenu(this.id, this.onTap, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,8 @@ class SideMenu extends StatelessWidget {
                 assetName: Icons.apps_rounded,
                 name: "Overview",
                 color: constTheme.sidebarText,
-                selected: true,
+                selected: id == 0,
+                onTap: () => onTap(0),
               ),
               // iconBuilder(
               //   assetName: Icons.leaderboard_rounded,
@@ -42,11 +43,15 @@ class SideMenu extends StatelessWidget {
                 assetName: Icons.integration_instructions_rounded,
                 name: "RoadMap",
                 color: constTheme.sidebarText,
+                selected: id == 1,
+                onTap: () => onTap(1),
               ),
               iconBuilder(
                 assetName: Icons.library_add_rounded,
                 name: "Combind Boards",
                 color: constTheme.sidebarText,
+                selected: id == 2,
+                onTap: () => onTap(2),
               ),
               // iconBuilder(
               //   assetName: Icons.settings_applications_rounded,
@@ -57,6 +62,8 @@ class SideMenu extends StatelessWidget {
                 assetName: Icons.dynamic_form_rounded,
                 name: "Guilds",
                 color: constTheme.sidebarText,
+                selected: id == 3,
+                onTap: () => onTap(3),
               ),
             ],
           ),
@@ -66,22 +73,25 @@ class SideMenu extends StatelessWidget {
   }
 }
 
-iconBuilder({required IconData assetName, required String name, required Color color, bool? selected}) => Container(
-      padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 8.w),
-      color: selected != null && selected ? color.withOpacity(0.08) : null,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: assetName,
-          //   iconSize: 20,
-          //   color: color,
-          //   padding: const EdgeInsets.symmetric(vertical: 20.0),
-          // )
-          Icon(assetName, size: 16.w, color: color),
-          SizedBox(width: 10.w),
-          Text(name, style: TextStyle(color: color, fontSize: 15.w, height: 1)),
-        ],
+iconBuilder({
+  required IconData assetName,
+  required String name,
+  required Color color,
+  bool? selected,
+  Function? onTap,
+}) =>
+    InkWell(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 8.w),
+        color: selected != null && selected ? color.withOpacity(0.08) : null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 1.w), child: Icon(assetName, size: 16.w, color: color)),
+            SizedBox(width: 10.w),
+            Text(name, style: TextStyle(color: color, fontSize: 13.w, height: 1)),
+          ],
+        ),
       ),
+      onTap: () => onTap?.call(),
     );

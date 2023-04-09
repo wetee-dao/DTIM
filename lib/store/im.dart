@@ -32,8 +32,8 @@ class IMProvider with ChangeNotifier {
     me = user;
     signCtx = "${"{\"t\":\"${DateTime.now().millisecondsSinceEpoch}"}\"}";
     try {
-      await api.addKeyring(keyringStr: user.chainData, password: password);
-      sign = await api.signFromAddress(address: user.address, ctx: signCtx);
+      await rustApi.addKeyring(keyringStr: user.chainData, password: password);
+      sign = await rustApi.signFromAddress(address: user.address, ctx: signCtx);
     } catch (e) {
       print(e);
       throw "密码错误";

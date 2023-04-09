@@ -92,10 +92,10 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     width: 42.w,
                     height: 42.w,
                     margin: EdgeInsets.only(bottom: 10.w),
-                    child: UserAvatarWithPop(
+                    child: UserAvatar(
                       key: Key(im.currentState!.user.id.toString()),
                       im.currentState!.client.userID ?? "-",
-                      "",
+                      // "",
                       true,
                       52.w,
                       bg: constTheme.sidebarText.withOpacity(0.1),

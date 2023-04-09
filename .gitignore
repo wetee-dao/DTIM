@@ -51,3 +51,4 @@ app.*.map.json
 
 exts/xmpp_dart
 libolm.3.dylib
+rust_wraper/Cargo.lock

@@ -20,6 +20,10 @@ import 'utils/screen.dart';
 final botToastBuilder = BotToastInit();
 void main({bool test = false}) async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 等待桌面初始化
+  await windowManager.ensureInitialized();
+  await windowManager.hide();
+
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
   // 数据库初始化
   await initDB();
@@ -42,9 +46,6 @@ void main({bool test = false}) async {
       winSize = const Size(1400, 1000);
     }
 
-    // 等待桌面初始化
-    await windowManager.ensureInitialized();
-    await windowManager.hide();
     WindowOptions windowOptions = WindowOptions(
       size: winSize,
       minimumSize: const Size(800, 550),

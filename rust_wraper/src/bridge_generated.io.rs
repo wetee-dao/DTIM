@@ -39,6 +39,11 @@ pub extern "C" fn wire_sign_from_address(
     wire_sign_from_address_impl(port_, address, ctx)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_r_client(port_: i64, client: u32) {
+    wire_r_client_impl(port_, client)
+}
+
 // Section: allocate functions
 
 #[no_mangle]

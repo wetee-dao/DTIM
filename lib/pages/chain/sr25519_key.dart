@@ -36,7 +36,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
   }
 
   getSeeds() {
-    api.seedGenerate().then((value) {
+    rustApi.seedGenerate().then((value) {
       setState(() {
         seeds = value;
       });
@@ -337,7 +337,9 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 }
                 _formKey.currentState!.save();
 
-                api.getSeedPhrase(seedStr: seeds.join(" "), name: _name, password: _password).then((accountStr) async {
+                rustApi
+                    .getSeedPhrase(seedStr: seeds.join(" "), name: _name, password: _password)
+                    .then((accountStr) async {
                   print(accountStr);
                   // 解码区块链账户问题
                   final chainData = ChainData.fromJson(
