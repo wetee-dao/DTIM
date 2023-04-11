@@ -71,10 +71,10 @@ class AccountOrgApi {
         if (org != null) {
           final at = AccountOrg(org.hash);
           at.orgName = org.name;
-          at.orgAvater = org.avater;
-          at.orgImg = org.img;
-          at.orgColor = org.color;
-          at.domain = org.domain;
+          at.orgAvater = org.metaData!.avater;
+          at.orgImg = org.metaData!.img;
+          at.orgColor = org.metaData!.color;
+          at.domain = org.metaData!.domain;
           at.status = 1;
           at.withAddr = address;
           at.account.target = account;
@@ -83,10 +83,10 @@ class AccountOrgApi {
       } else {
         if (org != null) {
           storeOrgs[storeIndex].orgName = org.name;
-          storeOrgs[storeIndex].orgAvater = org.avater;
-          storeOrgs[storeIndex].orgImg = org.img;
-          storeOrgs[storeIndex].orgColor = org.color;
-          storeOrgs[storeIndex].domain = org.domain;
+          storeOrgs[storeIndex].orgAvater = org.metaData!.avater;
+          storeOrgs[storeIndex].orgImg = org.metaData!.img;
+          storeOrgs[storeIndex].orgColor = org.metaData!.color;
+          storeOrgs[storeIndex].domain = org.metaData!.domain;
           storeOrgs[storeIndex].status = 1;
           storeOrgs[storeIndex].withAddr = address;
           storeOrgs[storeIndex].account.target = account;

@@ -66,11 +66,11 @@ pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<
     let mut c = Client::from_index(client)?;
     let mut balance = WeteeAsset::new(c);
 
-    let (free, fee_frozen, reserved, _) = balance.balance(dao_id, address.clone()).unwrap();
+    let b = balance.balance(dao_id, address.clone()).unwrap();
     Ok(AssetAccountData {
-        free: free.try_into().unwrap(),
-        frozen: fee_frozen.try_into().unwrap(),
-        reserved: reserved.try_into().unwrap(),
+        free: b.free.try_into().unwrap(),
+        frozen: b.frozen.try_into().unwrap(),
+        reserved: b.reserved.try_into().unwrap(),
     })
 }
 

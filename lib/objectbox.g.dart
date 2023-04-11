@@ -220,75 +220,6 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(10, 5693561153061033524),
-      name: 'Org',
-      lastPropertyId: const IdUid(12, 5283786044045942348),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 7010042065683719858),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(2, 7085660355384884613),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 1263369616342065133),
-            name: 'desc',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 4868067896047381000),
-            name: 'domain',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 7319804960872354187),
-            name: 'avater',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 4825467439625236766),
-            name: 'chainType',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(7, 4391794707449738337),
-            name: 'chainMeta',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(8, 7928183939628471107),
-            name: 'chainUrl',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(9, 2075579183897281009),
-            name: 'homeUrl',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(10, 8902389809042266938),
-            name: 'hash',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(11, 3198384296014846326),
-            name: 'img',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(12, 5283786044045942348),
-            name: 'color',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
       id: const IdUid(11, 3570047071226480332),
       name: 'System',
       lastPropertyId: const IdUid(4, 9007201754874973267),
@@ -316,6 +247,74 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(12, 6741618351416927267),
+      name: 'Org',
+      lastPropertyId: const IdUid(4, 5334890366285911602),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5658129963731711492),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 9173309876538955753),
+            name: 'hash',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 1106055826001386117),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 5334890366285911602),
+            name: 'desc',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(13, 8805179345298925698),
+      name: 'OrgMetaData',
+      lastPropertyId: const IdUid(6, 2909718618852923997),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 923586717210949073),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 440628997601426007),
+            name: 'domain',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 4195916694265642822),
+            name: 'avater',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 249223195858852082),
+            name: 'img',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1830758043357477415),
+            name: 'color',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 2909718618852923997),
+            name: 'homeUrl',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -339,7 +338,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(11, 3570047071226480332),
+      lastEntityId: const IdUid(13, 8805179345298925698),
       lastIndexId: const IdUid(14, 2038028947041398503),
       lastRelationId: const IdUid(2, 2905611084694405217),
       lastSequenceId: const IdUid(0, 0),
@@ -348,7 +347,8 @@ ModelDefinition getObjectBoxModel() {
         3562406554805002264,
         8566792715005507831,
         6883470479607504359,
-        836089974624769643
+        836089974624769643,
+        5693561153061033524
       ],
       retiredIndexUids: const [
         3359854440918862307,
@@ -391,7 +391,19 @@ ModelDefinition getObjectBoxModel() {
         5563959166026534194,
         8509862875951073429,
         3692407946629027727,
-        239546115317078836
+        239546115317078836,
+        4868067896047381000,
+        7319804960872354187,
+        4825467439625236766,
+        4391794707449738337,
+        7928183939628471107,
+        2075579183897281009,
+        3198384296014846326,
+        5283786044045942348,
+        7010042065683719858,
+        7085660355384884613,
+        1263369616342065133,
+        8902389809042266938
       ],
       retiredRelationUids: const [2546081555060384763, 2905611084694405217],
       modelVersion: 5,
@@ -619,83 +631,8 @@ ModelDefinition getObjectBoxModel() {
           object.account.attach(store);
           return object;
         }),
-    Org: EntityDefinition<Org>(
-        model: _entities[4],
-        toOneRelations: (Org object) => [],
-        toManyRelations: (Org object) => {},
-        getId: (Org object) => object.id,
-        setId: (Org object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Org object, fb.Builder fbb) {
-          final nameOffset =
-              object.name == null ? null : fbb.writeString(object.name!);
-          final descOffset =
-              object.desc == null ? null : fbb.writeString(object.desc!);
-          final domainOffset =
-              object.domain == null ? null : fbb.writeString(object.domain!);
-          final avaterOffset =
-              object.avater == null ? null : fbb.writeString(object.avater!);
-          final chainTypeOffset = object.chainType == null
-              ? null
-              : fbb.writeString(object.chainType!);
-          final chainMetaOffset = object.chainMeta == null
-              ? null
-              : fbb.writeString(object.chainMeta!);
-          final chainUrlOffset = object.chainUrl == null
-              ? null
-              : fbb.writeString(object.chainUrl!);
-          final homeUrlOffset =
-              object.homeUrl == null ? null : fbb.writeString(object.homeUrl!);
-          final hashOffset = fbb.writeString(object.hash);
-          final imgOffset =
-              object.img == null ? null : fbb.writeString(object.img!);
-          final colorOffset =
-              object.color == null ? null : fbb.writeString(object.color!);
-          fbb.startTable(13);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
-          fbb.addOffset(2, descOffset);
-          fbb.addOffset(3, domainOffset);
-          fbb.addOffset(4, avaterOffset);
-          fbb.addOffset(5, chainTypeOffset);
-          fbb.addOffset(6, chainMetaOffset);
-          fbb.addOffset(7, chainUrlOffset);
-          fbb.addOffset(8, homeUrlOffset);
-          fbb.addOffset(9, hashOffset);
-          fbb.addOffset(10, imgOffset);
-          fbb.addOffset(11, colorOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Org(const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 22, ''),
-              name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 6),
-              desc: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 8),
-              domain: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 10),
-              avater: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 12),
-              chainType: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 14),
-              chainMeta: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 16),
-              chainUrl: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 18),
-              homeUrl: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 20),
-              img: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 24),
-              color: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 26))
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-
-          return object;
-        }),
     System: EntityDefinition<System>(
-        model: _entities[5],
+        model: _entities[4],
         toOneRelations: (System object) => [],
         toManyRelations: (System object) => {},
         getId: (System object) => object.id,
@@ -724,6 +661,91 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
               theme: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 10, ''));
+
+          return object;
+        }),
+    Org: EntityDefinition<Org>(
+        model: _entities[5],
+        toOneRelations: (Org object) => [],
+        toManyRelations: (Org object) => {},
+        getId: (Org object) => object.id,
+        setId: (Org object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Org object, fb.Builder fbb) {
+          final hashOffset = fbb.writeString(object.hash);
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final descOffset =
+              object.desc == null ? null : fbb.writeString(object.desc!);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, hashOffset);
+          fbb.addOffset(2, nameOffset);
+          fbb.addOffset(3, descOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Org(
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              desc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+
+          return object;
+        }),
+    OrgMetaData: EntityDefinition<OrgMetaData>(
+        model: _entities[6],
+        toOneRelations: (OrgMetaData object) => [],
+        toManyRelations: (OrgMetaData object) => {},
+        getId: (OrgMetaData object) => object.id,
+        setId: (OrgMetaData object, int id) {
+          object.id = id;
+        },
+        objectToFB: (OrgMetaData object, fb.Builder fbb) {
+          final domainOffset =
+              object.domain == null ? null : fbb.writeString(object.domain!);
+          final avaterOffset =
+              object.avater == null ? null : fbb.writeString(object.avater!);
+          final imgOffset =
+              object.img == null ? null : fbb.writeString(object.img!);
+          final colorOffset =
+              object.color == null ? null : fbb.writeString(object.color!);
+          final homeUrlOffset =
+              object.homeUrl == null ? null : fbb.writeString(object.homeUrl!);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, domainOffset);
+          fbb.addOffset(2, avaterOffset);
+          fbb.addOffset(3, imgOffset);
+          fbb.addOffset(4, colorOffset);
+          fbb.addOffset(5, homeUrlOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = OrgMetaData(
+              domain: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              avater: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              homeUrl: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              img: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              color: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 12))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
         })
@@ -855,56 +877,59 @@ class AccountOrg_ {
       QueryStringProperty<AccountOrg>(_entities[3].properties[9]);
 }
 
-/// [Org] entity fields to define ObjectBox queries.
-class Org_ {
-  /// see [Org.id]
-  static final id = QueryIntegerProperty<Org>(_entities[4].properties[0]);
-
-  /// see [Org.name]
-  static final name = QueryStringProperty<Org>(_entities[4].properties[1]);
-
-  /// see [Org.desc]
-  static final desc = QueryStringProperty<Org>(_entities[4].properties[2]);
-
-  /// see [Org.domain]
-  static final domain = QueryStringProperty<Org>(_entities[4].properties[3]);
-
-  /// see [Org.avater]
-  static final avater = QueryStringProperty<Org>(_entities[4].properties[4]);
-
-  /// see [Org.chainType]
-  static final chainType = QueryStringProperty<Org>(_entities[4].properties[5]);
-
-  /// see [Org.chainMeta]
-  static final chainMeta = QueryStringProperty<Org>(_entities[4].properties[6]);
-
-  /// see [Org.chainUrl]
-  static final chainUrl = QueryStringProperty<Org>(_entities[4].properties[7]);
-
-  /// see [Org.homeUrl]
-  static final homeUrl = QueryStringProperty<Org>(_entities[4].properties[8]);
-
-  /// see [Org.hash]
-  static final hash = QueryStringProperty<Org>(_entities[4].properties[9]);
-
-  /// see [Org.img]
-  static final img = QueryStringProperty<Org>(_entities[4].properties[10]);
-
-  /// see [Org.color]
-  static final color = QueryStringProperty<Org>(_entities[4].properties[11]);
-}
-
 /// [System] entity fields to define ObjectBox queries.
 class System_ {
   /// see [System.id]
-  static final id = QueryIntegerProperty<System>(_entities[5].properties[0]);
+  static final id = QueryIntegerProperty<System>(_entities[4].properties[0]);
 
   /// see [System.width]
-  static final width = QueryDoubleProperty<System>(_entities[5].properties[1]);
+  static final width = QueryDoubleProperty<System>(_entities[4].properties[1]);
 
   /// see [System.height]
-  static final height = QueryDoubleProperty<System>(_entities[5].properties[2]);
+  static final height = QueryDoubleProperty<System>(_entities[4].properties[2]);
 
   /// see [System.theme]
-  static final theme = QueryStringProperty<System>(_entities[5].properties[3]);
+  static final theme = QueryStringProperty<System>(_entities[4].properties[3]);
+}
+
+/// [Org] entity fields to define ObjectBox queries.
+class Org_ {
+  /// see [Org.id]
+  static final id = QueryIntegerProperty<Org>(_entities[5].properties[0]);
+
+  /// see [Org.hash]
+  static final hash = QueryStringProperty<Org>(_entities[5].properties[1]);
+
+  /// see [Org.name]
+  static final name = QueryStringProperty<Org>(_entities[5].properties[2]);
+
+  /// see [Org.desc]
+  static final desc = QueryStringProperty<Org>(_entities[5].properties[3]);
+}
+
+/// [OrgMetaData] entity fields to define ObjectBox queries.
+class OrgMetaData_ {
+  /// see [OrgMetaData.id]
+  static final id =
+      QueryIntegerProperty<OrgMetaData>(_entities[6].properties[0]);
+
+  /// see [OrgMetaData.domain]
+  static final domain =
+      QueryStringProperty<OrgMetaData>(_entities[6].properties[1]);
+
+  /// see [OrgMetaData.avater]
+  static final avater =
+      QueryStringProperty<OrgMetaData>(_entities[6].properties[2]);
+
+  /// see [OrgMetaData.img]
+  static final img =
+      QueryStringProperty<OrgMetaData>(_entities[6].properties[3]);
+
+  /// see [OrgMetaData.color]
+  static final color =
+      QueryStringProperty<OrgMetaData>(_entities[6].properties[4]);
+
+  /// see [OrgMetaData.homeUrl]
+  static final homeUrl =
+      QueryStringProperty<OrgMetaData>(_entities[6].properties[5]);
 }

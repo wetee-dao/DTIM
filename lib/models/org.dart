@@ -14,6 +14,21 @@ class Org {
   // 团队介绍
   String? desc;
 
+  OrgMetaData? metaData;
+
+  Org(
+    this.hash, {
+    this.name,
+    this.desc,
+    this.metaData,
+  });
+}
+
+@Entity()
+class OrgMetaData {
+  @Id()
+  int id = 0;
+
   // 团队授权网址
   String? domain;
 
@@ -26,27 +41,12 @@ class Org {
   // 团队颜色
   String? color;
 
-  // 区块链类型
-  String? chainType;
-
-  // 区块链元数据
-  String? chainMeta;
-
-  // 区块链地址
-  String? chainUrl;
-
   // 官网地址
   String? homeUrl;
 
-  Org(
-    this.hash, {
-    this.name,
-    this.desc,
+  OrgMetaData({
     this.domain,
     this.avater,
-    this.chainType,
-    this.chainMeta,
-    this.chainUrl,
     this.homeUrl,
     this.img,
     this.color,

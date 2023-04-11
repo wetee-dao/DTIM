@@ -66,6 +66,7 @@ class _DirectChatsState extends State<DirectChats> {
               final result = await showMenu(
                 context: context,
                 color: constTheme.sidebarBg,
+                elevation: 0.4,
                 shape: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
                 position: RelativeRect.fromLTRB(
                   offset.dx,

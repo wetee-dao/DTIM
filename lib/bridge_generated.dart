@@ -43,6 +43,14 @@ abstract class RustWraper {
       {required int client, required String address, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kNativeBalanceConstMeta;
+
+  Future<AssetAccountData> daoBalance(
+      {required int client,
+      required int daoId,
+      required String address,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoBalanceConstMeta;
 }
 
 class AssetAccountData {
@@ -182,6 +190,30 @@ class RustWraperImpl implements RustWraper {
         argNames: ["client", "address"],
       );
 
+  Future<AssetAccountData> daoBalance(
+      {required int client,
+      required int daoId,
+      required String address,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(daoId);
+    var arg2 = _platform.api2wire_String(address);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_dao_balance(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_asset_account_data,
+      constMeta: kDaoBalanceConstMeta,
+      argValues: [client, daoId, address],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoBalanceConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_balance",
+        argNames: ["client", "daoId", "address"],
+      );
+
   void dispose() {
     _platform.dispose();
   }
@@ -249,6 +281,11 @@ class RustWraperPlatform extends FlutterRustBridgeBase<RustWraperWire> {
   @protected
   ffi.Pointer<wire_uint_8_list> api2wire_String(String raw) {
     return api2wire_uint_8_list(utf8.encoder.convert(raw));
+  }
+
+  @protected
+  int api2wire_u64(int raw) {
+    return raw;
   }
 
   @protected
@@ -472,6 +509,27 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_uint_8_list>)>>('wire_native_balance');
   late final _wire_native_balance = _wire_native_balancePtr
       .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_dao_balance(
+    int port_,
+    int client,
+    int dao_id,
+    ffi.Pointer<wire_uint_8_list> address,
+  ) {
+    return _wire_dao_balance(
+      port_,
+      client,
+      dao_id,
+      address,
+    );
+  }
+
+  late final _wire_dao_balancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32, ffi.Uint64,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_balance');
+  late final _wire_dao_balance = _wire_dao_balancePtr.asFunction<
+      void Function(int, int, int, ffi.Pointer<wire_uint_8_list>)>();
 
   ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
     int len,

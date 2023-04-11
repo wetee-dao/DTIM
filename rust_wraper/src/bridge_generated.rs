@@ -118,6 +118,26 @@ fn wire_native_balance_impl(
         },
     )
 }
+fn wire_dao_balance_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    address: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_balance",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_address = address.wire2api();
+            move |task_callback| dao_balance(api_client, api_dao_id, api_address)
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -143,6 +163,11 @@ where
 
 impl Wire2Api<u32> for u32 {
     fn wire2api(self) -> u32 {
+        self
+    }
+}
+impl Wire2Api<u64> for u64 {
+    fn wire2api(self) -> u64 {
         self
     }
 }
