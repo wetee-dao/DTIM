@@ -72,7 +72,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
             future: () async {
               await im.login(account, v[1]);
               // ignore: use_build_context_synchronously
-              globalCtx().push("/select_org?auto=t");
+              Timer(const Duration(milliseconds: 1000), () {
+                if (!mounted) return;
+                globalCtx().push("/select_org?auto=t");
+              });
             },
           );
         }

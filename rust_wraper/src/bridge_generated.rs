@@ -100,16 +100,21 @@ fn wire_sign_from_address_impl(
         },
     )
 }
-fn wire_r_client_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+fn wire_native_balance_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    address: impl Wire2Api<String> + UnwindSafe,
+) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
-            debug_name: "r_client",
+            debug_name: "native_balance",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
         move || {
             let api_client = client.wire2api();
-            move |task_callback| r_client(api_client)
+            let api_address = address.wire2api();
+            move |task_callback| native_balance(api_client, api_address)
         },
     )
 }
@@ -148,6 +153,18 @@ impl Wire2Api<u8> for u8 {
 }
 
 // Section: impl IntoDart
+
+impl support::IntoDart for AssetAccountData {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.free.into_dart(),
+            self.reserved.into_dart(),
+            self.frozen.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for AssetAccountData {}
 
 // Section: executor
 

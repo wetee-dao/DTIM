@@ -39,9 +39,22 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kSignFromAddressConstMeta;
 
-  Future<int> rClient({required int client, dynamic hint});
+  Future<AssetAccountData> nativeBalance(
+      {required int client, required String address, dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kRClientConstMeta;
+  FlutterRustBridgeTaskConstMeta get kNativeBalanceConstMeta;
+}
+
+class AssetAccountData {
+  final int free;
+  final int reserved;
+  final int frozen;
+
+  const AssetAccountData({
+    required this.free,
+    required this.reserved,
+    required this.frozen,
+  });
 }
 
 class RustWraperImpl implements RustWraper {
@@ -149,21 +162,24 @@ class RustWraperImpl implements RustWraper {
         argNames: ["address", "ctx"],
       );
 
-  Future<int> rClient({required int client, dynamic hint}) {
+  Future<AssetAccountData> nativeBalance(
+      {required int client, required String address, dynamic hint}) {
     var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(address);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_r_client(port_, arg0),
-      parseSuccessData: _wire2api_u32,
-      constMeta: kRClientConstMeta,
-      argValues: [client],
+      callFfi: (port_) =>
+          _platform.inner.wire_native_balance(port_, arg0, arg1),
+      parseSuccessData: _wire2api_asset_account_data,
+      constMeta: kNativeBalanceConstMeta,
+      argValues: [client, address],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kRClientConstMeta =>
+  FlutterRustBridgeTaskConstMeta get kNativeBalanceConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
-        debugName: "r_client",
-        argNames: ["client"],
+        debugName: "native_balance",
+        argNames: ["client", "address"],
       );
 
   void dispose() {
@@ -179,12 +195,27 @@ class RustWraperImpl implements RustWraper {
     return (raw as List<dynamic>).cast<String>();
   }
 
+  AssetAccountData _wire2api_asset_account_data(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return AssetAccountData(
+      free: _wire2api_u64(arr[0]),
+      reserved: _wire2api_u64(arr[1]),
+      frozen: _wire2api_u64(arr[2]),
+    );
+  }
+
   bool _wire2api_bool(dynamic raw) {
     return raw as bool;
   }
 
   int _wire2api_u32(dynamic raw) {
     return raw as int;
+  }
+
+  int _wire2api_u64(dynamic raw) {
+    return castInt(raw);
   }
 
   int _wire2api_u8(dynamic raw) {
@@ -423,21 +454,24 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       void Function(
           int, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
 
-  void wire_r_client(
+  void wire_native_balance(
     int port_,
     int client,
+    ffi.Pointer<wire_uint_8_list> address,
   ) {
-    return _wire_r_client(
+    return _wire_native_balance(
       port_,
       client,
+      address,
     );
   }
 
-  late final _wire_r_clientPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
-          'wire_r_client');
-  late final _wire_r_client =
-      _wire_r_clientPtr.asFunction<void Function(int, int)>();
+  late final _wire_native_balancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_native_balance');
+  late final _wire_native_balance = _wire_native_balancePtr
+      .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
 
   ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
     int len,

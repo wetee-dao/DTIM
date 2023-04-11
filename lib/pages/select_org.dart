@@ -273,8 +273,8 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               await gotoOrg();
             },
             child: Text(
-              "xxxxx",
-              style: TextStyle(color: constTheme.centerChannelBg, fontSize: 16.w),
+              "hide",
+              style: TextStyle(color: constTheme.centerChannelBg, fontSize: 10.w),
             ),
           ),
         ],
@@ -282,3 +282,19 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     );
   }
 }
+
+List<Org> orgs = [
+  Org(
+    "asyoume",
+    name: "我门",
+    desc: "we3 在线协作，分布式办公软件",
+    color: "#000000",
+    domain: "im.tc.asyou.me",
+    avater:
+        "https://storage.googleapis.com/assets.dework.xyz/uploads/6b8d19b4-cdfc-4251-ba82-de47f7875936/apple-touch-icon-152x152.png",
+    img: "https://wetee.app/static/web3/img/logo.png",
+    homeUrl: "www.asyou.me/",
+    chainUrl: "wss://chain.asyou.me/",
+    chainMeta: "",
+  )
+];

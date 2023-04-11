@@ -44,9 +44,10 @@ class _KanbanState extends State<Kanban> {
           ),
         ),
         Divider(
-          height: 20,
+          height: 20.w,
           color: constTheme.centerChannelColor.withOpacity(0.1),
         ),
+        SizedBox(height: 10.w),
         Expanded(
           // child: Container(
           //   color: Colors.blue,

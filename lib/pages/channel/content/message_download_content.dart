@@ -53,7 +53,7 @@ class MessageDownloadContent extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: 1),
+            Divider(height: 1.w, color: constTheme.centerChannelColor.withOpacity(0.4)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Row(

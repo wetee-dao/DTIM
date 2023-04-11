@@ -111,7 +111,7 @@ menuRender(controller, link.Room room) {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: i != menuItems.length - 1 && j == menuItems[i].length - 1
-                          ? BorderSide(color: constTheme.sidebarText.withOpacity(0.08))
+                          ? BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08))
                           : BorderSide.none,
                     ),
                   ),

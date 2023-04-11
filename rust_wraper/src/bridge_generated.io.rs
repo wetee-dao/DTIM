@@ -40,8 +40,8 @@ pub extern "C" fn wire_sign_from_address(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_r_client(port_: i64, client: u32) {
-    wire_r_client_impl(port_, client)
+pub extern "C" fn wire_native_balance(port_: i64, client: u32, address: *mut wire_uint_8_list) {
+    wire_native_balance_impl(port_, client, address)
 }
 
 // Section: allocate functions

@@ -108,9 +108,7 @@ class _DaoPageState extends State<DaoPage> {
                     pageController.jumpToPage(id);
                     currentId.add(id);
 
-                    if (c != null) {
-                      rustApi.rClient(client: c!);
-                    }
+                    if (c != null) {}
                   });
                 },
               ),

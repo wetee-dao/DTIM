@@ -236,7 +236,6 @@ dependencies = [
  "futures",
  "hex",
  "log",
- "node-template-runtime",
  "once_cell",
  "openssl",
  "pallet-balances",
@@ -254,6 +253,8 @@ dependencies = [
  "tiny-bip39 0.8.2",
  "tokio",
  "tracing-subscriber 0.3.16",
+ "wetee-assets",
+ "wetee-runtime",
  "xsalsa20poly1305",
 ]
 
@@ -838,146 +839,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.13",
-]
-
-[[package]]
-name = "daoent-assets"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-dao",
- "daoent-primitives",
- "daoent-sudo",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "orml-tokens",
- "orml-traits",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "daoent-dao"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "daoent-gov"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-assets",
- "daoent-dao",
- "daoent-primitives",
- "daoent-sudo",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "orml-tokens",
- "orml-traits",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "daoent-guild"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-assets",
- "daoent-dao",
- "daoent-gov",
- "daoent-primitives",
- "daoent-sudo",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "orml-tokens",
- "orml-traits",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "daoent-primitives"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "frame-support",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "daoent-project"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-assets",
- "daoent-dao",
- "daoent-gov",
- "daoent-primitives",
- "daoent-sudo",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "orml-tokens",
- "orml-traits",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "daoent-sudo"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-dao",
- "daoent-primitives",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "sp-runtime",
- "sp-std",
 ]
 
 [[package]]
@@ -2601,52 +2462,6 @@ dependencies = [
  "cfg-if 0.1.10",
  "libc",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "node-template-runtime"
-version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
-dependencies = [
- "daoent-assets",
- "daoent-dao",
- "daoent-gov",
- "daoent-guild",
- "daoent-primitives",
- "daoent-project",
- "daoent-sudo",
- "frame-benchmarking",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "orml-tokens",
- "orml-traits",
- "pallet-aura",
- "pallet-balances",
- "pallet-grandpa",
- "pallet-insecure-randomness-collective-flip",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "parity-scale-codec",
- "scale-info",
- "sp-api",
- "sp-block-builder",
- "sp-consensus-aura",
- "sp-core",
- "sp-inherents",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-std",
- "sp-transaction-pool",
- "sp-version",
- "substrate-wasm-builder",
- "wetee-app",
 ]
 
 [[package]]
@@ -5431,7 +5246,7 @@ version = "1.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
- "cfg-if 1.0.0",
+ "cfg-if 0.1.10",
  "digest 0.10.6",
  "rand 0.8.5",
  "static_assertions",
@@ -5944,10 +5759,8 @@ dependencies = [
 [[package]]
 name = "wetee-app"
 version = "1.0.0"
-source = "git+https://github.com/WeteeDAO/wetee#e101b47da1c8a89c262dd6b1a3eb1aee6e1f79ee"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
 dependencies = [
- "daoent-dao",
- "daoent-primitives",
  "frame-benchmarking",
  "frame-support",
  "frame-system",
@@ -5956,6 +5769,206 @@ dependencies = [
  "scale-info",
  "sp-runtime",
  "sp-std",
+ "wetee-dao",
+ "wetee-primitives",
+]
+
+[[package]]
+name = "wetee-assets"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "orml-tokens",
+ "orml-traits",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "wetee-dao",
+ "wetee-primitives",
+ "wetee-sudo",
+]
+
+[[package]]
+name = "wetee-dao"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
+ "wetee-primitives",
+]
+
+[[package]]
+name = "wetee-gov"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "orml-tokens",
+ "orml-traits",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
+ "wetee-assets",
+ "wetee-dao",
+ "wetee-primitives",
+ "wetee-sudo",
+]
+
+[[package]]
+name = "wetee-guild"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "orml-tokens",
+ "orml-traits",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "wetee-assets",
+ "wetee-dao",
+ "wetee-gov",
+ "wetee-primitives",
+ "wetee-sudo",
+]
+
+[[package]]
+name = "wetee-primitives"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-support",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "wetee-project"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "orml-tokens",
+ "orml-traits",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "wetee-assets",
+ "wetee-dao",
+ "wetee-gov",
+ "wetee-primitives",
+ "wetee-sudo",
+]
+
+[[package]]
+name = "wetee-runtime"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "orml-tokens",
+ "orml-traits",
+ "pallet-aura",
+ "pallet-balances",
+ "pallet-grandpa",
+ "pallet-insecure-randomness-collective-flip",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-api",
+ "sp-block-builder",
+ "sp-consensus-aura",
+ "sp-core",
+ "sp-inherents",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-std",
+ "sp-transaction-pool",
+ "sp-version",
+ "substrate-wasm-builder",
+ "wetee-app",
+ "wetee-assets",
+ "wetee-dao",
+ "wetee-gov",
+ "wetee-guild",
+ "wetee-primitives",
+ "wetee-project",
+ "wetee-runtime-api",
+ "wetee-sudo",
+]
+
+[[package]]
+name = "wetee-runtime-api"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "parity-scale-codec",
+ "sp-api",
+ "sp-runtime",
+ "wetee-primitives",
+]
+
+[[package]]
+name = "wetee-sudo"
+version = "1.0.0"
+source = "git+https://github.com/WeteeDAO/wetee#7d3f188db23067cc013c74736616fa49beb6ac26"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
+ "wetee-dao",
+ "wetee-primitives",
 ]
 
 [[package]]

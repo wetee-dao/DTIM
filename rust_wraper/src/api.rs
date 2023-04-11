@@ -1,5 +1,6 @@
 use anyhow;
 use asyou_rust_sdk::hander::balance::Balance;
+use asyou_rust_sdk::hander::wetee_asset::WeteeAsset;
 use asyou_rust_sdk::{account, model::account::KeyringJSON, Client};
 
 // use std::sync::Arc;
@@ -49,24 +50,28 @@ pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String>
     return Ok(addr);
 }
 
-#[tokio::main(flavor = "current_thread")]
-pub async fn r_client(client: u32) -> anyhow::Result<u32> {
+pub fn native_balance(client: u32, address: String) -> anyhow::Result<AssetAccountData> {
     let mut c = Client::from_index(client)?;
-    let (address, ss58address) = account::add_keyring_from_seed(
-        "gloom album notable jewel divorce never trouble lesson month neck sign harbor".to_string(),
-    )
-    .unwrap();
-
-    println!("address {:?}", ss58address);
-
-    let (block_number, _) = c.get_block_number().await.unwrap();
-    assert!(block_number > 0);
-
-    println!("block_number {:?}", block_number);
-
     let mut balance = Balance::new(c);
-    let (free, _, _, _) = balance.amount(ss58address.clone()).await.unwrap();
-    Ok(0)
+
+    let (free, fee_frozen, reserved, _) = balance.balance(address.clone()).unwrap();
+    Ok(AssetAccountData {
+        free: free.try_into().unwrap(),
+        frozen: fee_frozen.try_into().unwrap(),
+        reserved: reserved.try_into().unwrap(),
+    })
+}
+
+pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<AssetAccountData> {
+    let mut c = Client::from_index(client)?;
+    let mut balance = WeteeAsset::new(c);
+
+    let (free, fee_frozen, reserved, _) = balance.balance(dao_id, address.clone()).unwrap();
+    Ok(AssetAccountData {
+        free: free.try_into().unwrap(),
+        frozen: fee_frozen.try_into().unwrap(),
+        reserved: reserved.try_into().unwrap(),
+    })
 }
 
 #[derive(Debug, Clone)]
@@ -78,4 +83,14 @@ pub struct BoxedPoint {
 pub struct Point {
     pub x: f64,
     pub y: f64,
+}
+
+#[derive(Debug, Clone)]
+pub struct AssetAccountData {
+    // 可用余额
+    pub free: u64,
+    // 锁定余额
+    pub reserved: u64,
+    // 冻结余额
+    pub frozen: u64,
 }

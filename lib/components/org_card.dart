@@ -24,8 +24,8 @@ class OrgCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return AnimatedContainer(
-      width: 200.w,
-      height: 240.w,
+      width: 150.w,
+      height: 200.w,
       duration: const Duration(milliseconds: 300),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -52,19 +52,19 @@ class OrgCard extends StatelessWidget {
                 children: [
                   Container(
                     width: 206.w,
-                    height: 150.w,
+                    height: 130.w,
                     decoration: BoxDecoration(
                       color: org.color != null ? hexToColor(org.color!) : Colors.transparent,
                     ),
                     child: Image.network(
                       org.img ?? "",
                       width: 206.w,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       height: 150.w,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
+                    padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
