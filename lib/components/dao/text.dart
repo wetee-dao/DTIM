@@ -13,7 +13,7 @@ class PrimaryText extends StatelessWidget {
     required this.text,
     this.fontWeight = FontWeight.w400,
     this.size = 20,
-    this.height = 1.3,
+    this.height = 1.4,
   }) : super(key: key);
 
   @override

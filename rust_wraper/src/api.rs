@@ -1,7 +1,15 @@
 use anyhow;
-use asyou_rust_sdk::hander::balance::Balance;
-use asyou_rust_sdk::hander::wetee_asset::WeteeAsset;
-use asyou_rust_sdk::{account, model::account::KeyringJSON, Client};
+
+use crate::model::{AssetAccountData, GuildInfo, ProjectInfo, Quarter, QuarterTask};
+use asyou_rust_sdk::{
+    account,
+    hander::{
+        balance::Balance, wetee_asset::WeteeAsset, wetee_dao::WeteeDAO, wetee_guild::WeteeGuild,
+        wetee_project::WeteeProject,
+    },
+    model::account::KeyringJSON,
+    Client,
+};
 
 // use std::sync::Arc;
 // pub enum Platform {
@@ -51,19 +59,19 @@ pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String>
 }
 
 pub fn native_balance(client: u32, address: String) -> anyhow::Result<AssetAccountData> {
-    let mut c = Client::from_index(client)?;
+    let c = Client::from_index(client)?;
     let mut balance = Balance::new(c);
 
-    let (free, fee_frozen, reserved, _) = balance.balance(address.clone()).unwrap();
+    let b = balance.balance(address.clone()).unwrap();
     Ok(AssetAccountData {
-        free: free.try_into().unwrap(),
-        frozen: fee_frozen.try_into().unwrap(),
-        reserved: reserved.try_into().unwrap(),
+        free: b.free.try_into().unwrap(),
+        frozen: b.frozen.try_into().unwrap(),
+        reserved: b.reserved.try_into().unwrap(),
     })
 }
 
 pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<AssetAccountData> {
-    let mut c = Client::from_index(client)?;
+    let c = Client::from_index(client)?;
     let mut balance = WeteeAsset::new(c);
 
     let b = balance.balance(dao_id, address.clone()).unwrap();
@@ -74,23 +82,65 @@ pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<
     })
 }
 
-#[derive(Debug, Clone)]
-pub struct BoxedPoint {
-    pub point: Box<Point>,
+pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Quarter>> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let roadmap = dao.roadmap_list(dao_id, year.clone()).unwrap();
+    let mut quarters: Vec<Quarter> = vec![];
+    for r in &roadmap {
+        quarters.push(Quarter {
+            year: r.year,
+            quarter: r.quarter,
+            tasks: r
+                .clone()
+                .tasks
+                .into_iter()
+                .map(|t| QuarterTask {
+                    id: t.id,
+                    name: String::from_utf8(t.name).unwrap(),
+                    description: String::from_utf8(t.description).unwrap(),
+                    priority: t.priority,
+                    creator: t.creator.to_string(),
+                    tags: t.tags,
+                    status: t.status,
+                })
+                .collect(),
+        });
+    }
+    Ok(quarters)
 }
 
-#[derive(Debug, Clone)]
-pub struct Point {
-    pub x: f64,
-    pub y: f64,
+pub fn dao_projects(client: u32, dao_id: u64) -> anyhow::Result<Vec<ProjectInfo>> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    let b = project.project_list(dao_id).unwrap();
+    Ok(b.into_iter()
+        .map(|p| ProjectInfo {
+            id: p.id,
+            name: String::from_utf8(p.name).unwrap(),
+            description: String::from_utf8(p.description).unwrap(),
+            creator: p.creator.to_string(),
+            status: p.status as u8,
+        })
+        .collect())
 }
 
-#[derive(Debug, Clone)]
-pub struct AssetAccountData {
-    // 可用余额
-    pub free: u64,
-    // 锁定余额
-    pub reserved: u64,
-    // 冻结余额
-    pub frozen: u64,
+pub fn dao_guilds(client: u32, dao_id: u64) -> anyhow::Result<Vec<GuildInfo>> {
+    let c = Client::from_index(client)?;
+    let mut guild = WeteeGuild::new(c);
+
+    let gs = guild.guild_list(dao_id).unwrap();
+    Ok(gs
+        .into_iter()
+        .map(|g| GuildInfo {
+            name: String::from_utf8(g.name).unwrap(),
+            desc: String::from_utf8(g.desc).unwrap(),
+            creator: g.creator.to_string(),
+            status: g.status as u8,
+            start_block: g.start_block,
+            meta_data: String::from_utf8(g.meta_data).unwrap(),
+        })
+        .collect())
 }

@@ -64,6 +64,12 @@ class AccountOrg {
   // 组织授权网址
   String? domain;
 
+  // 组织区块链
+  String? chainUrl;
+
+  // 组织Id
+  int daoId = 0;
+
   // 组织状态 1=>激活 2=>暂停 3=>删除
   int status = 1;
 

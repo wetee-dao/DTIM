@@ -25,7 +25,7 @@ class SiderBarItem extends StatelessWidget {
         height: 52.w,
         padding: EdgeInsets.only(top: 8.w),
         decoration: BoxDecoration(
-          color: selected ? constTheme.sidebarHeaderTextColor.withOpacity(0.07) : Colors.transparent,
+          color: selected ? constTheme.sidebarHeaderTextColor.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(6.w),
         ),
         margin: EdgeInsets.only(bottom: 5.w),

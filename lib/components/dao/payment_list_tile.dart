@@ -23,16 +23,17 @@ class PaymentListTile extends StatelessWidget {
       contentPadding: EdgeInsets.only(left: 0, right: 20.w),
       visualDensity: VisualDensity.standard,
       leading: Container(
-        padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
+        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 10.w),
         width: 40.w,
         height: 40.w,
         decoration: BoxDecoration(
-          color: constTheme.centerChannelColor,
+          color: constTheme.centerChannelColor.withOpacity(0.03),
           borderRadius: BorderRadius.circular(15.w),
         ),
         child: Icon(
           icon!,
           size: 20.w,
+          color: constTheme.centerChannelColor,
         ),
       ),
       title: PrimaryText(

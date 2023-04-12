@@ -161,7 +161,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(9, 7587758870070808570),
       name: 'AccountOrg',
-      lastPropertyId: const IdUid(11, 2874145491573938962),
+      lastPropertyId: const IdUid(13, 3869598461930899514),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -215,6 +215,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(11, 2874145491573938962),
             name: 'orgImg',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(12, 9153852004816453622),
+            name: 'chainUrl',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(13, 3869598461930899514),
+            name: 'daoId',
+            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -251,7 +261,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(12, 6741618351416927267),
       name: 'Org',
-      lastPropertyId: const IdUid(4, 5334890366285911602),
+      lastPropertyId: const IdUid(6, 5503031447316114879),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -273,6 +283,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(4, 5334890366285911602),
             name: 'desc',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 261204320543344035),
+            name: 'chainUrl',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 5503031447316114879),
+            name: 'daoId',
+            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -590,7 +610,10 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.orgColor!);
           final orgImgOffset =
               object.orgImg == null ? null : fbb.writeString(object.orgImg!);
-          fbb.startTable(12);
+          final chainUrlOffset = object.chainUrl == null
+              ? null
+              : fbb.writeString(object.chainUrl!);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, orgNameOffset);
           fbb.addOffset(2, domainOffset);
@@ -601,6 +624,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(8, orgAvaterOffset);
           fbb.addOffset(9, orgColorOffset);
           fbb.addOffset(10, orgImgOffset);
+          fbb.addOffset(11, chainUrlOffset);
+          fbb.addInt64(12, object.daoId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -625,7 +650,11 @@ ModelDefinition getObjectBoxModel() {
             ..orgColor = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 22)
             ..orgImg = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 24);
+                .vTableGetNullable(buffer, rootOffset, 24)
+            ..chainUrl = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 26)
+            ..daoId =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 28, 0);
           object.account.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
           object.account.attach(store);
@@ -678,11 +707,16 @@ ModelDefinition getObjectBoxModel() {
               object.name == null ? null : fbb.writeString(object.name!);
           final descOffset =
               object.desc == null ? null : fbb.writeString(object.desc!);
-          fbb.startTable(5);
+          final chainUrlOffset = object.chainUrl == null
+              ? null
+              : fbb.writeString(object.chainUrl!);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, hashOffset);
           fbb.addOffset(2, nameOffset);
           fbb.addOffset(3, descOffset);
+          fbb.addOffset(4, chainUrlOffset);
+          fbb.addInt64(5, object.daoId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -693,10 +727,14 @@ ModelDefinition getObjectBoxModel() {
           final object = Org(
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
+              daoId:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 8),
               desc: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 10))
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              chainUrl: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 12))
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -875,6 +913,14 @@ class AccountOrg_ {
   /// see [AccountOrg.orgImg]
   static final orgImg =
       QueryStringProperty<AccountOrg>(_entities[3].properties[9]);
+
+  /// see [AccountOrg.chainUrl]
+  static final chainUrl =
+      QueryStringProperty<AccountOrg>(_entities[3].properties[10]);
+
+  /// see [AccountOrg.daoId]
+  static final daoId =
+      QueryIntegerProperty<AccountOrg>(_entities[3].properties[11]);
 }
 
 /// [System] entity fields to define ObjectBox queries.
@@ -905,6 +951,12 @@ class Org_ {
 
   /// see [Org.desc]
   static final desc = QueryStringProperty<Org>(_entities[5].properties[3]);
+
+  /// see [Org.chainUrl]
+  static final chainUrl = QueryStringProperty<Org>(_entities[5].properties[4]);
+
+  /// see [Org.daoId]
+  static final daoId = QueryIntegerProperty<Org>(_entities[5].properties[5]);
 }
 
 /// [OrgMetaData] entity fields to define ObjectBox queries.

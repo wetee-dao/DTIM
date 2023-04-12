@@ -36,14 +36,14 @@ void main({bool test = false}) async {
   if (isPc()) {
     initScreen(1200);
     // 计算创建窗口大小
-    var winSize = const Size(1050, 650);
+    var winSize = const Size(1150, 750);
 
     if (winsystem != null) {
       winSize = Size(winsystem.width, winsystem.height);
     }
 
     if (test) {
-      winSize = const Size(1400, 1000);
+      winSize = const Size(1300, 1000);
     }
 
     WindowOptions windowOptions = WindowOptions(
@@ -58,10 +58,8 @@ void main({bool test = false}) async {
       if (Platform.isMacOS || Platform.isWindows) {
         await windowManager.setHasShadow(true);
       }
-      windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
-      if (Platform.isLinux) {
-        await windowManager.setAsFrameless();
-      }
+      await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
+      await windowManager.setSize(winSize);
       await windowManager.show();
       await showtray();
       await windowManager.focus();

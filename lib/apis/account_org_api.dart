@@ -75,9 +75,11 @@ class AccountOrgApi {
           at.orgImg = org.metaData!.img;
           at.orgColor = org.metaData!.color;
           at.domain = org.metaData!.domain;
+          at.chainUrl = org.chainUrl;
           at.status = 1;
           at.withAddr = address;
           at.account.target = account;
+          at.daoId = org.daoId;
           storeBox.put(at);
         }
       } else {
@@ -87,9 +89,11 @@ class AccountOrgApi {
           storeOrgs[storeIndex].orgImg = org.metaData!.img;
           storeOrgs[storeIndex].orgColor = org.metaData!.color;
           storeOrgs[storeIndex].domain = org.metaData!.domain;
+          storeOrgs[storeIndex].chainUrl = org.chainUrl;
           storeOrgs[storeIndex].status = 1;
           storeOrgs[storeIndex].withAddr = address;
           storeOrgs[storeIndex].account.target = account;
+          storeOrgs[storeIndex].daoId = org.daoId;
           storeBox.put(storeOrgs[storeIndex]);
         }
       }

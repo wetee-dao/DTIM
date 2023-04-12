@@ -54,6 +54,21 @@ pub extern "C" fn wire_dao_balance(
     wire_dao_balance_impl(port_, client, dao_id, address)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_dao_roadmap(port_: i64, client: u32, dao_id: u64, year: u32) {
+    wire_dao_roadmap_impl(port_, client, dao_id, year)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_projects(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_projects_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_guilds(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_guilds_impl(port_, client, dao_id)
+}
+
 // Section: allocate functions
 
 #[no_mangle]

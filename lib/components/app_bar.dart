@@ -30,7 +30,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: EdgeInsets.only(top: (_showMacosTop ? macosTop : 0)),
         decoration: BoxDecoration(
           color: constTheme.sidebarHeaderBg,
-          border: Border(bottom: BorderSide(color: constTheme.sidebarHeaderTextColor.withOpacity(0.15))),
+          // border: Border(bottom: BorderSide(color: constTheme.sidebarHeaderTextColor.withOpacity(0.15))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -1,6 +1,7 @@
 import 'package:asyou_app/components/dao/text.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
+import '../../store/theme.dart';
 import '../../utils/responsive.dart';
 // import 'package:responsive_dashboard_ui/data.dart';
 // import 'package:responsive_dashboard_ui/style/colors.dart';
@@ -11,14 +12,15 @@ class HistoryTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return SingleChildScrollView(
       scrollDirection: Responsive.isDesktop(context) ? Axis.vertical : Axis.horizontal,
       child: SizedBox(
         width: Responsive.isDesktop(context) ? double.infinity : SizeConfig.screenWidth,
         child: Table(
-          columnWidths: const {
-            0: FlexColumnWidth(0.2),
-          },
+          // columnWidths: const {
+          //   0: FlexColumnWidth(0.2),
+          // },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: List.generate(
             transactionHistory.length,
@@ -27,14 +29,18 @@ class HistoryTable extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(top: 10.w, bottom: 10.w, right: 10.w),
-                  child: CircleAvatar(
-                    radius: Responsive.isDesktop(context) ? 17 : 14,
-                    backgroundImage: NetworkImage(transactionHistory[index]['avatar']!),
+                  child: Row(
+                    children: [
+                      Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 20.w),
+                      SizedBox(width: 5.w),
+                      Expanded(
+                        child: PrimaryText(
+                          text: transactionHistory[index]['label']!,
+                          size: Responsive.isDesktop(context) ? 16 : 12,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                PrimaryText(
-                  text: transactionHistory[index]['label']!,
-                  size: Responsive.isDesktop(context) ? 16 : 12,
                 ),
                 PrimaryText(
                   text: transactionHistory[index]['time']!,

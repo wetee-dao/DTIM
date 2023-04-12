@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:async';
+import 'package:asyou_app/utils/functions.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -10,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import '../models/models.dart';
 import '../pages/channel/setting/key_verification_dialog.dart';
 import '../router.dart';
+import '../rust_wraper.io.dart';
 import '../utils/platform_infos.dart';
 import '../utils/uia_request_manager.dart';
 import '../utils/local_notifications_extension.dart';
@@ -21,6 +23,7 @@ class ImState {
   late AccountOrg _org;
   Account get user => _user;
   AccountOrg get org => _org;
+  int chainClient = -1;
 
   // 外部事件触发器
   late Function _onchange;
@@ -41,7 +44,8 @@ class ImState {
     _onchange = onchange;
     _org = org;
     client = connection;
-    _registerSubs();
+    connectChain();
+    _registerImSub();
   }
 
   bool webHasFocus = true;
@@ -71,6 +75,15 @@ class ImState {
     }
   }
 
+  connectChain() {
+    if (_org.chainUrl != null) {
+      rustApi.connect(url: _org.chainUrl!).then((v) {
+        printSuccess("连接到区块链 ===》${_org.chainUrl!}");
+        chainClient = v;
+      });
+    }
+  }
+
   set cachedPassword(String? p) {
     print('Password cached');
     _cachedPasswordClearTimer?.cancel();
@@ -90,8 +103,8 @@ class ImState {
   late String currentClientSecret;
   final linuxNotifications = PlatformInfos.isLinux ? NotificationsClient() : null;
 
-  void _registerSubs() {
-    print("===========================================_registerSubs");
+  void _registerImSub() {
+    print("===========================================_registerImSub");
     onRoomKeyRequestSub = client.onRoomKeyRequest.stream.listen((RoomKeyRequest request) async {
       print("===========================================onRoomKeyRequest");
       // if (widget.clients.any(

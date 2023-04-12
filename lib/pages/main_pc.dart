@@ -79,6 +79,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
               height: double.maxFinite,
               decoration: BoxDecoration(
                 color: constTheme.sidebarHeaderBg,
+                border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

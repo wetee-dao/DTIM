@@ -19,6 +19,12 @@ use std::sync::Arc;
 
 // Section: imports
 
+use crate::model::AssetAccountData;
+use crate::model::GuildInfo;
+use crate::model::ProjectInfo;
+use crate::model::Quarter;
+use crate::model::QuarterTask;
+
 // Section: wire functions
 
 fn wire_connect_impl(port_: MessagePort, url: impl Wire2Api<String> + UnwindSafe) {
@@ -138,6 +144,62 @@ fn wire_dao_balance_impl(
         },
     )
 }
+fn wire_dao_roadmap_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    year: impl Wire2Api<u32> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_roadmap",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_year = year.wire2api();
+            move |task_callback| dao_roadmap(api_client, api_dao_id, api_year)
+        },
+    )
+}
+fn wire_dao_projects_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_projects",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| dao_projects(api_client, api_dao_id)
+        },
+    )
+}
+fn wire_dao_guilds_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_guilds",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| dao_guilds(api_client, api_dao_id)
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -190,6 +252,63 @@ impl support::IntoDart for AssetAccountData {
     }
 }
 impl support::IntoDartExceptPrimitive for AssetAccountData {}
+
+impl support::IntoDart for GuildInfo {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.creator.into_dart(),
+            self.start_block.into_dart(),
+            self.name.into_dart(),
+            self.desc.into_dart(),
+            self.meta_data.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for GuildInfo {}
+
+impl support::IntoDart for ProjectInfo {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.id.into_dart(),
+            self.name.into_dart(),
+            self.description.into_dart(),
+            self.creator.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for ProjectInfo {}
+
+impl support::IntoDart for Quarter {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.year.into_dart(),
+            self.quarter.into_dart(),
+            self.tasks.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for Quarter {}
+
+impl support::IntoDart for QuarterTask {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.id.into_dart(),
+            self.name.into_dart(),
+            self.description.into_dart(),
+            self.priority.into_dart(),
+            self.creator.into_dart(),
+            self.tags.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for QuarterTask {}
 
 // Section: executor
 

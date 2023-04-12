@@ -1,13 +1,18 @@
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../bridge_generated.dart';
 import '../../store/theme.dart';
 import 'payment_list_tile.dart';
 import 'text.dart';
 
 class PaymentsDetailList extends StatelessWidget {
+  final AssetAccountData nativeAmount;
+  final AssetAccountData share;
   const PaymentsDetailList({
     Key? key,
+    required this.nativeAmount,
+    required this.share,
   }) : super(key: key);
 
   @override

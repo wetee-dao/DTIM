@@ -8,19 +8,28 @@ class Org {
   // 团队存证hash
   String hash = "";
 
+  // 团队的区块链
+  int daoId = 0;
+
   // 团队名
   String? name;
 
   // 团队介绍
   String? desc;
 
+  // 区块链连接点
+  String? chainUrl;
+
+  // 团队元数据
   OrgMetaData? metaData;
 
   Org(
     this.hash, {
+    required this.daoId,
     this.name,
     this.desc,
     this.metaData,
+    this.chainUrl,
   });
 }
 

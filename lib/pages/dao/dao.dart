@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/app_bar.dart';
 import '../../components/appicon.dart';
 import '../../rust_wraper.io.dart';
+import '../../store/im.dart';
 import '../../store/theme.dart';
 import 'board.dart';
+import 'guild.dart';
 import 'overview.dart';
 import 'road_map.dart';
 import 'side_menu.dart';
@@ -22,21 +25,22 @@ class DaoPage extends StatefulWidget {
 class _DaoPageState extends State<DaoPage> {
   late PageController pageController = PageController();
   final StreamController<int> currentId = StreamController<int>.broadcast();
+  late final IMProvider im;
+
   int? c;
+
   @override
   void initState() {
     super.initState();
     currentId.add(0);
-    rustApi.connect(url: "ws://127.0.0.1:9944").then((value) {
-      print(value);
-      c = value;
-    });
+    im = context.read<IMProvider>();
   }
 
   final mainPages = [
-    Kanban(),
     const Overviewpage(),
     const RoadMapPage(),
+    Kanban(),
+    const Guildpage(),
   ];
 
   @override
@@ -81,7 +85,7 @@ class _DaoPageState extends State<DaoPage> {
               // actions: const [AppBarActionItem()],
             )
           : LocalAppBar(
-              height: 50.w,
+              height: 45.w,
               title: "Wetee DAO",
               showMacosTop: false,
               leading: IconButton(

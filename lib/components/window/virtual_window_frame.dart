@@ -9,7 +9,7 @@ import '../../utils/screen.dart';
 final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;
 
-double get kVirtualWindowFrameMargin => (_kIsLinux) ? 5.w : 0;
+double get kVirtualWindowFrameMargin => (_kIsLinux) ? 2.w : 0;
 
 class VirtualWindowFrame extends StatefulWidget {
   /// The [child] contained by the VirtualWindowFrame.
@@ -41,34 +41,6 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
     super.dispose();
   }
 
-  Widget _buildVirtualWindowFrame(BuildContext context) {
-    if (Platform.isMacOS) {
-      return widget.child;
-    }
-
-    return Container(
-      margin: (_isMaximized || _isFullScreen) ? EdgeInsets.zero : EdgeInsets.all(kVirtualWindowFrameMargin),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        boxShadow: <BoxShadow>[
-          if (!_isMaximized && !_isFullScreen)
-            BoxShadow(
-              color: Colors.black.withOpacity(0.4),
-              // offset: Offset(0.0, _isFocused ? 4 : 2),
-              blurRadius: 4.w,
-            ),
-        ],
-      ),
-      // child: widget.child,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 4.w,
-        ),
-        child: widget.child,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_kIsLinux) {
@@ -76,7 +48,7 @@ class _VirtualWindowFrameState extends State<VirtualWindowFrame> with WindowList
         resizeEdgeMargin:
             (_isMaximized || _isFullScreen) ? EdgeInsets.zero : EdgeInsets.all(kVirtualWindowFrameMargin * 0.6),
         enableResizeEdges: (_isMaximized || _isFullScreen) ? [] : null,
-        child: _buildVirtualWindowFrame(context),
+        child: widget.child,
       );
     } else if (_kIsWindows) {
       return DragToResizeArea(

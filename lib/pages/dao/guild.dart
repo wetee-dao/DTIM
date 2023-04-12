@@ -14,17 +14,16 @@ import '../../store/im.dart';
 import '../../store/theme.dart';
 import '../../utils/responsive.dart';
 
-class Overviewpage extends StatefulWidget {
-  const Overviewpage({Key? key}) : super(key: key);
+class Guildpage extends StatefulWidget {
+  const Guildpage({Key? key}) : super(key: key);
 
   @override
-  State<Overviewpage> createState() => _OverviewpageState();
+  State<Guildpage> createState() => _GuildpageState();
 }
 
-class _OverviewpageState extends State<Overviewpage> {
+class _GuildpageState extends State<Guildpage> {
   late final IMProvider im;
   List<GuildInfo> guilds = [];
-  List<ProjectInfo> projects = [];
   AssetAccountData? nativeAmount;
   AssetAccountData? share;
 
@@ -37,10 +36,6 @@ class _OverviewpageState extends State<Overviewpage> {
 
   getData() async {
     guilds = await rustApi.daoGuilds(client: im.currentState!.chainClient, daoId: im.currentState!.org.daoId);
-    projects = await rustApi.daoProjects(client: im.currentState!.chainClient, daoId: im.currentState!.org.daoId);
-    share = await rustApi.daoBalance(
-        client: im.currentState!.chainClient, daoId: im.currentState!.org.daoId, address: im.me!.address);
-    nativeAmount = await rustApi.daoBalance(client: im.currentState!.chainClient, daoId: 0, address: im.me!.address);
     setState(() {});
   }
 
@@ -68,7 +63,7 @@ class _OverviewpageState extends State<Overviewpage> {
                         fontWeight: FontWeight.w800,
                       ),
                       PrimaryText(
-                        text: '工会与项目',
+                        text: '工会',
                         size: 14.w,
                       ),
                     ],
@@ -87,16 +82,10 @@ class _OverviewpageState extends State<Overviewpage> {
                             label: "工会: ${guild.name}",
                             amount: '\$1200',
                           ),
-                        for (var project in projects)
-                          InfoCard(
-                            icon: Icons.access_alarm,
-                            label: project.name,
-                            amount: '\$1200',
-                          ),
                         const InfoCard(
                           icon: Icons.library_add_rounded,
                           label: "点击创建",
-                          amount: '工会/项目',
+                          amount: '工会',
                         ),
                       ],
                     ),
@@ -136,45 +125,9 @@ class _OverviewpageState extends State<Overviewpage> {
                   //   child: BarChartComponent(),
                   // ),
                   SizedBox(height: 30.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          PrimaryText(
-                            text: 'Open Tasks',
-                            size: 25.w,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(width: 10.w),
-                          Icon(Icons.add_circle_outline_rounded, color: constTheme.centerChannelColor, size: 22.w),
-                        ],
-                      ),
-                      PrimaryText(
-                        text: 'Transaction of past 6 months',
-                        size: 14.w,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15.w),
-                  const HistoryTable(),
                   // if (!Responsive.isDesktop(context)) const PaymentsDetailList()
                 ],
               ),
-            ),
-          ),
-          Container(
-            height: double.maxFinite,
-            width: 280.w,
-            color: constTheme.centerChannelColor.withOpacity(0.05),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(30),
-              child: share != null && nativeAmount != null
-                  ? PaymentsDetailList(
-                      share: share!,
-                      nativeAmount: nativeAmount!,
-                    )
-                  : null,
             ),
           ),
         ],

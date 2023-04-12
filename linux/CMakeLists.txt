@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "with_flutter")
-set(APPLICATION_ID "com.example.with_flutter")
+set(BINARY_NAME "daoent")
+set(APPLICATION_ID "app.wetee.daoent")
 
 cmake_policy(SET CMP0063 NEW)
 

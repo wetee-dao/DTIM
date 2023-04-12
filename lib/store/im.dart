@@ -80,7 +80,7 @@ class IMProvider with ChangeNotifier {
           print("注册出现错误 => $e");
         }
       }
-
+      connectionStates[userName]!.connectChain();
       if (client.userID != null) {
         await client.setDisplayName(client.userID!, me!.name);
       }

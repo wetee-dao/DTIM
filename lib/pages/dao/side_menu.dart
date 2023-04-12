@@ -1,6 +1,7 @@
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/appicon.dart';
 import '../../store/theme.dart';
 
 class SideMenu extends StatelessWidget {
@@ -59,7 +60,7 @@ class SideMenu extends StatelessWidget {
               //   color: constTheme.sidebarText,
               // ),
               iconBuilder(
-                assetName: Icons.dynamic_form_rounded,
+                assetName: Appicon.zuzhiDataOrganization6,
                 name: "Guilds",
                 color: constTheme.sidebarText,
                 selected: id == 3,
@@ -87,9 +88,9 @@ iconBuilder({
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(padding: EdgeInsets.only(top: 1.w), child: Icon(assetName, size: 16.w, color: color)),
+            Icon(assetName, size: 16.w, color: color),
             SizedBox(width: 10.w),
-            Text(name, style: TextStyle(color: color, fontSize: 13.w, height: 1)),
+            Text(name, style: TextStyle(color: color, fontSize: 14.w, height: 1)),
           ],
         ),
       ),

@@ -1,7 +1,11 @@
 import 'package:asyou_app/components/appicon.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../bridge_generated.dart';
 import '../../components/dao/text.dart';
+import '../../rust_wraper.io.dart';
+import '../../store/im.dart';
 import '../../store/theme.dart';
 
 class RoadMapPage extends StatefulWidget {
@@ -12,6 +16,25 @@ class RoadMapPage extends StatefulWidget {
 }
 
 class _RoadMapPageState extends State<RoadMapPage> {
+  late final IMProvider im;
+  List<Quarter> quarters = [];
+
+  @override
+  void initState() {
+    super.initState();
+    im = context.read<IMProvider>();
+    getData();
+  }
+
+  getData() async {
+    quarters = await rustApi.daoRoadmap(
+      client: im.currentState!.chainClient,
+      daoId: im.currentState!.org.daoId,
+      year: 2023,
+    );
+    setState(() {});
+  }
+
   List<String> list1 = [
     "用户客户端 即时通讯功能",
     "用户客户端 移动端",
@@ -100,10 +123,11 @@ class _RoadMapPageState extends State<RoadMapPage> {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 SizedBox(width: 20.w),
-                _createListView("2023.Q1", list1),
-                _createListView("2023.Q2", list2),
-                _createListView("2023.Q3", list3),
-                _createListView("2023.Q4", list4),
+                for (var quarter in quarters)
+                  _createListView(
+                    "${quarter.year}.Q${quarter.quarter}",
+                    quarter.tasks.map((e) => e.name).toList(),
+                  ),
               ],
             ),
           ),
@@ -133,7 +157,11 @@ class _RoadMapPageState extends State<RoadMapPage> {
                 margin: EdgeInsets.all(10.w),
                 child: Text(
                   name,
-                  style: TextStyle(color: constTheme.mentionColor, fontSize: 14.w),
+                  style: TextStyle(
+                    color: constTheme.mentionColor,
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Text(
@@ -146,7 +174,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
             child: ListView.builder(
               itemCount: items.length,
               shrinkWrap: true,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               itemBuilder: (context, index) {
                 return Container(
                   width: double.maxFinite,
@@ -161,13 +189,15 @@ class _RoadMapPageState extends State<RoadMapPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Appicon.a24gfpaperclipCircle,
-                              color: constTheme.centerChannelColor.withOpacity(0.5), size: 25.w),
-                          SizedBox(width: 10.w),
+                          Icon(Appicon.qubiezhen, color: constTheme.centerChannelColor, size: 16.w),
+                          SizedBox(width: 7.w),
                           Expanded(
                             child: Text(
                               items[index],
-                              style: TextStyle(color: constTheme.centerChannelColor, fontSize: 14.w),
+                              style: TextStyle(
+                                color: constTheme.centerChannelColor,
+                                fontSize: 14.w,
+                              ),
                               textAlign: TextAlign.left,
                               // overflow: TextOverflow.ellipsis,
                             ),
