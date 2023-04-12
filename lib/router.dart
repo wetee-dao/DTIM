@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 
-import 'components/window/virtual_window_frame.dart';
 import 'pages/channel/create.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
@@ -135,9 +134,9 @@ getPage(String url, Function closeModel) {
 }
 
 renderFram(Widget page) {
-  if (isPc()) {
-    return VirtualWindowFrame(child: page);
-  }
+  // if (isPc()) {
+  //   return VirtualWindowFrame(child: page);
+  // }
   return page;
 }
 

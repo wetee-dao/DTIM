@@ -53,11 +53,10 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
                 children: [
                   Container(
                     color: constTheme.centerChannelColor.withOpacity(0.08),
-                    // color: Colors.red,
-                    width: 1.w,
+                    width: 1,
                     height: double.infinity,
                   ),
-                  SizedBox(width: 1.w, height: double.infinity),
+                  const SizedBox(width: 1, height: double.infinity),
                 ],
               ),
             ),

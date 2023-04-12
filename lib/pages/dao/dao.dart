@@ -85,16 +85,19 @@ class _DaoPageState extends State<DaoPage> {
               // actions: const [AppBarActionItem()],
             )
           : LocalAppBar(
-              height: 45.w,
+              height: 55.w,
               title: "Wetee DAO",
               showMacosTop: false,
-              leading: IconButton(
-                onPressed: () {
-                  drawerKey.currentState!.openDrawer();
-                },
-                icon: Icon(
-                  Appicon.organcode,
-                  color: constTheme.sidebarHeaderTextColor,
+              leading: Padding(
+                padding: EdgeInsets.only(left: 10.w),
+                child: IconButton(
+                  onPressed: () {
+                    drawerKey.currentState!.openDrawer();
+                  },
+                  icon: Icon(
+                    Appicon.organcode,
+                    color: constTheme.sidebarHeaderTextColor,
+                  ),
                 ),
               ),
               // actions: const [AppBarActionItem()],

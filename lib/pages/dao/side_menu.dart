@@ -83,7 +83,7 @@ iconBuilder({
 }) =>
     InkWell(
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 8.w),
+        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 15.w),
         color: selected != null && selected ? color.withOpacity(0.08) : null,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

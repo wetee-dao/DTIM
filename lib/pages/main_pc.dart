@@ -87,7 +87,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
                 children: [
                   if (Platform.isMacOS) SizedBox(height: 20.w),
                   SizedBox(height: 12.w),
-
                   // 用户
                   Container(
                     width: 42.w,
@@ -96,21 +95,18 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     child: UserAvatar(
                       key: Key(im.currentState!.user.id.toString()),
                       im.me!.address,
-                      // "",
                       true,
-                      52.w,
+                      42.w,
                       bg: constTheme.sidebarText.withOpacity(0.1),
                       color: constTheme.sidebarText,
                     ),
                   ),
-
                   // Container(
                   //   width: 8.w,
                   //   height: 4.w,
                   //   margin: EdgeInsets.only(top: 5.w, bottom: 10.w),
                   //   decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
                   // ),
-
                   // 设置
                   // SiderBarItem(
                   //   Icons.settings_applications,
@@ -120,7 +116,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
                   //   },
                   // ),
-
                   Flexible(
                     child: StreamBuilder(
                       stream: currentId.stream,
@@ -139,7 +134,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       },
                     ),
                   ),
-
                   // InkWell(
                   //   onTap: () async {
                   //     const storage = FlutterSecureStorage();
