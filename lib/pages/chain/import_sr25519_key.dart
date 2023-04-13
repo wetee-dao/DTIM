@@ -175,7 +175,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
               width: MediaQuery.of(context).size.width * 0.4,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: constTheme.centerChannelColor,
+                color: constTheme.buttonBg,
                 borderRadius: BorderRadius.circular(5.w),
               ),
               child: Row(
@@ -185,7 +185,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                       child: Text(
                         '下一步',
                         style: TextStyle(
-                          color: constTheme.centerChannelBg,
+                          color: constTheme.buttonColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 19.w,
                         ),
@@ -194,7 +194,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   ),
                   Icon(
                     Icons.navigate_next,
-                    color: constTheme.centerChannelBg,
+                    color: constTheme.buttonColor,
                   )
                 ],
               ),
@@ -218,7 +218,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: constTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.account_balance_wallet,
@@ -253,7 +253,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: constTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
@@ -284,7 +284,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: constTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
@@ -338,7 +338,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 width: MediaQuery.of(context).size.width * 0.4,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: constTheme.centerChannelColor,
+                  color: constTheme.buttonBg,
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Row(
@@ -348,7 +348,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                         child: Text(
                           '创建本地账户',
                           style: TextStyle(
-                            color: constTheme.centerChannelBg,
+                            color: constTheme.buttonColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 19.w,
                           ),
@@ -357,7 +357,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                     ),
                     Icon(
                       Icons.navigate_next,
-                      color: constTheme.centerChannelBg,
+                      color: constTheme.buttonColor,
                     )
                   ],
                 ),

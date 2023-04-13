@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../store/theme.dart';
+
 Future<LoadingDialogResult<T>> waitFutureLoading<T>({
   required BuildContext context,
   required Future<T> Function() future,
@@ -70,6 +72,7 @@ class _LoadingDialogState<T> extends State<LoadingDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     final titleLabel = exception != null
         ? widget.onError?.call(exception) ?? LoadingDialog.defaultOnError(exception)
         : widget.title ?? LoadingDialog.defaultTitle;
@@ -79,7 +82,10 @@ class _LoadingDialogState<T> extends State<LoadingDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           exception == null
-              ? const CircularProgressIndicator.adaptive()
+              ? CircularProgressIndicator.adaptive(
+                  backgroundColor: constTheme.centerChannelColor.withOpacity(0.3),
+                  valueColor: AlwaysStoppedAnimation<Color>(constTheme.centerChannelColor),
+                )
               : const Icon(Icons.error_outline_outlined, color: Colors.red),
           const SizedBox(width: 20),
           Expanded(
@@ -94,6 +100,7 @@ class _LoadingDialogState<T> extends State<LoadingDialog> {
 
     return AlertDialog(
       content: content,
+      backgroundColor: Theme.of(context).brightness == Brightness.dark ? constTheme.centerChannelBg : Colors.white,
       actions: [
         if (exception != null)
           TextButton(
@@ -103,7 +110,10 @@ class _LoadingDialogState<T> extends State<LoadingDialog> {
                 stackTrace: stackTrace,
               ),
             ),
-            child: Text(widget.backLabel ?? LoadingDialog.defaultBackLabel),
+            child: Text(
+              widget.backLabel ?? LoadingDialog.defaultBackLabel,
+              style: TextStyle(color: constTheme.centerChannelColor),
+            ),
           ),
       ],
     );

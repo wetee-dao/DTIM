@@ -60,6 +60,31 @@ pub extern "C" fn wire_dao_roadmap(port_: i64, client: u32, dao_id: u64, year: u
 }
 
 #[no_mangle]
+pub extern "C" fn wire_dao_create_roadmap_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    roadmap_id: u32,
+    name: *mut wire_uint_8_list,
+    description: *mut wire_uint_8_list,
+    priority: u8,
+    tags: *mut wire_uint_8_list,
+) {
+    wire_dao_create_roadmap_task_impl(
+        port_,
+        from,
+        client,
+        dao_id,
+        roadmap_id,
+        name,
+        description,
+        priority,
+        tags,
+    )
+}
+
+#[no_mangle]
 pub extern "C" fn wire_dao_projects(port_: i64, client: u32, dao_id: u64) {
     wire_dao_projects_impl(port_, client, dao_id)
 }
@@ -69,7 +94,17 @@ pub extern "C" fn wire_dao_guilds(port_: i64, client: u32, dao_id: u64) {
     wire_dao_guilds_impl(port_, client, dao_id)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_ss58(port_: i64, address: *mut wire_uint_8_list, prefix: *mut u16) {
+    wire_ss58_impl(port_, address, prefix)
+}
+
 // Section: allocate functions
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_u16_0(value: u16) -> *mut u16 {
+    support::new_leak_box_ptr(value)
+}
 
 #[no_mangle]
 pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
@@ -88,6 +123,11 @@ impl Wire2Api<String> for *mut wire_uint_8_list {
     fn wire2api(self) -> String {
         let vec: Vec<u8> = self.wire2api();
         String::from_utf8_lossy(&vec).into_owned()
+    }
+}
+impl Wire2Api<u16> for *mut u16 {
+    fn wire2api(self) -> u16 {
+        unsafe { *support::box_from_leak_ptr(self) }
     }
 }
 

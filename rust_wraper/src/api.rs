@@ -111,6 +111,34 @@ pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Qu
     Ok(quarters)
 }
 
+// 创建季度任务
+pub fn dao_create_roadmap_task(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    roadmap_id: u32,
+    name: String,
+    description: String,
+    priority: u8,
+    tags: Vec<u8>,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let res = dao
+        .create_task(
+            from,
+            dao_id,
+            roadmap_id,
+            name.into(),
+            priority,
+            description.into(),
+            Some(tags),
+        )
+        .unwrap();
+    Ok(true)
+}
+
 pub fn dao_projects(client: u32, dao_id: u64) -> anyhow::Result<Vec<ProjectInfo>> {
     let c = Client::from_index(client)?;
     let mut project = WeteeProject::new(c);
@@ -143,4 +171,15 @@ pub fn dao_guilds(client: u32, dao_id: u64) -> anyhow::Result<Vec<GuildInfo>> {
             meta_data: String::from_utf8(g.meta_data).unwrap(),
         })
         .collect())
+}
+
+pub fn ss58(address: String, prefix: Option<u16>) -> anyhow::Result<String> {
+    match prefix {
+        Some(i) => {
+            return Ok(account::address_to_ss58(address, i)?);
+        }
+        _ => {
+            return Ok(account::address_to_ss58(address, 42)?);
+        }
+    };
 }

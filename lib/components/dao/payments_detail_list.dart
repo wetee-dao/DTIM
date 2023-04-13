@@ -9,8 +9,10 @@ import 'text.dart';
 class PaymentsDetailList extends StatelessWidget {
   final AssetAccountData nativeAmount;
   final AssetAccountData share;
+  final String address;
   const PaymentsDetailList({
     Key? key,
+    required this.address,
     required this.nativeAmount,
     required this.share,
   }) : super(key: key);
@@ -33,16 +35,17 @@ class PaymentsDetailList extends StatelessWidget {
             children: [
               Icon(Icons.wallet_rounded, color: constTheme.centerChannelColor.withOpacity(0.5), size: 30.w),
               SizedBox(height: 15.w),
-              Text("4562 3325 5158 2385", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 17.w)),
+              Text(address, style: TextStyle(color: constTheme.centerChannelColor, fontSize: 16.w)),
               SizedBox(height: 10.w),
-              Text("share: 10000", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 12.w)),
+              Text("SHARE:  ${share.free}", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
               SizedBox(height: 6.w),
-              Text("wte: 10000", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 12.w)),
+              Text("WTE:  ${nativeAmount.free}",
+                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
               SizedBox(height: 5.w),
             ],
           ),
         ),
-        SizedBox(height: 15.w),
+        SizedBox(height: 20.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
@@ -58,9 +61,9 @@ class PaymentsDetailList extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 15.w,
-        ),
+        // SizedBox(
+        //   height: 10.w,
+        // ),
         Column(
           children: List.generate(
             recentActivities.length,
@@ -71,40 +74,40 @@ class PaymentsDetailList extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 15.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            PrimaryText(
-              text: 'Upcoming Payments',
-              size: 18,
-              fontWeight: FontWeight.w800,
-            ),
-            PrimaryText(
-              text: '12 May, 2022',
-              size: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ],
-        ),
-        SizedBox(height: 15.w),
-        Column(
-          children: List.generate(
-            upcomingPayments.length,
-            (index) => PaymentListTile(
-              icon: upcomingPayments[index].icon,
-              amount: upcomingPayments[index].amount,
-              label: upcomingPayments[index].label,
-            ),
-          ),
-        ),
+        // SizedBox(height: 15.w),
+        // Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: const [
+        //     PrimaryText(
+        //       text: 'Upcoming Payments',
+        //       size: 18,
+        //       fontWeight: FontWeight.w800,
+        //     ),
+        //     PrimaryText(
+        //       text: '12 May, 2022',
+        //       size: 14,
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ],
+        // ),
+        // SizedBox(height: 15.w),
+        // Column(
+        //   children: List.generate(
+        //     upcomingPayments.length,
+        //     (index) => PaymentListTile(
+        //       icon: upcomingPayments[index].icon,
+        //       amount: upcomingPayments[index].amount,
+        //       label: upcomingPayments[index].label,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
 }
 
 const recentActivities = [
-  AmontItem(icon: Icons.home, label: 'Water Bill', amount: "\$120"),
+  AmontItem(icon: Icons.account_circle_rounded, label: 'Water Bill', amount: "\$120"),
 ];
 
 const upcomingPayments = [

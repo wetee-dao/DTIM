@@ -27,6 +27,7 @@ class _OverviewpageState extends State<Overviewpage> {
   List<ProjectInfo> projects = [];
   AssetAccountData? nativeAmount;
   AssetAccountData? share;
+  String? ss58Address;
 
   @override
   void initState() {
@@ -40,7 +41,8 @@ class _OverviewpageState extends State<Overviewpage> {
     projects = await rustApi.daoProjects(client: im.currentState!.chainClient, daoId: im.currentState!.org.daoId);
     share = await rustApi.daoBalance(
         client: im.currentState!.chainClient, daoId: im.currentState!.org.daoId, address: im.me!.address);
-    nativeAmount = await rustApi.daoBalance(client: im.currentState!.chainClient, daoId: 0, address: im.me!.address);
+    nativeAmount = await rustApi.nativeBalance(client: im.currentState!.chainClient, address: im.me!.address);
+    ss58Address = await rustApi.ss58(address: im.me!.address);
     setState(() {});
   }
 
@@ -139,17 +141,17 @@ class _OverviewpageState extends State<Overviewpage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          PrimaryText(
-                            text: 'Open Tasks',
-                            size: 25.w,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(width: 10.w),
-                          Icon(Icons.add_circle_outline_rounded, color: constTheme.centerChannelColor, size: 22.w),
-                        ],
+                      // Row(
+                      //   children: [
+                      PrimaryText(
+                        text: 'Open Referendums',
+                        size: 25.w,
+                        fontWeight: FontWeight.bold,
                       ),
+                      // SizedBox(width: 10.w),
+                      // Icon(Icons.add_circle_outline_rounded, color: constTheme.centerChannelColor, size: 22.w),
+                      //   ],
+                      // ),
                       PrimaryText(
                         text: 'Transaction of past 6 months',
                         size: 14.w,
@@ -171,6 +173,7 @@ class _OverviewpageState extends State<Overviewpage> {
               padding: const EdgeInsets.all(30),
               child: share != null && nativeAmount != null
                   ? PaymentsDetailList(
+                      address: ss58Address!,
                       share: share!,
                       nativeAmount: nativeAmount!,
                     )

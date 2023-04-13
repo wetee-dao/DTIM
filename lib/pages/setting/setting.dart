@@ -109,8 +109,8 @@ class _SettingPageState extends State<SettingPage> {
               itemBuilder: (context, index) {
                 return HoverListItem(
                   subkey: settingNavs[index].name,
-                  color: currentId == index ? constTheme.centerChannelColor.withOpacity(0.08) : Colors.transparent,
-                  hoverColor: constTheme.sidebarTextActiveBorder.withOpacity(0.08),
+                  color: currentId == index ? constTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
+                  hoverColor: constTheme.sidebarText.withOpacity(0.08),
                   onPressed: () async {
                     onSelect(index);
                   },

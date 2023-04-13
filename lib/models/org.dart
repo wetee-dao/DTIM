@@ -23,6 +23,9 @@ class Org {
   // 团队元数据
   OrgMetaData? metaData;
 
+  // 应用列表
+  List<OrgApp> apps = [];
+
   Org(
     this.hash, {
     required this.daoId,
@@ -30,6 +33,7 @@ class Org {
     this.desc,
     this.metaData,
     this.chainUrl,
+    this.apps = const [],
   });
 }
 
@@ -60,4 +64,28 @@ class OrgMetaData {
     this.img,
     this.color,
   });
+}
+
+@Entity()
+class OrgApp {
+  @Id()
+  int appId = 0;
+
+  // 应用hash
+  String hash = "";
+
+  // 应用类型
+  // 0 => web3
+  // 1 => web2
+  // 2 => tee
+  int type = 0;
+
+  // 应用地址
+  String? url;
+
+  // 应用名
+  String? name;
+
+  // 应用
+  String? desc;
 }

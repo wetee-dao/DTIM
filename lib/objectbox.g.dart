@@ -335,6 +335,45 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(14, 7315597849610468957),
+      name: 'OrgApp',
+      lastPropertyId: const IdUid(6, 4867618961141314490),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 1890678016224576347),
+            name: 'appId',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 322689212148299817),
+            name: 'hash',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2117625900209678755),
+            name: 'type',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 4252236491369412329),
+            name: 'url',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 8693550107688805949),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 4867618961141314490),
+            name: 'desc',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -358,7 +397,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(13, 8805179345298925698),
+      lastEntityId: const IdUid(14, 7315597849610468957),
       lastIndexId: const IdUid(14, 2038028947041398503),
       lastRelationId: const IdUid(2, 2905611084694405217),
       lastSequenceId: const IdUid(0, 0),
@@ -786,6 +825,50 @@ ModelDefinition getObjectBoxModel() {
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
+        }),
+    OrgApp: EntityDefinition<OrgApp>(
+        model: _entities[7],
+        toOneRelations: (OrgApp object) => [],
+        toManyRelations: (OrgApp object) => {},
+        getId: (OrgApp object) => object.appId,
+        setId: (OrgApp object, int id) {
+          object.appId = id;
+        },
+        objectToFB: (OrgApp object, fb.Builder fbb) {
+          final hashOffset = fbb.writeString(object.hash);
+          final urlOffset =
+              object.url == null ? null : fbb.writeString(object.url!);
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final descOffset =
+              object.desc == null ? null : fbb.writeString(object.desc!);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.appId);
+          fbb.addOffset(1, hashOffset);
+          fbb.addInt64(2, object.type);
+          fbb.addOffset(3, urlOffset);
+          fbb.addOffset(4, nameOffset);
+          fbb.addOffset(5, descOffset);
+          fbb.finish(fbb.endTable());
+          return object.appId;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = OrgApp()
+            ..appId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..hash = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 6, '')
+            ..type = const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)
+            ..url = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 10)
+            ..name = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 12)
+            ..desc = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 14);
+
+          return object;
         })
   };
 
@@ -984,4 +1067,25 @@ class OrgMetaData_ {
   /// see [OrgMetaData.homeUrl]
   static final homeUrl =
       QueryStringProperty<OrgMetaData>(_entities[6].properties[5]);
+}
+
+/// [OrgApp] entity fields to define ObjectBox queries.
+class OrgApp_ {
+  /// see [OrgApp.appId]
+  static final appId = QueryIntegerProperty<OrgApp>(_entities[7].properties[0]);
+
+  /// see [OrgApp.hash]
+  static final hash = QueryStringProperty<OrgApp>(_entities[7].properties[1]);
+
+  /// see [OrgApp.type]
+  static final type = QueryIntegerProperty<OrgApp>(_entities[7].properties[2]);
+
+  /// see [OrgApp.url]
+  static final url = QueryStringProperty<OrgApp>(_entities[7].properties[3]);
+
+  /// see [OrgApp.name]
+  static final name = QueryStringProperty<OrgApp>(_entities[7].properties[4]);
+
+  /// see [OrgApp.desc]
+  static final desc = QueryStringProperty<OrgApp>(_entities[7].properties[5]);
 }

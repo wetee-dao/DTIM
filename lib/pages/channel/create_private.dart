@@ -85,7 +85,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                   child: Container(
                     margin: EdgeInsets.only(left: 15.w),
                     child: Text(
-                      "复制分享：${im.currentState!.client.userID}",
+                      "复制ID：${getUserShortId(im.currentState!.client.userID ?? "")}",
                       style: TextStyle(
                         color: constTheme.sidebarHeaderTextColor,
                         fontWeight: FontWeight.bold,
@@ -195,10 +195,9 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
 
           Container(
             height: 55.w,
-            // margin: EdgeInsets.all(10.w),
             padding: EdgeInsets.only(left: 15.w, right: 15.w),
             decoration: BoxDecoration(
-              color: constTheme.sidebarText.withOpacity(0.1),
+              color: constTheme.centerChannelColor.withOpacity(0.1),
             ),
             alignment: Alignment.center,
             child: TextField(
@@ -207,19 +206,19 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               autofocus: false,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.go,
-              style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
+              style: TextStyle(color: constTheme.centerChannelColor.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
                 hintText: '输入id邀请,如：@username',
                 hintStyle: TextStyle(
                   height: 1.5,
-                  color: constTheme.sidebarText.withAlpha(155),
+                  color: constTheme.centerChannelColor.withAlpha(155),
                 ),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),
                 suffixIcon: IconButton(
                   key: const Key("cratePrivateSend"),
-                  icon: Icon(Icons.send_rounded, color: constTheme.sidebarText),
+                  icon: Icon(Icons.send_rounded, color: constTheme.buttonBg),
                   onPressed: () async {
                     final client = im.currentState!.client;
                     final org = im.currentState!.org;

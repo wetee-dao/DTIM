@@ -60,6 +60,19 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kDaoRoadmapConstMeta;
 
+  Future<bool> daoCreateRoadmapTask(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int roadmapId,
+      required String name,
+      required String description,
+      required int priority,
+      required Uint8List tags,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoCreateRoadmapTaskConstMeta;
+
   Future<List<ProjectInfo>> daoProjects(
       {required int client, required int daoId, dynamic hint});
 
@@ -69,6 +82,10 @@ abstract class RustWraper {
       {required int client, required int daoId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoGuildsConstMeta;
+
+  Future<String> ss58({required String address, int? prefix, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSs58ConstMeta;
 }
 
 class AssetAccountData {
@@ -378,6 +395,58 @@ class RustWraperImpl implements RustWraper {
         argNames: ["client", "daoId", "year"],
       );
 
+  Future<bool> daoCreateRoadmapTask(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int roadmapId,
+      required String name,
+      required String description,
+      required int priority,
+      required Uint8List tags,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = api2wire_u32(roadmapId);
+    var arg4 = _platform.api2wire_String(name);
+    var arg5 = _platform.api2wire_String(description);
+    var arg6 = api2wire_u8(priority);
+    var arg7 = _platform.api2wire_uint_8_list(tags);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_create_roadmap_task(
+          port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoCreateRoadmapTaskConstMeta,
+      argValues: [
+        from,
+        client,
+        daoId,
+        roadmapId,
+        name,
+        description,
+        priority,
+        tags
+      ],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoCreateRoadmapTaskConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_create_roadmap_task",
+        argNames: [
+          "from",
+          "client",
+          "daoId",
+          "roadmapId",
+          "name",
+          "description",
+          "priority",
+          "tags"
+        ],
+      );
+
   Future<List<ProjectInfo>> daoProjects(
       {required int client, required int daoId, dynamic hint}) {
     var arg0 = api2wire_u32(client);
@@ -414,6 +483,24 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "dao_guilds",
         argNames: ["client", "daoId"],
+      );
+
+  Future<String> ss58({required String address, int? prefix, dynamic hint}) {
+    var arg0 = _platform.api2wire_String(address);
+    var arg1 = _platform.api2wire_opt_box_autoadd_u16(prefix);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_ss58(port_, arg0, arg1),
+      parseSuccessData: _wire2api_String,
+      constMeta: kSs58ConstMeta,
+      argValues: [address, prefix],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSs58ConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "ss58",
+        argNames: ["address", "prefix"],
       );
 
   void dispose() {
@@ -533,6 +620,11 @@ class RustWraperImpl implements RustWraper {
 // Section: api2wire
 
 @protected
+int api2wire_u16(int raw) {
+  return raw;
+}
+
+@protected
 int api2wire_u32(int raw) {
   return raw;
 }
@@ -552,6 +644,16 @@ class RustWraperPlatform extends FlutterRustBridgeBase<RustWraperWire> {
   @protected
   ffi.Pointer<wire_uint_8_list> api2wire_String(String raw) {
     return api2wire_uint_8_list(utf8.encoder.convert(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint16> api2wire_box_autoadd_u16(int raw) {
+    return inner.new_box_autoadd_u16_0(api2wire_u16(raw));
+  }
+
+  @protected
+  ffi.Pointer<ffi.Uint16> api2wire_opt_box_autoadd_u16(int? raw) {
+    return raw == null ? ffi.nullptr : api2wire_box_autoadd_u16(raw);
   }
 
   @protected
@@ -823,6 +925,55 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_dao_roadmap =
       _wire_dao_roadmapPtr.asFunction<void Function(int, int, int, int)>();
 
+  void wire_dao_create_roadmap_task(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int roadmap_id,
+    ffi.Pointer<wire_uint_8_list> name,
+    ffi.Pointer<wire_uint_8_list> description,
+    int priority,
+    ffi.Pointer<wire_uint_8_list> tags,
+  ) {
+    return _wire_dao_create_roadmap_task(
+      port_,
+      from,
+      client,
+      dao_id,
+      roadmap_id,
+      name,
+      description,
+      priority,
+      tags,
+    );
+  }
+
+  late final _wire_dao_create_roadmap_taskPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint8,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_create_roadmap_task');
+  late final _wire_dao_create_roadmap_task =
+      _wire_dao_create_roadmap_taskPtr.asFunction<
+          void Function(
+              int,
+              ffi.Pointer<wire_uint_8_list>,
+              int,
+              int,
+              int,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              int,
+              ffi.Pointer<wire_uint_8_list>)>();
+
   void wire_dao_projects(
     int port_,
     int client,
@@ -860,6 +1011,40 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Int64, ffi.Uint32, ffi.Uint64)>>('wire_dao_guilds');
   late final _wire_dao_guilds =
       _wire_dao_guildsPtr.asFunction<void Function(int, int, int)>();
+
+  void wire_ss58(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> address,
+    ffi.Pointer<ffi.Uint16> prefix,
+  ) {
+    return _wire_ss58(
+      port_,
+      address,
+      prefix,
+    );
+  }
+
+  late final _wire_ss58Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<ffi.Uint16>)>>('wire_ss58');
+  late final _wire_ss58 = _wire_ss58Ptr.asFunction<
+      void Function(
+          int, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<ffi.Uint16>)>();
+
+  ffi.Pointer<ffi.Uint16> new_box_autoadd_u16_0(
+    int value,
+  ) {
+    return _new_box_autoadd_u16_0(
+      value,
+    );
+  }
+
+  late final _new_box_autoadd_u16_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint16> Function(ffi.Uint16)>>(
+          'new_box_autoadd_u16_0');
+  late final _new_box_autoadd_u16_0 = _new_box_autoadd_u16_0Ptr
+      .asFunction<ffi.Pointer<ffi.Uint16> Function(int)>();
 
   ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
     int len,

@@ -12,7 +12,7 @@ import '../../store/theme.dart';
 import 'board.dart';
 import 'guild.dart';
 import 'overview.dart';
-import 'road_map.dart';
+import 'roadmap.dart';
 import 'side_menu.dart';
 
 class DaoPage extends StatefulWidget {
@@ -89,7 +89,7 @@ class _DaoPageState extends State<DaoPage> {
               title: "Wetee DAO",
               showMacosTop: false,
               leading: Padding(
-                padding: EdgeInsets.only(left: 10.w),
+                padding: EdgeInsets.only(left: 8.w),
                 child: IconButton(
                   onPressed: () {
                     drawerKey.currentState!.openDrawer();

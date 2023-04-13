@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
-// import 'package:themed/themed.dart';
 
 import '../apis/apis.dart';
 
@@ -493,7 +489,7 @@ const themes = [
   },
 ];
 
-int currentTheme = 16;
+int currentTheme = 13;
 
 ThemeData setTheme(String name) {
   currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);

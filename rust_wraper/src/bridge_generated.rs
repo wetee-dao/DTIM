@@ -164,6 +164,47 @@ fn wire_dao_roadmap_impl(
         },
     )
 }
+fn wire_dao_create_roadmap_task_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    roadmap_id: impl Wire2Api<u32> + UnwindSafe,
+    name: impl Wire2Api<String> + UnwindSafe,
+    description: impl Wire2Api<String> + UnwindSafe,
+    priority: impl Wire2Api<u8> + UnwindSafe,
+    tags: impl Wire2Api<Vec<u8>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_create_roadmap_task",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_roadmap_id = roadmap_id.wire2api();
+            let api_name = name.wire2api();
+            let api_description = description.wire2api();
+            let api_priority = priority.wire2api();
+            let api_tags = tags.wire2api();
+            move |task_callback| {
+                dao_create_roadmap_task(
+                    api_from,
+                    api_client,
+                    api_dao_id,
+                    api_roadmap_id,
+                    api_name,
+                    api_description,
+                    api_priority,
+                    api_tags,
+                )
+            }
+        },
+    )
+}
 fn wire_dao_projects_impl(
     port_: MessagePort,
     client: impl Wire2Api<u32> + UnwindSafe,
@@ -200,6 +241,24 @@ fn wire_dao_guilds_impl(
         },
     )
 }
+fn wire_ss58_impl(
+    port_: MessagePort,
+    address: impl Wire2Api<String> + UnwindSafe,
+    prefix: impl Wire2Api<Option<u16>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "ss58",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_address = address.wire2api();
+            let api_prefix = prefix.wire2api();
+            move |task_callback| ss58(api_address, api_prefix)
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -223,6 +282,11 @@ where
     }
 }
 
+impl Wire2Api<u16> for u16 {
+    fn wire2api(self) -> u16 {
+        self
+    }
+}
 impl Wire2Api<u32> for u32 {
     fn wire2api(self) -> u32 {
         self

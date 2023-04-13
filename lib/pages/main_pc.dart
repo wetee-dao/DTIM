@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -26,14 +27,12 @@ class _PCPageState extends State<PCPage> with WindowListener {
   late List<AccountOrg> aorgs;
   late IMProvider im;
   late PageController pageController;
-  // int currentId = 0;
   double rightWidth = 200.w;
   String rightUrl = "";
 
   final mainPages = [
     const OrgPage(),
     const DaoPage(),
-    // SettingNav("主题", Icons.notifications),
   ];
 
   @override
@@ -88,25 +87,24 @@ class _PCPageState extends State<PCPage> with WindowListener {
                   if (Platform.isMacOS) SizedBox(height: 20.w),
                   SizedBox(height: 12.w),
                   // 用户
-                  Container(
-                    width: 42.w,
-                    height: 42.w,
-                    margin: EdgeInsets.only(bottom: 10.w),
+                  SizedBox(
+                    width: 40.w,
+                    height: 40.w,
                     child: UserAvatar(
                       key: Key(im.currentState!.user.id.toString()),
                       im.me!.address,
                       true,
-                      42.w,
+                      40.w,
                       bg: constTheme.sidebarText.withOpacity(0.1),
                       color: constTheme.sidebarText,
                     ),
                   ),
-                  // Container(
-                  //   width: 8.w,
-                  //   height: 4.w,
-                  //   margin: EdgeInsets.only(top: 5.w, bottom: 10.w),
-                  //   decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
-                  // ),
+                  Container(
+                    width: 8.w,
+                    height: 4.w,
+                    margin: EdgeInsets.only(top: 15.w, bottom: 10.w),
+                    decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
+                  ),
                   // 设置
                   // SiderBarItem(
                   //   Icons.settings_applications,
@@ -134,22 +132,22 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       },
                     ),
                   ),
-                  // InkWell(
-                  //   onTap: () async {
-                  //     const storage = FlutterSecureStorage();
-                  //     await storage.delete(key: "login_state");
-                  //     im.logout();
-                  //   },
-                  //   child: SizedBox(
-                  //     width: 40.w,
-                  //     height: 40.w,
-                  //     child: Icon(
-                  //       Icons.logout_rounded,
-                  //       size: 22.w,
-                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                  //     ),
-                  //   ),
-                  // ),
+                  InkWell(
+                    onTap: () async {
+                      const storage = FlutterSecureStorage();
+                      await storage.delete(key: "login_state");
+                      im.logout();
+                    },
+                    child: SizedBox(
+                      width: 40.w,
+                      height: 40.w,
+                      child: Icon(
+                        Icons.logout_rounded,
+                        size: 22.w,
+                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                      ),
+                    ),
+                  ),
                   // InkWell(
                   //   onTap: () {
                   //     context.go("/select_org");
@@ -175,7 +173,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                         color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.w),
                         border: Border.all(
-                          color: constTheme.sidebarTextActiveBorder,
+                          color: constTheme.sidebarTextActiveBorder.withOpacity(0.7),
                           width: 2.w,
                         ),
                       ),
@@ -216,7 +214,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                               ),
                       ),
                     ),
-                  SizedBox(height: 20.w),
+                  SizedBox(height: 15.w),
                 ],
               ),
             ),

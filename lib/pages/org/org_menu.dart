@@ -56,7 +56,6 @@ orgMenuRender(controller) {
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  print("onTap");
                   controller.hideMenu();
                   if (menuItems[i][j].onTap != null) {
                     menuItems[i][j].onTap!.call("");

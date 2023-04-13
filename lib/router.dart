@@ -4,6 +4,7 @@ import 'package:asyou_app/utils/screen.dart';
 
 import 'pages/channel/create_private.dart';
 import 'pages/channel/setting/setting.dart';
+import 'pages/dao/pop/create_roadmap.dart';
 import 'pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
@@ -28,77 +29,83 @@ routers() {
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const PreloaderPage());
+        return const PreloaderPage();
       },
     ),
     GoRoute(
       path: '/mobile',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const MobilePage());
+        return const MobilePage();
       },
     ),
     GoRoute(
-      path: '/pc',
+      path: '/pc/:app',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const PCPage());
+        return const PCPage();
       },
     ),
     GoRoute(
       path: '/sr25519key',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const Sr25519KeyPage());
+        return const Sr25519KeyPage();
       },
     ),
     GoRoute(
       path: '/importSr25519key',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const ImportSr25519KeyPage());
+        return const ImportSr25519KeyPage();
       },
     ),
     GoRoute(
       path: '/select_org',
       builder: (BuildContext context, GoRouterState state) {
         final auto = state.queryParams["auto"];
-        return renderFram(SelectOrgPage(auto: auto ?? ""));
+        return SelectOrgPage(auto: auto ?? "");
       },
     ),
     GoRoute(
       path: '/search',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const SearchPage());
+        return const SearchPage();
       },
     ),
     GoRoute(
       path: '/create_channel',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const CreateChannelPage());
+        return const CreateChannelPage();
       },
     ),
     GoRoute(
       path: '/create_private',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const CreatePrivatePage());
+        return const CreatePrivatePage();
       },
     ),
     GoRoute(
       path: '/channel_setting/:id/:t',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(ChannelSettingPage(
+        return ChannelSettingPage(
           id: state.params['id'] ?? "",
           t: state.params['t'] ?? "",
-        ));
+        );
       },
     ),
     GoRoute(
       path: '/invitation/:id',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(InvitationPage(id: state.params['id'] ?? ""));
+        return InvitationPage(id: state.params['id'] ?? "");
       },
     ),
     GoRoute(
       path: '/setting',
       builder: (BuildContext context, GoRouterState state) {
-        return renderFram(const SettingPage());
+        return const SettingPage();
+      },
+    ),
+    GoRoute(
+      path: '/create_roadmap',
+      builder: (BuildContext context, GoRouterState state) {
+        return const CreateRoadMapPage();
       },
     ),
   ];
@@ -113,6 +120,8 @@ getPage(String url, Function closeModel) {
     return SettingPage(closeModel: closeModel);
   } else if (url == "/create_private") {
     return CreatePrivatePage(closeModel: closeModel);
+  } else if (url == "/create_roadmap") {
+    return CreateRoadMapPage(closeModel: closeModel);
   } else if (url.indexOf("/channel_setting/") == 0) {
     final pstr = url.replaceAll("/channel_setting/", "");
     final ps = pstr.split("/");
@@ -131,13 +140,6 @@ getPage(String url, Function closeModel) {
   }
 
   return const Center(child: Text("404"));
-}
-
-renderFram(Widget page) {
-  // if (isPc()) {
-  //   return VirtualWindowFrame(child: page);
-  // }
-  return page;
 }
 
 showModelOrPage(context, url, {double width = 520, double height = 550}) {

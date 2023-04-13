@@ -63,7 +63,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
             // ignore: use_build_context_synchronously
-            globalCtx().go("/pc");
+            globalCtx().go("/pc/im");
           } else {
             // ignore: use_build_context_synchronously
             globalCtx().go("/mobile");
@@ -84,7 +84,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   onImInit() {
     if (im.current == null || im.currentState == null) {
       if (isPc()) {
-        context.go("/pc");
+        context.go("/pc/im");
       } else {
         context.go("/mobile");
       }
@@ -298,5 +298,6 @@ List<Org> orgs = [
       img: "https://wetee.app/static/web3/img/logo.png",
       homeUrl: "www.asyou.me/",
     ),
+    apps: [],
   )
 ];

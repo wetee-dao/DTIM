@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
 class Appicon {
-    // iconName: view
+    // iconName: tag
+  static const tag = IconData(
+    0xe7ae,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 优先级
+  static const youxianji = IconData(
+    0xe679,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: view
   static const view = IconData(
     0xe635,
     fontFamily: 'Iconfont',

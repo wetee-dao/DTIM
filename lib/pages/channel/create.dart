@@ -143,7 +143,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 50.w),
+              Expanded(child: Container()),
               InkWell(
                 onTap: submitAction,
                 child: Container(
@@ -176,6 +176,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 30.w),
             ],
           ),
         ),

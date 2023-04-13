@@ -24,23 +24,22 @@ class _ThemePageState extends State<ThemePage> {
 
   @override
   void initState() {
-    final store = SystemApi.create().store();
-    Query<System> query = store.query(System_.id.equals(1)).build();
-    final sys = query.findFirst();
+    refresh();
+    super.initState();
+  }
+
+  refresh() {
+    final sys = SystemApi.create().get();
     if (sys != null && sys.theme != "") {
       theme = sys.theme;
-    }
-    sub = query.stream().listen((s) {
-      if (s.theme != "") {
-        theme = s.theme;
+      if (mounted) {
+        setState(() {});
       }
-    });
-    super.initState();
+    }
   }
 
   @override
   void dispose() {
-    sub.cancel();
     super.dispose();
   }
 
@@ -69,7 +68,9 @@ class _ThemePageState extends State<ThemePage> {
                   AdaptiveTheme.of(context).setTheme(
                     light: setTheme(v),
                   );
-                  setState(() {});
+                  Timer(const Duration(milliseconds: 100), () {
+                    refresh();
+                  });
                 },
               ),
               ThemeSettingsTile(
@@ -81,7 +82,9 @@ class _ThemePageState extends State<ThemePage> {
                   AdaptiveTheme.of(context).setTheme(
                     light: setTheme(v),
                   );
-                  setState(() {});
+                  Timer(const Duration(milliseconds: 100), () {
+                    refresh();
+                  });
                 },
               ),
             ],

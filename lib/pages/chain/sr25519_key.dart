@@ -105,7 +105,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           Container(
             padding: EdgeInsets.all(5.w),
             decoration: BoxDecoration(
-              color: constTheme.sidebarBg,
+              color: constTheme.centerChannelColor.withOpacity(0.08),
               borderRadius: BorderRadius.circular(5.w),
             ),
             child: Wrap(
@@ -196,12 +196,12 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 vertical: 15.w,
                 horizontal: 30.w,
               ),
-              width: MediaQuery.of(context).size.width * 0.4,
-              alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: constTheme.centerChannelColor,
+                color: constTheme.buttonBg,
                 borderRadius: BorderRadius.circular(5.w),
               ),
+              width: MediaQuery.of(context).size.width * 0.4,
+              alignment: Alignment.center,
               child: Row(
                 children: [
                   Expanded(
@@ -209,7 +209,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                       child: Text(
                         L10n.of(context)!.next,
                         style: TextStyle(
-                          color: constTheme.centerChannelBg,
+                          color: constTheme.buttonColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 19.w,
                         ),
@@ -218,7 +218,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   ),
                   Icon(
                     Icons.navigate_next,
-                    color: constTheme.centerChannelBg,
+                    color: constTheme.buttonColor,
                   )
                 ],
               ),
@@ -243,7 +243,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: constTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.account_balance_wallet,
@@ -279,7 +279,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: constTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
@@ -311,7 +311,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   color: constTheme.centerChannelColor,
                 ),
                 filled: true,
-                fillColor: constTheme.sidebarBg.withOpacity(0.2),
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.password,
@@ -368,7 +368,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 width: MediaQuery.of(context).size.width * 0.4,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: constTheme.centerChannelColor,
+                  color: constTheme.buttonBg,
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Row(
@@ -378,7 +378,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                         child: Text(
                           L10n.of(context)!.createAccount,
                           style: TextStyle(
-                            color: constTheme.centerChannelBg,
+                            color: constTheme.buttonColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 19.w,
                           ),
@@ -387,7 +387,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                     ),
                     Icon(
                       Icons.navigate_next,
-                      color: constTheme.centerChannelBg,
+                      color: constTheme.buttonColor,
                     )
                   ],
                 ),

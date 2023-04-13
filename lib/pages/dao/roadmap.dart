@@ -1,4 +1,5 @@
 import 'package:asyou_app/components/appicon.dart';
+import 'package:asyou_app/router.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,14 +75,56 @@ class _RoadMapPageState extends State<RoadMapPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30.w),
-              PrimaryText(
-                text: 'RoadMap',
-                size: 25.w,
-                fontWeight: FontWeight.w800,
+              Row(
+                children: [
+                  Icon(
+                    Icons.integration_instructions_rounded,
+                    size: 30.w,
+                    color: constTheme.centerChannelColor,
+                  ),
+                  SizedBox(width: 10.w),
+                  PrimaryText(
+                    text: 'RoadMap',
+                    size: 25.w,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  Expanded(child: Container()),
+                  InkWell(
+                    onTap: () {
+                      showModelOrPage(context, "/create_roadmap");
+                    },
+                    child: Container(
+                      height: 30.w,
+                      padding: EdgeInsets.all(5.w),
+                      decoration: BoxDecoration(
+                        color: constTheme.buttonBg,
+                        borderRadius: BorderRadius.circular(5.w),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add_circle_outline_rounded,
+                            size: 20.w,
+                            color: constTheme.buttonColor,
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            "添加",
+                            style: TextStyle(
+                              fontSize: 14.w,
+                              color: constTheme.buttonColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: '工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目',
+                text: '工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目',
                 size: 14.w,
               ),
               SizedBox(height: 15.w),
@@ -164,9 +207,11 @@ class _RoadMapPageState extends State<RoadMapPage> {
                   ),
                 ),
               ),
-              Text(
-                items.length.toString(),
-                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 12.w),
+              Expanded(
+                child: Text(
+                  items.length.toString(),
+                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 12.w),
+                ),
               ),
             ],
           ),
