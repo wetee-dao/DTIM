@@ -171,7 +171,6 @@ fn wire_dao_create_roadmap_task_impl(
     dao_id: impl Wire2Api<u64> + UnwindSafe,
     roadmap_id: impl Wire2Api<u32> + UnwindSafe,
     name: impl Wire2Api<String> + UnwindSafe,
-    description: impl Wire2Api<String> + UnwindSafe,
     priority: impl Wire2Api<u8> + UnwindSafe,
     tags: impl Wire2Api<Vec<u8>> + UnwindSafe,
 ) {
@@ -187,7 +186,6 @@ fn wire_dao_create_roadmap_task_impl(
             let api_dao_id = dao_id.wire2api();
             let api_roadmap_id = roadmap_id.wire2api();
             let api_name = name.wire2api();
-            let api_description = description.wire2api();
             let api_priority = priority.wire2api();
             let api_tags = tags.wire2api();
             move |task_callback| {
@@ -197,11 +195,60 @@ fn wire_dao_create_roadmap_task_impl(
                     api_dao_id,
                     api_roadmap_id,
                     api_name,
-                    api_description,
                     api_priority,
                     api_tags,
                 )
             }
+        },
+    )
+}
+fn wire_join_dao_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    share_expect: impl Wire2Api<u32> + UnwindSafe,
+    value: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "join_dao",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_share_expect = share_expect.wire2api();
+            let api_value = value.wire2api();
+            move |task_callback| {
+                join_dao(
+                    api_from,
+                    api_client,
+                    api_dao_id,
+                    api_share_expect,
+                    api_value,
+                )
+            }
+        },
+    )
+}
+fn wire_dao_memebers_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_memebers",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| dao_memebers(api_client, api_dao_id)
         },
     )
 }
@@ -363,7 +410,6 @@ impl support::IntoDart for QuarterTask {
         vec![
             self.id.into_dart(),
             self.name.into_dart(),
-            self.description.into_dart(),
             self.priority.into_dart(),
             self.creator.into_dart(),
             self.tags.into_dart(),

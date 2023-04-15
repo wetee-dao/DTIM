@@ -5,6 +5,7 @@ import 'package:asyou_app/utils/screen.dart';
 import 'pages/channel/create_private.dart';
 import 'pages/channel/setting/setting.dart';
 import 'pages/dao/pop/create_roadmap.dart';
+import 'pages/dao/pop/join_dao.dart';
 import 'pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
@@ -108,6 +109,12 @@ routers() {
         return const CreateRoadMapPage();
       },
     ),
+    GoRoute(
+      path: '/join_dao',
+      builder: (BuildContext context, GoRouterState state) {
+        return const JoinDaoPage();
+      },
+    ),
   ];
 }
 
@@ -122,6 +129,8 @@ getPage(String url, Function closeModel) {
     return CreatePrivatePage(closeModel: closeModel);
   } else if (url == "/create_roadmap") {
     return CreateRoadMapPage(closeModel: closeModel);
+  } else if (url.indexOf("/join_dao") == 0) {
+    return JoinDaoPage(closeModel: closeModel);
   } else if (url.indexOf("/channel_setting/") == 0) {
     final pstr = url.replaceAll("/channel_setting/", "");
     final ps = pstr.split("/");

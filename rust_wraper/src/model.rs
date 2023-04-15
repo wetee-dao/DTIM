@@ -16,9 +16,6 @@ pub struct QuarterTask {
     /// 任务名称
     /// name of the Task.
     pub name: String,
-    /// 任务描述
-    /// Purpose of the Task.
-    pub description: String,
     /// priority
     /// 优先程度
     pub priority: u8,

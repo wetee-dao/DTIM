@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -7,9 +8,9 @@ import '../store/theme.dart';
 
 class CloseBar extends StatefulWidget {
   /// The [child] contained by the CloseBar.
-  final Widget child;
+  final Widget? child;
 
-  const CloseBar({Key? key, required this.child}) : super(key: key);
+  const CloseBar({Key? key, this.child}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CloseBarState();
@@ -63,75 +64,82 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (!isPc() || Platform.isMacOS) {
-      return widget.child;
+      return widget.child ?? Container();
     }
+    if (widget.child == null) return renderIcons(constTheme);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
           padding: EdgeInsets.only(left: 2.w, top: 5.w, right: 5.w, bottom: 2.w),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  windowManager.minimize();
-                },
-                child: Icon(
-                  Icons.remove,
-                  color: constTheme.centerChannelColor.withAlpha(150),
-                  size: 20.w,
-                ),
-              ),
-              SizedBox(width: 5.w),
-              if (_isMaximized)
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    windowManager.unmaximize();
-                  },
-                  child: Icon(
-                    Icons.filter_none,
-                    color: constTheme.centerChannelColor.withAlpha(150),
-                    size: 13.w,
-                  ),
-                ),
-              if (!_isMaximized)
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    windowManager.maximize();
-                  },
-                  child: Container(
-                    width: 10.w,
-                    height: 10.w,
-                    margin: EdgeInsets.all(5.w),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: constTheme.centerChannelColor.withAlpha(150), width: 2.w),
-                    ),
-                  ),
-                ),
-              SizedBox(width: 5.w),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  // windowManager.close();
-                  // windowManager.minimize();
-                  windowManager.hide();
-                },
-                child: Icon(
-                  Icons.close,
-                  color: constTheme.centerChannelColor.withAlpha(150),
-                  size: 20.w,
-                ),
-              ),
-            ],
+          child: renderIcons(constTheme),
+        ),
+        SizedBox(height: 9.w),
+        widget.child!
+      ],
+    );
+  }
+
+  renderIcons(constTheme) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            windowManager.minimize();
+          },
+          child: Icon(
+            Appicon.zuixiaohua,
+            color: constTheme.centerChannelColor,
+            size: 17.w,
           ),
         ),
-        SizedBox(height: 3.w),
-        widget.child
+        SizedBox(width: 15.w),
+        if (_isMaximized)
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              windowManager.unmaximize();
+            },
+            child: Icon(
+              Appicon.chuangkouhua,
+              color: constTheme.centerChannelColor,
+              size: 13.w,
+            ),
+          ),
+        if (!_isMaximized)
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              windowManager.maximize();
+            },
+            child: Container(
+              width: 12.w,
+              height: 12.w,
+              // margin: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                border: Border.all(color: constTheme.centerChannelColor, width: 2.w),
+                borderRadius: BorderRadius.all(Radius.circular(2.w)),
+              ),
+            ),
+          ),
+        SizedBox(width: 13.w),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            // windowManager.close();
+            // windowManager.minimize();
+            windowManager.hide();
+          },
+          child: Icon(
+            Appicon.tuopanhua,
+            color: constTheme.centerChannelColor,
+            size: 17.w,
+          ),
+        ),
+        SizedBox(width: 2.w),
       ],
     );
   }

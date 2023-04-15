@@ -504,34 +504,6 @@ ThemeData theme() {
   return ThemeData(
     useMaterial3: true,
     brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
-
-    // colorScheme: const ColorScheme.light().copyWith(
-    //   brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
-    //   primary: hexToColor(t["centerChannelColor,"]!),
-    //   secondary: hexToColor(t["centerChannelColor"]!).withAlpha(155),
-    //   error: hexToColor(t["errorTextColor"]!),
-    //   background: hexToColor(t["centerChannelBg"]!),
-    // ),
-    // dialogTheme: DialogTheme(
-    //   backgroundColor: hexToColor(t["sidebarBg"]!),
-    //   titleTextStyle: TextStyle(color: hexToColor(t["sidebarText"]!), fontSize: 16.w),
-    //   contentTextStyle: TextStyle(color: hexToColor(t["sidebarText"]!), fontSize: 13.w),
-    //   surfaceTintColor: Colors.transparent,
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.circular(3.w),
-    //   ),
-    // ),
-    // textTheme: TextTheme(
-    //   titleMedium: TextStyle(color: hexToColor(t["centerChannelColor)"]!)),
-    // ),
-    // inputDecorationTheme: InputDecorationTheme(
-    //   labelStyle: TextStyle(height: 1.5, color: hexToColor(t["centerChannelColor)"]!)),
-    //   hintStyle: TextStyle(height: 1.5, color: hexToColor(t["centerChannelColor)"]!)),
-    // ),
-    // appBarTheme: AppBarTheme(
-    //   backgroundColor: hexToColor(t["sidebarHeaderBg"]!),
-    //   foregroundColor: hexToColor(t["sidebarHeaderTextColor"]!),
-    // ),
     extensions: [getExtTheme(currentTheme)],
   );
 }
@@ -554,6 +526,9 @@ ExtColors getExtTheme(i) {
     mentionColor: hexToColor(t["mentionColor"]!),
     centerChannelBg: hexToColor(t["centerChannelBg"]!),
     centerChannelColor: hexToColor(t["centerChannelColor"]!),
+    centerChannelDivider: t["type"] != null && t["type"] == "dark"
+        ? hexToColor(t["centerChannelColor"]!).withOpacity(0.08)
+        : hexToColor(t["centerChannelColor"]!).withOpacity(0.2),
     newMessageSeparator: hexToColor(t["newMessageSeparator"]!),
     linkColor: hexToColor(t["linkColor"]!),
     buttonBg: hexToColor(t["buttonBg"]!),
@@ -594,6 +569,7 @@ class ExtColors extends ThemeExtension<ExtColors> {
   final Color mentionColor;
   final Color centerChannelBg;
   final Color centerChannelColor;
+  final Color centerChannelDivider;
   final Color newMessageSeparator;
   final Color linkColor;
   final Color buttonBg;
@@ -601,7 +577,6 @@ class ExtColors extends ThemeExtension<ExtColors> {
   final Color errorTextColor;
   final Color mentionHighlightBg;
   final Color mentionHighlightLink;
-  // final bool dark = themes[currentTheme]["type"] != null && themes[currentTheme]["type"] == "dark";
 
   const ExtColors({
     required this.sidebarBg,
@@ -626,6 +601,7 @@ class ExtColors extends ThemeExtension<ExtColors> {
     required this.errorTextColor,
     required this.mentionHighlightBg,
     required this.mentionHighlightLink,
+    required this.centerChannelDivider,
   });
 
   @override

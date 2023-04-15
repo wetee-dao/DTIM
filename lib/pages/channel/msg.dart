@@ -4,7 +4,6 @@ import 'package:matrix/matrix.dart' as link;
 import '../../components/user_avatar.dart';
 import '../../utils/screen.dart';
 import '../../store/theme.dart';
-import '../../utils/functions.dart';
 import '../../utils/time.dart';
 import 'content/content.dart';
 import 'content/verification_request_content.dart';
@@ -175,7 +174,7 @@ class _MsgState extends State<Msg> {
     //     ),
     //   );
     // }
-    return MessageContent(event, textColor: constTheme.centerChannelColor.withOpacity(0.5));
+    return MessageContent(event, textColor: constTheme.centerChannelColor);
   }
 
   buildDayTag(event) {

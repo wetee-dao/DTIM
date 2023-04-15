@@ -4,3 +4,4 @@ export 'org.dart';
 export 'user.dart';
 export 'system.dart';
 export 'im_message_model.dart';
+export 'tag.dart';

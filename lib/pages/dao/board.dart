@@ -29,10 +29,20 @@ class _KanbanState extends State<Kanban> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30.w),
-              PrimaryText(
-                text: 'Board',
-                size: 25.w,
-                fontWeight: FontWeight.w800,
+              Row(
+                children: [
+                  Icon(
+                    Icons.library_add_rounded,
+                    size: 25.w,
+                    color: constTheme.centerChannelColor,
+                  ),
+                  SizedBox(width: 10.w),
+                  PrimaryText(
+                    text: 'Combind Boards',
+                    size: 25.w,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ],
               ),
               SizedBox(height: 8.w),
               PrimaryText(

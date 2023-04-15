@@ -14,7 +14,6 @@ class MutiSelectFormField<T> extends FormField<List<T>> {
     FormFieldValidator<List<T>>? validator,
     AutovalidateMode? autovalidateMode,
     InputDecoration? decoration,
-    required Null Function(dynamic v) onChanged,
   }) : super(
           key: key,
           autovalidateMode: autovalidateMode,

@@ -4,8 +4,11 @@ import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../bridge_generated.dart';
+import '../../components/dao/priority_icon.dart';
 import '../../components/dao/text.dart';
+import '../../models/tag.dart';
 import '../../rust_wraper.io.dart';
+import '../../store/dao_ctx.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 
@@ -18,48 +21,28 @@ class RoadMapPage extends StatefulWidget {
 
 class _RoadMapPageState extends State<RoadMapPage> {
   late final IMProvider im;
+  late final DAOCTX dao;
   List<Quarter> quarters = [];
 
   @override
   void initState() {
     super.initState();
     im = context.read<IMProvider>();
+    dao = context.read<DAOCTX>();
     getData();
   }
 
   getData() async {
     quarters = await rustApi.daoRoadmap(
-      client: im.currentState!.chainClient,
+      client: dao.chainClient,
       daoId: im.currentState!.org.daoId,
       year: 2023,
     );
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
-  List<String> list1 = [
-    "用户客户端 即时通讯功能",
-    "用户客户端 移动端",
-    "用户客户端 polkadot 登陆",
-    "DAO substrate pallet",
-    "种子轮融资",
-    "TEE Intel SGX libos",
-  ];
-  List<String> list2 = [
-    "DAO DAPP",
-    "用户客户端 DAPP render",
-    "TEE substrate pallet",
-    "wetee 基础服务端",
-    "wetee 服务端 docker 深度集成",
-    "wetee docker 运行时集成",
-    "wetee c/c++ 编译脚本模板",
-    "wetee java 编译脚本模板",
-    "wetee golang 编译脚本模板",
-    "wetee python 编译脚本模板",
-    "wetee rust 编译脚本模板",
-    "wetee run in docker 模板",
-  ];
-  List<String> list3 = ["list3_1", "list3_2"];
-  List<String> list4 = ["list3_1", "list3_2"];
   final boardScrollController = ScrollController();
 
   @override
@@ -133,7 +116,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
         ),
         Divider(
           height: 20,
-          color: constTheme.centerChannelColor.withOpacity(0.1),
+          color: constTheme.centerChannelDivider,
         ),
         Expanded(
           // child: Container(
@@ -169,7 +152,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                 for (var quarter in quarters)
                   _createListView(
                     "${quarter.year}.Q${quarter.quarter}",
-                    quarter.tasks.map((e) => e.name).toList(),
+                    quarter.tasks,
                   ),
               ],
             ),
@@ -179,7 +162,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
     );
   }
 
-  Widget _createListView(String name, List<String> items) {
+  Widget _createListView(String name, List<QuarterTask> items) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return SizedBox(
       width: 250.w,
@@ -231,45 +214,67 @@ class _RoadMapPageState extends State<RoadMapPage> {
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(bottom: 5.w),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Appicon.qubiezhen, color: constTheme.centerChannelColor, size: 16.w),
+                          Padding(
+                            padding: EdgeInsets.only(top: 3.w),
+                            child: Icon(Appicon.qubiezhen, color: constTheme.centerChannelColor, size: 16.w),
+                          ),
                           SizedBox(width: 7.w),
                           Expanded(
                             child: Text(
-                              items[index],
+                              items[index].name,
                               style: TextStyle(
                                 color: constTheme.centerChannelColor,
                                 fontSize: 14.w,
                               ),
                               textAlign: TextAlign.left,
-                              // overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 40.w,
-                        child: Row(
-                          children: [
+                      SizedBox(height: 10.w),
+                      Wrap(
+                        runSpacing: 5.w,
+                        spacing: 5.w,
+                        alignment: WrapAlignment.start,
+                        children: [
+                          Container(
+                            // height: 23.w,
+                            decoration: BoxDecoration(
+                              color: constTheme.centerChannelColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(5.w),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 8.w),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                PriorityIcon(size: 2.w, priority: items[index].priority),
+                                SizedBox(width: 5.w),
+                                Text(
+                                  prioritys[items[index].priority] ?? "",
+                                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 10.w),
+                                ),
+                              ],
+                            ),
+                          ),
+                          for (var tag in items[index].tags)
                             Container(
-                              height: 23.w,
-                              width: 65.w,
                               decoration: BoxDecoration(
-                                color: constTheme.buttonBg,
+                                color: constTheme.centerChannelColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(5.w),
                               ),
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: 5.w),
+                              padding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 8.w),
                               child: Text(
-                                "TAG",
-                                style: TextStyle(color: constTheme.buttonColor, fontSize: 14.w),
+                                findTag(tag).label,
+                                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 10.w),
                               ),
                             ),
-                          ],
-                        ),
-                      )
+                        ],
+                      ),
                     ],
                   ),
                 );

@@ -284,22 +284,10 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       height: 66.w,
-      // margin: EdgeInsets.only(
-      //   left: 20.w,
-      //   right: 20.w,
-      //   top: 3.w,
-      //   bottom: 20.w,
-      // ),
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
       decoration: BoxDecoration(
         color: constTheme.centerChannelBg,
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.red.withOpacity(0.8),
-        //     blurRadius: 2,
-        //   ),
-        // ],
-        border: Border(top: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08))),
+        border: Border(top: BorderSide(color: constTheme.centerChannelDivider)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,7 +299,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               width: 25.w,
               height: 25.w,
               decoration: BoxDecoration(
-                color: constTheme.centerChannelColor.withAlpha(150),
+                color: constTheme.centerChannelColor.withAlpha(200),
                 borderRadius: BorderRadius.circular(25.w),
               ),
               child: Icon(
@@ -420,7 +408,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 hintText: '发送消息至 ${widget.room.name}',
                 hintStyle: TextStyle(
                   height: 1.5,
-                  color: constTheme.sidebarText.withAlpha(155),
+                  color: constTheme.centerChannelColor.withAlpha(200),
                 ),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(

@@ -1,7 +1,56 @@
 import 'package:flutter/material.dart';
 
 class Appicon {
-    // iconName: tag
+    // iconName: 分享/share
+  static const fenxiangshare = IconData(
+    0xe60e,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 资产
+  static const zichan = IconData(
+    0xe611,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 项目
+  static const xiangmu = IconData(
+    0xe62e,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 最大化
+  static const zuidahua = IconData(
+    0xe621,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 托盘化
+  static const tuopanhua = IconData(
+    0xe60f,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 最小化
+  static const zuixiaohua = IconData(
+    0xe610,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: 窗口化
+  static const chuangkouhua = IconData(
+    0xe612,
+    fontFamily: 'Iconfont',
+    matchTextDirection: true,
+  );
+
+  // iconName: tag
   static const tag = IconData(
     0xe7ae,
     fontFamily: 'Iconfont',

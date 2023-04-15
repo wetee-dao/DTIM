@@ -1,17 +1,19 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'dart:typed_data';
+
+import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:matrix/matrix.dart' as link;
 
 import '../../../components/components.dart';
+import '../../../components/dao/priority_icon.dart';
 import '../../../components/form/muti_select.dart';
 import '../../../components/form/select.dart';
-import '../../../components/form/switch.dart';
+import '../../../models/models.dart';
 import '../../../router.dart';
+import '../../../store/im.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
@@ -25,11 +27,18 @@ class CreateRoadMapPage extends StatefulWidget {
 
 class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
   bool publicGroup = false;
-  final SubmitData _data = SubmitData(groupName: "", preset: link.CreateRoomPreset.publicChat);
+  late final IMProvider im;
+  final SubmitData _data = SubmitData(
+    roadmapId: 202301,
+    name: "",
+    priority: 0,
+    tags: [],
+  );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    im = context.read<IMProvider>();
     super.initState();
   }
 
@@ -41,9 +50,18 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
     await waitFutureLoading(
       context: context,
       future: () async {
-        return "";
+        await rustApi.daoCreateRoadmapTask(
+          from: im.me!.address,
+          client: im.currentState!.chainClient,
+          daoId: im.currentState!.org.daoId,
+          roadmapId: _data.roadmapId,
+          name: _data.name,
+          priority: _data.priority,
+          tags: Uint8List.fromList(_data.tags),
+        );
       },
     );
+
     //跳转到组织列表
     if (!mounted) return;
     BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
@@ -103,32 +121,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                   prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  _data.groupName = v ?? "";
-                },
-                validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                  if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
-                  }
-                  if (value == null || value.isEmpty) {
-                    return '名称不能为空';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10.w),
-              TextFormField(
-                style: TextStyle(color: constTheme.centerChannelColor),
-                decoration: InputDecoration(
-                  hintText: '描述',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.info_outline_rounded, color: constTheme.centerChannelColor),
-                ),
-                onSaved: (v) {
-                  _data.groupName = v ?? "";
+                  _data.name = v ?? "";
                 },
                 validator: (value) {
                   RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
@@ -143,31 +136,31 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
               ),
               SizedBox(height: 10.w),
               SelectFormField<int>(
-                initialValue: 0,
+                initialValue: _data.roadmapId,
                 options: <PopupMenuItem<int>>[
                   PopupMenuItem<int>(
-                    value: 0,
+                    value: 202301,
                     child: Text(
                       "2023.Q1",
                       style: titleStyle,
                     ),
                   ),
                   PopupMenuItem<int>(
-                    value: 1,
+                    value: 202302,
                     child: Text(
                       "2023.Q2",
                       style: titleStyle,
                     ),
                   ),
                   PopupMenuItem<int>(
-                    value: 2,
+                    value: 202303,
                     child: Text(
                       "2023.Q3",
                       style: titleStyle,
                     ),
                   ),
                   PopupMenuItem<int>(
-                    value: 3,
+                    value: 202304,
                     child: Text(
                       "2023.Q4",
                       style: titleStyle,
@@ -182,50 +175,28 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                   border: InputBorder.none,
                   prefixIcon: Icon(Appicon.youxianji, color: constTheme.centerChannelColor),
                 ),
-                onSaved: (v) {},
+                onSaved: (v) {
+                  _data.roadmapId = v ?? 0;
+                },
                 validator: (value) {
+                  if (value == null || value == 0) {
+                    return '请选择时间';
+                  }
                   return null;
                 },
               ),
               SizedBox(height: 10.w),
               SelectFormField<int>(
-                initialValue: 0,
+                initialValue: _data.priority,
                 options: <PopupMenuItem<int>>[
-                  PopupMenuItem<int>(
-                    value: 0,
-                    child: Text(
-                      "No Priority",
-                      style: titleStyle,
+                  for (var i = 0; i < prioritys.length; i++)
+                    PopupMenuItem<int>(
+                      value: i,
+                      child: Text(
+                        prioritys[i]!,
+                        style: titleStyle,
+                      ),
                     ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 1,
-                    child: Text(
-                      "Low Priority",
-                      style: titleStyle,
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 2,
-                    child: Text(
-                      "Medium Priority",
-                      style: titleStyle,
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 3,
-                    child: Text(
-                      "High Priority",
-                      style: titleStyle,
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 4,
-                    child: Text(
-                      "Urgent",
-                      style: titleStyle,
-                    ),
-                  ),
                 ],
                 decoration: InputDecoration(
                   hintText: '优先级',
@@ -235,14 +206,19 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                   border: InputBorder.none,
                   prefixIcon: Icon(Appicon.youxianji, color: constTheme.centerChannelColor),
                 ),
-                onSaved: (v) {},
+                onSaved: (v) {
+                  _data.priority = v ?? 0;
+                },
                 validator: (value) {
+                  if (value == null) {
+                    return '请选择优先级';
+                  }
                   return null;
                 },
               ),
               SizedBox(height: 10.w),
               MutiSelectFormField<int>(
-                initialValue: [],
+                initialValue: _data.tags,
                 options: C2Choice.listFrom<int, String>(
                   source: tags.map((e) => e.label).toList(),
                   value: (i, v) => tags[i].value,
@@ -267,11 +243,13 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                   border: InputBorder.none,
                   prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor),
                 ),
-                onChanged: (v) {
-                  print(v);
+                onSaved: (v) {
+                  _data.tags = v ?? [];
                 },
-                onSaved: (v) {},
                 validator: (value) {
+                  if (value == null) {
+                    return '请选择标签';
+                  }
                   return null;
                 },
               ),
@@ -280,8 +258,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
               InkWell(
                 onTap: submitAction,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 30.w),
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: constTheme.buttonBg,
@@ -319,17 +296,15 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
 }
 
 class SubmitData {
-  String groupName;
-  link.CreateRoomPreset preset;
+  int roadmapId;
+  String name;
+  int priority;
+  List<int> tags;
 
-  SubmitData({required this.groupName, required this.preset});
-}
-
-final tags = [Tag("DAPP", 1), Tag("TEE", 2), Tag("Pallet", 3)];
-
-class Tag {
-  final int value;
-  final String label;
-
-  Tag(this.label, this.value);
+  SubmitData({
+    required this.roadmapId,
+    required this.name,
+    required this.priority,
+    required this.tags,
+  });
 }

@@ -67,21 +67,29 @@ pub extern "C" fn wire_dao_create_roadmap_task(
     dao_id: u64,
     roadmap_id: u32,
     name: *mut wire_uint_8_list,
-    description: *mut wire_uint_8_list,
     priority: u8,
     tags: *mut wire_uint_8_list,
 ) {
     wire_dao_create_roadmap_task_impl(
-        port_,
-        from,
-        client,
-        dao_id,
-        roadmap_id,
-        name,
-        description,
-        priority,
-        tags,
+        port_, from, client, dao_id, roadmap_id, name, priority, tags,
     )
+}
+
+#[no_mangle]
+pub extern "C" fn wire_join_dao(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    share_expect: u32,
+    value: u64,
+) {
+    wire_join_dao_impl(port_, from, client, dao_id, share_expect, value)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_memebers(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_memebers_impl(port_, client, dao_id)
 }
 
 #[no_mangle]

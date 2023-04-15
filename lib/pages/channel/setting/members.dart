@@ -1,9 +1,12 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../../components/components.dart';
+import '../../../router.dart';
 import '../../../utils/screen.dart';
 import '../../../store/im.dart';
 import '../../../store/theme.dart';
@@ -107,7 +110,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                       children: [
                         SizedBox(width: 15.w),
                         UserAvatar(
-                          getUserShortId(userList[index].senderId),
+                          getUserShortId(userList[index].id),
                           true,
                           40.w,
                         ),
@@ -140,6 +143,40 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                               ),
                             ],
                           ),
+                        ),
+                        IconButton(
+                          key: Key("copy$index"),
+                          onPressed: () async {
+                            await waitFutureLoading(
+                              context: globalCtx(),
+                              future: () async {
+                                Clipboard.setData(ClipboardData(
+                                  text: userList[index].id,
+                                )).then((value) {
+                                  BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
+                                });
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.copy_rounded, size: 20.w),
+                          color: constTheme.centerChannelColor,
+                        ),
+                        IconButton(
+                          key: Key("createPrivate$index"),
+                          onPressed: () async {
+                            final client = im.currentState!.client;
+                            await waitFutureLoading(
+                              context: globalCtx(),
+                              future: () async {
+                                await client.startDirectChat(userList[index].id);
+                                BotToast.showText(text: '创建私信成功', duration: const Duration(seconds: 2));
+                                // ignore: use_build_context_synchronously
+                                globalCtx().pop();
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.send_rounded, size: 20.w),
+                          color: constTheme.centerChannelColor,
                         ),
                         SizedBox(width: 15.w),
                       ],

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:window_manager/window_manager.dart';
 
 import '../components/components.dart';
 import '../components/sider_bar.dart';
@@ -22,7 +21,7 @@ class PCPage extends StatefulWidget {
   State<PCPage> createState() => _PCPageState();
 }
 
-class _PCPageState extends State<PCPage> with WindowListener {
+class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
   late List<AccountOrg> aorgs;
   late IMProvider im;
@@ -39,9 +38,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
   void initState() {
     super.initState();
     pageController = PageController();
-    if (isPc()) {
-      windowManager.addListener(this);
-    }
     im = context.read<IMProvider>();
     aorgs = AccountOrgApi.create().listByAccount(im.me!.address);
     currentId.add(0);
@@ -49,9 +45,6 @@ class _PCPageState extends State<PCPage> with WindowListener {
 
   @override
   void dispose() {
-    if (isPc()) {
-      windowManager.removeListener(this);
-    }
     super.dispose();
   }
 
@@ -68,17 +61,20 @@ class _PCPageState extends State<PCPage> with WindowListener {
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onPanStart: (details) {
-              windowManager.startDragging();
-            },
-            child: Container(
+          moveWindow(
+            Container(
               width: 65.w,
               height: double.maxFinite,
               decoration: BoxDecoration(
                 color: constTheme.sidebarHeaderBg,
                 border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
+                // boxShadow: <BoxShadow>[
+                //   BoxShadow(
+                //     color: constTheme.sidebarHeaderTextColor,
+                //     blurRadius: 3.w,
+                //     offset: Offset(3.w, 0),
+                //   ),
+                // ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,9 +96,9 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     ),
                   ),
                   Container(
-                    width: 8.w,
+                    width: 4.w,
                     height: 4.w,
-                    margin: EdgeInsets.only(top: 15.w, bottom: 10.w),
+                    margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
                     decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
                   ),
                   // 设置
@@ -133,7 +129,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                     ),
                   ),
                   InkWell(
-                    onTap: () async {
+                    onDoubleTap: () async {
                       const storage = FlutterSecureStorage();
                       await storage.delete(key: "login_state");
                       im.logout();
@@ -144,7 +140,7 @@ class _PCPageState extends State<PCPage> with WindowListener {
                       child: Icon(
                         Icons.logout_rounded,
                         size: 22.w,
-                        color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                        color: constTheme.sidebarHeaderBg,
                       ),
                     ),
                   ),

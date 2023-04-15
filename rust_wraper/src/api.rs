@@ -99,9 +99,8 @@ pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Qu
                 .map(|t| QuarterTask {
                     id: t.id,
                     name: String::from_utf8(t.name).unwrap(),
-                    description: String::from_utf8(t.description).unwrap(),
                     priority: t.priority,
-                    creator: t.creator.to_string(),
+                    creator: account::ss58_to_address(t.creator.to_string()).unwrap(),
                     tags: t.tags,
                     status: t.status,
                 })
@@ -118,7 +117,6 @@ pub fn dao_create_roadmap_task(
     dao_id: u64,
     roadmap_id: u32,
     name: String,
-    description: String,
     priority: u8,
     tags: Vec<u8>,
 ) -> anyhow::Result<bool> {
@@ -126,17 +124,36 @@ pub fn dao_create_roadmap_task(
     let mut dao = WeteeDAO::new(c);
 
     let res = dao
-        .create_task(
-            from,
-            dao_id,
-            roadmap_id,
-            name.into(),
-            priority,
-            description.into(),
-            Some(tags),
-        )
+        .create_task(from, dao_id, roadmap_id, name.into(), priority, Some(tags))
         .unwrap();
     Ok(true)
+}
+
+// 加入DAO
+pub fn join_dao(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    share_expect: u32,
+    value: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let res = dao.join(from, dao_id, share_expect, value).unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_memebers(client: u32, dao_id: u64) -> anyhow::Result<Vec<String>> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let members = dao.member_list(dao_id).unwrap();
+    Ok(members
+        .into_iter()
+        .map(|m| account::ss58_to_address(m.to_string()).unwrap())
+        .collect())
 }
 
 pub fn dao_projects(client: u32, dao_id: u64) -> anyhow::Result<Vec<ProjectInfo>> {
@@ -149,7 +166,7 @@ pub fn dao_projects(client: u32, dao_id: u64) -> anyhow::Result<Vec<ProjectInfo>
             id: p.id,
             name: String::from_utf8(p.name).unwrap(),
             description: String::from_utf8(p.description).unwrap(),
-            creator: p.creator.to_string(),
+            creator: account::ss58_to_address(p.creator.to_string()).unwrap(),
             status: p.status as u8,
         })
         .collect())
@@ -165,7 +182,7 @@ pub fn dao_guilds(client: u32, dao_id: u64) -> anyhow::Result<Vec<GuildInfo>> {
         .map(|g| GuildInfo {
             name: String::from_utf8(g.name).unwrap(),
             desc: String::from_utf8(g.desc).unwrap(),
-            creator: g.creator.to_string(),
+            creator: account::ss58_to_address(g.creator.to_string()).unwrap(),
             status: g.status as u8,
             start_block: g.start_block,
             meta_data: String::from_utf8(g.meta_data).unwrap(),

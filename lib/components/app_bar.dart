@@ -77,3 +77,75 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Size(100.sw, _height + (_showMacosTop ? macosTop : 0));
   }
 }
+
+class SideBarAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final double _height;
+  final String _title;
+  final Widget? leading;
+  final Widget? tools;
+  final Function? onBack;
+  final bool _showMacosTop;
+  final double macosTop = Platform.isMacOS ? 18.w : 0;
+  SideBarAppBar({Key? key, this.onBack, this.tools, String? title, double? height, bool? showMacosTop, this.leading})
+      : _height = height ?? 60.w,
+        _title = title ?? "",
+        _showMacosTop = showMacosTop ?? true,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    return moveWindow(
+      Container(
+        height: _height + (_showMacosTop ? macosTop : 0),
+        padding: EdgeInsets.only(top: (_showMacosTop ? macosTop : 0)),
+        decoration: BoxDecoration(
+          color: constTheme.sidebarBg,
+          border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.1))),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            leading ??
+                InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 15.w),
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: constTheme.sidebarText,
+                      size: 25.w / 60.w * _height,
+                    ),
+                  ),
+                  onTap: () {
+                    if (onBack != null) {
+                      onBack!();
+                      return;
+                    }
+                    context.pop();
+                  },
+                ),
+            SizedBox(width: 10.w),
+            Text(
+              _title,
+              style: TextStyle(color: constTheme.sidebarText, fontSize: 14.w),
+            ),
+            Expanded(child: Container()),
+            tools != null
+                ? tools!
+                : SizedBox(
+                    width: _height,
+                    child: tools,
+                  ),
+            SizedBox(width: 10.w),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize {
+    return Size(100.sw, _height + (_showMacosTop ? macosTop : 0));
+  }
+}

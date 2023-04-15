@@ -197,7 +197,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
             height: 55.w,
             padding: EdgeInsets.only(left: 15.w, right: 15.w),
             decoration: BoxDecoration(
-              color: constTheme.centerChannelColor.withOpacity(0.1),
+              color: constTheme.buttonBg,
             ),
             alignment: Alignment.center,
             child: TextField(
@@ -206,19 +206,16 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               autofocus: false,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.go,
-              style: TextStyle(color: constTheme.centerChannelColor.withAlpha(155), fontSize: 13.w),
+              style: TextStyle(color: constTheme.buttonColor.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
                 hintText: '输入id邀请,如：@username',
-                hintStyle: TextStyle(
-                  height: 1.5,
-                  color: constTheme.centerChannelColor.withAlpha(155),
-                ),
+                hintStyle: TextStyle(height: 1.5, color: constTheme.buttonColor),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),
                 suffixIcon: IconButton(
                   key: const Key("cratePrivateSend"),
-                  icon: Icon(Icons.send_rounded, color: constTheme.buttonBg),
+                  icon: Icon(Icons.send_rounded, color: constTheme.buttonColor),
                   onPressed: () async {
                     final client = im.currentState!.client;
                     final org = im.currentState!.org;

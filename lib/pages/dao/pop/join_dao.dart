@@ -1,41 +1,37 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:matrix/matrix.dart' as link;
 
-import '../../components/components.dart';
-import '../../components/form/switch.dart';
-import '../../router.dart';
-import '../../utils/screen.dart';
-import '../../store/im.dart';
-import '../../store/theme.dart';
+import '../../../components/components.dart';
+import '../../../router.dart';
+import '../../../store/dao_ctx.dart';
+import '../../../utils/screen.dart';
+import '../../../store/theme.dart';
 
-class CreateChannelPage extends StatefulWidget {
+class JoinDaoPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateChannelPage({Key? key, this.closeModel}) : super(key: key);
+  const JoinDaoPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
-  State<CreateChannelPage> createState() => _CreateChannelPageState();
+  State<JoinDaoPage> createState() => _JoinDaoPageState();
 }
 
-class _CreateChannelPageState extends State<CreateChannelPage> {
+class _JoinDaoPageState extends State<JoinDaoPage> {
   bool publicGroup = false;
-  late final IMProvider im;
-  late link.Client? client;
-  final SubmitData _data = SubmitData(groupName: "", preset: link.CreateRoomPreset.publicChat);
+  late String ss58Address;
+  final SubmitData _data = SubmitData(
+    roadmapId: 202301,
+    share: 10000,
+    value: 10000,
+  );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
-    // me = im.me!;
-    if (im.currentState != null) {
-      client = im.currentState!.client;
-    }
+    ss58Address = daoCtx.ss58Address;
   }
 
   void submitAction() async {
@@ -46,14 +42,16 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
     await waitFutureLoading(
       context: context,
       future: () async {
-        final roomId = await client!.createGroupChat(
-          groupName: _data.groupName,
-          preset: _data.preset,
-          visibility: link.Visibility.public,
+        await rustApi.joinDao(
+          from: daoCtx.user.address,
+          client: daoCtx.chainClient,
+          daoId: daoCtx.org.daoId,
+          shareExpect: _data.share,
+          value: _data.value,
         );
-        return roomId;
       },
     );
+
     //跳转到组织列表
     if (!mounted) return;
     BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
@@ -71,7 +69,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建频道",
+              title: "加入DAO",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -81,7 +79,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建频道",
+              title: "加入DAO",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -95,12 +93,26 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 15.w),
+              Text(
+                "账户：$ss58Address",
+                style: TextStyle(fontSize: 15.w, color: constTheme.centerChannelColor),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15.w),
+              Text(
+                "预计获得的SHARE:",
+                style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+              ),
+              SizedBox(height: 10.w),
               TextFormField(
+                initialValue: _data.share.toString(),
+                keyboardType: TextInputType.number,
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: '频道名称',
+                  hintText: 'Share',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -108,7 +120,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                   prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  _data.groupName = v ?? "";
+                  _data.share = int.parse(v ?? "0");
                 },
                 validator: (value) {
                   RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
@@ -122,28 +134,39 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                 },
               ),
               SizedBox(height: 10.w),
-              SwitchFormField(
-                initialValue: _data.preset == link.CreateRoomPreset.publicChat,
+              Text(
+                "预计投入的资金:",
+                style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+              ),
+              SizedBox(height: 10.w),
+              TextFormField(
+                initialValue: _data.value.toString(),
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: '是否公开',
+                  hintText: 'Amount',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.public, color: constTheme.centerChannelColor),
+                  prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  if (v == null) {
-                    _data.preset = link.CreateRoomPreset.privateChat;
-                    return;
-                  }
-                  _data.preset = v ? link.CreateRoomPreset.publicChat : link.CreateRoomPreset.privateChat;
+                  _data.value = int.parse(v ?? "0");
                 },
                 validator: (value) {
+                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
+                  if (!reg.hasMatch(value ?? "")) {
+                    return '请输入中文、英文、数字、下划线组成昵称';
+                  }
+                  if (value == null || value.isEmpty) {
+                    return '名称不能为空';
+                  }
                   return null;
                 },
               ),
               Expanded(child: Container()),
+              // SizedBox(height: 50.w),
               InkWell(
                 onTap: submitAction,
                 child: Container(
@@ -158,7 +181,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建频道',
+                            '创建任务',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -185,8 +208,13 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
 }
 
 class SubmitData {
-  String groupName;
-  link.CreateRoomPreset preset;
+  int roadmapId;
+  int share;
+  int value;
 
-  SubmitData({required this.groupName, required this.preset});
+  SubmitData({
+    required this.roadmapId,
+    required this.share,
+    required this.value,
+  });
 }

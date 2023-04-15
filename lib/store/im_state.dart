@@ -1,17 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:async';
-import 'package:asyou_app/utils/functions.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:matrix/encryption.dart';
 import 'package:universal_html/html.dart' as html;
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../models/models.dart';
 import '../pages/channel/setting/key_verification_dialog.dart';
 import '../router.dart';
-import '../rust_wraper.io.dart';
 import '../utils/platform_infos.dart';
 import '../utils/uia_request_manager.dart';
 import '../utils/local_notifications_extension.dart';
@@ -44,7 +41,6 @@ class ImState {
     _onchange = onchange;
     _org = org;
     client = connection;
-    connectChain();
     _registerImSub();
   }
 
@@ -72,15 +68,6 @@ class ImState {
     } catch (e, s) {
       client.onLoginStateChanged.addError(e, s);
       rethrow;
-    }
-  }
-
-  connectChain() {
-    if (_org.chainUrl != null) {
-      rustApi.connect(url: _org.chainUrl!).then((v) {
-        printSuccess("连接到区块链 ===》${_org.chainUrl!}");
-        chainClient = v;
-      });
     }
   }
 

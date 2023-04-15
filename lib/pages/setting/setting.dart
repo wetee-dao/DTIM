@@ -96,11 +96,6 @@ class _SettingPageState extends State<SettingPage> {
             width: 180.w,
             height: double.maxFinite,
             padding: EdgeInsets.only(top: 15.w),
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08)),
-              ),
-            ),
             child: ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

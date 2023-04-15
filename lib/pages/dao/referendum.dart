@@ -14,14 +14,14 @@ import '../../store/im.dart';
 import '../../store/theme.dart';
 import '../../utils/responsive.dart';
 
-class Guildpage extends StatefulWidget {
-  const Guildpage({Key? key}) : super(key: key);
+class ReferendumPage extends StatefulWidget {
+  const ReferendumPage({Key? key}) : super(key: key);
 
   @override
-  State<Guildpage> createState() => _GuildpageState();
+  State<ReferendumPage> createState() => _ReferendumPageState();
 }
 
-class _GuildpageState extends State<Guildpage> {
+class _ReferendumPageState extends State<ReferendumPage> {
   late final IMProvider im;
   List<GuildInfo> guilds = [];
   AssetAccountData? nativeAmount;
