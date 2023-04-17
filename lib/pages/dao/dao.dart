@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../../components/app_bar.dart';
 import '../../components/appicon.dart';
 import '../../components/close_bar.dart';
-import '../../rust_wraper.io.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
@@ -111,7 +110,7 @@ class _DaoPageState extends State<DaoPage> {
                   ),
                 ),
               ),
-              tools: const CloseBar(),
+              tools: CloseBar(color: constTheme.sidebarText),
             ),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,13 +121,16 @@ class _DaoPageState extends State<DaoPage> {
               child: StreamBuilder(
                 stream: currentId.stream,
                 builder: (BuildContext context, AsyncSnapshot<int> id) {
-                  return SideMenu(id.data ?? 0, (id) {
-                    pageController.animateToPage(id,
-                        duration: const Duration(milliseconds: 100), curve: Curves.easeInOut);
-                    currentId.add(id);
+                  return ChangeNotifierProvider.value(
+                    value: daoCtx,
+                    child: SideMenu(id.data ?? 0, (id) {
+                      pageController.animateToPage(id,
+                          duration: const Duration(milliseconds: 100), curve: Curves.easeInOut);
+                      currentId.add(id);
 
-                    if (c != null) {}
-                  });
+                      if (c != null) {}
+                    }),
+                  );
                 },
               ),
             ),

@@ -1,13 +1,13 @@
 use anyhow;
 
-use crate::model::{AssetAccountData, GuildInfo, ProjectInfo, Quarter, QuarterTask};
+use crate::model::{AssetAccountData, GovProps, GuildInfo, ProjectInfo, Quarter, QuarterTask};
 use asyou_rust_sdk::{
     account,
     hander::{
-        balance::Balance, wetee_asset::WeteeAsset, wetee_dao::WeteeDAO, wetee_guild::WeteeGuild,
-        wetee_project::WeteeProject,
+        balance::Balance, wetee_asset::WeteeAsset, wetee_dao::WeteeDAO, wetee_gov::WeteeGov,
+        wetee_guild::WeteeGuild, wetee_project::WeteeProject,
     },
-    model::account::KeyringJSON,
+    model::{account::KeyringJSON, dao::WithGov},
     Client,
 };
 
@@ -123,9 +123,9 @@ pub fn dao_create_roadmap_task(
     let c = Client::from_index(client)?;
     let mut dao = WeteeDAO::new(c);
 
-    let res = dao
-        .create_task(from, dao_id, roadmap_id, name.into(), priority, Some(tags))
+    dao.create_task(from, dao_id, roadmap_id, name.into(), priority, Some(tags))
         .unwrap();
+
     Ok(true)
 }
 
@@ -140,7 +140,7 @@ pub fn join_dao(
     let c = Client::from_index(client)?;
     let mut dao = WeteeDAO::new(c);
 
-    let res = dao.join(from, dao_id, share_expect, value).unwrap();
+    dao.join(from, dao_id, share_expect, value).unwrap();
 
     Ok(true)
 }
@@ -199,4 +199,82 @@ pub fn ss58(address: String, prefix: Option<u16>) -> anyhow::Result<String> {
             return Ok(account::address_to_ss58(address, 42)?);
         }
     };
+}
+
+pub fn create_project(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    name: String,
+    desc: String,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .create_project(
+            from,
+            dao_id,
+            name.into(),
+            desc.into(),
+            Some(WithGov {
+                run_type: 1,
+                amount: 10,
+            }),
+        )
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn create_guild(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    name: String,
+    desc: String,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeGuild::new(c);
+
+    project
+        .create_guild(
+            from,
+            dao_id,
+            name.into(),
+            desc.into(),
+            "{}".into(),
+            Some(WithGov {
+                run_type: 1,
+                amount: 10,
+            }),
+        )
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn get_dao_gov_public_props(client: u32, dao_id: u64) -> anyhow::Result<Vec<GovProps>> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    let props = gov.public_props(dao_id.clone()).unwrap();
+    Ok(props
+        .into_iter()
+        .map(|(index, hash, call, member, account)| {
+            // let call_id: u32 =
+            //     TryFrom::<wetee_runtime::RuntimeCall>::try_from(call).unwrap_or_default();
+
+            let hash_str = "0x".to_owned() + &hex::encode(hash.as_bytes());
+            let call_str = format!("{:?}", call);
+
+            return GovProps {
+                index,
+                hash: hash_str,
+                runtime_call: call_str,
+                member_group: "".to_string(),
+                account: account::ss58_to_address(account.to_string()).unwrap(),
+            };
+        })
+        .collect())
 }

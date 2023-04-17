@@ -1,16 +1,12 @@
 // 初始化一个页面
-import 'package:asyou_app/components/appicon.dart';
-import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../bridge_generated.dart';
-import '../../components/dao/history_table.dart';
-import '../../components/dao/info_card.dart';
-import '../../components/dao/payments_detail_list.dart';
 import '../../components/dao/text.dart';
-import '../../store/im.dart';
+import '../../rust_wraper.io.dart';
+import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 import '../../utils/responsive.dart';
 
@@ -22,20 +18,18 @@ class ReferendumPage extends StatefulWidget {
 }
 
 class _ReferendumPageState extends State<ReferendumPage> {
-  late final IMProvider im;
-  List<GuildInfo> guilds = [];
-  AssetAccountData? nativeAmount;
-  AssetAccountData? share;
+  late final DAOCTX dao;
+  List<GovProps> notStarts = [];
 
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    dao = context.read<DAOCTX>();
     getData();
   }
 
   getData() async {
-    // guilds = await rustApi.daoGuilds(client: im.currentState!.chainClient, daoId: im.currentState!.org.daoId);
+    notStarts = await rustApi.getDaoGovPublicProps(client: dao.chainClient, daoId: dao.org.daoId);
     setState(() {});
   }
 
@@ -45,88 +39,88 @@ class _ReferendumPageState extends State<ReferendumPage> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
-      body: Row(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            margin: EdgeInsets.only(left: 30.w, right: 30.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30.w),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.integration_instructions_rounded,
+                      size: 30.w,
+                      color: constTheme.centerChannelColor,
+                    ),
+                    SizedBox(width: 10.w),
+                    PrimaryText(
+                      text: 'RoadMap',
+                      size: 25.w,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    Expanded(child: Container()),
+                  ],
+                ),
+                SizedBox(height: 8.w),
+                PrimaryText(
+                  text: '工会与项目',
+                  size: 14.w,
+                ),
+                SizedBox(height: 5.w),
+              ],
+            ),
+          ),
+          SizedBox(height: 15.w),
+          Divider(
+            height: 20,
+            color: constTheme.centerChannelDivider,
+          ),
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(isPc() ? 30 : 22),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.only(left: 30.w, right: 30.w),
+              child: Table(
+                columnWidths: const {
+                  0: FlexColumnWidth(0.45),
+                  1: FlexColumnWidth(0.45),
+                  2: FlexColumnWidth(0.1),
+                },
+                defaultColumnWidth: const FlexColumnWidth(),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: List.generate(
+                  notStarts.length,
+                  (index) => TableRow(
                     children: [
-                      PrimaryText(
-                        text: 'Guilds',
-                        size: 25.w,
-                        fontWeight: FontWeight.w800,
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(top: 10.w, bottom: 10.w, right: 10.w),
+                        child: Row(
+                          children: [
+                            Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 20.w),
+                            SizedBox(width: 5.w),
+                            Expanded(
+                              child: PrimaryText(
+                                text: "(${notStarts[index].index}) - ${notStarts[index].hash}",
+                                size: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       PrimaryText(
-                        text: '工会',
-                        size: 14.w,
+                        text: notStarts[index].runtimeCall.toString(),
+                        size: 16,
+                      ),
+                      PrimaryText(
+                        text: notStarts[index].memberGroup,
+                        size: 16,
                       ),
                     ],
                   ),
-                  SizedBox(height: 15.w),
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: Wrap(
-                      runSpacing: 20.w,
-                      spacing: 20.w,
-                      alignment: WrapAlignment.start,
-                      children: [
-                        for (var guild in guilds)
-                          InfoCard(
-                            icon: Appicon.zuzhiDataOrganization6,
-                            label: "工会: ${guild.name}",
-                            amount: '\$1200',
-                          ),
-                        const InfoCard(
-                          icon: Icons.library_add_rounded,
-                          label: "点击创建",
-                          amount: '工会',
-                        ),
-                      ],
-                    ),
-                  ),
-                  // SizedBox(
-                  //   height:
-                  //       Responsive.isDesktop(context) ? SizeConfig.blockSizeVertical! * 4 : SizeConfig.blockSizeVertical! * 2,
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         PrimaryText(
-                  //           text: 'Balance',
-                  //           size: Responsive.isDesktop(context) ? 16 : 14,
-                  //         ),
-                  //         PrimaryText(
-                  //           text: '\$1500',
-                  //           size: Responsive.isDesktop(context) ? 30 : 22,
-                  //           fontWeight: FontWeight.w800,
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     PrimaryText(
-                  //       text: 'Past 30 Days',
-                  //       size: Responsive.isDesktop(context) ? 16 : 14,
-                  //     )
-                  //   ],
-                  // ),
-                  // SizedBox(
-                  //   height: SizeConfig.blockSizeVertical! * 3,
-                  // ),
-                  // const SizedBox(
-                  //   height: 180,
-                  //   child: BarChartComponent(),
-                  // ),
-                  SizedBox(height: 30.w),
-                  // if (!Responsive.isDesktop(context)) const PaymentsDetailList()
-                ],
+                ),
               ),
             ),
           ),

@@ -9,8 +9,9 @@ import '../store/theme.dart';
 class CloseBar extends StatefulWidget {
   /// The [child] contained by the CloseBar.
   final Widget? child;
+  final Color? color;
 
-  const CloseBar({Key? key, this.child}) : super(key: key);
+  const CloseBar({Key? key, this.child, this.color}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CloseBarState();
@@ -81,20 +82,17 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
   }
 
   renderIcons(constTheme) {
+    var iconColor = widget.color ?? constTheme.centerChannelColor;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GestureDetector(
-          behavior: HitTestBehavior.opaque,
+          behavior: HitTestBehavior.translucent,
           onTap: () {
             windowManager.minimize();
           },
-          child: Icon(
-            Appicon.zuixiaohua,
-            color: constTheme.centerChannelColor,
-            size: 17.w,
-          ),
+          child: Icon(Appicon.zuixiaohua, color: iconColor, size: 17.w),
         ),
         SizedBox(width: 15.w),
         if (_isMaximized)
@@ -103,11 +101,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
             onTap: () {
               windowManager.unmaximize();
             },
-            child: Icon(
-              Appicon.chuangkouhua,
-              color: constTheme.centerChannelColor,
-              size: 13.w,
-            ),
+            child: Icon(Appicon.chuangkouhua, color: iconColor, size: 13.w),
           ),
         if (!_isMaximized)
           GestureDetector(
@@ -118,9 +112,8 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
             child: Container(
               width: 12.w,
               height: 12.w,
-              // margin: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                border: Border.all(color: constTheme.centerChannelColor, width: 2.w),
+                border: Border.all(color: iconColor, width: 2.w),
                 borderRadius: BorderRadius.all(Radius.circular(2.w)),
               ),
             ),
@@ -133,11 +126,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
             // windowManager.minimize();
             windowManager.hide();
           },
-          child: Icon(
-            Appicon.tuopanhua,
-            color: constTheme.centerChannelColor,
-            size: 17.w,
-          ),
+          child: Icon(Appicon.tuopanhua, color: iconColor, size: 17.w),
         ),
         SizedBox(width: 2.w),
       ],

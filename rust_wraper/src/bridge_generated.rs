@@ -20,6 +20,7 @@ use std::sync::Arc;
 // Section: imports
 
 use crate::model::AssetAccountData;
+use crate::model::GovProps;
 use crate::model::GuildInfo;
 use crate::model::ProjectInfo;
 use crate::model::Quarter;
@@ -306,6 +307,74 @@ fn wire_ss58_impl(
         },
     )
 }
+fn wire_create_project_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    name: impl Wire2Api<String> + UnwindSafe,
+    desc: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "create_project",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_name = name.wire2api();
+            let api_desc = desc.wire2api();
+            move |task_callback| {
+                create_project(api_from, api_client, api_dao_id, api_name, api_desc)
+            }
+        },
+    )
+}
+fn wire_create_guild_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    name: impl Wire2Api<String> + UnwindSafe,
+    desc: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "create_guild",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_name = name.wire2api();
+            let api_desc = desc.wire2api();
+            move |task_callback| create_guild(api_from, api_client, api_dao_id, api_name, api_desc)
+        },
+    )
+}
+fn wire_get_dao_gov_public_props_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "get_dao_gov_public_props",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| get_dao_gov_public_props(api_client, api_dao_id)
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -363,6 +432,20 @@ impl support::IntoDart for AssetAccountData {
     }
 }
 impl support::IntoDartExceptPrimitive for AssetAccountData {}
+
+impl support::IntoDart for GovProps {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.index.into_dart(),
+            self.hash.into_dart(),
+            self.runtime_call.into_dart(),
+            self.member_group.into_dart(),
+            self.account.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for GovProps {}
 
 impl support::IntoDart for GuildInfo {
     fn into_dart(self) -> support::DartAbi {

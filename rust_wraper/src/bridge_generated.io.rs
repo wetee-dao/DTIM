@@ -107,6 +107,35 @@ pub extern "C" fn wire_ss58(port_: i64, address: *mut wire_uint_8_list, prefix: 
     wire_ss58_impl(port_, address, prefix)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_create_project(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    name: *mut wire_uint_8_list,
+    desc: *mut wire_uint_8_list,
+) {
+    wire_create_project_impl(port_, from, client, dao_id, name, desc)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_create_guild(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    name: *mut wire_uint_8_list,
+    desc: *mut wire_uint_8_list,
+) {
+    wire_create_guild_impl(port_, from, client, dao_id, name, desc)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_get_dao_gov_public_props(port_: i64, client: u32, dao_id: u64) {
+    wire_get_dao_gov_public_props_impl(port_, client, dao_id)
+}
+
 // Section: allocate functions
 
 #[no_mangle]

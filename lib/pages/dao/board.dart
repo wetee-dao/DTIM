@@ -46,7 +46,7 @@ class _KanbanState extends State<Kanban> {
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: '工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目',
+                text: '工会与项目',
                 size: 14.w,
               ),
               SizedBox(height: 15.w),
@@ -105,8 +105,11 @@ class _KanbanState extends State<Kanban> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       decoration: BoxDecoration(
-        color: constTheme.centerChannelColor.withOpacity(0.07),
+        color: constTheme.centerChannelColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(5.w),
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: constTheme.sidebarBg.withOpacity(0.2), blurRadius: 10.w),
+        ],
       ),
       width: 250.w,
       margin: EdgeInsets.only(right: 10.w, bottom: 15.w),

@@ -42,7 +42,7 @@ class Overviewpage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.w),
                       PrimaryText(
-                        text: '工会与项目',
+                        text: 'Data overview in DAO',
                         size: 14.w,
                       ),
                     ],
@@ -99,7 +99,7 @@ class Overviewpage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.w),
                       PrimaryText(
-                        text: 'Transaction of past 6 months',
+                        text: 'Recent ongoing voting',
                         size: 14.w,
                       ),
                     ],

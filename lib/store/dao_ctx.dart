@@ -41,8 +41,6 @@ class DAOCTX with ChangeNotifier {
     nativeAmount = await rustApi.nativeBalance(client: chainClient, address: user.address);
     ss58Address = await rustApi.ss58(address: user.address);
     members = await rustApi.daoMemebers(client: chainClient, daoId: org.daoId);
-    print(members);
-    print(user.address);
 
     notifyListeners();
   }

@@ -16,21 +16,20 @@ import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
-class CreateRoadMapPage extends StatefulWidget {
+class CreateProjectPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateRoadMapPage({Key? key, this.closeModel}) : super(key: key);
+  const CreateProjectPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
-  State<CreateRoadMapPage> createState() => _CreateRoadMapPageState();
+  State<CreateProjectPage> createState() => _CreateProjectPageState();
 }
 
-class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
+class _CreateProjectPageState extends State<CreateProjectPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    roadmapId: 202301,
     name: "",
-    priority: 0,
-    tags: [],
+    desc: "",
+    type: 0,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -47,15 +46,23 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
     await waitFutureLoading(
       context: context,
       future: () async {
-        await rustApi.daoCreateRoadmapTask(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
-          roadmapId: _data.roadmapId,
-          name: _data.name,
-          priority: _data.priority,
-          tags: Uint8List.fromList(_data.tags),
-        );
+        if (_data.type == 0) {
+          await rustApi.createGuild(
+            from: daoCtx.user.address,
+            client: daoCtx.chainClient,
+            daoId: daoCtx.org.daoId,
+            name: _data.name,
+            desc: _data.desc,
+          );
+        } else {
+          await rustApi.createProject(
+            from: daoCtx.user.address,
+            client: daoCtx.chainClient,
+            daoId: daoCtx.org.daoId,
+            name: _data.name,
+            desc: _data.desc,
+          );
+        }
       },
     );
 
@@ -72,16 +79,11 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final titleStyle = TextStyle(
-      fontSize: 14.w,
-      color: constTheme.centerChannelColor,
-      decorationColor: constTheme.centerChannelColor,
-    );
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建任务",
+              title: "创建项目/工会",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -91,7 +93,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建任务",
+              title: "创建项目/工会",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -110,7 +112,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
               TextFormField(
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: '任务内容',
+                  hintText: 'Space Name',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -132,124 +134,56 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                 },
               ),
               SizedBox(height: 10.w),
-              SelectFormField<int>(
-                initialValue: _data.roadmapId,
-                options: <PopupMenuItem<int>>[
-                  PopupMenuItem<int>(
-                    value: 202301,
-                    child: Text(
-                      "2023.Q1",
-                      style: titleStyle,
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 202302,
-                    child: Text(
-                      "2023.Q2",
-                      style: titleStyle,
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 202303,
-                    child: Text(
-                      "2023.Q3",
-                      style: titleStyle,
-                    ),
-                  ),
-                  PopupMenuItem<int>(
-                    value: 202304,
-                    child: Text(
-                      "2023.Q4",
-                      style: titleStyle,
-                    ),
-                  ),
-                ],
+              TextFormField(
+                style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: '时间',
+                  hintText: 'Space Description',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Appicon.youxianji, color: constTheme.centerChannelColor),
+                  prefixIcon: Icon(Icons.description_rounded, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  _data.roadmapId = v ?? 0;
+                  _data.desc = v ?? "";
                 },
                 validator: (value) {
-                  if (value == null || value == 0) {
-                    return '请选择时间';
+                  if (value == null || value.isEmpty) {
+                    return '简介不能为空';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 10.w),
-              SelectFormField<int>(
-                initialValue: _data.priority,
-                options: <PopupMenuItem<int>>[
-                  for (var i = 0; i < prioritys.length; i++)
-                    PopupMenuItem<int>(
-                      value: i,
-                      child: Text(
-                        prioritys[i]!,
-                        style: titleStyle,
-                      ),
-                    ),
-                ],
-                decoration: InputDecoration(
-                  hintText: '优先级',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Appicon.youxianji, color: constTheme.centerChannelColor),
-                ),
-                onSaved: (v) {
-                  _data.priority = v ?? 0;
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return '请选择优先级';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10.w),
-              MutiSelectFormField<int>(
-                initialValue: _data.tags,
-                options: C2Choice.listFrom<int, String>(
-                  source: tags.map((e) => e.label).toList(),
-                  value: (i, v) => tags[i].value,
-                  label: (i, v) => v,
-                  tooltip: (i, v) => v,
-                  style: (i, v) {
-                    if (['Science', 'Politics', 'News', 'Tech'].contains(v)) {
-                      return C2ChipStyle.toned(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(5),
-                        ),
-                      );
-                    }
-                    return null;
+              SizedBox(height: 20.w),
+              Row(children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    _data.type = 0;
+                    setState(() {});
                   },
+                  child: renderType(
+                    Appicon.zuzhiDataOrganization6,
+                    "工会",
+                    "Everything is for interest, exploration and growth .",
+                    _data.type == 0,
+                  ),
                 ),
-                decoration: InputDecoration(
-                  hintText: '标签',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    _data.type = 1;
+                    setState(() {});
+                  },
+                  child: renderType(
+                    Appicon.xiangmu,
+                    "项目",
+                    "Use Projects to manage tasks that .",
+                    _data.type == 1,
+                  ),
                 ),
-                onSaved: (v) {
-                  _data.tags = v ?? [];
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return '请选择标签';
-                  }
-                  return null;
-                },
-              ),
+              ]),
+
               Expanded(child: Container()),
               // SizedBox(height: 50.w),
               InkWell(
@@ -290,18 +224,60 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
       ),
     );
   }
+
+  renderType(icon, title, desc, select) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final titleStyle = TextStyle(
+      fontSize: 14.w,
+      color: constTheme.centerChannelColor,
+      decorationColor: constTheme.centerChannelColor,
+    );
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 13.w, left: 0.w),
+          child: Icon(
+            select ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+            color: select ? constTheme.buttonBg : constTheme.centerChannelColor,
+            size: 20.w,
+          ),
+        ),
+        Container(
+          width: 220.w,
+          padding: EdgeInsets.all(10.w),
+          // margin: EdgeInsets.only(right: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(icon, color: constTheme.centerChannelColor, size: 17.w),
+                  SizedBox(width: 7.w),
+                  Text(title, style: titleStyle.copyWith(fontSize: 17.w)),
+                ],
+              ),
+              SizedBox(height: 5.w),
+              Text(
+                desc,
+                style: titleStyle,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class SubmitData {
-  int roadmapId;
   String name;
-  int priority;
-  List<int> tags;
+  String desc;
+  int type;
 
   SubmitData({
-    required this.roadmapId,
+    required this.desc,
     required this.name,
-    required this.priority,
-    required this.tags,
+    required this.type,
   });
 }

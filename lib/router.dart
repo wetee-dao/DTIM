@@ -4,6 +4,7 @@ import 'package:asyou_app/utils/screen.dart';
 
 import 'pages/channel/create_private.dart';
 import 'pages/channel/setting/setting.dart';
+import 'pages/dao/pop/create_project.dart';
 import 'pages/dao/pop/create_roadmap.dart';
 import 'pages/dao/pop/join_dao.dart';
 import 'pages/setting/setting.dart';
@@ -115,6 +116,12 @@ routers() {
         return const JoinDaoPage();
       },
     ),
+    GoRoute(
+      path: '/create_dao_project',
+      builder: (BuildContext context, GoRouterState state) {
+        return const CreateProjectPage();
+      },
+    ),
   ];
 }
 
@@ -131,6 +138,8 @@ getPage(String url, Function closeModel) {
     return CreateRoadMapPage(closeModel: closeModel);
   } else if (url.indexOf("/join_dao") == 0) {
     return JoinDaoPage(closeModel: closeModel);
+  } else if (url.indexOf("/create_dao_project") == 0) {
+    return CreateProjectPage(closeModel: closeModel);
   } else if (url.indexOf("/channel_setting/") == 0) {
     final pstr = url.replaceAll("/channel_setting/", "");
     final ps = pstr.split("/");

@@ -50,14 +50,9 @@ class PaymentsDetailList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             PrimaryText(
-              text: 'Recent Activities',
+              text: 'Recent Votes',
               size: 18,
               fontWeight: FontWeight.w800,
-            ),
-            PrimaryText(
-              text: '27 Apr, 2022',
-              size: 14,
-              fontWeight: FontWeight.w400,
             ),
           ],
         ),

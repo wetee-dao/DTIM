@@ -101,7 +101,10 @@ class SideBarAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: EdgeInsets.only(top: (_showMacosTop ? macosTop : 0)),
         decoration: BoxDecoration(
           color: constTheme.sidebarBg,
-          border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.1))),
+          border: Border(bottom: BorderSide(color: constTheme.sidebarText.withOpacity(0.15), width: 1.w)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(color: constTheme.sidebarBg.withOpacity(0.2), blurRadius: 10.w),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

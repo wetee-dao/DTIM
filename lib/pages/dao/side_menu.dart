@@ -1,7 +1,10 @@
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/appicon.dart';
+import '../../router.dart';
+import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 
 class SideMenu extends StatelessWidget {
@@ -62,14 +65,55 @@ class SideMenu extends StatelessWidget {
               selected: id == 3,
               onTap: () => onTap(3),
             ),
-            Divider(color: constTheme.centerChannelDivider),
-            iconBuilder(
-              assetName: Appicon.zuzhiDataOrganization6,
-              name: "Guilds & Projects",
-              color: constTheme,
-              selected: id == 4,
-              onTap: () => onTap(4),
-            ),
+            Divider(color: constTheme.sidebarText.withOpacity(0.18)),
+            Consumer<DAOCTX>(builder: (_, dao, child) {
+              return Column(
+                children: [
+                  ...dao.guilds.map((e) => iconBuilder(
+                        assetName: Appicon.zuzhiDataOrganization6,
+                        name: e.name,
+                        color: constTheme,
+                        selected: id == 5,
+                        onTap: () => onTap(5),
+                      )),
+                  ...dao.projects.map((e) => iconBuilder(
+                        assetName: Appicon.xiangmu,
+                        name: e.name,
+                        color: constTheme,
+                        selected: id == 6,
+                        onTap: () => onTap(6),
+                      )),
+                ],
+              );
+            }),
+            InkWell(
+              child: Container(
+                margin: EdgeInsets.all(10.w),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
+                decoration: BoxDecoration(
+                  // color: constTheme.buttonBg.withOpacity(0.1),
+                  border:
+                      Border.all(color: constTheme.buttonBg.withOpacity(0.1), width: 2.w, style: BorderStyle.values[1]),
+                  borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add_circle_rounded, size: 32.w, color: constTheme.sidebarText),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Text(
+                        "Create guild or project",
+                        style: TextStyle(color: constTheme.sidebarText, fontSize: 13.w, height: 1),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () {
+                showModelOrPage(context, "/create_dao_project");
+              },
+            )
           ],
         ),
       ),
@@ -101,7 +145,7 @@ iconBuilder({
           children: [
             Icon(assetName, size: 16.w, color: color.sidebarText),
             SizedBox(width: 10.w),
-            Text(name, style: TextStyle(color: color.sidebarText, fontSize: 14.w, height: 1)),
+            Expanded(child: Text(name, style: TextStyle(color: color.sidebarText, fontSize: 14.w, height: 1))),
           ],
         ),
       ),

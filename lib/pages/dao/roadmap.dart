@@ -107,7 +107,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: '工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目工会与项目',
+                text: '工会与项目',
                 size: 14.w,
               ),
               SizedBox(height: 15.w),
@@ -184,7 +184,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                 child: Text(
                   name,
                   style: TextStyle(
-                    color: constTheme.mentionColor,
+                    color: constTheme.centerChannelBg,
                     fontSize: 14.w,
                     fontWeight: FontWeight.bold,
                   ),
@@ -202,11 +202,11 @@ class _RoadMapPageState extends State<RoadMapPage> {
             child: ListView.builder(
               itemCount: items.length,
               shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.w),
               itemBuilder: (context, index) {
                 return Container(
                   width: double.maxFinite,
-                  padding: EdgeInsets.all(10.w),
+                  padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.w, bottom: 13.w),
                   decoration: BoxDecoration(
                     color: constTheme.centerChannelColor.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(5.w),

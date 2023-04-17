@@ -86,3 +86,14 @@ pub struct GuildInfo {
     /// DAO状态
     pub status: u8,
 }
+
+/// Waiting to start voting information
+/// 待开始投票信息
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct GovProps {
+    pub index: u32,
+    pub hash: String,
+    pub runtime_call: String,
+    pub member_group: String,
+    pub account: String,
+}

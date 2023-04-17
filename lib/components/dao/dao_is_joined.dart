@@ -1,9 +1,7 @@
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../router.dart';
-import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 
 class DaoIsJoined extends StatelessWidget {
@@ -22,7 +20,6 @@ class DaoIsJoined extends StatelessWidget {
       return child;
     }
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final dao = context.watch<DAOCTX>();
     return Stack(
       children: [
         child,
