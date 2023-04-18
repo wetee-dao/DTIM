@@ -1,5 +1,6 @@
 // 初始化一个页面
 import 'package:asyou_app/utils/screen.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +58,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: 'RoadMap',
+                      text: 'Referendums',
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
@@ -81,48 +82,126 @@ class _ReferendumPageState extends State<ReferendumPage> {
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              padding: EdgeInsets.only(left: 30.w, right: 30.w),
-              child: Table(
-                columnWidths: const {
-                  0: FlexColumnWidth(0.45),
-                  1: FlexColumnWidth(0.45),
-                  2: FlexColumnWidth(0.1),
-                },
-                defaultColumnWidth: const FlexColumnWidth(),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: List.generate(
-                  notStarts.length,
-                  (index) => TableRow(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(top: 10.w, bottom: 10.w, right: 10.w),
-                        child: Row(
-                          children: [
-                            Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 20.w),
-                            SizedBox(width: 5.w),
-                            Expanded(
-                              child: PrimaryText(
-                                text: "(${notStarts[index].index}) - ${notStarts[index].hash}",
-                                size: 16,
+              padding: EdgeInsets.only(left: 15.w, right: 15.w),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 6.w, bottom: 6.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 20.w),
+                          width: 250.w,
+                          child: Row(
+                            children: [
+                              Icon(Icons.inbox, color: constTheme.centerChannelColor, size: 20.w),
+                              SizedBox(width: 10.w),
+                              Expanded(
+                                child: PrimaryText(
+                                  text: "regerendum hash",
+                                  size: 14.w,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      PrimaryText(
-                        text: notStarts[index].runtimeCall.toString(),
-                        size: 16,
-                      ),
-                      PrimaryText(
-                        text: notStarts[index].memberGroup,
-                        size: 16,
-                      ),
-                    ],
+                        Expanded(
+                          child: PrimaryText(
+                            text: "runtime_call",
+                            size: 13.w,
+                          ),
+                        ),
+                        SizedBox(width: 10.w),
+                        PrimaryText(
+                          text: "",
+                          size: 13.w,
+                        ),
+                        SizedBox(width: 25.w),
+                      ],
+                    ),
                   ),
-                ),
+                  for (var index = 0; index < notStarts.length; index++)
+                    Container(
+                      margin: EdgeInsets.only(top: 6.w, bottom: 6.w),
+                      decoration: BoxDecoration(
+                        color: constTheme.centerChannelColor.withOpacity(0.05),
+                        borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 20.w),
+                            width: 250.w,
+                            child: Row(
+                              children: [
+                                Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 20.w),
+                                SizedBox(width: 10.w),
+                                Expanded(
+                                  child: PrimaryText(
+                                    text: notStarts[index].hash,
+                                    size: 14.w,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: PrimaryText(
+                              text: notStarts[index].runtimeCall.toString(),
+                              size: 13.w,
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          InkWell(
+                            onTap: () {
+                              rustApi.daoGovStartReferendum(
+                                  from: dao.user.address,
+                                  client: dao.chainClient,
+                                  daoId: dao.org.daoId,
+                                  index: notStarts[index].index);
+                            },
+                            child: PrimaryText(
+                              text: "开始投票",
+                              size: 13.w,
+                            ),
+                          ),
+                          SizedBox(width: 25.w),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ),
+
+            // child: ScrollableTableView(
+            //   paginationController: _paginationController,
+            //   columns: const [
+            //     TableViewColumn(
+            //       label: "投票id",
+            //     ),
+            //     TableViewColumn(
+            //       label: "投票内容",
+            //     ),
+            //     TableViewColumn(
+            //       label: "操作",
+            //     )
+            //   ],
+            //   rows: notStarts.map((data) {
+            //     return TableViewRow(height: 60, cells: [
+            //       TableViewCell(
+            //         child: Text("(${data.index}) - ${data.hash}"),
+            //       ),
+            //       TableViewCell(
+            //         child: Text(data.runtimeCall),
+            //       ),
+            //       TableViewCell(
+            //         child: Text("view"),
+            //       ),
+            //     ]);
+            //   }).toList(),
+            // ),
           ),
         ],
       ),

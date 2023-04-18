@@ -136,6 +136,17 @@ pub extern "C" fn wire_get_dao_gov_public_props(port_: i64, client: u32, dao_id:
     wire_get_dao_gov_public_props_impl(port_, client, dao_id)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_dao_gov_start_referendum(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    index: u32,
+) {
+    wire_dao_gov_start_referendum_impl(port_, from, client, dao_id, index)
+}
+
 // Section: allocate functions
 
 #[no_mangle]

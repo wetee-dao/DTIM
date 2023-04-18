@@ -375,6 +375,30 @@ fn wire_get_dao_gov_public_props_impl(
         },
     )
 }
+fn wire_dao_gov_start_referendum_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    index: impl Wire2Api<u32> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_gov_start_referendum",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_index = index.wire2api();
+            move |task_callback| {
+                dao_gov_start_referendum(api_from, api_client, api_dao_id, api_index)
+            }
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks

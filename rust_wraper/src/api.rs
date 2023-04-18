@@ -278,3 +278,17 @@ pub fn get_dao_gov_public_props(client: u32, dao_id: u64) -> anyhow::Result<Vec<
         })
         .collect())
 }
+
+pub fn dao_gov_start_referendum(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    index: u32,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    gov.start_referendum(from, dao_id, index).unwrap();
+
+    Ok(true)
+}

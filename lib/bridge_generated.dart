@@ -125,6 +125,15 @@ abstract class RustWraper {
       {required int client, required int daoId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kGetDaoGovPublicPropsConstMeta;
+
+  Future<bool> daoGovStartReferendum(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int index,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovStartReferendumConstMeta;
 }
 
 class AssetAccountData {
@@ -664,6 +673,32 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "get_dao_gov_public_props",
         argNames: ["client", "daoId"],
+      );
+
+  Future<bool> daoGovStartReferendum(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int index,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = api2wire_u32(index);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_gov_start_referendum(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoGovStartReferendumConstMeta,
+      argValues: [from, client, daoId, index],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovStartReferendumConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_gov_start_referendum",
+        argNames: ["from", "client", "daoId", "index"],
       );
 
   void dispose() {
@@ -1337,6 +1372,34 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_get_dao_gov_public_props = _wire_get_dao_gov_public_propsPtr
       .asFunction<void Function(int, int, int)>();
 
+  void wire_dao_gov_start_referendum(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int index,
+  ) {
+    return _wire_dao_gov_start_referendum(
+      port_,
+      from,
+      client,
+      dao_id,
+      index,
+    );
+  }
+
+  late final _wire_dao_gov_start_referendumPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint32)>>('wire_dao_gov_start_referendum');
+  late final _wire_dao_gov_start_referendum =
+      _wire_dao_gov_start_referendumPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int)>();
+
   ffi.Pointer<ffi.Uint16> new_box_autoadd_u16_0(
     int value,
   ) {
@@ -1391,5 +1454,6 @@ class wire_uint_8_list extends ffi.Struct {
 }
 
 typedef DartPostCObjectFnType = ffi.Pointer<
-    ffi.NativeFunction<ffi.Bool Function(DartPort, ffi.Pointer<ffi.Void>)>>;
+    ffi.NativeFunction<
+        ffi.Bool Function(DartPort port_id, ffi.Pointer<ffi.Void> message)>>;
 typedef DartPort = ffi.Int64;
