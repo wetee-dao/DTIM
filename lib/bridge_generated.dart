@@ -290,6 +290,10 @@ class GovVote {
 /// Guild information
 /// 组织内公会信息
 class GuildInfo {
+  /// boardID
+  /// 看板ID
+  final int id;
+
   /// creator of DAO
   /// 创建者
   final String creator;
@@ -314,6 +318,7 @@ class GuildInfo {
   final int status;
 
   const GuildInfo({
+    required this.id,
     required this.creator,
     required this.startBlock,
     required this.name,
@@ -1051,15 +1056,16 @@ class RustWraperImpl implements RustWraper {
 
   GuildInfo _wire2api_guild_info(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 6)
-      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return GuildInfo(
-      creator: _wire2api_String(arr[0]),
-      startBlock: _wire2api_u64(arr[1]),
-      name: _wire2api_String(arr[2]),
-      desc: _wire2api_String(arr[3]),
-      metaData: _wire2api_String(arr[4]),
-      status: _wire2api_u8(arr[5]),
+      id: _wire2api_u64(arr[0]),
+      creator: _wire2api_String(arr[1]),
+      startBlock: _wire2api_u64(arr[2]),
+      name: _wire2api_String(arr[3]),
+      desc: _wire2api_String(arr[4]),
+      metaData: _wire2api_String(arr[5]),
+      status: _wire2api_u8(arr[6]),
     );
   }
 

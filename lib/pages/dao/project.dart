@@ -4,12 +4,14 @@ import '../../components/appicon.dart';
 import '../../components/dao/text.dart';
 import '../../store/theme.dart';
 
-class Kanban extends StatefulWidget {
+class ProjectPage extends StatefulWidget {
+  const ProjectPage({super.key});
+
   @override
-  _KanbanState createState() => _KanbanState();
+  State<ProjectPage> createState() => _CombindBoardPageState();
 }
 
-class _KanbanState extends State<Kanban> {
+class _CombindBoardPageState extends State<ProjectPage> {
   final boardScrollController = ScrollController();
   List<String> list1 = ["list1_1", "list1_2", "list1_3"];
   List<String> list2 = ["list2_1", "list2_2"];

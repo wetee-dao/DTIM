@@ -192,6 +192,7 @@ pub fn dao_guilds(client: u32, dao_id: u64) -> anyhow::Result<Vec<GuildInfo>> {
     Ok(gs
         .into_iter()
         .map(|g| GuildInfo {
+            id: g.id,
             name: String::from_utf8(g.name).unwrap(),
             desc: String::from_utf8(g.desc).unwrap(),
             creator: account::ss58_to_address(g.creator.to_string()).unwrap(),

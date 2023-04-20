@@ -11,9 +11,10 @@ import '../../components/close_bar.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
-import 'board.dart';
+import 'combind_board.dart';
 import 'guild.dart';
 import 'overview.dart';
+import 'project.dart';
 import 'roadmap.dart';
 import 'side_menu.dart';
 
@@ -26,7 +27,7 @@ class DaoPage extends StatefulWidget {
 
 class _DaoPageState extends State<DaoPage> {
   late PageController pageController = PageController();
-  final StreamController<int> currentId = StreamController<int>.broadcast();
+  final StreamController<String> currentId = StreamController<String>.broadcast();
   late final IMProvider im;
 
   int? c;
@@ -34,7 +35,7 @@ class _DaoPageState extends State<DaoPage> {
   @override
   void initState() {
     super.initState();
-    currentId.add(0);
+    currentId.add("Overview");
     im = context.read<IMProvider>();
     daoCtx.connectChain(im.currentState!.org, im.me!, () {
       getData();
@@ -44,14 +45,6 @@ class _DaoPageState extends State<DaoPage> {
   getData() async {
     setState(() {});
   }
-
-  final mainPages = [
-    const Overviewpage(),
-    const RoadMapPage(),
-    const ReferendumPage(),
-    Kanban(),
-    const Guildpage(),
-  ];
 
   @override
   void dispose() {
@@ -71,9 +64,9 @@ class _DaoPageState extends State<DaoPage> {
               width: 70.w,
               child: StreamBuilder(
                 stream: currentId.stream,
-                builder: (BuildContext context, AsyncSnapshot<int> id) {
-                  return SideMenu(id.data ?? 0, (id) {
-                    pageController.jumpToPage(id);
+                builder: (BuildContext context, AsyncSnapshot<String> id) {
+                  return SideMenu(id.data ?? "Overview", (id) {
+                    pageController.jumpToPage(getPageIndex(id));
                     currentId.add(id);
                   });
                 },
@@ -120,12 +113,15 @@ class _DaoPageState extends State<DaoPage> {
               width: 170.w,
               child: StreamBuilder(
                 stream: currentId.stream,
-                builder: (BuildContext context, AsyncSnapshot<int> id) {
+                builder: (BuildContext context, AsyncSnapshot<String> id) {
                   return ChangeNotifierProvider.value(
                     value: daoCtx,
-                    child: SideMenu(id.data ?? 0, (id) {
-                      pageController.animateToPage(id,
-                          duration: const Duration(milliseconds: 100), curve: Curves.easeInOut);
+                    child: SideMenu(id.data ?? "Overview", (id) {
+                      pageController.animateToPage(
+                        getPageIndex(id),
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.easeInOut,
+                      );
                       currentId.add(id);
 
                       if (c != null) {}
@@ -152,4 +148,34 @@ class _DaoPageState extends State<DaoPage> {
       ),
     );
   }
+
+  int getPageIndex(str) {
+    switch (str) {
+      case "Overview":
+        return 0;
+      case "RoadMap":
+        return 1;
+      case "Referendums":
+        return 2;
+      case "Combind Boards":
+        return 3;
+      default:
+        if (str.contains("Guilds")) {
+          return 4;
+        }
+        if (str.contains("Projects")) {
+          return 5;
+        }
+    }
+    return 0;
+  }
 }
+
+final mainPages = [
+  const Overviewpage(),
+  const RoadMapPage(),
+  const ReferendumPage(),
+  const CombindBoardPage(),
+  const Guildpage(),
+  const ProjectPage()
+];

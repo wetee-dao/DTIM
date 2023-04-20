@@ -67,6 +67,9 @@ pub struct AssetAccountData {
 /// 组织内公会信息
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
 pub struct GuildInfo {
+    /// boardID
+    /// 看板ID
+    pub id: u64,
     /// creator of DAO
     /// 创建者
     pub creator: String,

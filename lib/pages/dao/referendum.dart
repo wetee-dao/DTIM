@@ -88,7 +88,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                               ),
                               SizedBox(width: 5.w),
                               Text(
-                                "unlock",
+                                "unlock share",
                                 style: TextStyle(
                                   fontSize: 14.w,
                                   color: constTheme.buttonColor,

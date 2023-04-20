@@ -643,6 +643,7 @@ impl support::IntoDartExceptPrimitive for GovVote {}
 impl support::IntoDart for GuildInfo {
     fn into_dart(self) -> support::DartAbi {
         vec![
+            self.id.into_dart(),
             self.creator.into_dart(),
             self.start_block.into_dart(),
             self.name.into_dart(),

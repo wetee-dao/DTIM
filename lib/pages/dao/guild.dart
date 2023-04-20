@@ -1,14 +1,11 @@
 // 初始化一个页面
 import 'package:asyou_app/components/appicon.dart';
-import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../bridge_generated.dart';
-import '../../components/dao/history_table.dart';
 import '../../components/dao/info_card.dart';
-import '../../components/dao/payments_detail_list.dart';
 import '../../components/dao/text.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';

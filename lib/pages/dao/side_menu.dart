@@ -8,8 +8,8 @@ import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 
 class SideMenu extends StatelessWidget {
-  final int id;
-  final Function(int) onTap;
+  final String id;
+  final Function(String) onTap;
   const SideMenu(this.id, this.onTap, {Key? key}) : super(key: key);
 
   @override
@@ -41,29 +41,29 @@ class SideMenu extends StatelessWidget {
               assetName: Icons.apps_rounded,
               name: "Overview",
               color: constTheme,
-              selected: id == 0,
-              onTap: () => onTap(0),
+              selected: id == "Overview",
+              onTap: () => onTap("Overview"),
             ),
             iconBuilder(
               assetName: Icons.integration_instructions_rounded,
               name: "RoadMap",
               color: constTheme,
-              selected: id == 1,
-              onTap: () => onTap(1),
+              selected: id == "RoadMap",
+              onTap: () => onTap("RoadMap"),
             ),
             iconBuilder(
               assetName: Icons.how_to_vote_rounded,
               name: "Referendums",
               color: constTheme,
-              selected: id == 2,
-              onTap: () => onTap(2),
+              selected: id == "Referendums",
+              onTap: () => onTap("Referendums"),
             ),
             iconBuilder(
               assetName: Icons.library_add_rounded,
               name: "Combind Boards",
               color: constTheme,
-              selected: id == 3,
-              onTap: () => onTap(3),
+              selected: id == "Combind Boards",
+              onTap: () => onTap("Combind Boards"),
             ),
             Divider(color: constTheme.sidebarText.withOpacity(0.18)),
             Consumer<DAOCTX>(builder: (_, dao, child) {
@@ -73,15 +73,15 @@ class SideMenu extends StatelessWidget {
                         assetName: Appicon.zuzhiDataOrganization6,
                         name: e.name,
                         color: constTheme,
-                        selected: id == 5,
-                        onTap: () => onTap(5),
+                        selected: id == "Guilds ${e.startBlock} ${e.name}",
+                        onTap: () => onTap("Guilds  ${e.id.toString()}"),
                       )),
                   ...dao.projects.map((e) => iconBuilder(
                         assetName: Appicon.xiangmu,
                         name: e.name,
                         color: constTheme,
-                        selected: id == 6,
-                        onTap: () => onTap(6),
+                        selected: id == "Projects ${e.id.toString()}",
+                        onTap: () => onTap("Projects ${e.id.toString()}"),
                       )),
                 ],
               );
@@ -93,7 +93,7 @@ class SideMenu extends StatelessWidget {
                 decoration: BoxDecoration(
                   // color: constTheme.buttonBg.withOpacity(0.1),
                   border:
-                      Border.all(color: constTheme.buttonBg.withOpacity(0.1), width: 2.w, style: BorderStyle.values[1]),
+                      Border.all(color: constTheme.buttonBg.withOpacity(0.2), width: 2.w, style: BorderStyle.values[1]),
                   borderRadius: BorderRadius.all(Radius.circular(8.w)),
                 ),
                 child: Row(
