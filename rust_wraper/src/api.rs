@@ -1,11 +1,17 @@
+use crate::model::{
+    AssetAccountData, GovProps, GovReferendum, GovVote, GuildInfo, ProjectInfo, Quarter,
+    QuarterTask, Tally,
+};
 use anyhow;
-
-use crate::model::{AssetAccountData, GovProps, GuildInfo, ProjectInfo, Quarter, QuarterTask};
 use asyou_rust_sdk::{
     account,
     hander::{
-        balance::Balance, wetee_asset::WeteeAsset, wetee_dao::WeteeDAO, wetee_gov::WeteeGov,
-        wetee_guild::WeteeGuild, wetee_project::WeteeProject,
+        balance::Balance,
+        wetee_asset::WeteeAsset,
+        wetee_dao::WeteeDAO,
+        wetee_gov::{Opinion, Pledge, Referendum, ReferendumStatus, WeteeGov},
+        wetee_guild::WeteeGuild,
+        wetee_project::WeteeProject,
     },
     model::{account::KeyringJSON, dao::WithGov},
     Client,
@@ -56,6 +62,12 @@ pub fn add_keyring(keyring_str: String, password: String) -> anyhow::Result<bool
 pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String> {
     let addr = account::sign_from_address(address, ctx)?;
     return Ok(addr);
+}
+
+pub fn get_block_number(client: u32) -> anyhow::Result<u64> {
+    let mut c = Client::from_index(client)?;
+    let block_number = c.get_block_number().unwrap();
+    Ok(block_number.0)
 }
 
 pub fn native_balance(client: u32, address: String) -> anyhow::Result<AssetAccountData> {
@@ -254,11 +266,11 @@ pub fn create_guild(
     Ok(true)
 }
 
-pub fn get_dao_gov_public_props(client: u32, dao_id: u64) -> anyhow::Result<Vec<GovProps>> {
+pub fn dao_gov_pending_referendum_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<GovProps>> {
     let c = Client::from_index(client)?;
     let mut gov = WeteeGov::new(c);
 
-    let props = gov.public_props(dao_id.clone()).unwrap();
+    let props = gov.pending_referendum_list(dao_id.clone()).unwrap();
     Ok(props
         .into_iter()
         .map(|(index, hash, call, member, account)| {
@@ -279,6 +291,39 @@ pub fn get_dao_gov_public_props(client: u32, dao_id: u64) -> anyhow::Result<Vec<
         .collect())
 }
 
+pub fn dao_gov_referendum_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<GovReferendum>> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    let referendums = gov.referendum_list(dao_id.clone()).unwrap();
+    Ok(referendums
+        .into_iter()
+        .map(|(hash, referendum)| {
+            // let call_id: u32 =
+            //     TryFrom::<wetee_runtime::RuntimeCall>::try_from(call).unwrap_or_default();
+            let call_str = format!("{:?}", referendum.proposal);
+            let status = match referendum.status {
+                ReferendumStatus::Ongoing => 0,
+                ReferendumStatus::Approved => 1,
+                ReferendumStatus::Rejected => 2,
+            };
+            return GovReferendum {
+                id: referendum.id,
+                hash,
+                end: referendum.end,
+                proposal: call_str,
+                delay: referendum.delay,
+                tally: Tally {
+                    yes: referendum.tally.yes.try_into().unwrap(),
+                    no: referendum.tally.no.try_into().unwrap(),
+                },
+                member_group: "".to_string(),
+                status,
+            };
+        })
+        .collect())
+}
+
 pub fn dao_gov_start_referendum(
     from: String,
     client: u32,
@@ -289,6 +334,77 @@ pub fn dao_gov_start_referendum(
     let mut gov = WeteeGov::new(c);
 
     gov.start_referendum(from, dao_id, index).unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_gov_vote_for_referendum(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    index: u32,
+    vote: u64,
+    approve: bool,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    gov.vote_for_referendum(from, dao_id, index, vote, approve)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_gov_votes_of_user(
+    from: String,
+    client: u32,
+    dao_id: u64,
+) -> anyhow::Result<Vec<GovVote>> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    let votes = gov.votes_of_user(from, dao_id).unwrap();
+    Ok(votes
+        .into_iter()
+        .map(|vote| {
+            let approve = match vote.opinion {
+                Opinion::YES => 1,
+                Opinion::NO => 0,
+            };
+            let amount = match vote.pledge {
+                Pledge::FungToken(x) => x,
+            };
+            return GovVote {
+                dao_id,
+                pledge: amount.try_into().unwrap(),
+                opinion: approve,
+                vote_weight: vote.vote_weight.try_into().unwrap(),
+                unlock_block: vote.unlock_block,
+                referendum_index: vote.referendum_index,
+            };
+        })
+        .collect())
+}
+
+pub fn dao_gov_run_proposal(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    index: u32,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    gov.run_proposal(from, dao_id, index).unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_gov_unlock(from: String, client: u32, dao_id: u64) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut gov = WeteeGov::new(c);
+
+    gov.unlock(from, dao_id).unwrap();
 
     Ok(true)
 }

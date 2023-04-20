@@ -12,10 +12,12 @@ class DAOCTX with ChangeNotifier {
   late AssetAccountData share;
 
   int chainClient = -1;
+  int blockNumber = 0;
   List<GuildInfo> guilds = [];
   List<ProjectInfo> projects = [];
   List<String> members = [];
   String ss58Address = "";
+  List<GovVote> votes = [];
 
   connectChain(porg, puser, callback) {
     if (porg.chainUrl != null) {
@@ -41,6 +43,8 @@ class DAOCTX with ChangeNotifier {
     nativeAmount = await rustApi.nativeBalance(client: chainClient, address: user.address);
     ss58Address = await rustApi.ss58(address: user.address);
     members = await rustApi.daoMemebers(client: chainClient, daoId: org.daoId);
+    votes = await rustApi.daoGovVotesOfUser(client: chainClient, daoId: org.daoId, from: user.address);
+    blockNumber = await rustApi.getBlockNumber(client: chainClient);
 
     notifyListeners();
   }

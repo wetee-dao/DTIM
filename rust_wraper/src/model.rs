@@ -92,8 +92,66 @@ pub struct GuildInfo {
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
 pub struct GovProps {
     pub index: u32,
+    /// The hash of referendum.
     pub hash: String,
+    /// The hash of the proposal being voted on.
+    /// 投票后执行内容
     pub runtime_call: String,
     pub member_group: String,
     pub account: String,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct GovReferendum {
+    pub id: u32,
+    /// The hash of referendum.
+    pub hash: String,
+    /// When voting on this referendum will end.
+    /// 投票结束事件
+    pub end: u64,
+    /// The hash of the proposal being voted on.
+    /// 投票后执行内容
+    pub proposal: String,
+    /// The delay (in blocks) to wait after a successful referendum before deploying.
+    /// 投票完成后多久被允许执行
+    pub delay: u64,
+    /// The current tally of votes in this referendum.
+    /// 投票统计
+    pub tally: Tally,
+
+    pub member_group: String,
+
+    pub status: u8,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct Tally {
+    /// The number of yes votes
+    /// 同意的数量
+    pub yes: u64,
+    /// The number of no votes
+    /// 不同意的数量
+    pub no: u64,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct GovVote {
+    /// The id of the Dao where the vote is located.
+    /// 投票所在组织
+    pub dao_id: u64,
+    /// The specific thing that the vote pledged.
+    /// 抵押
+    pub pledge: u64,
+    /// Object or agree.
+    /// 是否同意
+    pub opinion: u8,
+    /// voting weight.
+    /// 投票权重
+    pub vote_weight: u64,
+    /// Block height that can be unlocked.
+    /// 投票解锁阶段
+    pub unlock_block: u64,
+    /// The referendum id corresponding to the vote.
+    /// 投票的全民公投
+    pub referendum_index: u32,
 }

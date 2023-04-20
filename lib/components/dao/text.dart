@@ -7,6 +7,7 @@ class PrimaryText extends StatelessWidget {
   final FontWeight fontWeight;
   final String text;
   final double height;
+  final Color? color;
 
   const PrimaryText({
     Key? key,
@@ -14,6 +15,7 @@ class PrimaryText extends StatelessWidget {
     this.fontWeight = FontWeight.w400,
     this.size = 20,
     this.height = 1.4,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class PrimaryText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: constTheme.centerChannelColor,
+        color: color ?? constTheme.centerChannelColor,
         height: height,
         fontFamily: 'Poppins',
         fontSize: size,

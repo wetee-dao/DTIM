@@ -21,10 +21,13 @@ use std::sync::Arc;
 
 use crate::model::AssetAccountData;
 use crate::model::GovProps;
+use crate::model::GovReferendum;
+use crate::model::GovVote;
 use crate::model::GuildInfo;
 use crate::model::ProjectInfo;
 use crate::model::Quarter;
 use crate::model::QuarterTask;
+use crate::model::Tally;
 
 // Section: wire functions
 
@@ -104,6 +107,19 @@ fn wire_sign_from_address_impl(
             let api_address = address.wire2api();
             let api_ctx = ctx.wire2api();
             move |task_callback| sign_from_address(api_address, api_ctx)
+        },
+    )
+}
+fn wire_get_block_number_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "get_block_number",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            move |task_callback| get_block_number(api_client)
         },
     )
 }
@@ -357,21 +373,39 @@ fn wire_create_guild_impl(
         },
     )
 }
-fn wire_get_dao_gov_public_props_impl(
+fn wire_dao_gov_pending_referendum_list_impl(
     port_: MessagePort,
     client: impl Wire2Api<u32> + UnwindSafe,
     dao_id: impl Wire2Api<u64> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
-            debug_name: "get_dao_gov_public_props",
+            debug_name: "dao_gov_pending_referendum_list",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
         move || {
             let api_client = client.wire2api();
             let api_dao_id = dao_id.wire2api();
-            move |task_callback| get_dao_gov_public_props(api_client, api_dao_id)
+            move |task_callback| dao_gov_pending_referendum_list(api_client, api_dao_id)
+        },
+    )
+}
+fn wire_dao_gov_referendum_list_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_gov_referendum_list",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| dao_gov_referendum_list(api_client, api_dao_id)
         },
     )
 }
@@ -399,6 +433,103 @@ fn wire_dao_gov_start_referendum_impl(
         },
     )
 }
+fn wire_dao_gov_vote_for_referendum_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    index: impl Wire2Api<u32> + UnwindSafe,
+    vote: impl Wire2Api<u64> + UnwindSafe,
+    approve: impl Wire2Api<bool> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_gov_vote_for_referendum",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_index = index.wire2api();
+            let api_vote = vote.wire2api();
+            let api_approve = approve.wire2api();
+            move |task_callback| {
+                dao_gov_vote_for_referendum(
+                    api_from,
+                    api_client,
+                    api_dao_id,
+                    api_index,
+                    api_vote,
+                    api_approve,
+                )
+            }
+        },
+    )
+}
+fn wire_dao_gov_votes_of_user_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_gov_votes_of_user",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| dao_gov_votes_of_user(api_from, api_client, api_dao_id)
+        },
+    )
+}
+fn wire_dao_gov_run_proposal_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    index: impl Wire2Api<u32> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_gov_run_proposal",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_index = index.wire2api();
+            move |task_callback| dao_gov_run_proposal(api_from, api_client, api_dao_id, api_index)
+        },
+    )
+}
+fn wire_dao_gov_unlock_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_gov_unlock",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            move |task_callback| dao_gov_unlock(api_from, api_client, api_dao_id)
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -419,6 +550,12 @@ where
 {
     fn wire2api(self) -> Option<T> {
         (!self.is_null()).then(|| self.wire2api())
+    }
+}
+
+impl Wire2Api<bool> for bool {
+    fn wire2api(self) -> bool {
+        self
     }
 }
 
@@ -470,6 +607,38 @@ impl support::IntoDart for GovProps {
     }
 }
 impl support::IntoDartExceptPrimitive for GovProps {}
+
+impl support::IntoDart for GovReferendum {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.id.into_dart(),
+            self.hash.into_dart(),
+            self.end.into_dart(),
+            self.proposal.into_dart(),
+            self.delay.into_dart(),
+            self.tally.into_dart(),
+            self.member_group.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for GovReferendum {}
+
+impl support::IntoDart for GovVote {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.dao_id.into_dart(),
+            self.pledge.into_dart(),
+            self.opinion.into_dart(),
+            self.vote_weight.into_dart(),
+            self.unlock_block.into_dart(),
+            self.referendum_index.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for GovVote {}
 
 impl support::IntoDart for GuildInfo {
     fn into_dart(self) -> support::DartAbi {
@@ -526,6 +695,13 @@ impl support::IntoDart for QuarterTask {
     }
 }
 impl support::IntoDartExceptPrimitive for QuarterTask {}
+
+impl support::IntoDart for Tally {
+    fn into_dart(self) -> support::DartAbi {
+        vec![self.yes.into_dart(), self.no.into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for Tally {}
 
 // Section: executor
 

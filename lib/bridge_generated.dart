@@ -39,6 +39,10 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kSignFromAddressConstMeta;
 
+  Future<int> getBlockNumber({required int client, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kGetBlockNumberConstMeta;
+
   Future<AssetAccountData> nativeBalance(
       {required int client, required String address, dynamic hint});
 
@@ -121,10 +125,15 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kCreateGuildConstMeta;
 
-  Future<List<GovProps>> getDaoGovPublicProps(
+  Future<List<GovProps>> daoGovPendingReferendumList(
       {required int client, required int daoId, dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kGetDaoGovPublicPropsConstMeta;
+  FlutterRustBridgeTaskConstMeta get kDaoGovPendingReferendumListConstMeta;
+
+  Future<List<GovReferendum>> daoGovReferendumList(
+      {required int client, required int daoId, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovReferendumListConstMeta;
 
   Future<bool> daoGovStartReferendum(
       {required String from,
@@ -134,6 +143,42 @@ abstract class RustWraper {
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoGovStartReferendumConstMeta;
+
+  Future<bool> daoGovVoteForReferendum(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int index,
+      required int vote,
+      required bool approve,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovVoteForReferendumConstMeta;
+
+  Future<List<GovVote>> daoGovVotesOfUser(
+      {required String from,
+      required int client,
+      required int daoId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovVotesOfUserConstMeta;
+
+  Future<bool> daoGovRunProposal(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int index,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovRunProposalConstMeta;
+
+  Future<bool> daoGovUnlock(
+      {required String from,
+      required int client,
+      required int daoId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovUnlockConstMeta;
 }
 
 class AssetAccountData {
@@ -152,7 +197,12 @@ class AssetAccountData {
 /// 待开始投票信息
 class GovProps {
   final int index;
+
+  /// The hash of referendum.
   final String hash;
+
+  /// The hash of the proposal being voted on.
+  /// 投票后执行内容
   final String runtimeCall;
   final String memberGroup;
   final String account;
@@ -163,6 +213,77 @@ class GovProps {
     required this.runtimeCall,
     required this.memberGroup,
     required this.account,
+  });
+}
+
+class GovReferendum {
+  final int id;
+
+  /// The hash of referendum.
+  final String hash;
+
+  /// When voting on this referendum will end.
+  /// 投票结束事件
+  final int end;
+
+  /// The hash of the proposal being voted on.
+  /// 投票后执行内容
+  final String proposal;
+
+  /// The delay (in blocks) to wait after a successful referendum before deploying.
+  /// 投票完成后多久被允许执行
+  final int delay;
+
+  /// The current tally of votes in this referendum.
+  /// 投票统计
+  final Tally tally;
+  final String memberGroup;
+  final int status;
+
+  const GovReferendum({
+    required this.id,
+    required this.hash,
+    required this.end,
+    required this.proposal,
+    required this.delay,
+    required this.tally,
+    required this.memberGroup,
+    required this.status,
+  });
+}
+
+class GovVote {
+  /// The id of the Dao where the vote is located.
+  /// 投票所在组织
+  final int daoId;
+
+  /// The specific thing that the vote pledged.
+  /// 抵押
+  final int pledge;
+
+  /// Object or agree.
+  /// 是否同意
+  final int opinion;
+
+  /// voting weight.
+  /// 投票权重
+  final int voteWeight;
+
+  /// Block height that can be unlocked.
+  /// 投票解锁阶段
+  final int unlockBlock;
+
+  /// The referendum id corresponding to the vote.
+  /// 投票的全民公投
+  final int referendumIndex;
+
+  const GovVote({
+    required this.daoId,
+    required this.pledge,
+    required this.opinion,
+    required this.voteWeight,
+    required this.unlockBlock,
+    required this.referendumIndex,
   });
 }
 
@@ -283,6 +404,21 @@ class QuarterTask {
   });
 }
 
+class Tally {
+  /// The number of yes votes
+  /// 同意的数量
+  final int yes;
+
+  /// The number of no votes
+  /// 不同意的数量
+  final int no;
+
+  const Tally({
+    required this.yes,
+    required this.no,
+  });
+}
+
 class RustWraperImpl implements RustWraper {
   final RustWraperPlatform _platform;
   factory RustWraperImpl(ExternalLibrary dylib) =>
@@ -386,6 +522,23 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "sign_from_address",
         argNames: ["address", "ctx"],
+      );
+
+  Future<int> getBlockNumber({required int client, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_get_block_number(port_, arg0),
+      parseSuccessData: _wire2api_u64,
+      constMeta: kGetBlockNumberConstMeta,
+      argValues: [client],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kGetBlockNumberConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "get_block_number",
+        argNames: ["client"],
       );
 
   Future<AssetAccountData> nativeBalance(
@@ -655,23 +808,43 @@ class RustWraperImpl implements RustWraper {
         argNames: ["from", "client", "daoId", "name", "desc"],
       );
 
-  Future<List<GovProps>> getDaoGovPublicProps(
+  Future<List<GovProps>> daoGovPendingReferendumList(
       {required int client, required int daoId, dynamic hint}) {
     var arg0 = api2wire_u32(client);
     var arg1 = _platform.api2wire_u64(daoId);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_get_dao_gov_public_props(port_, arg0, arg1),
+      callFfi: (port_) => _platform.inner
+          .wire_dao_gov_pending_referendum_list(port_, arg0, arg1),
       parseSuccessData: _wire2api_list_gov_props,
-      constMeta: kGetDaoGovPublicPropsConstMeta,
+      constMeta: kDaoGovPendingReferendumListConstMeta,
       argValues: [client, daoId],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kGetDaoGovPublicPropsConstMeta =>
+  FlutterRustBridgeTaskConstMeta get kDaoGovPendingReferendumListConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
-        debugName: "get_dao_gov_public_props",
+        debugName: "dao_gov_pending_referendum_list",
+        argNames: ["client", "daoId"],
+      );
+
+  Future<List<GovReferendum>> daoGovReferendumList(
+      {required int client, required int daoId, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(daoId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_dao_gov_referendum_list(port_, arg0, arg1),
+      parseSuccessData: _wire2api_list_gov_referendum,
+      constMeta: kDaoGovReferendumListConstMeta,
+      argValues: [client, daoId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovReferendumListConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_gov_referendum_list",
         argNames: ["client", "daoId"],
       );
 
@@ -699,6 +872,110 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "dao_gov_start_referendum",
         argNames: ["from", "client", "daoId", "index"],
+      );
+
+  Future<bool> daoGovVoteForReferendum(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int index,
+      required int vote,
+      required bool approve,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = api2wire_u32(index);
+    var arg4 = _platform.api2wire_u64(vote);
+    var arg5 = approve;
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_gov_vote_for_referendum(
+          port_, arg0, arg1, arg2, arg3, arg4, arg5),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoGovVoteForReferendumConstMeta,
+      argValues: [from, client, daoId, index, vote, approve],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovVoteForReferendumConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_gov_vote_for_referendum",
+        argNames: ["from", "client", "daoId", "index", "vote", "approve"],
+      );
+
+  Future<List<GovVote>> daoGovVotesOfUser(
+      {required String from,
+      required int client,
+      required int daoId,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_dao_gov_votes_of_user(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_list_gov_vote,
+      constMeta: kDaoGovVotesOfUserConstMeta,
+      argValues: [from, client, daoId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovVotesOfUserConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_gov_votes_of_user",
+        argNames: ["from", "client", "daoId"],
+      );
+
+  Future<bool> daoGovRunProposal(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int index,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = api2wire_u32(index);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_gov_run_proposal(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoGovRunProposalConstMeta,
+      argValues: [from, client, daoId, index],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovRunProposalConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_gov_run_proposal",
+        argNames: ["from", "client", "daoId", "index"],
+      );
+
+  Future<bool> daoGovUnlock(
+      {required String from,
+      required int client,
+      required int daoId,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_dao_gov_unlock(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoGovUnlockConstMeta,
+      argValues: [from, client, daoId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGovUnlockConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_gov_unlock",
+        argNames: ["from", "client", "daoId"],
       );
 
   void dispose() {
@@ -742,6 +1019,36 @@ class RustWraperImpl implements RustWraper {
     );
   }
 
+  GovReferendum _wire2api_gov_referendum(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    return GovReferendum(
+      id: _wire2api_u32(arr[0]),
+      hash: _wire2api_String(arr[1]),
+      end: _wire2api_u64(arr[2]),
+      proposal: _wire2api_String(arr[3]),
+      delay: _wire2api_u64(arr[4]),
+      tally: _wire2api_tally(arr[5]),
+      memberGroup: _wire2api_String(arr[6]),
+      status: _wire2api_u8(arr[7]),
+    );
+  }
+
+  GovVote _wire2api_gov_vote(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    return GovVote(
+      daoId: _wire2api_u64(arr[0]),
+      pledge: _wire2api_u64(arr[1]),
+      opinion: _wire2api_u8(arr[2]),
+      voteWeight: _wire2api_u64(arr[3]),
+      unlockBlock: _wire2api_u64(arr[4]),
+      referendumIndex: _wire2api_u32(arr[5]),
+    );
+  }
+
   GuildInfo _wire2api_guild_info(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 6)
@@ -758,6 +1065,14 @@ class RustWraperImpl implements RustWraper {
 
   List<GovProps> _wire2api_list_gov_props(dynamic raw) {
     return (raw as List<dynamic>).map(_wire2api_gov_props).toList();
+  }
+
+  List<GovReferendum> _wire2api_list_gov_referendum(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_gov_referendum).toList();
+  }
+
+  List<GovVote> _wire2api_list_gov_vote(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_gov_vote).toList();
   }
 
   List<GuildInfo> _wire2api_list_guild_info(dynamic raw) {
@@ -814,6 +1129,16 @@ class RustWraperImpl implements RustWraper {
     );
   }
 
+  Tally _wire2api_tally(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Tally(
+      yes: _wire2api_u64(arr[0]),
+      no: _wire2api_u64(arr[1]),
+    );
+  }
+
   int _wire2api_u32(dynamic raw) {
     return raw as int;
   }
@@ -832,6 +1157,11 @@ class RustWraperImpl implements RustWraper {
 }
 
 // Section: api2wire
+
+@protected
+bool api2wire_bool(bool raw) {
+  return raw;
+}
 
 @protected
 int api2wire_u16(int raw) {
@@ -1077,6 +1407,22 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_sign_from_address = _wire_sign_from_addressPtr.asFunction<
       void Function(
           int, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_get_block_number(
+    int port_,
+    int client,
+  ) {
+    return _wire_get_block_number(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire_get_block_numberPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
+          'wire_get_block_number');
+  late final _wire_get_block_number =
+      _wire_get_block_numberPtr.asFunction<void Function(int, int)>();
 
   void wire_native_balance(
     int port_,
@@ -1353,23 +1699,43 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       void Function(int, ffi.Pointer<wire_uint_8_list>, int, int,
           ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
 
-  void wire_get_dao_gov_public_props(
+  void wire_dao_gov_pending_referendum_list(
     int port_,
     int client,
     int dao_id,
   ) {
-    return _wire_get_dao_gov_public_props(
+    return _wire_dao_gov_pending_referendum_list(
       port_,
       client,
       dao_id,
     );
   }
 
-  late final _wire_get_dao_gov_public_propsPtr = _lookup<
+  late final _wire_dao_gov_pending_referendum_listPtr = _lookup<
       ffi.NativeFunction<
           ffi.Void Function(ffi.Int64, ffi.Uint32,
-              ffi.Uint64)>>('wire_get_dao_gov_public_props');
-  late final _wire_get_dao_gov_public_props = _wire_get_dao_gov_public_propsPtr
+              ffi.Uint64)>>('wire_dao_gov_pending_referendum_list');
+  late final _wire_dao_gov_pending_referendum_list =
+      _wire_dao_gov_pending_referendum_listPtr
+          .asFunction<void Function(int, int, int)>();
+
+  void wire_dao_gov_referendum_list(
+    int port_,
+    int client,
+    int dao_id,
+  ) {
+    return _wire_dao_gov_referendum_list(
+      port_,
+      client,
+      dao_id,
+    );
+  }
+
+  late final _wire_dao_gov_referendum_listPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32,
+              ffi.Uint64)>>('wire_dao_gov_referendum_list');
+  late final _wire_dao_gov_referendum_list = _wire_dao_gov_referendum_listPtr
       .asFunction<void Function(int, int, int)>();
 
   void wire_dao_gov_start_referendum(
@@ -1399,6 +1765,112 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_dao_gov_start_referendum =
       _wire_dao_gov_start_referendumPtr.asFunction<
           void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int)>();
+
+  void wire_dao_gov_vote_for_referendum(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int index,
+    int vote,
+    bool approve,
+  ) {
+    return _wire_dao_gov_vote_for_referendum(
+      port_,
+      from,
+      client,
+      dao_id,
+      index,
+      vote,
+      approve,
+    );
+  }
+
+  late final _wire_dao_gov_vote_for_referendumPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Bool)>>('wire_dao_gov_vote_for_referendum');
+  late final _wire_dao_gov_vote_for_referendum =
+      _wire_dao_gov_vote_for_referendumPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_uint_8_list>, int, int, int, int, bool)>();
+
+  void wire_dao_gov_votes_of_user(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+  ) {
+    return _wire_dao_gov_votes_of_user(
+      port_,
+      from,
+      client,
+      dao_id,
+    );
+  }
+
+  late final _wire_dao_gov_votes_of_userPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32, ffi.Uint64)>>('wire_dao_gov_votes_of_user');
+  late final _wire_dao_gov_votes_of_user =
+      _wire_dao_gov_votes_of_userPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int)>();
+
+  void wire_dao_gov_run_proposal(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int index,
+  ) {
+    return _wire_dao_gov_run_proposal(
+      port_,
+      from,
+      client,
+      dao_id,
+      index,
+    );
+  }
+
+  late final _wire_dao_gov_run_proposalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint32)>>('wire_dao_gov_run_proposal');
+  late final _wire_dao_gov_run_proposal =
+      _wire_dao_gov_run_proposalPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int)>();
+
+  void wire_dao_gov_unlock(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+  ) {
+    return _wire_dao_gov_unlock(
+      port_,
+      from,
+      client,
+      dao_id,
+    );
+  }
+
+  late final _wire_dao_gov_unlockPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32, ffi.Uint64)>>('wire_dao_gov_unlock');
+  late final _wire_dao_gov_unlock = _wire_dao_gov_unlockPtr.asFunction<
+      void Function(int, ffi.Pointer<wire_uint_8_list>, int, int)>();
 
   ffi.Pointer<ffi.Uint16> new_box_autoadd_u16_0(
     int value,

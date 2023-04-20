@@ -85,7 +85,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                   child: Container(
                     margin: EdgeInsets.only(left: 15.w),
                     child: Text(
-                      "复制ID：${getUserShortId(im.currentState!.client.userID ?? "")}",
+                      "复制ID：${getUserShortId(im.me!.address)}",
                       style: TextStyle(
                         color: constTheme.sidebarHeaderTextColor,
                         fontWeight: FontWeight.bold,
@@ -96,9 +96,9 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    final client = im.currentState!.client;
+                    // final client = im.currentState!.client;
                     Clipboard.setData(ClipboardData(
-                      text: client.userID,
+                      text: getUserShortId(im.me!.address),
                     )).then((value) {
                       BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
                     });

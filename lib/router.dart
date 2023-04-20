@@ -7,6 +7,7 @@ import 'pages/channel/setting/setting.dart';
 import 'pages/dao/pop/create_project.dart';
 import 'pages/dao/pop/create_roadmap.dart';
 import 'pages/dao/pop/join_dao.dart';
+import 'pages/dao/pop/referendum_vote.dart';
 import 'pages/setting/setting.dart';
 import 'package:flutter/material.dart';
 
@@ -122,6 +123,12 @@ routers() {
         return const CreateProjectPage();
       },
     ),
+    GoRoute(
+      path: '/referendum_vote/:id',
+      builder: (BuildContext context, GoRouterState state) {
+        return ReferendumVotePage(id: state.params['id'] ?? "");
+      },
+    ),
   ];
 }
 
@@ -140,6 +147,10 @@ getPage(String url, Function closeModel) {
     return JoinDaoPage(closeModel: closeModel);
   } else if (url.indexOf("/create_dao_project") == 0) {
     return CreateProjectPage(closeModel: closeModel);
+  } else if (url.indexOf("/referendum_vote") == 0) {
+    final pstr = url.replaceAll("/referendum_vote/", "");
+    final ps = pstr.split("/");
+    return ReferendumVotePage(id: ps[0], closeModel: closeModel);
   } else if (url.indexOf("/channel_setting/") == 0) {
     final pstr = url.replaceAll("/channel_setting/", "");
     final ps = pstr.split("/");

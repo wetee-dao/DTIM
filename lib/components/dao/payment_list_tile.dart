@@ -8,18 +8,20 @@ class PaymentListTile extends StatelessWidget {
   final IconData? icon;
   final String? label;
   final String? amount;
+  final Widget? action;
   const PaymentListTile({
     Key? key,
     required this.icon,
     required this.label,
     required this.amount,
+    this.action,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return ListTile(
-      contentPadding: EdgeInsets.only(left: 0, right: 20.w),
+      contentPadding: EdgeInsets.only(left: 0, right: 0.w),
       visualDensity: VisualDensity.standard,
       leading: Container(
         padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 10.w),
@@ -31,24 +33,20 @@ class PaymentListTile extends StatelessWidget {
         ),
         child: Icon(
           icon!,
-          size: 20.w,
+          size: 15.w,
           color: constTheme.centerChannelColor,
         ),
       ),
       title: PrimaryText(
         text: label!,
-        size: 15.w,
+        size: 14.w,
         fontWeight: FontWeight.w500,
       ),
       subtitle: PrimaryText(
-        text: 'Successful',
+        text: amount!,
         size: 12.w,
       ),
-      trailing: PrimaryText(
-        text: amount!,
-        size: 14.w,
-        fontWeight: FontWeight.bold,
-      ),
+      trailing: action ?? Container(),
     );
   }
 }

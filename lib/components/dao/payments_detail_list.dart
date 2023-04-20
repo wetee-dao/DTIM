@@ -1,7 +1,9 @@
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../bridge_generated.dart';
+import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 import 'payment_list_tile.dart';
 import 'text.dart';
@@ -46,29 +48,37 @@ class PaymentsDetailList extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            PrimaryText(
-              text: 'Recent Votes',
-              size: 18,
-              fontWeight: FontWeight.w800,
+        Consumer<DAOCTX>(builder: (_, dao, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PrimaryText(
+                text: dao.votes.isNotEmpty ? 'My ongoing vote' : 'No ongoing vote',
+                size: 18,
+                fontWeight: FontWeight.w800,
+              ),
+            ],
+          );
+        }),
+        Consumer<DAOCTX>(builder: (_, dao, child) {
+          return Column(
+            children: List.generate(
+              dao.votes.length,
+              (index) => PaymentListTile(
+                icon: Icons.how_to_vote_rounded,
+                amount: "Share ${dao.votes[index].pledge}",
+                label: "Referendum #${dao.votes[index].referendumIndex}",
+                action: Icon(
+                  dao.votes[index].opinion == 1 ? Icons.check_circle_outline_rounded : Icons.close_rounded,
+                  color: dao.votes[index].opinion == 1
+                      ? constTheme.buttonBg.withOpacity(0.5)
+                      : constTheme.errorTextColor.withOpacity(0.5),
+                  size: 25.w,
+                ),
+              ),
             ),
-          ],
-        ),
-        // SizedBox(
-        //   height: 10.w,
-        // ),
-        Column(
-          children: List.generate(
-            recentActivities.length,
-            (index) => PaymentListTile(
-              icon: recentActivities[index].icon,
-              amount: recentActivities[index].amount,
-              label: recentActivities[index].label,
-            ),
-          ),
-        ),
+          );
+        }),
         // SizedBox(height: 15.w),
         // Column(
         //   crossAxisAlignment: CrossAxisAlignment.start,

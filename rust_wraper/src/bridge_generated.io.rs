@@ -40,6 +40,11 @@ pub extern "C" fn wire_sign_from_address(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_get_block_number(port_: i64, client: u32) {
+    wire_get_block_number_impl(port_, client)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_native_balance(port_: i64, client: u32, address: *mut wire_uint_8_list) {
     wire_native_balance_impl(port_, client, address)
 }
@@ -132,8 +137,13 @@ pub extern "C" fn wire_create_guild(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_get_dao_gov_public_props(port_: i64, client: u32, dao_id: u64) {
-    wire_get_dao_gov_public_props_impl(port_, client, dao_id)
+pub extern "C" fn wire_dao_gov_pending_referendum_list(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_gov_pending_referendum_list_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_gov_referendum_list(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_gov_referendum_list_impl(port_, client, dao_id)
 }
 
 #[no_mangle]
@@ -145,6 +155,50 @@ pub extern "C" fn wire_dao_gov_start_referendum(
     index: u32,
 ) {
     wire_dao_gov_start_referendum_impl(port_, from, client, dao_id, index)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_gov_vote_for_referendum(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    index: u32,
+    vote: u64,
+    approve: bool,
+) {
+    wire_dao_gov_vote_for_referendum_impl(port_, from, client, dao_id, index, vote, approve)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_gov_votes_of_user(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+) {
+    wire_dao_gov_votes_of_user_impl(port_, from, client, dao_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_gov_run_proposal(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    index: u32,
+) {
+    wire_dao_gov_run_proposal_impl(port_, from, client, dao_id, index)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_gov_unlock(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+) {
+    wire_dao_gov_unlock_impl(port_, from, client, dao_id)
 }
 
 // Section: allocate functions
@@ -173,6 +227,7 @@ impl Wire2Api<String> for *mut wire_uint_8_list {
         String::from_utf8_lossy(&vec).into_owned()
     }
 }
+
 impl Wire2Api<u16> for *mut u16 {
     fn wire2api(self) -> u16 {
         unsafe { *support::box_from_leak_ptr(self) }
