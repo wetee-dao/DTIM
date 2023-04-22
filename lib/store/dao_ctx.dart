@@ -48,6 +48,14 @@ class DAOCTX with ChangeNotifier {
 
     notifyListeners();
   }
+
+  timeTick() async {
+    int newBlockNumber = await rustApi.getBlockNumber(client: chainClient);
+    if (newBlockNumber != blockNumber) {
+      blockNumber = newBlockNumber;
+      notifyListeners();
+    }
+  }
 }
 
 final daoCtx = DAOCTX();

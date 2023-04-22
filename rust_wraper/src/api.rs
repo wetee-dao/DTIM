@@ -1,6 +1,6 @@
 use crate::model::{
     AssetAccountData, GovProps, GovReferendum, GovVote, GuildInfo, ProjectInfo, Quarter,
-    QuarterTask, Tally,
+    QuarterTask, Reward, Tally, TaskInfo,
 };
 use anyhow;
 use asyou_rust_sdk::{
@@ -11,7 +11,7 @@ use asyou_rust_sdk::{
         wetee_dao::WeteeDAO,
         wetee_gov::{Opinion, Pledge, Referendum, ReferendumStatus, WeteeGov},
         wetee_guild::WeteeGuild,
-        wetee_project::WeteeProject,
+        wetee_project::{TaskStatus, WeteeProject},
     },
     model::{account::KeyringJSON, dao::WithGov},
     Client,
@@ -406,6 +406,197 @@ pub fn dao_gov_unlock(from: String, client: u32, dao_id: u64) -> anyhow::Result<
     let mut gov = WeteeGov::new(c);
 
     gov.unlock(from, dao_id).unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_memeber_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<String>> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let members = dao.member_list(dao_id).unwrap();
+    Ok(members
+        .into_iter()
+        .map(|account| {
+            return account::ss58_to_address(account.to_string()).unwrap();
+        })
+        .collect())
+}
+
+pub fn dao_guild_memeber_list(
+    client: u32,
+    dao_id: u64,
+    guild_id: u64,
+) -> anyhow::Result<Vec<String>> {
+    let c = Client::from_index(client)?;
+    let mut guild = WeteeGuild::new(c);
+
+    let members = guild.member_list(dao_id, guild_id).unwrap();
+    Ok(members
+        .into_iter()
+        .map(|account| {
+            return account::ss58_to_address(account.to_string()).unwrap();
+        })
+        .collect())
+}
+
+pub fn dao_project_member_list(
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+) -> anyhow::Result<Vec<String>> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    let members = project.member_list(dao_id, project_id).unwrap();
+    Ok(members
+        .into_iter()
+        .map(|account| {
+            return account::ss58_to_address(account.to_string()).unwrap();
+        })
+        .collect())
+}
+
+pub fn dao_project_task_list(
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+) -> anyhow::Result<Vec<TaskInfo>> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    let tasks = project.task_list(project_id).unwrap();
+    Ok(tasks
+        .into_iter()
+        .map(|task| {
+            return TaskInfo {
+                id: task.id,
+                name: String::from_utf8(task.name).unwrap(),
+                description: String::from_utf8(task.description).unwrap(),
+                status: match task.status {
+                    TaskStatus::ToDo => 0,
+                    TaskStatus::InProgress => 1,
+                    TaskStatus::InReview => 2,
+                    TaskStatus::Done => 3,
+                },
+                point: task.point,
+                priority: task.priority,
+                project_id,
+                creator: account::ss58_to_address(task.creator.to_string()).unwrap(),
+                rewards: task
+                    .rewards
+                    .into_iter()
+                    .map(|(id, amount)| {
+                        return Reward {
+                            asset_id: id,
+                            amount: amount.try_into().unwrap(),
+                        };
+                    })
+                    .collect(),
+                max_assignee: task.max_assignee,
+                assignees: task
+                    .assignees
+                    .into_iter()
+                    .map(|account| {
+                        return account::ss58_to_address(account.to_string()).unwrap();
+                    })
+                    .collect(),
+                reviewers: task
+                    .reviewers
+                    .into_iter()
+                    .map(|account| {
+                        return account::ss58_to_address(account.to_string()).unwrap();
+                    })
+                    .collect(),
+                skills: task.skills,
+            };
+        })
+        .collect())
+}
+
+pub fn dao_project_create_task(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    name: String,
+    desc: String,
+    priority: u8,
+    point: u16,
+    assignees: Option<Vec<String>>,
+    skills: Option<Vec<u8>>,
+    max_assignee: Option<u8>,
+    amount: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .create_task(
+            from,
+            dao_id,
+            project_id,
+            name,
+            desc,
+            priority,
+            point,
+            assignees,
+            skills,
+            max_assignee,
+            amount.into(),
+        )
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_start_task(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .start_task(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_request_review(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .request_review(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_task_done(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .task_done(from, dao_id, project_id, task_id)
+        .unwrap();
 
     Ok(true)
 }

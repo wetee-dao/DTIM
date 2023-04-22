@@ -481,7 +481,7 @@ const themes = [
     "newMessageSeparator": "#ff8800",
     "linkColor": "#2389d7",
     "buttonBg": "#166de0",
-    "buttonColor": "#011627",
+    "buttonColor": "#d6deeb",
     "errorTextColor": "#fd5960",
     "mentionHighlightBg": "#0b2942",
     "mentionHighlightLink": "#82aaff",

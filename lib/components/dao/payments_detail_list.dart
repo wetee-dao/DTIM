@@ -69,10 +69,8 @@ class PaymentsDetailList extends StatelessWidget {
                 amount: "Share ${dao.votes[index].pledge}",
                 label: "Referendum #${dao.votes[index].referendumIndex}",
                 action: Icon(
-                  dao.votes[index].opinion == 1 ? Icons.check_circle_outline_rounded : Icons.close_rounded,
-                  color: dao.votes[index].opinion == 1
-                      ? constTheme.buttonBg.withOpacity(0.5)
-                      : constTheme.errorTextColor.withOpacity(0.5),
+                  dao.votes[index].opinion == 1 ? Icons.check_circle_outline_rounded : Icons.cancel_outlined,
+                  color: dao.votes[index].opinion == 1 ? constTheme.buttonBg : constTheme.errorTextColor,
                   size: 25.w,
                 ),
               ),

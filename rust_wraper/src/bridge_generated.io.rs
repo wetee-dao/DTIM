@@ -201,10 +201,123 @@ pub extern "C" fn wire_dao_gov_unlock(
     wire_dao_gov_unlock_impl(port_, from, client, dao_id)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_dao_memeber_list(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_memeber_list_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_guild_memeber_list(port_: i64, client: u32, dao_id: u64, guild_id: u64) {
+    wire_dao_guild_memeber_list_impl(port_, client, dao_id, guild_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_member_list(
+    port_: i64,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+) {
+    wire_dao_project_member_list_impl(port_, client, dao_id, project_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_task_list(
+    port_: i64,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+) {
+    wire_dao_project_task_list_impl(port_, client, dao_id, project_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_create_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    name: *mut wire_uint_8_list,
+    desc: *mut wire_uint_8_list,
+    priority: u8,
+    point: u16,
+    assignees: *mut wire_StringList,
+    skills: *mut wire_uint_8_list,
+    max_assignee: *mut u8,
+    amount: u64,
+) {
+    wire_dao_project_create_task_impl(
+        port_,
+        from,
+        client,
+        dao_id,
+        project_id,
+        name,
+        desc,
+        priority,
+        point,
+        assignees,
+        skills,
+        max_assignee,
+        amount,
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_start_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_start_task_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_request_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_request_review_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_task_done(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_task_done_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
 // Section: allocate functions
 
 #[no_mangle]
+pub extern "C" fn new_StringList_0(len: i32) -> *mut wire_StringList {
+    let wrap = wire_StringList {
+        ptr: support::new_leak_vec_ptr(<*mut wire_uint_8_list>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
 pub extern "C" fn new_box_autoadd_u16_0(value: u16) -> *mut u16 {
+    support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_u8_0(value: u8) -> *mut u8 {
     support::new_leak_box_ptr(value)
 }
 
@@ -227,9 +340,23 @@ impl Wire2Api<String> for *mut wire_uint_8_list {
         String::from_utf8_lossy(&vec).into_owned()
     }
 }
+impl Wire2Api<Vec<String>> for *mut wire_StringList {
+    fn wire2api(self) -> Vec<String> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
 
 impl Wire2Api<u16> for *mut u16 {
     fn wire2api(self) -> u16 {
+        unsafe { *support::box_from_leak_ptr(self) }
+    }
+}
+impl Wire2Api<u8> for *mut u8 {
+    fn wire2api(self) -> u8 {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
@@ -243,6 +370,13 @@ impl Wire2Api<Vec<u8>> for *mut wire_uint_8_list {
     }
 }
 // Section: wire structs
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_StringList {
+    ptr: *mut *mut wire_uint_8_list,
+    len: i32,
+}
 
 #[repr(C)]
 #[derive(Clone)]

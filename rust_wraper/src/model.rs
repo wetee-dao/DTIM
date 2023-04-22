@@ -158,3 +158,48 @@ pub struct GovVote {
     /// 投票的全民公投
     pub referendum_index: u32,
 }
+
+/// task specific information
+/// 任务信息
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct TaskInfo {
+    pub id: u64,
+    pub name: String,
+    pub description: String,
+    /// task point
+    /// 任务价值点
+    pub point: u16,
+    /// priority
+    /// 优先程度
+    pub priority: u8,
+    /// projectID
+    /// 看板ID
+    pub project_id: u64,
+    /// creator of WETEE
+    /// 创建者
+    pub creator: String,
+    /// rewards
+    /// 奖金
+    pub rewards: Vec<Reward>,
+    // 最大协作数量
+    pub max_assignee: u8,
+    /// assignes info
+    /// 受托人
+    pub assignees: Vec<String>,
+    /// reviewer
+    /// 审查人
+    pub reviewers: Vec<String>,
+    /// skill info
+    /// 技能
+    pub skills: Vec<u8>,
+    /// State of the WETEE
+    /// WETEE状态
+    pub status: u8,
+}
+
+// reward
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct Reward {
+    pub asset_id: u64,
+    pub amount: u64,
+}

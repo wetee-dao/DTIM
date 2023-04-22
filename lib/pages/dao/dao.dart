@@ -26,19 +26,31 @@ class DaoPage extends StatefulWidget {
 }
 
 class _DaoPageState extends State<DaoPage> {
+  final mainPages = [
+    const Overviewpage(),
+    const RoadMapPage(),
+    const ReferendumPage(),
+    const CombindBoardPage(),
+    Guildpage(key: guildKey),
+    ProjectPage(key: projectKey)
+  ];
   late PageController pageController = PageController();
   final StreamController<String> currentId = StreamController<String>.broadcast();
+  String pageStr = "Overview";
   late final IMProvider im;
-
+  Timer? _timer;
   int? c;
 
   @override
   void initState() {
     super.initState();
-    currentId.add("Overview");
+    currentId.add(pageStr);
     im = context.read<IMProvider>();
     daoCtx.connectChain(im.currentState!.org, im.me!, () {
       getData();
+    });
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      daoCtx.timeTick();
     });
   }
 
@@ -49,6 +61,7 @@ class _DaoPageState extends State<DaoPage> {
   @override
   void dispose() {
     super.dispose();
+    _timer?.cancel();
   }
 
   @override
@@ -65,7 +78,7 @@ class _DaoPageState extends State<DaoPage> {
               child: StreamBuilder(
                 stream: currentId.stream,
                 builder: (BuildContext context, AsyncSnapshot<String> id) {
-                  return SideMenu(id.data ?? "Overview", (id) {
+                  return SideMenu(id.data ?? pageStr, (id) {
                     pageController.jumpToPage(getPageIndex(id));
                     currentId.add(id);
                   });
@@ -116,14 +129,20 @@ class _DaoPageState extends State<DaoPage> {
                 builder: (BuildContext context, AsyncSnapshot<String> id) {
                   return ChangeNotifierProvider.value(
                     value: daoCtx,
-                    child: SideMenu(id.data ?? "Overview", (id) {
-                      pageController.animateToPage(
-                        getPageIndex(id),
+                    child: SideMenu(id.data ?? pageStr, (id) {
+                      final index = getPageIndex(id);
+
+                      pageController
+                          .animateToPage(
+                        index,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.easeInOut,
-                      );
-                      currentId.add(id);
+                      )
+                          .then((v) {
+                        pageHook();
+                      });
 
+                      currentId.add(id);
                       if (c != null) {}
                     }),
                   );
@@ -138,7 +157,7 @@ class _DaoPageState extends State<DaoPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       controller: pageController,
                       scrollDirection: Axis.vertical,
-                      // onPageChanged: onPageChanged,
+                      onPageChanged: (page) {},
                       children: mainPages,
                     ),
                   )
@@ -149,7 +168,28 @@ class _DaoPageState extends State<DaoPage> {
     );
   }
 
+  pageHook() {
+    if (pageStr.contains("Guilds")) {
+      final ids = pageStr.split(" ");
+      Timer(const Duration(milliseconds: 100), () {
+        final guildState = guildKey.currentState as GuildpageState;
+        final guild = daoCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
+        guildState.getData(guild);
+      });
+    }
+    if (pageStr.contains("Projects")) {
+      final ids = pageStr.split(" ");
+      Timer(const Duration(milliseconds: 100), () {
+        final projectState = projectKey.currentState as ProjectPageState;
+        final project = daoCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
+        // guildKey.currentState?.getData();
+        projectState.getData(project);
+      });
+    }
+  }
+
   int getPageIndex(str) {
+    pageStr = str;
     switch (str) {
       case "Overview":
         return 0;
@@ -170,12 +210,3 @@ class _DaoPageState extends State<DaoPage> {
     return 0;
   }
 }
-
-final mainPages = [
-  const Overviewpage(),
-  const RoadMapPage(),
-  const ReferendumPage(),
-  const CombindBoardPage(),
-  const Guildpage(),
-  const ProjectPage()
-];

@@ -258,6 +258,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                               size: 13.w,
                             ),
                           ),
+                          renderTime(going[index], dao),
                           Container(
                             width: 80.w,
                             height: 30.w,
@@ -396,7 +397,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
               ),
             );
     }
-    if (going.status == 0 && going.end - dao.blockNumber < 0 && going.end + going.delay - dao.blockNumber > 0) {
+    if (going.status == 0 && going.end - dao.blockNumber <= 0 && going.end + going.delay - dao.blockNumber > 0) {
       return renderBox(
         PrimaryText(
           text: "冷静期",
@@ -436,6 +437,51 @@ class _ReferendumPageState extends State<ReferendumPage> {
         borderRadius: BorderRadius.all(Radius.circular(5.w)),
       ),
       child: Center(child: box),
+    );
+  }
+
+  renderTime(going, dao) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    if (going.end - dao.blockNumber > 0) {
+      return SizedBox(
+        width: 100.w,
+        child: Row(
+          children: [
+            SizedBox(width: 5.w),
+            Expanded(
+              child: PrimaryText(
+                text: "投票结束剩余 ${going.end - dao.blockNumber} 区块",
+                size: 13.w,
+                color: constTheme.centerChannelColor,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(width: 5.w),
+          ],
+        ),
+      );
+    }
+    if (going.end - dao.blockNumber <= 0 && going.end + going.delay - dao.blockNumber > 0) {
+      return SizedBox(
+        width: 100.w,
+        child: Row(
+          children: [
+            SizedBox(width: 5.w),
+            Expanded(
+              child: PrimaryText(
+                text: "距离执行剩余 ${going.end + going.delay - dao.blockNumber} 区块",
+                size: 13.w,
+                color: constTheme.centerChannelColor,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(width: 5.w),
+          ],
+        ),
+      );
+    }
+    return const SizedBox(
+      width: 0,
     );
   }
 }

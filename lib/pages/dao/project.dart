@@ -1,29 +1,61 @@
+import 'package:asyou_app/bridge_generated.dart';
+import 'package:asyou_app/components/avatar.dart';
+import 'package:asyou_app/components/loading.dart';
 import 'package:asyou_app/utils/screen.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../components/appicon.dart';
 import '../../components/dao/text.dart';
+import '../../router.dart';
+import '../../rust_wraper.io.dart';
+import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
+
+final GlobalKey projectKey = GlobalKey();
 
 class ProjectPage extends StatefulWidget {
   const ProjectPage({super.key});
 
   @override
-  State<ProjectPage> createState() => _CombindBoardPageState();
+  State<ProjectPage> createState() => ProjectPageState();
 }
 
-class _CombindBoardPageState extends State<ProjectPage> {
+class ProjectPageState extends State<ProjectPage> {
   final boardScrollController = ScrollController();
-  List<String> list1 = ["list1_1", "list1_2", "list1_3"];
-  List<String> list2 = ["list2_1", "list2_2"];
-  List<String> list3 = ["list3_1", "list3_2"];
-  List<String> list4 = ["list3_1", "list3_2"];
+  late final DAOCTX dao;
+  ProjectInfo? info;
+  List<String> members = [];
+
+  @override
+  void initState() {
+    super.initState();
+    dao = context.read<DAOCTX>();
+  }
+
+  getData(ProjectInfo project) async {
+    info = project;
+    members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: project.id);
+    print(members);
+    var ps = await rustApi.daoProjectTaskList(client: dao.chainClient, daoId: dao.org.daoId, projectId: project.id);
+    todo = ps.where((p) => p.status == 0).toList();
+    inProgress = ps.where((p) => p.status == 1).toList();
+    inReview = ps.where((p) => p.status == 2).toList();
+    done = ps.where((p) => p.status == 3).toList();
+    if (mounted) setState(() {});
+  }
+
+  List<TaskInfo> todo = [];
+  List<TaskInfo> inProgress = [];
+  List<TaskInfo> inReview = [];
+  List<TaskInfo> done = [];
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      // padding: EdgeInsets.only(top: 10),
       children: [
         Container(
           margin: EdgeInsets.only(left: 30.w, right: 30.w),
@@ -40,15 +72,79 @@ class _CombindBoardPageState extends State<ProjectPage> {
                   ),
                   SizedBox(width: 10.w),
                   PrimaryText(
-                    text: 'Combind Boards',
+                    text: info != null ? "#${info!.id}  ${info!.name}" : "",
                     size: 25.w,
                     fontWeight: FontWeight.w800,
                   ),
+                  Expanded(child: Container()),
+                  InkWell(
+                    onTap: () {
+                      // showModelOrPage(context, "/create_roadmap");
+                    },
+                    child: Container(
+                      height: 30.w,
+                      padding: EdgeInsets.all(5.w),
+                      decoration: BoxDecoration(
+                        color: constTheme.buttonBg,
+                        borderRadius: BorderRadius.circular(5.w),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add_circle_outline_rounded,
+                            size: 20.w,
+                            color: constTheme.buttonColor,
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            "加入项目",
+                            style: TextStyle(
+                              fontSize: 14.w,
+                              color: constTheme.buttonColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  InkWell(
+                    onTap: () {
+                      showModelOrPage(context, "/create_task/${info!.id}/-1", width: 800, height: 500);
+                    },
+                    child: Container(
+                      height: 30.w,
+                      padding: EdgeInsets.all(5.w),
+                      decoration: BoxDecoration(
+                        color: constTheme.buttonBg,
+                        borderRadius: BorderRadius.circular(5.w),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add_circle_outline_rounded,
+                            size: 20.w,
+                            color: constTheme.buttonColor,
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            "添加任务",
+                            style: TextStyle(
+                              fontSize: 14.w,
+                              color: constTheme.buttonColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: '工会与项目',
+                text: info != null ? info!.description : "",
                 size: 14.w,
               ),
               SizedBox(height: 15.w),
@@ -61,27 +157,8 @@ class _CombindBoardPageState extends State<ProjectPage> {
         ),
         SizedBox(height: 10.w),
         Expanded(
-          // child: Container(
-          //   color: Colors.blue,
-          //   height: double.maxFinite,
-          //   child: SingleChildScrollView(
-          //     scrollDirection: Axis.vertical,
-          //     child: Row(
-          //       children: [
-          //         _createListView("2023.Q1", list1),
-          //         _createListView("2023.Q2", list2),
-          //         _createListView("2023.Q3", list3),
-          //         _createListView("2023.Q4", list4),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // child: Container(
-          //   color: Colors.red,
-          // ),
           child: Scrollbar(
             radius: const Radius.circular(9),
-            // thickness: 4,
             thumbVisibility: true,
             controller: boardScrollController,
             child: ListView(
@@ -91,10 +168,10 @@ class _CombindBoardPageState extends State<ProjectPage> {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 SizedBox(width: 20.w),
-                _createListView("To Do", Appicon.samlogoFCM, constTheme.centerChannelColor.withOpacity(0.5), list1),
-                _createListView("In Progress", Appicon.iconjinxingzhong, Colors.yellow.withOpacity(0.5), list2),
-                _createListView("In Review", Appicon.view, Colors.blueGrey.withOpacity(0.5), list3),
-                _createListView("Done", Appicon.done, Colors.green.withOpacity(0.5), list4),
+                _createListView("To Do", 0, Appicon.samlogoFCM, constTheme.centerChannelColor.withOpacity(0.5), todo),
+                _createListView("In Progress", 1, Appicon.iconjinxingzhong, Colors.yellow.withOpacity(0.5), inProgress),
+                _createListView("In Review", 2, Appicon.view, Colors.blueGrey.withOpacity(0.5), inReview),
+                _createListView("Done", 3, Appicon.done, Colors.green.withOpacity(0.5), done),
               ],
             ),
           ),
@@ -103,7 +180,7 @@ class _CombindBoardPageState extends State<ProjectPage> {
     );
   }
 
-  Widget _createListView(String name, IconData icon, Color color, List<String> items) {
+  Widget _createListView(String name, int status, IconData icon, Color color, List<TaskInfo> items) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       decoration: BoxDecoration(
@@ -138,27 +215,47 @@ class _CombindBoardPageState extends State<ProjectPage> {
               ),
             ],
           ),
+          // if (items.isNotEmpty)
           Expanded(
-            child: DragTarget<String>(
+            child: DragTarget<TaskInfo>(
               builder: (
                 BuildContext context,
                 List<dynamic> accepted,
                 List<dynamic> rejected,
               ) {
                 return ListView.builder(
-                  itemCount: items.length,
+                  itemCount: items.isNotEmpty ? items.length : 1,
                   shrinkWrap: true,
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10.w),
                   itemBuilder: (context, index) {
-                    return Draggable<String>(
+                    if (items.isEmpty) {
+                      return Container(
+                        alignment: Alignment.center,
+                        height: 180.w,
+                        child: Text(
+                          "暂无任务",
+                          style: TextStyle(
+                            color: constTheme.centerChannelColor.withOpacity(0.5),
+                            fontSize: 14.w,
+                          ),
+                        ),
+                      );
+                    }
+                    // 在拖动到DragTarget后删除数据
+                    return Draggable<TaskInfo>(
                       onDragCompleted: () {
-                        // 在拖动到DragTarget后删除数据
-                        setState(() {
-                          items.removeAt(index);
-                        });
+                        // setState(() {
+                        //   items.removeAt(index);
+                        // });
                       },
-                      feedback: Material(
-                        color: constTheme.centerChannelColor.withOpacity(0.05),
+                      onDraggableCanceled: (v, o) {
+                        // setState(() {
+                        //   items.removeAt(index);
+                        // });
+                      },
+                      // 移动中的组件
+                      feedback: SizedBox(
+                        width: 230.w,
                         child: item(items[index]),
                       ),
                       data: items[index],
@@ -167,20 +264,34 @@ class _CombindBoardPageState extends State<ProjectPage> {
                   },
                 );
               },
-              onAccept: (String data) {
-                setState(() {
-                  // 添加Draggable数据到list
-                  items.add(data);
-                });
+              onAccept: (TaskInfo data) {
+                if (data.status == status) {
+                  return;
+                }
+                if (status == 1 && data.status == 0) {
+                  startTask(data);
+                  return;
+                }
+                if (status == 2 && data.status == 1) {
+                  requestReview(data);
+                  return;
+                }
+                if (status == 3 && data.status == 2) {
+                  taskDone(data);
+                  return;
+                }
+                BotToast.showText(text: "无效的操作", duration: const Duration(seconds: 2));
               },
             ),
           ),
+          // if (items.isEmpty)
+          // ),
         ],
       ),
     );
   }
 
-  item(data) {
+  item(TaskInfo data) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       width: double.maxFinite,
@@ -198,8 +309,12 @@ class _CombindBoardPageState extends State<ProjectPage> {
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
-                  data,
-                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 14.w),
+                  "#${data.id} ${data.name}",
+                  style: TextStyle(
+                    color: constTheme.centerChannelColor,
+                    fontSize: 14.w,
+                    decoration: TextDecoration.none,
+                  ),
                   textAlign: TextAlign.left,
                   // overflow: TextOverflow.ellipsis,
                 ),
@@ -222,7 +337,11 @@ class _CombindBoardPageState extends State<ProjectPage> {
                   margin: EdgeInsets.only(top: 5.w, bottom: 5.w),
                   child: Text(
                     "TAG",
-                    style: TextStyle(color: constTheme.buttonColor, fontSize: 13.w),
+                    style: TextStyle(
+                      color: constTheme.buttonColor,
+                      fontSize: 13.w,
+                      decoration: TextDecoration.none,
+                    ),
                   ),
                 ),
               ],
@@ -238,14 +357,21 @@ class _CombindBoardPageState extends State<ProjectPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                SizedBox(width: 8.w),
+                for (var i = 0; i < data.assignees.length; i++) UserAvatar(data.assignees[i], 25.w),
+                Expanded(child: Container()),
                 Container(
                   height: 20.w,
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  margin: EdgeInsets.only(top: 5.w, bottom: 5.w, right: 10.w),
+                  margin: EdgeInsets.only(top: 2.w, bottom: 2.w, right: 10.w),
                   child: Text(
                     "Join",
-                    style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
+                    style: TextStyle(
+                      color: constTheme.centerChannelColor,
+                      fontSize: 13.w,
+                      decoration: TextDecoration.none,
+                    ),
                   ),
                 ),
               ],
@@ -253,6 +379,60 @@ class _CombindBoardPageState extends State<ProjectPage> {
           )
         ],
       ),
+    );
+  }
+
+  startTask(TaskInfo data) async {
+    if (data.assignees.isEmpty) {
+      BotToast.showText(text: "开发者不能为空", duration: const Duration(seconds: 2));
+      return;
+    }
+    if (data.reviewers.isEmpty) {
+      BotToast.showText(text: "验证者不能为空", duration: const Duration(seconds: 2));
+      return;
+    }
+    await waitFutureLoading(
+      context: context,
+      future: () async {
+        await rustApi.daoProjectStartTask(
+          from: dao.user.address,
+          client: dao.chainClient,
+          daoId: dao.org.daoId,
+          projectId: info!.id,
+          taskId: data.id,
+        );
+      },
+    );
+  }
+
+  requestReview(TaskInfo data) async {
+    print(data.id);
+    await waitFutureLoading(
+      context: context,
+      future: () async {
+        await rustApi.daoProjectRequestReview(
+          from: dao.user.address,
+          client: dao.chainClient,
+          daoId: dao.org.daoId,
+          projectId: info!.id,
+          taskId: data.id,
+        );
+      },
+    );
+  }
+
+  taskDone(TaskInfo data) async {
+    await waitFutureLoading(
+      context: context,
+      future: () async {
+        await rustApi.daoProjectTaskDone(
+          from: dao.user.address,
+          client: dao.chainClient,
+          daoId: dao.org.daoId,
+          projectId: info!.id,
+          taskId: data.id,
+        );
+      },
     );
   }
 }

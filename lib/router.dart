@@ -6,6 +6,7 @@ import 'pages/channel/create_private.dart';
 import 'pages/channel/setting/setting.dart';
 import 'pages/dao/pop/create_project.dart';
 import 'pages/dao/pop/create_roadmap.dart';
+import 'pages/dao/pop/create_task.dart';
 import 'pages/dao/pop/join_dao.dart';
 import 'pages/dao/pop/referendum_vote.dart';
 import 'pages/setting/setting.dart';
@@ -129,6 +130,12 @@ routers() {
         return ReferendumVotePage(id: state.params['id'] ?? "");
       },
     ),
+    GoRoute(
+      path: '/create_task/:project_id/:id',
+      builder: (BuildContext context, GoRouterState state) {
+        return CreateTaskPage(id: state.params['id'] ?? "", projectId: state.params['project_id'] ?? "");
+      },
+    ),
   ];
 }
 
@@ -143,6 +150,10 @@ getPage(String url, Function closeModel) {
     return CreatePrivatePage(closeModel: closeModel);
   } else if (url == "/create_roadmap") {
     return CreateRoadMapPage(closeModel: closeModel);
+  } else if (url.indexOf("/create_task/") == 0) {
+    final pstr = url.replaceAll("/create_task/", "");
+    final ps = pstr.split("/");
+    return CreateTaskPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
   } else if (url.indexOf("/join_dao") == 0) {
     return JoinDaoPage(closeModel: closeModel);
   } else if (url.indexOf("/create_dao_project") == 0) {
@@ -177,7 +188,7 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
     showDialog(
       context: context,
       useSafeArea: true,
-      barrierColor: constTheme.sidebarHeaderTextColor.withOpacity(0.06),
+      barrierColor: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
       builder: (context) {
         final media = MediaQuery.of(context);
         final bottom = media.size.height - 30.w - height.w;

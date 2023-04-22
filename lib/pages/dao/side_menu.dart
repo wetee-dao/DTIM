@@ -73,8 +73,8 @@ class SideMenu extends StatelessWidget {
                         assetName: Appicon.zuzhiDataOrganization6,
                         name: e.name,
                         color: constTheme,
-                        selected: id == "Guilds ${e.startBlock} ${e.name}",
-                        onTap: () => onTap("Guilds  ${e.id.toString()}"),
+                        selected: id == "Guilds ${e.id.toString()}",
+                        onTap: () => onTap("Guilds ${e.id.toString()}"),
                       )),
                   ...dao.projects.map((e) => iconBuilder(
                         assetName: Appicon.xiangmu,
@@ -92,8 +92,7 @@ class SideMenu extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
                 decoration: BoxDecoration(
                   // color: constTheme.buttonBg.withOpacity(0.1),
-                  border:
-                      Border.all(color: constTheme.buttonBg.withOpacity(0.2), width: 2.w, style: BorderStyle.values[1]),
+                  border: Border.all(color: constTheme.sidebarText.withOpacity(0.1), width: 2.w),
                   borderRadius: BorderRadius.all(Radius.circular(8.w)),
                 ),
                 child: Row(

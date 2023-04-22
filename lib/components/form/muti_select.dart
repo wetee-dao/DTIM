@@ -48,12 +48,14 @@ class MutiSelectFormField<T> extends FormField<List<T>> {
                     height: 10.w,
                     color: constTheme.centerChannelColor,
                   ),
-                  ChipsChoice<T>.multiple(
-                    value: state.value ?? [],
-                    onChanged: (val) => state.didChange(val),
-                    choiceItems: options,
-                    choiceStyle: C2ChipStyle.filled(),
-                    wrapped: true,
+                  Expanded(
+                    child: ChipsChoice<T>.multiple(
+                      value: state.value ?? [],
+                      onChanged: (val) => state.didChange(val),
+                      choiceItems: options,
+                      choiceStyle: C2ChipStyle.filled(padding: EdgeInsets.zero, height: 18.w),
+                      wrapped: true,
+                    ),
                   ),
                 ],
               ),

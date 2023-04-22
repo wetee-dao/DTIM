@@ -8,6 +8,7 @@ class PrimaryText extends StatelessWidget {
   final String text;
   final double height;
   final Color? color;
+  final TextAlign? textAlign;
 
   const PrimaryText({
     Key? key,
@@ -16,6 +17,7 @@ class PrimaryText extends StatelessWidget {
     this.size = 20,
     this.height = 1.4,
     this.color,
+    this.textAlign,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class PrimaryText extends StatelessWidget {
         fontSize: size,
         fontWeight: fontWeight,
       ),
+      textAlign: textAlign ?? TextAlign.left,
     );
   }
 }
