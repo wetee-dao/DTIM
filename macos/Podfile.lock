@@ -3,6 +3,8 @@ PODS:
     - FlutterMacOS
   - desktop_lifecycle (0.0.1):
     - FlutterMacOS
+  - device_info_plus (0.0.1):
+    - FlutterMacOS
   - dynamic_color (0.0.2):
     - FlutterMacOS
   - emoji_picker_flutter (0.0.1):
@@ -28,6 +30,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - record_macos (0.2.0):
+    - FlutterMacOS
   - screen_retriever (0.0.1):
     - FlutterMacOS
   - share_plus_macos (0.0.1):
@@ -42,6 +46,8 @@ PODS:
     - FlutterMacOS
   - url_launcher_macos (0.0.1):
     - FlutterMacOS
+  - video_compress (0.3.0):
+    - FlutterMacOS
   - wakelock_macos (0.0.1):
     - FlutterMacOS
   - window_manager (0.2.0):
@@ -50,6 +56,7 @@ PODS:
 DEPENDENCIES:
   - audio_session (from `Flutter/ephemeral/.symlinks/plugins/audio_session/macos`)
   - desktop_lifecycle (from `Flutter/ephemeral/.symlinks/plugins/desktop_lifecycle/macos`)
+  - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
   - dynamic_color (from `Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos`)
   - emoji_picker_flutter (from `Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos`)
   - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
@@ -60,12 +67,14 @@ DEPENDENCIES:
   - objectbox_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/objectbox_flutter_libs/macos`)
   - package_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos`)
+  - record_macos (from `Flutter/ephemeral/.symlinks/plugins/record_macos/macos`)
   - screen_retriever (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos`)
   - share_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/share_plus_macos/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos`)
   - sqflite (from `Flutter/ephemeral/.symlinks/plugins/sqflite/macos`)
   - tray_manager (from `Flutter/ephemeral/.symlinks/plugins/tray_manager/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
+  - video_compress (from `Flutter/ephemeral/.symlinks/plugins/video_compress/macos`)
   - wakelock_macos (from `Flutter/ephemeral/.symlinks/plugins/wakelock_macos/macos`)
   - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
 
@@ -79,6 +88,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/audio_session/macos
   desktop_lifecycle:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_lifecycle/macos
+  device_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
   dynamic_color:
     :path: Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos
   emoji_picker_flutter:
@@ -99,6 +110,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos
+  record_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/record_macos/macos
   screen_retriever:
     :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos
   share_plus_macos:
@@ -111,6 +124,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/tray_manager/macos
   url_launcher_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
+  video_compress:
+    :path: Flutter/ephemeral/.symlinks/plugins/video_compress/macos
   wakelock_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/wakelock_macos/macos
   window_manager:
@@ -119,6 +134,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audio_session: dea1f41890dbf1718f04a56f1d6150fd50039b72
   desktop_lifecycle: a600c10e12fe033c7be9078f2e929b8241f2c1e3
+  device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
   dynamic_color: 2eaa27267de1ca20d879fbd6e01259773fb1670f
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
   file_selector_macos: f1b08a781e66103e3ba279fd5d4024a2478b3af6
@@ -131,15 +147,17 @@ SPEC CHECKSUMS:
   objectbox_flutter_libs: f89ab4878f0f764a49077cfaa59030be69ae1d7e
   package_info_plus_macos: f010621b07802a241d96d01876d6705f15e77c1c
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  record_macos: 937889e0f2a7a12b6fc14e97a3678e5a18943de6
   screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
   share_plus_macos: 853ee48e7dce06b633998ca0735d482dd671ade4
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
   tray_manager: 9064e219c56d75c476e46b9a21182087930baf90
   url_launcher_macos: 5335912b679c073563f29d89d33d10d459f95451
+  video_compress: c896234f100791b5fef7f049afa38f6d2ef7b42f
   wakelock_macos: bc3f2a9bd8d2e6c89fee1e1822e7ddac3bd004a9
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
 
-PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
+PODFILE CHECKSUM: 0d3963a09fc94f580682bd88480486da345dc3f0
 
 COCOAPODS: 1.12.0
