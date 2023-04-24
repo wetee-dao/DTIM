@@ -232,13 +232,13 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                     return null;
                   },
                 ),
+                prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor, size: 18.w),
                 decoration: InputDecoration(
                   hintText: '标签',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor, size: 18.w),
                 ),
                 onSaved: (v) {
                   _data.tags = v ?? [];

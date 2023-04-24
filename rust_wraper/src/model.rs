@@ -43,6 +43,9 @@ pub struct ProjectInfo {
     pub id: u64,
     /// 项目名
     pub name: String,
+    /// DAO account id.
+    /// DAO 链上账户ID
+    pub dao_account_id: String,
     /// 项目介绍
     pub description: String,
     /// creator of WETEE
@@ -73,6 +76,9 @@ pub struct GuildInfo {
     /// creator of DAO
     /// 创建者
     pub creator: String,
+    /// DAO account id.
+    /// DAO 链上账户ID
+    pub dao_account_id: String,
     /// The block that creates the DAO
     /// DAO创建的区块
     pub start_block: u64,
@@ -202,4 +208,29 @@ pub struct TaskInfo {
 pub struct Reward {
     pub asset_id: u64,
     pub amount: u64,
+}
+
+/// DAO specific information
+/// 组织信息
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct DaoInfo {
+    pub id: u64,
+    /// creator of DAO
+    /// 创建者
+    pub creator: String,
+    /// The block that creates the DAO
+    /// DAO创建的区块
+    pub start_block: u64,
+    /// DAO account id.
+    /// DAO 链上账户ID
+    pub dao_account_id: String,
+    /// name of the DAO.
+    /// DAO 名字
+    pub name: String,
+    /// Purpose of the DAO.
+    /// DAO 目标宗旨
+    pub purpose: String,
+    //// meta data
+    /// DAO 元数据 图片等内容
+    pub meta_data: String,
 }

@@ -54,6 +54,7 @@ class GuildpageState extends State<Guildpage> {
               children: [
                 SizedBox(height: 30.w),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
                       Appicon.zuzhiDataOrganization6,
@@ -62,10 +63,16 @@ class GuildpageState extends State<Guildpage> {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: info != null ? info!.name : "",
+                      text: info != null ? "#${info!.id} ${info!.name}" : "",
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
+                    // SizedBox(width: 20.w),
+                    // PrimaryText(
+                    //   text: info != null ? info!.desc : "",
+                    //   size: 14.w,
+                    //   height: 1.9,
+                    // ),
                     Expanded(child: Container()),
                     InkWell(
                       onTap: () {

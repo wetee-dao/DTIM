@@ -9,19 +9,19 @@ import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
-class CreateProjectPage extends StatefulWidget {
+class JoinTaskPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateProjectPage({Key? key, this.closeModel}) : super(key: key);
+  final String id;
+  final String projectId;
+  const JoinTaskPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
 
   @override
-  State<CreateProjectPage> createState() => _CreateProjectPageState();
+  State<JoinTaskPage> createState() => _CreateProjectPageState();
 }
 
-class _CreateProjectPageState extends State<CreateProjectPage> {
+class _CreateProjectPageState extends State<JoinTaskPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    name: "",
-    desc: "",
     type: 0,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -40,20 +40,20 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       context: context,
       future: () async {
         if (_data.type == 0) {
-          await rustApi.createGuild(
+          await rustApi.daoProjectJoinTask(
             from: daoCtx.user.address,
             client: daoCtx.chainClient,
             daoId: daoCtx.org.daoId,
-            name: _data.name,
-            desc: _data.desc,
+            projectId: int.parse(widget.projectId),
+            taskId: int.parse(widget.id),
           );
         } else {
-          await rustApi.createProject(
+          await rustApi.daoProjectJoinTaskReview(
             from: daoCtx.user.address,
             client: daoCtx.chainClient,
             daoId: daoCtx.org.daoId,
-            name: _data.name,
-            desc: _data.desc,
+            projectId: int.parse(widget.projectId),
+            taskId: int.parse(widget.id),
           );
         }
       },
@@ -76,7 +76,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建项目/工会",
+              title: "Choose a role to join the task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -86,7 +86,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建项目/工会",
+              title: "Choose a role to join the task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -102,52 +102,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
           child: Column(
             children: [
               SizedBox(height: 15.w),
-              TextFormField(
-                style: TextStyle(color: constTheme.centerChannelColor),
-                decoration: InputDecoration(
-                  hintText: 'Space Name',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
-                ),
-                onSaved: (v) {
-                  _data.name = v ?? "";
-                },
-                validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                  if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
-                  }
-                  if (value == null || value.isEmpty) {
-                    return '名称不能为空';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10.w),
-              TextFormField(
-                style: TextStyle(color: constTheme.centerChannelColor),
-                decoration: InputDecoration(
-                  hintText: 'Space Description',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.description_rounded, color: constTheme.centerChannelColor),
-                ),
-                onSaved: (v) {
-                  _data.desc = v ?? "";
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '简介不能为空';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20.w),
               Row(children: [
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -157,8 +111,8 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   },
                   child: renderType(
                     Appicon.zuzhiDataOrganization6,
-                    "工会",
-                    "Everything is for interest, exploration and growth .",
+                    "Assignee",
+                    "Join the project and enjoy your work .",
                     _data.type == 0,
                   ),
                 ),
@@ -170,15 +124,13 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   },
                   child: renderType(
                     Appicon.xiangmu,
-                    "项目",
-                    "Use Projects to manage tasks that .",
+                    "Reviewer",
+                    "Join the project, review the project progress.",
                     _data.type == 1,
                   ),
                 ),
               ]),
-
               Expanded(child: Container()),
-              // SizedBox(height: 50.w),
               InkWell(
                 onTap: submitAction,
                 child: Container(
@@ -193,7 +145,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建任务',
+                            'Join Task',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -264,13 +216,9 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 }
 
 class SubmitData {
-  String name;
-  String desc;
   int type;
 
   SubmitData({
-    required this.desc,
-    required this.name,
     required this.type,
   });
 }

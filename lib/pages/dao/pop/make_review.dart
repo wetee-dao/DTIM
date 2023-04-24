@@ -4,25 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../components/components.dart';
+import '../../../components/form/switch.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
-class CreateProjectPage extends StatefulWidget {
+class MakeReviewPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateProjectPage({Key? key, this.closeModel}) : super(key: key);
+  final String id;
+  final String projectId;
+  const MakeReviewPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
 
   @override
-  State<CreateProjectPage> createState() => _CreateProjectPageState();
+  State<MakeReviewPage> createState() => _ReferendumVotePageState();
 }
 
-class _CreateProjectPageState extends State<CreateProjectPage> {
+class _ReferendumVotePageState extends State<MakeReviewPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    name: "",
-    desc: "",
-    type: 0,
+    msg: "",
+    approve: true,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -39,23 +41,15 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
     await waitFutureLoading(
       context: context,
       future: () async {
-        if (_data.type == 0) {
-          await rustApi.createGuild(
-            from: daoCtx.user.address,
-            client: daoCtx.chainClient,
-            daoId: daoCtx.org.daoId,
-            name: _data.name,
-            desc: _data.desc,
-          );
-        } else {
-          await rustApi.createProject(
-            from: daoCtx.user.address,
-            client: daoCtx.chainClient,
-            daoId: daoCtx.org.daoId,
-            name: _data.name,
-            desc: _data.desc,
-          );
-        }
+        await rustApi.daoProjectMakeReview(
+          from: daoCtx.user.address,
+          client: daoCtx.chainClient,
+          daoId: daoCtx.org.daoId,
+          projectId: int.parse(widget.projectId),
+          taskId: int.parse(widget.id),
+          approve: _data.approve,
+          meta: _data.msg,
+        );
       },
     );
 
@@ -76,7 +70,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建项目/工会",
+              title: "为任务 #${widget.id} 提交审核报告",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -86,7 +80,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建项目/工会",
+              title: "为任务 #${widget.id} 提交审核报告",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -105,80 +99,42 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               TextFormField(
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: 'Space Name',
+                  hintText: 'Review message',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
+                  prefixIcon: Icon(Icons.rate_review_rounded, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  _data.name = v ?? "";
+                  _data.msg = v ?? "";
                 },
                 validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                  if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
-                  }
                   if (value == null || value.isEmpty) {
-                    return '名称不能为空';
+                    return '不能为空';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 10.w),
-              TextFormField(
-                style: TextStyle(color: constTheme.centerChannelColor),
+              SwitchFormField(
+                initialValue: _data.approve,
                 decoration: InputDecoration(
-                  hintText: 'Space Description',
+                  hintText: 'Approve',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.description_rounded, color: constTheme.centerChannelColor),
+                  prefixIcon: Icon(Icons.swipe_rounded, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  _data.desc = v ?? "";
+                  _data.approve = v ?? true;
                 },
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '简介不能为空';
-                  }
                   return null;
                 },
               ),
-              SizedBox(height: 20.w),
-              Row(children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    _data.type = 0;
-                    setState(() {});
-                  },
-                  child: renderType(
-                    Appicon.zuzhiDataOrganization6,
-                    "工会",
-                    "Everything is for interest, exploration and growth .",
-                    _data.type == 0,
-                  ),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    _data.type = 1;
-                    setState(() {});
-                  },
-                  child: renderType(
-                    Appicon.xiangmu,
-                    "项目",
-                    "Use Projects to manage tasks that .",
-                    _data.type == 1,
-                  ),
-                ),
-              ]),
-
               Expanded(child: Container()),
-              // SizedBox(height: 50.w),
               InkWell(
                 onTap: submitAction,
                 child: Container(
@@ -193,7 +149,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建任务',
+                            '为公投投票',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -264,13 +220,11 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 }
 
 class SubmitData {
-  String name;
-  String desc;
-  int type;
+  bool approve;
+  String msg;
 
   SubmitData({
-    required this.desc,
-    required this.name,
-    required this.type,
+    required this.approve,
+    required this.msg,
   });
 }

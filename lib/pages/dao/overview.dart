@@ -57,15 +57,15 @@ class Overviewpage extends StatelessWidget {
                           spacing: 20.w,
                           alignment: WrapAlignment.start,
                           children: [
-                            const InfoCard(
+                            InfoCard(
                               icon: Appicon.zichan,
                               label: "国库资产",
-                              amount: 'WTE 1200',
+                              amount: 'WTE ${dao.daoAmount.free.toString()}',
                             ),
-                            const InfoCard(
+                            InfoCard(
                               icon: Appicon.fenxiangshare,
                               label: "已发行SHARE",
-                              amount: '1200',
+                              amount: dao.totalIssuance.toString(),
                             ),
                             InfoCard(
                               icon: Appicon.zuzhiDataOrganization6,

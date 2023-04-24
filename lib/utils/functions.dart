@@ -24,14 +24,14 @@ String getUserOrg(String id) {
 }
 
 // 获取用户名称
-String getUserShortName(String id) {
+String getUserShortName(String id, {int len = 11}) {
   if (!id.startsWith("0x")) {
-    if (id.length > 20) return "${id.substring(0, 19)}...";
+    if (id.length > len * 2) return "${id.substring(0, 19)}...";
     return id;
   }
   String userId = id.split(":")[0];
   userId = userId.replaceAll("@", "");
-  return "${userId.substring(0, 11)}...${userId.substring(userId.length - 11, userId.length)}";
+  return "${userId.substring(0, len)}...${userId.substring(userId.length - len, userId.length)}";
 }
 
 // 打印警告

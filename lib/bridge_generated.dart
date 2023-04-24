@@ -56,6 +56,16 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kDaoBalanceConstMeta;
 
+  Future<DaoInfo> daoInfo(
+      {required int client, required int daoId, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoInfoConstMeta;
+
+  Future<int> daoTotalIssuance(
+      {required int client, required int daoId, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoTotalIssuanceConstMeta;
+
   Future<List<Quarter>> daoRoadmap(
       {required int client,
       required int daoId,
@@ -209,6 +219,15 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kDaoProjectTaskListConstMeta;
 
+  Future<TaskInfo> daoProjectTaskInfo(
+      {required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectTaskInfoConstMeta;
+
   Future<bool> daoProjectCreateTask(
       {required String from,
       required int client,
@@ -219,6 +238,7 @@ abstract class RustWraper {
       required int priority,
       required int point,
       List<String>? assignees,
+      List<String>? reviewers,
       Uint8List? skills,
       int? maxAssignee,
       required int amount,
@@ -255,6 +275,58 @@ abstract class RustWraper {
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoProjectTaskDoneConstMeta;
+
+  Future<bool> daoProjectJoinTask(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectJoinTaskConstMeta;
+
+  Future<bool> daoProjectLeaveTask(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectLeaveTaskConstMeta;
+
+  Future<bool> daoProjectJoinTaskReview(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectJoinTaskReviewConstMeta;
+
+  Future<bool> daoProjectLeaveTaskReview(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectLeaveTaskReviewConstMeta;
+
+  Future<bool> daoProjectMakeReview(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      required bool approve,
+      required String meta,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectMakeReviewConstMeta;
 }
 
 class AssetAccountData {
@@ -266,6 +338,45 @@ class AssetAccountData {
     required this.free,
     required this.reserved,
     required this.frozen,
+  });
+}
+
+/// DAO specific information
+/// 组织信息
+class DaoInfo {
+  final int id;
+
+  /// creator of DAO
+  /// 创建者
+  final String creator;
+
+  /// The block that creates the DAO
+  /// DAO创建的区块
+  final int startBlock;
+
+  /// DAO account id.
+  /// DAO 链上账户ID
+  final String daoAccountId;
+
+  /// name of the DAO.
+  /// DAO 名字
+  final String name;
+
+  /// Purpose of the DAO.
+  /// DAO 目标宗旨
+  final String purpose;
+
+  /// DAO 元数据 图片等内容
+  final String metaData;
+
+  const DaoInfo({
+    required this.id,
+    required this.creator,
+    required this.startBlock,
+    required this.daoAccountId,
+    required this.name,
+    required this.purpose,
+    required this.metaData,
   });
 }
 
@@ -374,6 +485,10 @@ class GuildInfo {
   /// 创建者
   final String creator;
 
+  /// DAO account id.
+  /// DAO 链上账户ID
+  final String daoAccountId;
+
   /// The block that creates the DAO
   /// DAO创建的区块
   final int startBlock;
@@ -396,6 +511,7 @@ class GuildInfo {
   const GuildInfo({
     required this.id,
     required this.creator,
+    required this.daoAccountId,
     required this.startBlock,
     required this.name,
     required this.desc,
@@ -414,6 +530,10 @@ class ProjectInfo {
   /// 项目名
   final String name;
 
+  /// DAO account id.
+  /// DAO 链上账户ID
+  final String daoAccountId;
+
   /// 项目介绍
   final String description;
 
@@ -428,6 +548,7 @@ class ProjectInfo {
   const ProjectInfo({
     required this.id,
     required this.name,
+    required this.daoAccountId,
     required this.description,
     required this.creator,
     required this.status,
@@ -735,6 +856,45 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "dao_balance",
         argNames: ["client", "daoId", "address"],
+      );
+
+  Future<DaoInfo> daoInfo(
+      {required int client, required int daoId, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(daoId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_info(port_, arg0, arg1),
+      parseSuccessData: _wire2api_dao_info,
+      constMeta: kDaoInfoConstMeta,
+      argValues: [client, daoId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoInfoConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_info",
+        argNames: ["client", "daoId"],
+      );
+
+  Future<int> daoTotalIssuance(
+      {required int client, required int daoId, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(daoId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_dao_total_issuance(port_, arg0, arg1),
+      parseSuccessData: _wire2api_u64,
+      constMeta: kDaoTotalIssuanceConstMeta,
+      argValues: [client, daoId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoTotalIssuanceConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_total_issuance",
+        argNames: ["client", "daoId"],
       );
 
   Future<List<Quarter>> daoRoadmap(
@@ -1222,6 +1382,32 @@ class RustWraperImpl implements RustWraper {
         argNames: ["client", "daoId", "projectId"],
       );
 
+  Future<TaskInfo> daoProjectTaskInfo(
+      {required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(daoId);
+    var arg2 = _platform.api2wire_u64(projectId);
+    var arg3 = _platform.api2wire_u64(taskId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_project_task_info(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_task_info,
+      constMeta: kDaoProjectTaskInfoConstMeta,
+      argValues: [client, daoId, projectId, taskId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectTaskInfoConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_task_info",
+        argNames: ["client", "daoId", "projectId", "taskId"],
+      );
+
   Future<bool> daoProjectCreateTask(
       {required String from,
       required int client,
@@ -1232,6 +1418,7 @@ class RustWraperImpl implements RustWraper {
       required int priority,
       required int point,
       List<String>? assignees,
+      List<String>? reviewers,
       Uint8List? skills,
       int? maxAssignee,
       required int amount,
@@ -1245,9 +1432,10 @@ class RustWraperImpl implements RustWraper {
     var arg6 = api2wire_u8(priority);
     var arg7 = api2wire_u16(point);
     var arg8 = _platform.api2wire_opt_StringList(assignees);
-    var arg9 = _platform.api2wire_opt_uint_8_list(skills);
-    var arg10 = _platform.api2wire_opt_box_autoadd_u8(maxAssignee);
-    var arg11 = _platform.api2wire_u64(amount);
+    var arg9 = _platform.api2wire_opt_StringList(reviewers);
+    var arg10 = _platform.api2wire_opt_uint_8_list(skills);
+    var arg11 = _platform.api2wire_opt_box_autoadd_u8(maxAssignee);
+    var arg12 = _platform.api2wire_u64(amount);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_dao_project_create_task(
           port_,
@@ -1262,7 +1450,8 @@ class RustWraperImpl implements RustWraper {
           arg8,
           arg9,
           arg10,
-          arg11),
+          arg11,
+          arg12),
       parseSuccessData: _wire2api_bool,
       constMeta: kDaoProjectCreateTaskConstMeta,
       argValues: [
@@ -1275,6 +1464,7 @@ class RustWraperImpl implements RustWraper {
         priority,
         point,
         assignees,
+        reviewers,
         skills,
         maxAssignee,
         amount
@@ -1296,6 +1486,7 @@ class RustWraperImpl implements RustWraper {
           "priority",
           "point",
           "assignees",
+          "reviewers",
           "skills",
           "maxAssignee",
           "amount"
@@ -1386,6 +1577,158 @@ class RustWraperImpl implements RustWraper {
         argNames: ["from", "client", "daoId", "projectId", "taskId"],
       );
 
+  Future<bool> daoProjectJoinTask(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_u64(taskId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_project_join_task(port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoProjectJoinTaskConstMeta,
+      argValues: [from, client, daoId, projectId, taskId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectJoinTaskConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_join_task",
+        argNames: ["from", "client", "daoId", "projectId", "taskId"],
+      );
+
+  Future<bool> daoProjectLeaveTask(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_u64(taskId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_project_leave_task(port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoProjectLeaveTaskConstMeta,
+      argValues: [from, client, daoId, projectId, taskId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectLeaveTaskConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_leave_task",
+        argNames: ["from", "client", "daoId", "projectId", "taskId"],
+      );
+
+  Future<bool> daoProjectJoinTaskReview(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_u64(taskId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_project_join_task_review(
+          port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoProjectJoinTaskReviewConstMeta,
+      argValues: [from, client, daoId, projectId, taskId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectJoinTaskReviewConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_join_task_review",
+        argNames: ["from", "client", "daoId", "projectId", "taskId"],
+      );
+
+  Future<bool> daoProjectLeaveTaskReview(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_u64(taskId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_project_leave_task_review(
+          port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoProjectLeaveTaskReviewConstMeta,
+      argValues: [from, client, daoId, projectId, taskId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectLeaveTaskReviewConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_leave_task_review",
+        argNames: ["from", "client", "daoId", "projectId", "taskId"],
+      );
+
+  Future<bool> daoProjectMakeReview(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int taskId,
+      required bool approve,
+      required String meta,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_u64(taskId);
+    var arg5 = approve;
+    var arg6 = _platform.api2wire_String(meta);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_project_make_review(
+          port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoProjectMakeReviewConstMeta,
+      argValues: [from, client, daoId, projectId, taskId, approve, meta],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectMakeReviewConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_make_review",
+        argNames: [
+          "from",
+          "client",
+          "daoId",
+          "projectId",
+          "taskId",
+          "approve",
+          "meta"
+        ],
+      );
+
   void dispose() {
     _platform.dispose();
   }
@@ -1412,6 +1755,21 @@ class RustWraperImpl implements RustWraper {
 
   bool _wire2api_bool(dynamic raw) {
     return raw as bool;
+  }
+
+  DaoInfo _wire2api_dao_info(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return DaoInfo(
+      id: _wire2api_u64(arr[0]),
+      creator: _wire2api_String(arr[1]),
+      startBlock: _wire2api_u64(arr[2]),
+      daoAccountId: _wire2api_String(arr[3]),
+      name: _wire2api_String(arr[4]),
+      purpose: _wire2api_String(arr[5]),
+      metaData: _wire2api_String(arr[6]),
+    );
   }
 
   GovProps _wire2api_gov_props(dynamic raw) {
@@ -1459,16 +1817,17 @@ class RustWraperImpl implements RustWraper {
 
   GuildInfo _wire2api_guild_info(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return GuildInfo(
       id: _wire2api_u64(arr[0]),
       creator: _wire2api_String(arr[1]),
-      startBlock: _wire2api_u64(arr[2]),
-      name: _wire2api_String(arr[3]),
-      desc: _wire2api_String(arr[4]),
-      metaData: _wire2api_String(arr[5]),
-      status: _wire2api_u8(arr[6]),
+      daoAccountId: _wire2api_String(arr[2]),
+      startBlock: _wire2api_u64(arr[3]),
+      name: _wire2api_String(arr[4]),
+      desc: _wire2api_String(arr[5]),
+      metaData: _wire2api_String(arr[6]),
+      status: _wire2api_u8(arr[7]),
     );
   }
 
@@ -1510,14 +1869,15 @@ class RustWraperImpl implements RustWraper {
 
   ProjectInfo _wire2api_project_info(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return ProjectInfo(
       id: _wire2api_u64(arr[0]),
       name: _wire2api_String(arr[1]),
-      description: _wire2api_String(arr[2]),
-      creator: _wire2api_String(arr[3]),
-      status: _wire2api_u8(arr[4]),
+      daoAccountId: _wire2api_String(arr[2]),
+      description: _wire2api_String(arr[3]),
+      creator: _wire2api_String(arr[4]),
+      status: _wire2api_u8(arr[5]),
     );
   }
 
@@ -1944,6 +2304,44 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_uint_8_list>)>>('wire_dao_balance');
   late final _wire_dao_balance = _wire_dao_balancePtr.asFunction<
       void Function(int, int, int, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_dao_info(
+    int port_,
+    int client,
+    int dao_id,
+  ) {
+    return _wire_dao_info(
+      port_,
+      client,
+      dao_id,
+    );
+  }
+
+  late final _wire_dao_infoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64, ffi.Uint32, ffi.Uint64)>>('wire_dao_info');
+  late final _wire_dao_info =
+      _wire_dao_infoPtr.asFunction<void Function(int, int, int)>();
+
+  void wire_dao_total_issuance(
+    int port_,
+    int client,
+    int dao_id,
+  ) {
+    return _wire_dao_total_issuance(
+      port_,
+      client,
+      dao_id,
+    );
+  }
+
+  late final _wire_dao_total_issuancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64, ffi.Uint32, ffi.Uint64)>>('wire_dao_total_issuance');
+  late final _wire_dao_total_issuance =
+      _wire_dao_total_issuancePtr.asFunction<void Function(int, int, int)>();
 
   void wire_dao_roadmap(
     int port_,
@@ -2435,6 +2833,29 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_dao_project_task_list = _wire_dao_project_task_listPtr
       .asFunction<void Function(int, int, int, int)>();
 
+  void wire_dao_project_task_info(
+    int port_,
+    int client,
+    int dao_id,
+    int project_id,
+    int task_id,
+  ) {
+    return _wire_dao_project_task_info(
+      port_,
+      client,
+      dao_id,
+      project_id,
+      task_id,
+    );
+  }
+
+  late final _wire_dao_project_task_infoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32, ffi.Uint64, ffi.Uint64,
+              ffi.Uint64)>>('wire_dao_project_task_info');
+  late final _wire_dao_project_task_info = _wire_dao_project_task_infoPtr
+      .asFunction<void Function(int, int, int, int, int)>();
+
   void wire_dao_project_create_task(
     int port_,
     ffi.Pointer<wire_uint_8_list> from,
@@ -2446,6 +2867,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
     int priority,
     int point,
     ffi.Pointer<wire_StringList> assignees,
+    ffi.Pointer<wire_StringList> reviewers,
     ffi.Pointer<wire_uint_8_list> skills,
     ffi.Pointer<ffi.Uint8> max_assignee,
     int amount,
@@ -2461,6 +2883,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       priority,
       point,
       assignees,
+      reviewers,
       skills,
       max_assignee,
       amount,
@@ -2480,6 +2903,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Uint8,
               ffi.Uint16,
               ffi.Pointer<wire_StringList>,
+              ffi.Pointer<wire_StringList>,
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<ffi.Uint8>,
               ffi.Uint64)>>('wire_dao_project_create_task');
@@ -2495,6 +2919,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_uint_8_list>,
               int,
               int,
+              ffi.Pointer<wire_StringList>,
               ffi.Pointer<wire_StringList>,
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<ffi.Uint8>,
@@ -2595,6 +3020,172 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       _wire_dao_project_task_donePtr.asFunction<
           void Function(
               int, ffi.Pointer<wire_uint_8_list>, int, int, int, int)>();
+
+  void wire_dao_project_join_task(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    int task_id,
+  ) {
+    return _wire_dao_project_join_task(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      task_id,
+    );
+  }
+
+  late final _wire_dao_project_join_taskPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint64)>>('wire_dao_project_join_task');
+  late final _wire_dao_project_join_task =
+      _wire_dao_project_join_taskPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_uint_8_list>, int, int, int, int)>();
+
+  void wire_dao_project_leave_task(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    int task_id,
+  ) {
+    return _wire_dao_project_leave_task(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      task_id,
+    );
+  }
+
+  late final _wire_dao_project_leave_taskPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint64)>>('wire_dao_project_leave_task');
+  late final _wire_dao_project_leave_task =
+      _wire_dao_project_leave_taskPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_uint_8_list>, int, int, int, int)>();
+
+  void wire_dao_project_join_task_review(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    int task_id,
+  ) {
+    return _wire_dao_project_join_task_review(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      task_id,
+    );
+  }
+
+  late final _wire_dao_project_join_task_reviewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint64)>>('wire_dao_project_join_task_review');
+  late final _wire_dao_project_join_task_review =
+      _wire_dao_project_join_task_reviewPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_uint_8_list>, int, int, int, int)>();
+
+  void wire_dao_project_leave_task_review(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    int task_id,
+  ) {
+    return _wire_dao_project_leave_task_review(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      task_id,
+    );
+  }
+
+  late final _wire_dao_project_leave_task_reviewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint64)>>('wire_dao_project_leave_task_review');
+  late final _wire_dao_project_leave_task_review =
+      _wire_dao_project_leave_task_reviewPtr.asFunction<
+          void Function(
+              int, ffi.Pointer<wire_uint_8_list>, int, int, int, int)>();
+
+  void wire_dao_project_make_review(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    int task_id,
+    bool approve,
+    ffi.Pointer<wire_uint_8_list> meta,
+  ) {
+    return _wire_dao_project_make_review(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      task_id,
+      approve,
+      meta,
+    );
+  }
+
+  late final _wire_dao_project_make_reviewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Bool,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_project_make_review');
+  late final _wire_dao_project_make_review =
+      _wire_dao_project_make_reviewPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int, int,
+              bool, ffi.Pointer<wire_uint_8_list>)>();
 
   ffi.Pointer<wire_StringList> new_StringList_0(
     int len,

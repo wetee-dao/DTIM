@@ -60,6 +60,16 @@ pub extern "C" fn wire_dao_balance(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_dao_info(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_info_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_total_issuance(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_total_issuance_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_dao_roadmap(port_: i64, client: u32, dao_id: u64, year: u32) {
     wire_dao_roadmap_impl(port_, client, dao_id, year)
 }
@@ -232,6 +242,17 @@ pub extern "C" fn wire_dao_project_task_list(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_dao_project_task_info(
+    port_: i64,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_task_info_impl(port_, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_dao_project_create_task(
     port_: i64,
     from: *mut wire_uint_8_list,
@@ -243,6 +264,7 @@ pub extern "C" fn wire_dao_project_create_task(
     priority: u8,
     point: u16,
     assignees: *mut wire_StringList,
+    reviewers: *mut wire_StringList,
     skills: *mut wire_uint_8_list,
     max_assignee: *mut u8,
     amount: u64,
@@ -258,6 +280,7 @@ pub extern "C" fn wire_dao_project_create_task(
         priority,
         point,
         assignees,
+        reviewers,
         skills,
         max_assignee,
         amount,
@@ -298,6 +321,70 @@ pub extern "C" fn wire_dao_project_task_done(
     task_id: u64,
 ) {
     wire_dao_project_task_done_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_join_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_join_task_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_leave_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_leave_task_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_join_task_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_join_task_review_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_leave_task_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_leave_task_review_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_make_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+    approve: bool,
+    meta: *mut wire_uint_8_list,
+) {
+    wire_dao_project_make_review_impl(
+        port_, from, client, dao_id, project_id, task_id, approve, meta,
+    )
 }
 
 // Section: allocate functions

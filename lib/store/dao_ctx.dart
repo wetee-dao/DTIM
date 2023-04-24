@@ -8,11 +8,14 @@ import '../utils/functions.dart';
 class DAOCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
+  late DaoInfo dao;
+  late AssetAccountData daoAmount;
   late AssetAccountData nativeAmount;
   late AssetAccountData share;
 
   int chainClient = -1;
   int blockNumber = 0;
+  int totalIssuance = 0;
   List<GuildInfo> guilds = [];
   List<ProjectInfo> projects = [];
   List<String> members = [];
@@ -37,6 +40,10 @@ class DAOCTX with ChangeNotifier {
   }
 
   getData() async {
+    dao = await rustApi.daoInfo(client: chainClient, daoId: org.daoId);
+    print(dao.daoAccountId);
+    daoAmount = await rustApi.nativeBalance(client: chainClient, address: dao.daoAccountId);
+    totalIssuance = await rustApi.daoTotalIssuance(client: chainClient, daoId: org.daoId);
     guilds = await rustApi.daoGuilds(client: chainClient, daoId: org.daoId);
     projects = await rustApi.daoProjects(client: chainClient, daoId: org.daoId);
     share = await rustApi.daoBalance(client: chainClient, daoId: org.daoId, address: user.address);

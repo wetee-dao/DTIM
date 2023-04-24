@@ -1,8 +1,8 @@
 use crate::model::{
-    AssetAccountData, GovProps, GovReferendum, GovVote, GuildInfo, ProjectInfo, Quarter,
+    AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote, GuildInfo, ProjectInfo, Quarter,
     QuarterTask, Reward, Tally, TaskInfo,
 };
-use anyhow;
+use anyhow::{self, Ok};
 use asyou_rust_sdk::{
     account,
     hander::{
@@ -94,6 +94,30 @@ pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<
     })
 }
 
+pub fn dao_info(client: u32, dao_id: u64) -> anyhow::Result<DaoInfo> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let info = dao.dao_info(dao_id).unwrap();
+    Ok(DaoInfo {
+        id: dao_id,
+        creator: account::ss58_to_address(info.creator.to_string()).unwrap(),
+        start_block: info.start_block,
+        dao_account_id: account::ss58_to_address(info.dao_account_id.to_string()).unwrap(),
+        name: String::from_utf8(info.name).unwrap(),
+        purpose: String::from_utf8(info.purpose).unwrap(),
+        meta_data: String::from_utf8(info.meta_data).unwrap(),
+    })
+}
+
+pub fn dao_total_issuance(client: u32, dao_id: u64) -> anyhow::Result<u64> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let total_issuance = dao.total_issuance(dao_id).unwrap();
+    Ok(total_issuance.try_into().unwrap())
+}
+
 pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Quarter>> {
     let c = Client::from_index(client)?;
     let mut dao = WeteeDAO::new(c);
@@ -177,6 +201,7 @@ pub fn dao_projects(client: u32, dao_id: u64) -> anyhow::Result<Vec<ProjectInfo>
         .map(|p| ProjectInfo {
             id: p.id,
             name: String::from_utf8(p.name).unwrap(),
+            dao_account_id: account::ss58_to_address(p.dao_account_id.to_string()).unwrap(),
             description: String::from_utf8(p.description).unwrap(),
             creator: account::ss58_to_address(p.creator.to_string()).unwrap(),
             status: p.status as u8,
@@ -195,6 +220,7 @@ pub fn dao_guilds(client: u32, dao_id: u64) -> anyhow::Result<Vec<GuildInfo>> {
             id: g.id,
             name: String::from_utf8(g.name).unwrap(),
             desc: String::from_utf8(g.desc).unwrap(),
+            dao_account_id: account::ss58_to_address(g.dao_account_id.to_string()).unwrap(),
             creator: account::ss58_to_address(g.creator.to_string()).unwrap(),
             status: g.status as u8,
             start_block: g.start_block,
@@ -514,6 +540,59 @@ pub fn dao_project_task_list(
         .collect())
 }
 
+pub fn dao_project_task_info(
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<TaskInfo> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    let task = project.task_info(project_id, task_id).unwrap();
+    Ok(TaskInfo {
+        id: task.id,
+        name: String::from_utf8(task.name).unwrap(),
+        description: String::from_utf8(task.description).unwrap(),
+        status: match task.status {
+            TaskStatus::ToDo => 0,
+            TaskStatus::InProgress => 1,
+            TaskStatus::InReview => 2,
+            TaskStatus::Done => 3,
+        },
+        point: task.point,
+        priority: task.priority,
+        project_id,
+        creator: account::ss58_to_address(task.creator.to_string()).unwrap(),
+        rewards: task
+            .rewards
+            .into_iter()
+            .map(|(id, amount)| {
+                return Reward {
+                    asset_id: id,
+                    amount: amount.try_into().unwrap(),
+                };
+            })
+            .collect(),
+        max_assignee: task.max_assignee,
+        assignees: task
+            .assignees
+            .into_iter()
+            .map(|account| {
+                return account::ss58_to_address(account.to_string()).unwrap();
+            })
+            .collect(),
+        reviewers: task
+            .reviewers
+            .into_iter()
+            .map(|account| {
+                return account::ss58_to_address(account.to_string()).unwrap();
+            })
+            .collect(),
+        skills: task.skills,
+    })
+}
+
 pub fn dao_project_create_task(
     from: String,
     client: u32,
@@ -524,6 +603,7 @@ pub fn dao_project_create_task(
     priority: u8,
     point: u16,
     assignees: Option<Vec<String>>,
+    reviewers: Option<Vec<String>>,
     skills: Option<Vec<u8>>,
     max_assignee: Option<u8>,
     amount: u64,
@@ -541,6 +621,7 @@ pub fn dao_project_create_task(
             priority,
             point,
             assignees,
+            reviewers,
             skills,
             max_assignee,
             amount.into(),
@@ -596,6 +677,93 @@ pub fn dao_project_task_done(
 
     project
         .task_done(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_join_task(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .join_task(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_leave_task(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .leave_task(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_join_task_review(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .join_task_review(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_leave_task_review(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .leave_task_review(from, dao_id, project_id, task_id)
+        .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_make_review(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+    approve: bool,
+    meta: String,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project
+        .make_review(from, dao_id, project_id, task_id, approve, meta)
         .unwrap();
 
     Ok(true)

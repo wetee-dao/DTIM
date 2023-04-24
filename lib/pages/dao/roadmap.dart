@@ -243,7 +243,6 @@ class _RoadMapPageState extends State<RoadMapPage> {
                         alignment: WrapAlignment.start,
                         children: [
                           Container(
-                            // height: 23.w,
                             decoration: BoxDecoration(
                               color: constTheme.centerChannelColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(5.w),
