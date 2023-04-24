@@ -391,7 +391,9 @@ class GovProps {
   /// The hash of the proposal being voted on.
   /// 投票后执行内容
   final String runtimeCall;
-  final String memberGroup;
+
+  /// 执行范围
+  final MemberGroup memberGroup;
   final String account;
 
   const GovProps({
@@ -424,7 +426,11 @@ class GovReferendum {
   /// The current tally of votes in this referendum.
   /// 投票统计
   final Tally tally;
-  final String memberGroup;
+
+  /// 投票范围
+  final MemberGroup memberGroup;
+
+  /// 投票状态
   final int status;
 
   const GovReferendum({
@@ -517,6 +523,16 @@ class GuildInfo {
     required this.desc,
     required this.metaData,
     required this.status,
+  });
+}
+
+class MemberGroup {
+  final int scope;
+  final int? id;
+
+  const MemberGroup({
+    required this.scope,
+    this.id,
   });
 }
 
@@ -1757,6 +1773,10 @@ class RustWraperImpl implements RustWraper {
     return raw as bool;
   }
 
+  int _wire2api_box_autoadd_u64(dynamic raw) {
+    return _wire2api_u64(raw);
+  }
+
   DaoInfo _wire2api_dao_info(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 7)
@@ -1780,7 +1800,7 @@ class RustWraperImpl implements RustWraper {
       index: _wire2api_u32(arr[0]),
       hash: _wire2api_String(arr[1]),
       runtimeCall: _wire2api_String(arr[2]),
-      memberGroup: _wire2api_String(arr[3]),
+      memberGroup: _wire2api_member_group(arr[3]),
       account: _wire2api_String(arr[4]),
     );
   }
@@ -1796,7 +1816,7 @@ class RustWraperImpl implements RustWraper {
       proposal: _wire2api_String(arr[3]),
       delay: _wire2api_u64(arr[4]),
       tally: _wire2api_tally(arr[5]),
-      memberGroup: _wire2api_String(arr[6]),
+      memberGroup: _wire2api_member_group(arr[6]),
       status: _wire2api_u8(arr[7]),
     );
   }
@@ -1865,6 +1885,20 @@ class RustWraperImpl implements RustWraper {
 
   List<TaskInfo> _wire2api_list_task_info(dynamic raw) {
     return (raw as List<dynamic>).map(_wire2api_task_info).toList();
+  }
+
+  MemberGroup _wire2api_member_group(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return MemberGroup(
+      scope: _wire2api_u8(arr[0]),
+      id: _wire2api_opt_box_autoadd_u64(arr[1]),
+    );
+  }
+
+  int? _wire2api_opt_box_autoadd_u64(dynamic raw) {
+    return raw == null ? null : _wire2api_box_autoadd_u64(raw);
   }
 
   ProjectInfo _wire2api_project_info(dynamic raw) {

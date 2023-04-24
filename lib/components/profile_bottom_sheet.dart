@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../store/im.dart';
 import './avatar.dart';
-import 'loading.dart';
+import 'loading_dialog.dart';
 
 class ProfileBottomSheet extends StatelessWidget {
   final String userId;

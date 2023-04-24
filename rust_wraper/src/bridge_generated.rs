@@ -25,6 +25,7 @@ use crate::model::GovProps;
 use crate::model::GovReferendum;
 use crate::model::GovVote;
 use crate::model::GuildInfo;
+use crate::model::MemberGroup;
 use crate::model::ProjectInfo;
 use crate::model::Quarter;
 use crate::model::QuarterTask;
@@ -1131,6 +1132,13 @@ impl support::IntoDart for GuildInfo {
     }
 }
 impl support::IntoDartExceptPrimitive for GuildInfo {}
+
+impl support::IntoDart for MemberGroup {
+    fn into_dart(self) -> support::DartAbi {
+        vec![self.scope.into_dart(), self.id.into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for MemberGroup {}
 
 impl support::IntoDart for ProjectInfo {
     fn into_dart(self) -> support::DartAbi {

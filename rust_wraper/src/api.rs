@@ -1,6 +1,6 @@
 use crate::model::{
-    AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote, GuildInfo, ProjectInfo, Quarter,
-    QuarterTask, Reward, Tally, TaskInfo,
+    member_trans, AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote, GuildInfo,
+    ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo,
 };
 use anyhow::{self, Ok};
 use asyou_rust_sdk::{
@@ -301,9 +301,6 @@ pub fn dao_gov_pending_referendum_list(client: u32, dao_id: u64) -> anyhow::Resu
     Ok(props
         .into_iter()
         .map(|(index, hash, call, member, account)| {
-            // let call_id: u32 =
-            //     TryFrom::<wetee_runtime::RuntimeCall>::try_from(call).unwrap_or_default();
-
             let hash_str = "0x".to_owned() + &hex::encode(hash.as_bytes());
             let call_str = format!("{:?}", call);
 
@@ -311,7 +308,7 @@ pub fn dao_gov_pending_referendum_list(client: u32, dao_id: u64) -> anyhow::Resu
                 index,
                 hash: hash_str,
                 runtime_call: call_str,
-                member_group: "".to_string(),
+                member_group: member_trans(member),
                 account: account::ss58_to_address(account.to_string()).unwrap(),
             };
         })
@@ -344,7 +341,7 @@ pub fn dao_gov_referendum_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<G
                     yes: referendum.tally.yes.try_into().unwrap(),
                     no: referendum.tally.no.try_into().unwrap(),
                 },
-                member_group: "".to_string(),
+                member_group: member_trans(referendum.member_data),
                 status,
             };
         })

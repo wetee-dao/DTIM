@@ -26,11 +26,11 @@ class _CombindBoardPageState extends State<CombindBoardPage> {
       // padding: EdgeInsets.only(top: 10),
       children: [
         Container(
-          margin: EdgeInsets.only(left: 30.w, right: 30.w),
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 30.w),
+              SizedBox(height: 20.w),
               Row(
                 children: [
                   Icon(

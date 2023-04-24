@@ -44,7 +44,7 @@ class DaoMemberList extends StatelessWidget {
           ),
           for (var i = 0; i < members.length; i++)
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.w),
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 5.w),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

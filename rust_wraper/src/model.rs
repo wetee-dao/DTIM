@@ -1,3 +1,5 @@
+use asyou_rust_sdk::hander::wetee_gov::MemmberData;
+
 /// roadmap 季度
 #[derive(Clone, PartialEq, Eq, Default, Debug)]
 pub struct Quarter {
@@ -106,7 +108,9 @@ pub struct GovProps {
     /// The hash of the proposal being voted on.
     /// 投票后执行内容
     pub runtime_call: String,
-    pub member_group: String,
+    /// 执行范围
+    pub member_group: MemberGroup,
+    // 发起者
     pub account: String,
 }
 
@@ -127,10 +131,19 @@ pub struct GovReferendum {
     /// The current tally of votes in this referendum.
     /// 投票统计
     pub tally: Tally,
-
-    pub member_group: String,
-
+    /// 投票范围
+    pub member_group: MemberGroup,
+    /// 投票状态
     pub status: u8,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct MemberGroup {
+    // 1 => GLOBAL 2 => GUILD 3 => PROJECT
+    pub scope: u8,
+    // 工会或者项目ID
+    // guild or project id
+    pub id: Option<u64>,
 }
 
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
@@ -233,4 +246,19 @@ pub struct DaoInfo {
     //// meta data
     /// DAO 元数据 图片等内容
     pub meta_data: String,
+}
+
+// 获取投票范围信息
+pub fn member_trans(member: MemmberData) -> MemberGroup {
+    match member {
+        MemmberData::GLOBAL => MemberGroup { scope: 1, id: None },
+        MemmberData::GUILD(id) => MemberGroup {
+            scope: 2,
+            id: Some(id),
+        },
+        MemmberData::PROJECT(id) => MemberGroup {
+            scope: 3,
+            id: Some(id),
+        },
+    }
 }

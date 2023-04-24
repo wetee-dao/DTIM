@@ -53,7 +53,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
       // padding: EdgeInsets.only(top: 10),
       children: [
         Container(
-          margin: EdgeInsets.only(left: 30.w, right: 30.w),
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

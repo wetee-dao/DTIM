@@ -11,7 +11,6 @@ import '../../components/close_bar.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
-import 'combind_board.dart';
 import 'guild.dart';
 import 'overview.dart';
 import 'project.dart';
@@ -30,7 +29,8 @@ class _DaoPageState extends State<DaoPage> {
     const Overviewpage(),
     const RoadMapPage(),
     const ReferendumPage(),
-    const CombindBoardPage(),
+    // const CombindBoardPage(),
+    Container(),
     Guildpage(key: guildKey),
     ProjectPage(key: projectKey)
   ];
@@ -197,8 +197,8 @@ class _DaoPageState extends State<DaoPage> {
         return 1;
       case "Referendums":
         return 2;
-      case "Combind Boards":
-        return 3;
+      // case "Combind Boards":
+      //   return 3;
       default:
         if (str.contains("Guilds")) {
           return 4;

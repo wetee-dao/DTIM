@@ -2,7 +2,6 @@ import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../store/theme.dart';
-import '../../utils/responsive.dart';
 import '../avatar.dart';
 import 'text.dart';
 
@@ -14,11 +13,11 @@ class MemberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
-      width: 300.w,
+      width: 250.w,
       constraints: BoxConstraints(minWidth: isPc() ? 140.w : 100.w, maxWidth: double.maxFinite),
-      padding: EdgeInsets.fromLTRB(20.0, 20.0, isPc() ? 40 : 10, 20.0),
+      padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(6.w),
         color: constTheme.centerChannelColor.withOpacity(0.05),
       ),
       child: Row(

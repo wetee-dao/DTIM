@@ -5,5 +5,5 @@ export 'direct_chat.dart';
 export 'user_avatar.dart';
 export 'org_card.dart';
 export 'model_bar.dart';
-export 'loading.dart';
+export 'loading_dialog.dart';
 export 'appicon.dart';

@@ -21,6 +21,8 @@ class DAOCTX with ChangeNotifier {
   List<String> members = [];
   String ss58Address = "";
   List<GovVote> votes = [];
+  List<GovProps> pending = [];
+  List<GovReferendum> going = [];
 
   connectChain(porg, puser, callback) {
     if (porg.chainUrl != null) {
@@ -52,6 +54,13 @@ class DAOCTX with ChangeNotifier {
     members = await rustApi.daoMemebers(client: chainClient, daoId: org.daoId);
     votes = await rustApi.daoGovVotesOfUser(client: chainClient, daoId: org.daoId, from: user.address);
     blockNumber = await rustApi.getBlockNumber(client: chainClient);
+
+    notifyListeners();
+  }
+
+  getVoteData() async {
+    pending = await rustApi.daoGovPendingReferendumList(client: chainClient, daoId: org.daoId);
+    going = await rustApi.daoGovReferendumList(client: chainClient, daoId: org.daoId);
 
     notifyListeners();
   }
