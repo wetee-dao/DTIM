@@ -206,7 +206,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建任务',
+                            'Create',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
