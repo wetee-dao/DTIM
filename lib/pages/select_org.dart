@@ -289,7 +289,7 @@ List<Org> orgs = [
     daoId: 5000,
     name: "我门",
     desc: "we3 在线协作，分布式办公软件",
-    chainUrl: "ws://127.0.0.1:9944",
+    chainUrl: "ws://chain-ws.tc.asyou.me",
     metaData: OrgMetaData(
       domain: "im.tc.asyou.me",
       color: "#000000",

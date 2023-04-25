@@ -54,7 +54,6 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
         );
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -63,6 +62,7 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override

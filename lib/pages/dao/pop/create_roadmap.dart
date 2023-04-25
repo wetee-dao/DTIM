@@ -60,7 +60,6 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
         );
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -69,6 +68,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override

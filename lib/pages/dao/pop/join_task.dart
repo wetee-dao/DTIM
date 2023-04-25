@@ -60,7 +60,6 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
         }
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -69,6 +68,7 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override

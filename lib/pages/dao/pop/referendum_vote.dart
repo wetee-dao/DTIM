@@ -54,7 +54,6 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
         );
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -63,6 +62,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override

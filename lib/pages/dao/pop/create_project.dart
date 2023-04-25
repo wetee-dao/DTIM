@@ -71,7 +71,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
         }
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -80,6 +79,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override

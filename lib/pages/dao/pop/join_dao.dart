@@ -59,8 +59,6 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       },
     );
 
-    await daoCtx.daoRefresh();
-
     //跳转到组织列表
     if (!mounted) return;
     if (widget.closeModel != null) {
@@ -69,6 +67,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
     }
 
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override
