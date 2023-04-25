@@ -59,22 +59,22 @@ class Overviewpage extends StatelessWidget {
                           children: [
                             InfoCard(
                               icon: Appicon.zichan,
-                              label: "国库资产",
+                              label: "Treasury assets ",
                               amount: 'WTE ${dao.daoAmount.free.toString()}',
                             ),
                             InfoCard(
                               icon: Appicon.fenxiangshare,
-                              label: "已发行SHARE",
+                              label: "Issued SHARE",
                               amount: dao.totalIssuance.toString(),
                             ),
                             InfoCard(
                               icon: Appicon.zuzhiDataOrganization6,
-                              label: "技能工会",
+                              label: "Skilled Guild",
                               amount: '${dao.guilds.length}个',
                             ),
                             InfoCard(
                               icon: Appicon.xiangmu,
-                              label: "项目",
+                              label: "Project",
                               amount: '${dao.projects.length}个',
                             ),
                           ],
