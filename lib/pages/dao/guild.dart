@@ -1,16 +1,20 @@
-// 初始化一个页面
-import 'package:asyou_app/components/appicon.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:asyou_app/store/dao_ctx.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../../bridge_generated.dart';
-import '../../components/dao/member_card.dart';
+import '../../components/components.dart';
 import '../../components/dao/text.dart';
+import '../../router.dart';
 import '../../store/theme.dart';
 import '../../utils/responsive.dart';
+import 'sub/member.dart';
+import 'sub/referendum.dart';
 
 final GlobalKey guildKey = GlobalKey();
 
@@ -21,20 +25,33 @@ class Guildpage extends StatefulWidget {
   State<Guildpage> createState() => GuildpageState();
 }
 
-class GuildpageState extends State<Guildpage> {
+class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   late final DAOCTX dao;
   GuildInfo? info;
   List<String> members = [];
+  late TabController _tabController;
+  late PageController pageController = PageController();
+  final titleList = <String>["Members", "Referendums"];
+  List<GovProps> pending = [];
+  List<GovReferendum> going = [];
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
     dao = context.read<DAOCTX>();
   }
 
-  getData(GuildInfo guild) async {
+  init(GuildInfo guild) {
     info = guild;
-    members = await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: guild.id);
+    getData();
+  }
+
+  getData() async {
+    await dao.getVoteData();
+    members = await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: info!.id);
+    pending = dao.pending.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == info!.id).toList();
+    going = dao.going.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == info!.id).toList();
     if (mounted) setState(() {});
   }
 
@@ -48,12 +65,13 @@ class GuildpageState extends State<Guildpage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(left: 30.w, right: 30.w),
+            margin: EdgeInsets.only(left: 20.w, right: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30.w),
+                SizedBox(height: 15.w),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
                       Appicon.zuzhiDataOrganization6,
@@ -62,36 +80,69 @@ class GuildpageState extends State<Guildpage> {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: info != null ? info!.name : "",
+                      text: info != null ? "#${info!.id} ${info!.name}" : "",
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
+                    // SizedBox(width: 20.w),
+                    // PrimaryText(
+                    //   text: info != null ? info!.desc : "",
+                    //   size: 14.w,
+                    //   height: 1.9,
+                    // ),
                     Expanded(child: Container()),
                     InkWell(
-                      onTap: () {
-                        // showModelOrPage(context, "/create_roadmap");
+                      onTap: () async {
+                        if (OkCancelResult.ok ==
+                            await showOkCancelAlertDialog(
+                              useRootNavigator: false,
+                              title: "Notice",
+                              message: "Do you confirm to join? Your application will be reviewed by internal members",
+                              context: globalCtx(),
+                              okLabel: L10n.of(globalCtx())!.next,
+                              cancelLabel: L10n.of(globalCtx())!.cancel,
+                            )) {
+                          if (!daoCtx.checkAfterTx()) return;
+                          await waitFutureLoading(
+                            context: globalCtx(),
+                            future: () async {
+                              await rustApi.daoGuildJoinRequest(
+                                from: dao.user.address,
+                                client: dao.chainClient,
+                                daoId: dao.org.daoId,
+                                guildId: info!.id,
+                                ext: WithGovPs(
+                                  runType: 1,
+                                  amount: 100,
+                                  member: MemberGroup(
+                                    scope: 2,
+                                    id: info!.id,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          await daoCtx.daoRefresh();
+                          getData();
+                        }
                       },
                       child: Container(
                         height: 30.w,
                         padding: EdgeInsets.all(5.w),
-                        decoration: BoxDecoration(
-                          color: constTheme.buttonBg,
-                          borderRadius: BorderRadius.circular(5.w),
-                        ),
                         alignment: Alignment.center,
                         child: Row(
                           children: [
                             Icon(
-                              Icons.add_circle_outline_rounded,
+                              Icons.group_add_rounded,
                               size: 20.w,
-                              color: constTheme.buttonColor,
+                              color: constTheme.centerChannelColor,
                             ),
                             SizedBox(width: 5.w),
                             Text(
-                              "加入工会",
+                              "Join",
                               style: TextStyle(
                                 fontSize: 14.w,
-                                color: constTheme.buttonColor,
+                                color: constTheme.centerChannelColor,
                               ),
                             )
                           ],
@@ -105,35 +156,41 @@ class GuildpageState extends State<Guildpage> {
                   text: info != null ? info!.desc : "",
                   size: 14.w,
                 ),
-                SizedBox(height: 15.w),
+                SizedBox(height: 5.w),
               ],
             ),
           ),
+          TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            labelColor: constTheme.centerChannelColor,
+            unselectedLabelColor: constTheme.centerChannelColor.withOpacity(0.6),
+            labelStyle: TextStyle(fontSize: 13.w),
+            unselectedLabelStyle: TextStyle(fontSize: 13.w),
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            labelPadding: EdgeInsets.only(left: 12.w, right: 12.w),
+            tabs: titleList.map((e) => Tab(text: e)).toList(),
+            dividerColor: Colors.transparent,
+            indicator: MaterialIndicator(
+              color: constTheme.sidebarTextActiveBorder,
+              strokeWidth: 10,
+            ),
+            onTap: (i) => pageController.jumpToPage(i),
+          ),
           Divider(
-            height: 20,
+            height: 1,
             color: constTheme.centerChannelDivider,
           ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.w),
-              child: Wrap(
-                runSpacing: 20.w,
-                spacing: 20.w,
-                alignment: WrapAlignment.start,
-                children: [
-                  for (var member in members)
-                    MemberCard(
-                      // icon: Appicon.zuzhiDataOrganization6,
-                      label: member,
-                      // amount: '\$1200',
-                    ),
-                  // const InfoCard(
-                  //   icon: Icons.library_add_rounded,
-                  //   label: "申请加入",
-                  //   amount: '工会',
-                  // ),
-                ],
-              ),
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (page) {},
+              children: [
+                Members(members: members),
+                Referendums(pending: pending, going: going),
+              ],
             ),
           ),
           SizedBox(height: 30.w),

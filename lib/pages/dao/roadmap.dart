@@ -16,7 +16,7 @@ class RoadMapPage extends StatefulWidget {
   const RoadMapPage({super.key});
 
   @override
-  _RoadMapPageState createState() => _RoadMapPageState();
+  State<RoadMapPage> createState() => _RoadMapPageState();
 }
 
 class _RoadMapPageState extends State<RoadMapPage> {
@@ -30,6 +30,14 @@ class _RoadMapPageState extends State<RoadMapPage> {
     im = context.read<IMProvider>();
     dao = context.read<DAOCTX>();
     getData();
+    dao.addListener(getData);
+  }
+
+  @override
+  void dispose() {
+    print("roadmap");
+    dao.removeListener(getData);
+    super.dispose();
   }
 
   getData() async {
@@ -50,10 +58,9 @@ class _RoadMapPageState extends State<RoadMapPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      // padding: EdgeInsets.only(top: 10),
       children: [
         Container(
-          margin: EdgeInsets.only(left: 30.w, right: 30.w),
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -74,29 +81,26 @@ class _RoadMapPageState extends State<RoadMapPage> {
                   Expanded(child: Container()),
                   InkWell(
                     onTap: () {
+                      if (!daoCtx.checkAfterTx()) return;
                       showModelOrPage(context, "/create_roadmap");
                     },
                     child: Container(
                       height: 30.w,
                       padding: EdgeInsets.all(5.w),
-                      decoration: BoxDecoration(
-                        color: constTheme.buttonBg,
-                        borderRadius: BorderRadius.circular(5.w),
-                      ),
                       alignment: Alignment.center,
                       child: Row(
                         children: [
                           Icon(
-                            Icons.add_circle_outline_rounded,
+                            Icons.add_circle_rounded,
                             size: 20.w,
-                            color: constTheme.buttonColor,
+                            color: constTheme.centerChannelColor,
                           ),
                           SizedBox(width: 5.w),
                           Text(
-                            "添加",
+                            "Add task",
                             style: TextStyle(
                               fontSize: 14.w,
-                              color: constTheme.buttonColor,
+                              color: constTheme.centerChannelColor,
                             ),
                           )
                         ],
@@ -107,7 +111,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: '工会与项目',
+                text: daoCtx.dao.purpose,
                 size: 14.w,
               ),
               SizedBox(height: 15.w),
@@ -115,31 +119,12 @@ class _RoadMapPageState extends State<RoadMapPage> {
           ),
         ),
         Divider(
-          height: 20,
+          height: 20.w,
           color: constTheme.centerChannelDivider,
         ),
         Expanded(
-          // child: Container(
-          //   color: Colors.blue,
-          //   height: double.maxFinite,
-          //   child: SingleChildScrollView(
-          //     scrollDirection: Axis.vertical,
-          //     child: Row(
-          //       children: [
-          //         _createListView("2023.Q1", list1),
-          //         _createListView("2023.Q2", list2),
-          //         _createListView("2023.Q3", list3),
-          //         _createListView("2023.Q4", list4),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // child: Container(
-          //   color: Colors.red,
-          // ),
           child: Scrollbar(
             radius: const Radius.circular(9),
-            // thickness: 4,
             thumbVisibility: true,
             controller: boardScrollController,
             child: ListView(
@@ -243,7 +228,6 @@ class _RoadMapPageState extends State<RoadMapPage> {
                         alignment: WrapAlignment.start,
                         children: [
                           Container(
-                            // height: 23.w,
                             decoration: BoxDecoration(
                               color: constTheme.centerChannelColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(5.w),

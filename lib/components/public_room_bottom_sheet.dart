@@ -10,7 +10,7 @@ import '../store/theme.dart';
 import '../utils/url_launcher.dart';
 import 'avatar.dart';
 import '../utils/localized_extension.dart';
-import 'loading.dart';
+import 'loading_dialog.dart';
 
 class PublicRoomBottomSheet extends StatelessWidget {
   final String? roomAlias;

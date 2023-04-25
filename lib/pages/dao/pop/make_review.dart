@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -12,19 +10,20 @@ import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
-class ReferendumVotePage extends StatefulWidget {
+class MakeReviewPage extends StatefulWidget {
   final Function? closeModel;
   final String id;
-  const ReferendumVotePage({Key? key, this.closeModel, required this.id}) : super(key: key);
+  final String projectId;
+  const MakeReviewPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
 
   @override
-  State<ReferendumVotePage> createState() => _ReferendumVotePageState();
+  State<MakeReviewPage> createState() => _MakeReviewPageState();
 }
 
-class _ReferendumVotePageState extends State<ReferendumVotePage> {
+class _MakeReviewPageState extends State<MakeReviewPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    vote: 100,
+    msg: "",
     approve: true,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -44,13 +43,14 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
     await waitFutureLoading(
       context: context,
       future: () async {
-        await rustApi.daoGovVoteForReferendum(
+        await rustApi.daoProjectMakeReview(
           from: daoCtx.user.address,
           client: daoCtx.chainClient,
           daoId: daoCtx.org.daoId,
-          index: int.parse(widget.id),
-          vote: _data.vote,
+          projectId: int.parse(widget.projectId),
+          taskId: int.parse(widget.id),
           approve: _data.approve,
+          meta: _data.msg,
         );
       },
     );
@@ -72,7 +72,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "Vote for referendum #${widget.id}",
+              title: "为任务 #${widget.id} 提交审核报告",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -82,7 +82,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "Vote for referendum #${widget.id}",
+              title: "为任务 #${widget.id} 提交审核报告",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -101,15 +101,15 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
               TextFormField(
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: 'Vote deposit',
+                  hintText: 'Review message',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.how_to_vote_rounded, color: constTheme.centerChannelColor),
+                  prefixIcon: Icon(Icons.rate_review_rounded, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  _data.vote = int.parse(v ?? "0");
+                  _data.msg = v ?? "";
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -122,7 +122,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
               SwitchFormField(
                 initialValue: _data.approve,
                 decoration: InputDecoration(
-                  hintText: 'Whether approve',
+                  hintText: 'Approve',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -151,7 +151,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            'Vote for the referendum',
+                            '为公投投票',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -223,10 +223,10 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
 
 class SubmitData {
   bool approve;
-  int vote;
+  String msg;
 
   SubmitData({
     required this.approve,
-    required this.vote,
+    required this.msg,
   });
 }

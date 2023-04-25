@@ -14,6 +14,7 @@ class MutiSelectFormField<T> extends FormField<List<T>> {
     FormFieldValidator<List<T>>? validator,
     AutovalidateMode? autovalidateMode,
     InputDecoration? decoration,
+    required Widget prefixIcon,
   }) : super(
           key: key,
           autovalidateMode: autovalidateMode,
@@ -22,6 +23,9 @@ class MutiSelectFormField<T> extends FormField<List<T>> {
           initialValue: initialValue,
           builder: (state) {
             final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+            if (decoration != null) {
+              decoration = decoration!.copyWith(contentPadding: EdgeInsets.zero);
+            }
 
             return InputDecorator(
               decoration: decoration ??
@@ -31,24 +35,30 @@ class MutiSelectFormField<T> extends FormField<List<T>> {
                       fontSize: 14.w,
                       color: constTheme.centerChannelColor,
                     ),
+                    contentPadding: EdgeInsets.zero,
                   ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 6.w, top: 12.w, right: 9.w),
+                        child: prefixIcon,
+                      ),
+                      Container(
+                        width: 59.w,
+                        margin: EdgeInsets.only(top: 11.w),
+                        child: Text(
+                          decoration!.hintText ?? "",
+                          style: decoration!.hintStyle,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
-                    width: 60.w,
-                    child: Text(
-                      decoration!.hintText ?? "",
-                      style: decoration.hintStyle,
-                    ),
-                  ),
-                  Container(
-                    width: 1.w,
-                    height: 10.w,
-                    color: constTheme.centerChannelColor,
-                  ),
-                  Expanded(
+                    width: double.maxFinite,
                     child: ChipsChoice<T>.multiple(
                       value: state.value ?? [],
                       onChanged: (val) => state.didChange(val),

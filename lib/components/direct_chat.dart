@@ -11,7 +11,7 @@ import '../store/theme.dart';
 import '../utils/functions.dart';
 import '../utils/screen.dart';
 import 'hover_list_item.dart';
-import 'loading.dart';
+import 'loading_dialog.dart';
 
 class DirectChats extends StatefulWidget {
   final List<link.Room> channelsList;

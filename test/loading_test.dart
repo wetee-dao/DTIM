@@ -4,7 +4,7 @@ import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/components/loading.dart';
+import 'package:asyou_app/components/loading_dialog.dart';
 
 void main() {
   testWidgets("test loading", (WidgetTester tester) async {

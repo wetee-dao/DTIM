@@ -40,7 +40,7 @@ class SelectFormField<T> extends FormField<T> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 60.w,
+                      width: 50.w,
                       child: Text(
                         decoration!.hintText ?? "",
                         style: decoration.hintStyle,

@@ -60,6 +60,16 @@ pub extern "C" fn wire_dao_balance(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_dao_info(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_info_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_total_issuance(port_: i64, client: u32, dao_id: u64) {
+    wire_dao_total_issuance_impl(port_, client, dao_id)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_dao_roadmap(port_: i64, client: u32, dao_id: u64, year: u32) {
     wire_dao_roadmap_impl(port_, client, dao_id, year)
 }
@@ -120,8 +130,9 @@ pub extern "C" fn wire_create_project(
     dao_id: u64,
     name: *mut wire_uint_8_list,
     desc: *mut wire_uint_8_list,
+    ext: *mut wire_WithGovPs,
 ) {
-    wire_create_project_impl(port_, from, client, dao_id, name, desc)
+    wire_create_project_impl(port_, from, client, dao_id, name, desc, ext)
 }
 
 #[no_mangle]
@@ -132,8 +143,9 @@ pub extern "C" fn wire_create_guild(
     dao_id: u64,
     name: *mut wire_uint_8_list,
     desc: *mut wire_uint_8_list,
+    ext: *mut wire_WithGovPs,
 ) {
-    wire_create_guild_impl(port_, from, client, dao_id, name, desc)
+    wire_create_guild_impl(port_, from, client, dao_id, name, desc, ext)
 }
 
 #[no_mangle]
@@ -232,6 +244,17 @@ pub extern "C" fn wire_dao_project_task_list(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_dao_project_task_info(
+    port_: i64,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_task_info_impl(port_, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_dao_project_create_task(
     port_: i64,
     from: *mut wire_uint_8_list,
@@ -243,6 +266,7 @@ pub extern "C" fn wire_dao_project_create_task(
     priority: u8,
     point: u16,
     assignees: *mut wire_StringList,
+    reviewers: *mut wire_StringList,
     skills: *mut wire_uint_8_list,
     max_assignee: *mut u8,
     amount: u64,
@@ -258,6 +282,7 @@ pub extern "C" fn wire_dao_project_create_task(
         priority,
         point,
         assignees,
+        reviewers,
         skills,
         max_assignee,
         amount,
@@ -300,6 +325,117 @@ pub extern "C" fn wire_dao_project_task_done(
     wire_dao_project_task_done_impl(port_, from, client, dao_id, project_id, task_id)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_dao_project_join_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_join_task_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_leave_task(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_leave_task_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_join_task_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_join_task_review_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_leave_task_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+) {
+    wire_dao_project_leave_task_review_impl(port_, from, client, dao_id, project_id, task_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_make_review(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    task_id: u64,
+    approve: bool,
+    meta: *mut wire_uint_8_list,
+) {
+    wire_dao_project_make_review_impl(
+        port_, from, client, dao_id, project_id, task_id, approve, meta,
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_join_request(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    ext: *mut wire_WithGovPs,
+) {
+    wire_dao_project_join_request_impl(port_, from, client, dao_id, project_id, ext)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_guild_join_request(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    guild_id: u64,
+    ext: *mut wire_WithGovPs,
+) {
+    wire_dao_guild_join_request_impl(port_, from, client, dao_id, guild_id, ext)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_member_point(
+    port_: i64,
+    client: u32,
+    dao_id: u64,
+    member: *mut wire_uint_8_list,
+) {
+    wire_dao_member_point_impl(port_, client, dao_id, member)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_apply_project_funds(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    amount: u64,
+    ext: *mut wire_WithGovPs,
+) {
+    wire_dao_apply_project_funds_impl(port_, from, client, dao_id, project_id, amount, ext)
+}
+
 // Section: allocate functions
 
 #[no_mangle]
@@ -319,6 +455,11 @@ pub extern "C" fn new_box_autoadd_u16_0(value: u16) -> *mut u16 {
 #[no_mangle]
 pub extern "C" fn new_box_autoadd_u8_0(value: u8) -> *mut u8 {
     support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_with_gov_ps_0() -> *mut wire_WithGovPs {
+    support::new_leak_box_ptr(wire_WithGovPs::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -360,12 +501,35 @@ impl Wire2Api<u8> for *mut u8 {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
+impl Wire2Api<WithGovPs> for *mut wire_WithGovPs {
+    fn wire2api(self) -> WithGovPs {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        Wire2Api::<WithGovPs>::wire2api(*wrap).into()
+    }
+}
+impl Wire2Api<MemberGroup> for wire_MemberGroup {
+    fn wire2api(self) -> MemberGroup {
+        MemberGroup {
+            scope: self.scope.wire2api(),
+            id: self.id.wire2api(),
+        }
+    }
+}
 
 impl Wire2Api<Vec<u8>> for *mut wire_uint_8_list {
     fn wire2api(self) -> Vec<u8> {
         unsafe {
             let wrap = support::box_from_leak_ptr(self);
             support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        }
+    }
+}
+impl Wire2Api<WithGovPs> for wire_WithGovPs {
+    fn wire2api(self) -> WithGovPs {
+        WithGovPs {
+            run_type: self.run_type.wire2api(),
+            amount: self.amount.wire2api(),
+            member: self.member.wire2api(),
         }
     }
 }
@@ -380,9 +544,24 @@ pub struct wire_StringList {
 
 #[repr(C)]
 #[derive(Clone)]
+pub struct wire_MemberGroup {
+    scope: u8,
+    id: u64,
+}
+
+#[repr(C)]
+#[derive(Clone)]
 pub struct wire_uint_8_list {
     ptr: *mut u8,
     len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_WithGovPs {
+    run_type: u8,
+    amount: u64,
+    member: wire_MemberGroup,
 }
 
 // Section: impl NewWithNullPtr
@@ -394,6 +573,37 @@ pub trait NewWithNullPtr {
 impl<T> NewWithNullPtr for *mut T {
     fn new_with_null_ptr() -> Self {
         std::ptr::null_mut()
+    }
+}
+
+impl NewWithNullPtr for wire_MemberGroup {
+    fn new_with_null_ptr() -> Self {
+        Self {
+            scope: Default::default(),
+            id: Default::default(),
+        }
+    }
+}
+
+impl Default for wire_MemberGroup {
+    fn default() -> Self {
+        Self::new_with_null_ptr()
+    }
+}
+
+impl NewWithNullPtr for wire_WithGovPs {
+    fn new_with_null_ptr() -> Self {
+        Self {
+            run_type: Default::default(),
+            amount: Default::default(),
+            member: Default::default(),
+        }
+    }
+}
+
+impl Default for wire_WithGovPs {
+    fn default() -> Self {
+        Self::new_with_null_ptr()
     }
 }
 

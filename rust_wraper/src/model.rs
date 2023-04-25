@@ -1,3 +1,5 @@
+use asyou_rust_sdk::hander::wetee_gov::MemmberData;
+
 /// roadmap 季度
 #[derive(Clone, PartialEq, Eq, Default, Debug)]
 pub struct Quarter {
@@ -43,6 +45,9 @@ pub struct ProjectInfo {
     pub id: u64,
     /// 项目名
     pub name: String,
+    /// DAO account id.
+    /// DAO 链上账户ID
+    pub dao_account_id: String,
     /// 项目介绍
     pub description: String,
     /// creator of WETEE
@@ -73,6 +78,9 @@ pub struct GuildInfo {
     /// creator of DAO
     /// 创建者
     pub creator: String,
+    /// DAO account id.
+    /// DAO 链上账户ID
+    pub dao_account_id: String,
     /// The block that creates the DAO
     /// DAO创建的区块
     pub start_block: u64,
@@ -100,7 +108,9 @@ pub struct GovProps {
     /// The hash of the proposal being voted on.
     /// 投票后执行内容
     pub runtime_call: String,
-    pub member_group: String,
+    /// 执行范围
+    pub member_group: MemberGroup,
+    // 发起者
     pub account: String,
 }
 
@@ -121,10 +131,19 @@ pub struct GovReferendum {
     /// The current tally of votes in this referendum.
     /// 投票统计
     pub tally: Tally,
-
-    pub member_group: String,
-
+    /// 投票范围
+    pub member_group: MemberGroup,
+    /// 投票状态
     pub status: u8,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct MemberGroup {
+    // 1 => GLOBAL 2 => GUILD 3 => PROJECT
+    pub scope: u8,
+    // 工会或者项目ID
+    // guild or project id
+    pub id: u64,
 }
 
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
@@ -202,4 +221,59 @@ pub struct TaskInfo {
 pub struct Reward {
     pub asset_id: u64,
     pub amount: u64,
+}
+
+/// DAO specific information
+/// 组织信息
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct DaoInfo {
+    pub id: u64,
+    /// creator of DAO
+    /// 创建者
+    pub creator: String,
+    /// The block that creates the DAO
+    /// DAO创建的区块
+    pub start_block: u64,
+    /// DAO account id.
+    /// DAO 链上账户ID
+    pub dao_account_id: String,
+    /// name of the DAO.
+    /// DAO 名字
+    pub name: String,
+    /// Purpose of the DAO.
+    /// DAO 目标宗旨
+    pub purpose: String,
+    //// meta data
+    /// DAO 元数据 图片等内容
+    pub meta_data: String,
+}
+
+/// vote yes or no
+/// 投票
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct WithGovPs {
+    // 1 => gov
+    // 2 => sudo
+    pub run_type: u8,
+    pub amount: u64,
+    pub member: MemberGroup,
+}
+
+// 获取投票范围信息
+pub fn member_trans(member: MemmberData) -> MemberGroup {
+    match member {
+        MemmberData::GLOBAL => MemberGroup { scope: 1, id: 0 },
+        MemmberData::GUILD(id) => MemberGroup { scope: 2, id },
+        MemmberData::PROJECT(id) => MemberGroup { scope: 3, id },
+    }
+}
+
+// 获取投票范围信息
+pub fn member_ps_trans(member: MemberGroup) -> MemmberData {
+    match member.scope {
+        1 => MemmberData::GLOBAL,
+        2 => MemmberData::GUILD(member.id),
+        3 => MemmberData::PROJECT(member.id),
+        _ => MemmberData::GLOBAL,
+    }
 }

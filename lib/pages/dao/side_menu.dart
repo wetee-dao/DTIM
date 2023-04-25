@@ -58,13 +58,13 @@ class SideMenu extends StatelessWidget {
               selected: id == "Referendums",
               onTap: () => onTap("Referendums"),
             ),
-            iconBuilder(
-              assetName: Icons.library_add_rounded,
-              name: "Combind Boards",
-              color: constTheme,
-              selected: id == "Combind Boards",
-              onTap: () => onTap("Combind Boards"),
-            ),
+            // iconBuilder(
+            //   assetName: Icons.library_add_rounded,
+            //   name: "Combind Boards",
+            //   color: constTheme,
+            //   selected: id == "Combind Boards",
+            //   onTap: () => onTap("Combind Boards"),
+            // ),
             Divider(color: constTheme.sidebarText.withOpacity(0.18)),
             Consumer<DAOCTX>(builder: (_, dao, child) {
               return Column(
@@ -110,6 +110,7 @@ class SideMenu extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                if (!daoCtx.checkAfterTx()) return;
                 showModelOrPage(context, "/create_dao_project");
               },
             )

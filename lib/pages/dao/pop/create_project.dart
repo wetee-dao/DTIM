@@ -1,16 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../bridge_generated.dart';
 import '../../../components/components.dart';
-import '../../../components/dao/priority_icon.dart';
-import '../../../components/form/muti_select.dart';
-import '../../../components/form/select.dart';
-import '../../../models/models.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
@@ -43,6 +37,8 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       return;
     }
     _formKey.currentState!.save();
+
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -53,6 +49,11 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
             daoId: daoCtx.org.daoId,
             name: _data.name,
             desc: _data.desc,
+            ext: const WithGovPs(
+              runType: 1,
+              amount: 100,
+              member: MemberGroup(scope: 1, id: 0),
+            ),
           );
         } else {
           await rustApi.createProject(
@@ -61,6 +62,11 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
             daoId: daoCtx.org.daoId,
             name: _data.name,
             desc: _data.desc,
+            ext: const WithGovPs(
+              runType: 1,
+              amount: 100,
+              member: MemberGroup(scope: 1, id: 0),
+            ),
           );
         }
       },
@@ -68,12 +74,12 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
     }
     rootNavigatorKey.currentContext?.pop();
+    await daoCtx.daoRefresh();
   }
 
   @override
@@ -83,7 +89,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建项目/工会",
+              title: "Create a project/guild",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -93,7 +99,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建项目/工会",
+              title: "Create a project/guild",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -164,7 +170,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   },
                   child: renderType(
                     Appicon.zuzhiDataOrganization6,
-                    "工会",
+                    "Guild",
                     "Everything is for interest, exploration and growth .",
                     _data.type == 0,
                   ),
@@ -177,7 +183,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   },
                   child: renderType(
                     Appicon.xiangmu,
-                    "项目",
+                    "Project",
                     "Use Projects to manage tasks that .",
                     _data.type == 1,
                   ),
@@ -200,7 +206,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建任务',
+                            'Create',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,

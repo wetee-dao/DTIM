@@ -1,31 +1,28 @@
-import 'dart:typed_data';
-
 import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../components/components.dart';
-import '../../../components/form/switch.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
-class ReferendumVotePage extends StatefulWidget {
+class JoinTaskPage extends StatefulWidget {
   final Function? closeModel;
   final String id;
-  const ReferendumVotePage({Key? key, this.closeModel, required this.id}) : super(key: key);
+  final String projectId;
+  const JoinTaskPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
 
   @override
-  State<ReferendumVotePage> createState() => _ReferendumVotePageState();
+  State<JoinTaskPage> createState() => _CreateProjectPageState();
 }
 
-class _ReferendumVotePageState extends State<ReferendumVotePage> {
+class _CreateProjectPageState extends State<JoinTaskPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    vote: 100,
-    approve: true,
+    type: 0,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -44,14 +41,23 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
     await waitFutureLoading(
       context: context,
       future: () async {
-        await rustApi.daoGovVoteForReferendum(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
-          index: int.parse(widget.id),
-          vote: _data.vote,
-          approve: _data.approve,
-        );
+        if (_data.type == 0) {
+          await rustApi.daoProjectJoinTask(
+            from: daoCtx.user.address,
+            client: daoCtx.chainClient,
+            daoId: daoCtx.org.daoId,
+            projectId: int.parse(widget.projectId),
+            taskId: int.parse(widget.id),
+          );
+        } else {
+          await rustApi.daoProjectJoinTaskReview(
+            from: daoCtx.user.address,
+            client: daoCtx.chainClient,
+            daoId: daoCtx.org.daoId,
+            projectId: int.parse(widget.projectId),
+            taskId: int.parse(widget.id),
+          );
+        }
       },
     );
 
@@ -72,7 +78,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "Vote for referendum #${widget.id}",
+              title: "Choose a role to join the task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -82,7 +88,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "Vote for referendum #${widget.id}",
+              title: "Choose a role to join the task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -98,44 +104,34 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
           child: Column(
             children: [
               SizedBox(height: 15.w),
-              TextFormField(
-                style: TextStyle(color: constTheme.centerChannelColor),
-                decoration: InputDecoration(
-                  hintText: 'Vote deposit',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.how_to_vote_rounded, color: constTheme.centerChannelColor),
+              Row(children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    _data.type = 0;
+                    setState(() {});
+                  },
+                  child: renderType(
+                    Appicon.zuzhiDataOrganization6,
+                    "Assignee",
+                    "Join the project and enjoy your work .",
+                    _data.type == 0,
+                  ),
                 ),
-                onSaved: (v) {
-                  _data.vote = int.parse(v ?? "0");
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '不能为空';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10.w),
-              SwitchFormField(
-                initialValue: _data.approve,
-                decoration: InputDecoration(
-                  hintText: 'Whether approve',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.swipe_rounded, color: constTheme.centerChannelColor),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    _data.type = 1;
+                    setState(() {});
+                  },
+                  child: renderType(
+                    Appicon.xiangmu,
+                    "Reviewer",
+                    "Join the project, review the project progress.",
+                    _data.type == 1,
+                  ),
                 ),
-                onSaved: (v) {
-                  _data.approve = v ?? true;
-                },
-                validator: (value) {
-                  return null;
-                },
-              ),
+              ]),
               Expanded(child: Container()),
               InkWell(
                 onTap: submitAction,
@@ -151,7 +147,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            'Vote for the referendum',
+                            'Join Task',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -222,11 +218,9 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
 }
 
 class SubmitData {
-  bool approve;
-  int vote;
+  int type;
 
   SubmitData({
-    required this.approve,
-    required this.vote,
+    required this.type,
   });
 }

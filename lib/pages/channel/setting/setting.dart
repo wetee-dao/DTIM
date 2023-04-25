@@ -35,7 +35,6 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
   late link.Room? room;
   late TabController _tabController;
   late PageController _pageController;
-  // , '权限'
   late List<Widget> pageItems;
 
   @override
@@ -92,16 +91,17 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
         children: [
           Container(
             height: 35.w,
+            width: double.maxFinite,
             color: constTheme.sidebarHeaderBg,
-            padding: EdgeInsets.only(right: 300.w),
             child: TabBar(
               controller: _tabController,
               labelColor: constTheme.sidebarHeaderTextColor,
               unselectedLabelColor: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
               labelStyle: TextStyle(fontSize: 13.w),
               unselectedLabelStyle: TextStyle(fontSize: 13.w),
-              labelPadding: const EdgeInsets.only(left: 0, right: 0),
+              labelPadding: EdgeInsets.only(left: 18.w, right: 18.w),
               tabs: titleList.map((e) => Tab(text: e)).toList(),
+              isScrollable: true,
               dividerColor: Colors.transparent,
               indicator: MaterialIndicator(
                 color: constTheme.sidebarTextActiveBorder,
