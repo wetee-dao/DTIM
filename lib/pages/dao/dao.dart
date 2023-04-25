@@ -90,7 +90,7 @@ class _DaoPageState extends State<DaoPage> {
                 },
               ),
             ),
-      appBar: isPc() && !Platform.isMacOS
+      appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
               title: title,

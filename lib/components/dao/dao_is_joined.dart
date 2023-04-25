@@ -29,12 +29,13 @@ class DaoIsJoined extends StatelessWidget {
           child: Container(
             width: double.maxFinite,
             height: double.maxFinite,
-            color: constTheme.errorTextColor.withOpacity(0.1),
+            color: constTheme.centerChannelColor.withOpacity(0.15),
             padding: EdgeInsets.symmetric(horizontal: 30.w),
             child: Center(
               child: Container(
                 width: 180.w,
                 height: 230.w,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
                   color: constTheme.centerChannelBg,
                   borderRadius: BorderRadius.circular(10.w),
@@ -53,7 +54,7 @@ class DaoIsJoined extends StatelessWidget {
                       'You are not a member of this DAO',
                       style: TextStyle(
                         color: constTheme.centerChannelColor,
-                        fontSize: 20.w,
+                        fontSize: 15.w,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -77,7 +78,7 @@ class DaoIsJoined extends StatelessWidget {
                         'Join',
                         style: TextStyle(
                           color: constTheme.buttonColor,
-                          fontSize: 20.w,
+                          fontSize: 16.w,
                         ),
                       ),
                     ),

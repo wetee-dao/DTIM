@@ -47,7 +47,7 @@ class Referendums extends StatelessWidget {
                     SizedBox(width: 10.w),
                     Expanded(
                       child: PrimaryText(
-                        text: "Pending regerendum",
+                        text: showTitle ? "Pending regerendum" : "Regerendum",
                         size: 14.w,
                         color: constTheme.buttonBg,
                         fontWeight: FontWeight.bold,
@@ -61,6 +61,7 @@ class Referendums extends StatelessWidget {
         for (var index = 0; index < pending.length; index++)
           Container(
             margin: EdgeInsets.only(top: 6.w, bottom: 6.w),
+            padding: EdgeInsets.only(top: 6.w, bottom: 6.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.05),
               borderRadius: BorderRadius.all(Radius.circular(5.w)),
@@ -109,7 +110,7 @@ class Referendums extends StatelessWidget {
                   },
                   child: renderBox(
                     PrimaryText(
-                      text: "Start voting",
+                      text: "Start",
                       size: 13.w,
                       color: constTheme.buttonColor,
                     ),
@@ -147,6 +148,7 @@ class Referendums extends StatelessWidget {
         for (var index = going.length - 1; index >= 0; index--)
           Container(
             margin: EdgeInsets.only(top: 6.w, bottom: 6.w),
+            padding: EdgeInsets.only(top: 6.w, bottom: 6.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.05),
               borderRadius: BorderRadius.all(Radius.circular(5.w)),

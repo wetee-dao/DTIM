@@ -16,7 +16,7 @@ class InfoCard extends StatelessWidget {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       constraints: BoxConstraints(minWidth: isPc() ? 140.w : 100.w, maxWidth: double.maxFinite),
-      padding: EdgeInsets.fromLTRB(20.0, 20.0, isPc() ? 40 : 10, 20.0),
+      padding: EdgeInsets.fromLTRB(20.w, 20.w, 40.w, 20.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: constTheme.centerChannelColor.withOpacity(0.05),
@@ -26,7 +26,7 @@ class InfoCard extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: isPc() ? 35 : 28,
+            size: 25.w,
             color: constTheme.centerChannelColor,
           ),
           SizedBox(
@@ -34,14 +34,14 @@ class InfoCard extends StatelessWidget {
           ),
           PrimaryText(
             text: label!,
-            size: isPc() ? 16 : 14,
+            size: 13.w,
           ),
           SizedBox(
             height: SizeConfig.blockSizeHorizontal! * 1,
           ),
           PrimaryText(
             text: amount!,
-            size: isPc() ? 18 : 16,
+            size: 16.w,
             fontWeight: FontWeight.w800,
           )
         ],
