@@ -1,6 +1,6 @@
 use crate::model::{
-    member_trans, AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote, GuildInfo,
-    ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo,
+    member_ps_trans, member_trans, AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote,
+    GuildInfo, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, WithGovPs,
 };
 use anyhow::{self, Ok};
 use asyou_rust_sdk::{
@@ -246,6 +246,7 @@ pub fn create_project(
     dao_id: u64,
     name: String,
     desc: String,
+    ext: Option<WithGovPs>,
 ) -> anyhow::Result<bool> {
     let c = Client::from_index(client)?;
     let mut project = WeteeProject::new(c);
@@ -256,10 +257,16 @@ pub fn create_project(
             dao_id,
             name.into(),
             desc.into(),
-            Some(WithGov {
-                run_type: 1,
-                amount: 10,
-            }),
+            if ext.is_some() {
+                let e = ext.unwrap();
+                Some(WithGov {
+                    run_type: e.run_type,
+                    amount: e.amount.into(),
+                    member: member_ps_trans(e.member),
+                })
+            } else {
+                None
+            },
         )
         .unwrap();
 
@@ -272,6 +279,7 @@ pub fn create_guild(
     dao_id: u64,
     name: String,
     desc: String,
+    ext: Option<WithGovPs>,
 ) -> anyhow::Result<bool> {
     let c = Client::from_index(client)?;
     let mut project = WeteeGuild::new(c);
@@ -283,10 +291,16 @@ pub fn create_guild(
             name.into(),
             desc.into(),
             "{}".into(),
-            Some(WithGov {
-                run_type: 1,
-                amount: 10,
-            }),
+            if ext.is_some() {
+                let e = ext.unwrap();
+                Some(WithGov {
+                    run_type: e.run_type,
+                    amount: e.amount.into(),
+                    member: member_ps_trans(e.member),
+                })
+            } else {
+                None
+            },
         )
         .unwrap();
 
@@ -762,6 +776,104 @@ pub fn dao_project_make_review(
     project
         .make_review(from, dao_id, project_id, task_id, approve, meta)
         .unwrap();
+
+    Ok(true)
+}
+
+pub fn dao_project_join_request(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    ext: Option<WithGovPs>,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project.project_join_request(
+        from,
+        dao_id,
+        project_id,
+        if ext.is_some() {
+            let e = ext.unwrap();
+            Some(WithGov {
+                run_type: e.run_type,
+                amount: e.amount.into(),
+                member: member_ps_trans(e.member),
+            })
+        } else {
+            None
+        },
+    )?;
+
+    Ok(true)
+}
+
+pub fn dao_guild_join_request(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    guild_id: u64,
+    ext: Option<WithGovPs>,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut guild = WeteeGuild::new(c);
+
+    guild.guild_join_request(
+        from,
+        dao_id,
+        guild_id,
+        if ext.is_some() {
+            let e = ext.unwrap();
+            Some(WithGov {
+                run_type: e.run_type,
+                amount: e.amount.into(),
+                member: member_ps_trans(e.member),
+            })
+        } else {
+            None
+        },
+    )?;
+
+    Ok(true)
+}
+
+pub fn dao_member_point(client: u32, dao_id: u64, member: String) -> anyhow::Result<u32> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    let point = dao.member_point(dao_id, member)?;
+
+    Ok(point)
+}
+
+pub fn dao_apply_project_funds(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    amount: u64,
+    ext: Option<WithGovPs>,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeProject::new(c);
+
+    dao.apply_project_funds(
+        from,
+        dao_id,
+        project_id,
+        amount,
+        if ext.is_some() {
+            let e = ext.unwrap();
+            Some(WithGov {
+                run_type: e.run_type,
+                amount: e.amount.into(),
+                member: member_ps_trans(e.member),
+            })
+        } else {
+            None
+        },
+    )?;
 
     Ok(true)
 }

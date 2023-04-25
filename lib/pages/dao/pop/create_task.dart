@@ -48,6 +48,8 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
       return;
     }
     _formKey.currentState!.save();
+
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -67,10 +69,10 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
         );
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
@@ -206,6 +208,69 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
         validator: (value) {
           if (value == null) {
             return '请选择标签';
+          }
+          return null;
+        },
+      ),
+      SizedBox(height: 10.w),
+      TextFormField(
+        initialValue: _data.amount.toString(),
+        style: TextStyle(color: constTheme.centerChannelColor),
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          hintText: '任务奖励',
+          hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+          filled: true,
+          fillColor: constTheme.centerChannelColor.withOpacity(0.1),
+          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
+          prefixIcon: Icon(Icons.payment_rounded, color: constTheme.centerChannelColor, size: 18.w),
+          suffixText: "WTE",
+        ),
+        onSaved: (v) {
+          var i = 0;
+          if (v != null && v != "") {
+            i = int.tryParse(v) ?? 0;
+          }
+          _data.amount = i;
+        },
+        validator: (value) {
+          final reg = RegExp(r"^[0-9_]+$");
+          if (!reg.hasMatch(value ?? "")) {
+            return '请输入数字';
+          }
+          if (value == null || value.isEmpty) {
+            return '任务奖励不能为空';
+          }
+          return null;
+        },
+      ),
+      SizedBox(height: 10.w),
+      TextFormField(
+        initialValue: _data.point.toString(),
+        style: TextStyle(color: constTheme.centerChannelColor),
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          hintText: '任务奖励荣誉点',
+          hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+          filled: true,
+          fillColor: constTheme.centerChannelColor.withOpacity(0.1),
+          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
+          prefixIcon: Icon(Icons.scoreboard_rounded, color: constTheme.centerChannelColor, size: 18.w),
+        ),
+        onSaved: (v) {
+          var i = 0;
+          if (v != null && v != "") {
+            i = int.tryParse(v) ?? 0;
+          }
+          _data.point = i;
+        },
+        validator: (value) {
+          final reg = RegExp(r"^[0-9_]+$");
+          if (!reg.hasMatch(value ?? "")) {
+            return '请输入数字';
+          }
+          if (value == null || value.isEmpty) {
+            return '任务奖励荣誉点';
           }
           return null;
         },

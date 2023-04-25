@@ -36,6 +36,8 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
       return;
     }
     _formKey.currentState!.save();
+
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -58,10 +60,10 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
         }
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;

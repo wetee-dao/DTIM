@@ -39,6 +39,13 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       return;
     }
     _formKey.currentState!.save();
+    if (daoCtx.nativeAmount.free < 100) {
+      BotToast.showText(
+        text: "The user's balance is not enough to pay the handling fee",
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -52,13 +59,15 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       },
     );
 
+    await daoCtx.daoRefresh();
+
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
     }
+
     rootNavigatorKey.currentContext?.pop();
   }
 
@@ -69,7 +78,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "加入DAO",
+              title: "Join DAO",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -79,7 +88,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "加入DAO",
+              title: "Join DAO",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -97,13 +106,13 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
             children: [
               SizedBox(height: 15.w),
               Text(
-                "账户：$ss58Address",
+                "Account：$ss58Address",
                 style: TextStyle(fontSize: 15.w, color: constTheme.centerChannelColor),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 15.w),
               Text(
-                "预计获得的SHARE:",
+                "Expected to get SHARE:",
                 style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
               ),
               SizedBox(height: 10.w),
@@ -123,19 +132,19 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
                   _data.share = int.parse(v ?? "0");
                 },
                 validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
+                  final reg = RegExp(r"^[0-9_]+$");
                   if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
+                    return '请输入数字';
                   }
                   if (value == null || value.isEmpty) {
-                    return '名称不能为空';
+                    return '任务奖励不能为空';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 10.w),
               Text(
-                "预计投入的资金:",
+                "Expected investment:",
                 style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
               ),
               SizedBox(height: 10.w),
@@ -181,7 +190,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建任务',
+                            'Join',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,

@@ -121,6 +121,7 @@ abstract class RustWraper {
       required int daoId,
       required String name,
       required String desc,
+      WithGovPs? ext,
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kCreateProjectConstMeta;
@@ -131,6 +132,7 @@ abstract class RustWraper {
       required int daoId,
       required String name,
       required String desc,
+      WithGovPs? ext,
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kCreateGuildConstMeta;
@@ -327,6 +329,45 @@ abstract class RustWraper {
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoProjectMakeReviewConstMeta;
+
+  Future<bool> daoProjectJoinRequest(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      WithGovPs? ext,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectJoinRequestConstMeta;
+
+  Future<bool> daoGuildJoinRequest(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int guildId,
+      WithGovPs? ext,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoGuildJoinRequestConstMeta;
+
+  Future<int> daoMemberPoint(
+      {required int client,
+      required int daoId,
+      required String member,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoMemberPointConstMeta;
+
+  Future<bool> daoApplyProjectFunds(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int amount,
+      WithGovPs? ext,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoApplyProjectFundsConstMeta;
 }
 
 class AssetAccountData {
@@ -528,11 +569,11 @@ class GuildInfo {
 
 class MemberGroup {
   final int scope;
-  final int? id;
+  final int id;
 
   const MemberGroup({
     required this.scope,
-    this.id,
+    required this.id,
   });
 }
 
@@ -705,6 +746,20 @@ class TaskInfo {
     required this.reviewers,
     required this.skills,
     required this.status,
+  });
+}
+
+/// vote yes or no
+/// 投票
+class WithGovPs {
+  final int runType;
+  final int amount;
+  final MemberGroup member;
+
+  const WithGovPs({
+    required this.runType,
+    required this.amount,
+    required this.member,
   });
 }
 
@@ -1086,18 +1141,20 @@ class RustWraperImpl implements RustWraper {
       required int daoId,
       required String name,
       required String desc,
+      WithGovPs? ext,
       dynamic hint}) {
     var arg0 = _platform.api2wire_String(from);
     var arg1 = api2wire_u32(client);
     var arg2 = _platform.api2wire_u64(daoId);
     var arg3 = _platform.api2wire_String(name);
     var arg4 = _platform.api2wire_String(desc);
+    var arg5 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner
-          .wire_create_project(port_, arg0, arg1, arg2, arg3, arg4),
+          .wire_create_project(port_, arg0, arg1, arg2, arg3, arg4, arg5),
       parseSuccessData: _wire2api_bool,
       constMeta: kCreateProjectConstMeta,
-      argValues: [from, client, daoId, name, desc],
+      argValues: [from, client, daoId, name, desc, ext],
       hint: hint,
     ));
   }
@@ -1105,7 +1162,7 @@ class RustWraperImpl implements RustWraper {
   FlutterRustBridgeTaskConstMeta get kCreateProjectConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "create_project",
-        argNames: ["from", "client", "daoId", "name", "desc"],
+        argNames: ["from", "client", "daoId", "name", "desc", "ext"],
       );
 
   Future<bool> createGuild(
@@ -1114,18 +1171,20 @@ class RustWraperImpl implements RustWraper {
       required int daoId,
       required String name,
       required String desc,
+      WithGovPs? ext,
       dynamic hint}) {
     var arg0 = _platform.api2wire_String(from);
     var arg1 = api2wire_u32(client);
     var arg2 = _platform.api2wire_u64(daoId);
     var arg3 = _platform.api2wire_String(name);
     var arg4 = _platform.api2wire_String(desc);
+    var arg5 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner
-          .wire_create_guild(port_, arg0, arg1, arg2, arg3, arg4),
+          .wire_create_guild(port_, arg0, arg1, arg2, arg3, arg4, arg5),
       parseSuccessData: _wire2api_bool,
       constMeta: kCreateGuildConstMeta,
-      argValues: [from, client, daoId, name, desc],
+      argValues: [from, client, daoId, name, desc, ext],
       hint: hint,
     ));
   }
@@ -1133,7 +1192,7 @@ class RustWraperImpl implements RustWraper {
   FlutterRustBridgeTaskConstMeta get kCreateGuildConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "create_guild",
-        argNames: ["from", "client", "daoId", "name", "desc"],
+        argNames: ["from", "client", "daoId", "name", "desc", "ext"],
       );
 
   Future<List<GovProps>> daoGovPendingReferendumList(
@@ -1745,6 +1804,116 @@ class RustWraperImpl implements RustWraper {
         ],
       );
 
+  Future<bool> daoProjectJoinRequest(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      WithGovPs? ext,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_project_join_request(port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoProjectJoinRequestConstMeta,
+      argValues: [from, client, daoId, projectId, ext],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoProjectJoinRequestConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_project_join_request",
+        argNames: ["from", "client", "daoId", "projectId", "ext"],
+      );
+
+  Future<bool> daoGuildJoinRequest(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int guildId,
+      WithGovPs? ext,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(guildId);
+    var arg4 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_dao_guild_join_request(port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoGuildJoinRequestConstMeta,
+      argValues: [from, client, daoId, guildId, ext],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoGuildJoinRequestConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_guild_join_request",
+        argNames: ["from", "client", "daoId", "guildId", "ext"],
+      );
+
+  Future<int> daoMemberPoint(
+      {required int client,
+      required int daoId,
+      required String member,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(daoId);
+    var arg2 = _platform.api2wire_String(member);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_dao_member_point(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_u32,
+      constMeta: kDaoMemberPointConstMeta,
+      argValues: [client, daoId, member],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoMemberPointConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_member_point",
+        argNames: ["client", "daoId", "member"],
+      );
+
+  Future<bool> daoApplyProjectFunds(
+      {required String from,
+      required int client,
+      required int daoId,
+      required int projectId,
+      required int amount,
+      WithGovPs? ext,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(from);
+    var arg1 = api2wire_u32(client);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_u64(projectId);
+    var arg4 = _platform.api2wire_u64(amount);
+    var arg5 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_dao_apply_project_funds(
+          port_, arg0, arg1, arg2, arg3, arg4, arg5),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kDaoApplyProjectFundsConstMeta,
+      argValues: [from, client, daoId, projectId, amount, ext],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kDaoApplyProjectFundsConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "dao_apply_project_funds",
+        argNames: ["from", "client", "daoId", "projectId", "amount", "ext"],
+      );
+
   void dispose() {
     _platform.dispose();
   }
@@ -1771,10 +1940,6 @@ class RustWraperImpl implements RustWraper {
 
   bool _wire2api_bool(dynamic raw) {
     return raw as bool;
-  }
-
-  int _wire2api_box_autoadd_u64(dynamic raw) {
-    return _wire2api_u64(raw);
   }
 
   DaoInfo _wire2api_dao_info(dynamic raw) {
@@ -1893,12 +2058,8 @@ class RustWraperImpl implements RustWraper {
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return MemberGroup(
       scope: _wire2api_u8(arr[0]),
-      id: _wire2api_opt_box_autoadd_u64(arr[1]),
+      id: _wire2api_u64(arr[1]),
     );
-  }
-
-  int? _wire2api_opt_box_autoadd_u64(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_u64(raw);
   }
 
   ProjectInfo _wire2api_project_info(dynamic raw) {
@@ -2056,6 +2217,13 @@ class RustWraperPlatform extends FlutterRustBridgeBase<RustWraperWire> {
   }
 
   @protected
+  ffi.Pointer<wire_WithGovPs> api2wire_box_autoadd_with_gov_ps(WithGovPs raw) {
+    final ptr = inner.new_box_autoadd_with_gov_ps_0();
+    _api_fill_to_wire_with_gov_ps(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
   ffi.Pointer<wire_StringList> api2wire_opt_StringList(List<String>? raw) {
     return raw == null ? ffi.nullptr : api2wire_StringList(raw);
   }
@@ -2068,6 +2236,12 @@ class RustWraperPlatform extends FlutterRustBridgeBase<RustWraperWire> {
   @protected
   ffi.Pointer<ffi.Uint8> api2wire_opt_box_autoadd_u8(int? raw) {
     return raw == null ? ffi.nullptr : api2wire_box_autoadd_u8(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_WithGovPs> api2wire_opt_box_autoadd_with_gov_ps(
+      WithGovPs? raw) {
+    return raw == null ? ffi.nullptr : api2wire_box_autoadd_with_gov_ps(raw);
   }
 
   @protected
@@ -2086,9 +2260,33 @@ class RustWraperPlatform extends FlutterRustBridgeBase<RustWraperWire> {
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
     return ans;
   }
+
 // Section: finalizer
 
 // Section: api_fill_to_wire
+
+  void _api_fill_to_wire_box_autoadd_with_gov_ps(
+      WithGovPs apiObj, ffi.Pointer<wire_WithGovPs> wireObj) {
+    _api_fill_to_wire_with_gov_ps(apiObj, wireObj.ref);
+  }
+
+  void _api_fill_to_wire_member_group(
+      MemberGroup apiObj, wire_MemberGroup wireObj) {
+    wireObj.scope = api2wire_u8(apiObj.scope);
+    wireObj.id = api2wire_u64(apiObj.id);
+  }
+
+  void _api_fill_to_wire_opt_box_autoadd_with_gov_ps(
+      WithGovPs? apiObj, ffi.Pointer<wire_WithGovPs> wireObj) {
+    if (apiObj != null)
+      _api_fill_to_wire_box_autoadd_with_gov_ps(apiObj, wireObj);
+  }
+
+  void _api_fill_to_wire_with_gov_ps(WithGovPs apiObj, wire_WithGovPs wireObj) {
+    wireObj.run_type = api2wire_u8(apiObj.runType);
+    wireObj.amount = api2wire_u64(apiObj.amount);
+    _api_fill_to_wire_member_group(apiObj.member, wireObj.member);
+  }
 }
 
 // ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_positional_boolean_parameters, annotate_overrides, constant_identifier_names
@@ -2557,6 +2755,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
     int dao_id,
     ffi.Pointer<wire_uint_8_list> name,
     ffi.Pointer<wire_uint_8_list> desc,
+    ffi.Pointer<wire_WithGovPs> ext,
   ) {
     return _wire_create_project(
       port_,
@@ -2565,6 +2764,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       dao_id,
       name,
       desc,
+      ext,
     );
   }
 
@@ -2576,10 +2776,17 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Uint32,
               ffi.Uint64,
               ffi.Pointer<wire_uint_8_list>,
-              ffi.Pointer<wire_uint_8_list>)>>('wire_create_project');
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_create_project');
   late final _wire_create_project = _wire_create_projectPtr.asFunction<
-      void Function(int, ffi.Pointer<wire_uint_8_list>, int, int,
-          ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+      void Function(
+          int,
+          ffi.Pointer<wire_uint_8_list>,
+          int,
+          int,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_WithGovPs>)>();
 
   void wire_create_guild(
     int port_,
@@ -2588,6 +2795,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
     int dao_id,
     ffi.Pointer<wire_uint_8_list> name,
     ffi.Pointer<wire_uint_8_list> desc,
+    ffi.Pointer<wire_WithGovPs> ext,
   ) {
     return _wire_create_guild(
       port_,
@@ -2596,6 +2804,7 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       dao_id,
       name,
       desc,
+      ext,
     );
   }
 
@@ -2607,10 +2816,17 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Uint32,
               ffi.Uint64,
               ffi.Pointer<wire_uint_8_list>,
-              ffi.Pointer<wire_uint_8_list>)>>('wire_create_guild');
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_create_guild');
   late final _wire_create_guild = _wire_create_guildPtr.asFunction<
-      void Function(int, ffi.Pointer<wire_uint_8_list>, int, int,
-          ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+      void Function(
+          int,
+          ffi.Pointer<wire_uint_8_list>,
+          int,
+          int,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_WithGovPs>)>();
 
   void wire_dao_gov_pending_referendum_list(
     int port_,
@@ -3221,6 +3437,126 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
           void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int, int,
               bool, ffi.Pointer<wire_uint_8_list>)>();
 
+  void wire_dao_project_join_request(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    ffi.Pointer<wire_WithGovPs> ext,
+  ) {
+    return _wire_dao_project_join_request(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      ext,
+    );
+  }
+
+  late final _wire_dao_project_join_requestPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_dao_project_join_request');
+  late final _wire_dao_project_join_request =
+      _wire_dao_project_join_requestPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int,
+              ffi.Pointer<wire_WithGovPs>)>();
+
+  void wire_dao_guild_join_request(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int guild_id,
+    ffi.Pointer<wire_WithGovPs> ext,
+  ) {
+    return _wire_dao_guild_join_request(
+      port_,
+      from,
+      client,
+      dao_id,
+      guild_id,
+      ext,
+    );
+  }
+
+  late final _wire_dao_guild_join_requestPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_dao_guild_join_request');
+  late final _wire_dao_guild_join_request =
+      _wire_dao_guild_join_requestPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int,
+              ffi.Pointer<wire_WithGovPs>)>();
+
+  void wire_dao_member_point(
+    int port_,
+    int client,
+    int dao_id,
+    ffi.Pointer<wire_uint_8_list> member,
+  ) {
+    return _wire_dao_member_point(
+      port_,
+      client,
+      dao_id,
+      member,
+    );
+  }
+
+  late final _wire_dao_member_pointPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32, ffi.Uint64,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_member_point');
+  late final _wire_dao_member_point = _wire_dao_member_pointPtr.asFunction<
+      void Function(int, int, int, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_dao_apply_project_funds(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> from,
+    int client,
+    int dao_id,
+    int project_id,
+    int amount,
+    ffi.Pointer<wire_WithGovPs> ext,
+  ) {
+    return _wire_dao_apply_project_funds(
+      port_,
+      from,
+      client,
+      dao_id,
+      project_id,
+      amount,
+      ext,
+    );
+  }
+
+  late final _wire_dao_apply_project_fundsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint32,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_dao_apply_project_funds');
+  late final _wire_dao_apply_project_funds =
+      _wire_dao_apply_project_fundsPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int, int,
+              ffi.Pointer<wire_WithGovPs>)>();
+
   ffi.Pointer<wire_StringList> new_StringList_0(
     int len,
   ) {
@@ -3263,6 +3599,16 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _new_box_autoadd_u8_0 = _new_box_autoadd_u8_0Ptr
       .asFunction<ffi.Pointer<ffi.Uint8> Function(int)>();
 
+  ffi.Pointer<wire_WithGovPs> new_box_autoadd_with_gov_ps_0() {
+    return _new_box_autoadd_with_gov_ps_0();
+  }
+
+  late final _new_box_autoadd_with_gov_ps_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_WithGovPs> Function()>>(
+          'new_box_autoadd_with_gov_ps_0');
+  late final _new_box_autoadd_with_gov_ps_0 = _new_box_autoadd_with_gov_ps_0Ptr
+      .asFunction<ffi.Pointer<wire_WithGovPs> Function()>();
+
   ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
     int len,
   ) {
@@ -3300,6 +3646,24 @@ class wire_uint_8_list extends ffi.Struct {
 
   @ffi.Int32()
   external int len;
+}
+
+class wire_MemberGroup extends ffi.Struct {
+  @ffi.Uint8()
+  external int scope;
+
+  @ffi.Uint64()
+  external int id;
+}
+
+class wire_WithGovPs extends ffi.Struct {
+  @ffi.Uint8()
+  external int run_type;
+
+  @ffi.Uint64()
+  external int amount;
+
+  external wire_MemberGroup member;
 }
 
 class wire_StringList extends ffi.Struct {

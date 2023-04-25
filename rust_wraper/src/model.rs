@@ -143,7 +143,7 @@ pub struct MemberGroup {
     pub scope: u8,
     // 工会或者项目ID
     // guild or project id
-    pub id: Option<u64>,
+    pub id: u64,
 }
 
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
@@ -248,17 +248,32 @@ pub struct DaoInfo {
     pub meta_data: String,
 }
 
+/// vote yes or no
+/// 投票
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct WithGovPs {
+    // 1 => gov
+    // 2 => sudo
+    pub run_type: u8,
+    pub amount: u64,
+    pub member: MemberGroup,
+}
+
 // 获取投票范围信息
 pub fn member_trans(member: MemmberData) -> MemberGroup {
     match member {
-        MemmberData::GLOBAL => MemberGroup { scope: 1, id: None },
-        MemmberData::GUILD(id) => MemberGroup {
-            scope: 2,
-            id: Some(id),
-        },
-        MemmberData::PROJECT(id) => MemberGroup {
-            scope: 3,
-            id: Some(id),
-        },
+        MemmberData::GLOBAL => MemberGroup { scope: 1, id: 0 },
+        MemmberData::GUILD(id) => MemberGroup { scope: 2, id },
+        MemmberData::PROJECT(id) => MemberGroup { scope: 3, id },
+    }
+}
+
+// 获取投票范围信息
+pub fn member_ps_trans(member: MemberGroup) -> MemmberData {
+    match member.scope {
+        1 => MemmberData::GLOBAL,
+        2 => MemmberData::GUILD(member.id),
+        3 => MemmberData::PROJECT(member.id),
+        _ => MemmberData::GLOBAL,
     }
 }

@@ -1,10 +1,9 @@
-import 'package:asyou_app/pages/chain/import_sr25519_key.dart';
-import 'package:asyou_app/pages/channel/invitation.dart';
-import 'package:asyou_app/pages/dao/pop/join_task.dart';
-import 'package:asyou_app/utils/screen.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'pages/channel/create_private.dart';
 import 'pages/channel/setting/setting.dart';
+import 'pages/dao/pop/apply_project_funding.dart';
 import 'pages/dao/pop/create_project.dart';
 import 'pages/dao/pop/create_roadmap.dart';
 import 'pages/dao/pop/create_task.dart';
@@ -13,16 +12,16 @@ import 'pages/dao/pop/make_review.dart';
 import 'pages/dao/pop/referendum_vote.dart';
 import 'pages/dao/pop/task_info.dart';
 import 'pages/setting/setting.dart';
-import 'package:flutter/material.dart';
-
-import 'package:go_router/go_router.dart';
-
+import 'pages/chain/import_sr25519_key.dart';
+import 'pages/channel/invitation.dart';
+import 'pages/dao/pop/join_task.dart';
 import 'pages/channel/create.dart';
 import 'pages/main_mobile.dart';
 import 'pages/main_pc.dart';
 import 'pages/chain/sr25519_key.dart';
 import 'pages/search.dart';
 import 'pages/select_org.dart';
+import 'utils/screen.dart';
 import 'preloader.dart';
 import 'store/theme.dart';
 
@@ -157,6 +156,12 @@ routers() {
         return MakeReviewPage(id: state.params['id'] ?? "", projectId: state.params['project_id'] ?? "");
       },
     ),
+    GoRoute(
+      path: '/apply_project_funding/:project_id',
+      builder: (BuildContext context, GoRouterState state) {
+        return ApplyProjectFundingPage(projectId: state.params['project_id'] ?? "");
+      },
+    ),
   ];
 }
 
@@ -187,6 +192,9 @@ getPage(String url, Function closeModel) {
     final pstr = url.replaceAll("/make_review/", "");
     final ps = pstr.split("/");
     return MakeReviewPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
+  } else if (url.indexOf("/apply_project_funding/") == 0) {
+    final pstr = url.replaceAll("/apply_project_funding/", "");
+    return ApplyProjectFundingPage(projectId: pstr, closeModel: closeModel);
   } else if (url.indexOf("/join_dao") == 0) {
     return JoinDaoPage(closeModel: closeModel);
   } else if (url.indexOf("/create_dao_project") == 0) {

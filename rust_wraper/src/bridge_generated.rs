@@ -32,6 +32,7 @@ use crate::model::QuarterTask;
 use crate::model::Reward;
 use crate::model::Tally;
 use crate::model::TaskInfo;
+use crate::model::WithGovPs;
 
 // Section: wire functions
 
@@ -370,6 +371,7 @@ fn wire_create_project_impl(
     dao_id: impl Wire2Api<u64> + UnwindSafe,
     name: impl Wire2Api<String> + UnwindSafe,
     desc: impl Wire2Api<String> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
@@ -383,8 +385,11 @@ fn wire_create_project_impl(
             let api_dao_id = dao_id.wire2api();
             let api_name = name.wire2api();
             let api_desc = desc.wire2api();
+            let api_ext = ext.wire2api();
             move |task_callback| {
-                create_project(api_from, api_client, api_dao_id, api_name, api_desc)
+                create_project(
+                    api_from, api_client, api_dao_id, api_name, api_desc, api_ext,
+                )
             }
         },
     )
@@ -396,6 +401,7 @@ fn wire_create_guild_impl(
     dao_id: impl Wire2Api<u64> + UnwindSafe,
     name: impl Wire2Api<String> + UnwindSafe,
     desc: impl Wire2Api<String> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
@@ -409,7 +415,12 @@ fn wire_create_guild_impl(
             let api_dao_id = dao_id.wire2api();
             let api_name = name.wire2api();
             let api_desc = desc.wire2api();
-            move |task_callback| create_guild(api_from, api_client, api_dao_id, api_name, api_desc)
+            let api_ext = ext.wire2api();
+            move |task_callback| {
+                create_guild(
+                    api_from, api_client, api_dao_id, api_name, api_desc, api_ext,
+                )
+            }
         },
     )
 }
@@ -985,6 +996,113 @@ fn wire_dao_project_make_review_impl(
                     api_task_id,
                     api_approve,
                     api_meta,
+                )
+            }
+        },
+    )
+}
+fn wire_dao_project_join_request_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    project_id: impl Wire2Api<u64> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_project_join_request",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_project_id = project_id.wire2api();
+            let api_ext = ext.wire2api();
+            move |task_callback| {
+                dao_project_join_request(api_from, api_client, api_dao_id, api_project_id, api_ext)
+            }
+        },
+    )
+}
+fn wire_dao_guild_join_request_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    guild_id: impl Wire2Api<u64> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_guild_join_request",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_guild_id = guild_id.wire2api();
+            let api_ext = ext.wire2api();
+            move |task_callback| {
+                dao_guild_join_request(api_from, api_client, api_dao_id, api_guild_id, api_ext)
+            }
+        },
+    )
+}
+fn wire_dao_member_point_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    member: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_member_point",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_member = member.wire2api();
+            move |task_callback| dao_member_point(api_client, api_dao_id, api_member)
+        },
+    )
+}
+fn wire_dao_apply_project_funds_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    project_id: impl Wire2Api<u64> + UnwindSafe,
+    amount: impl Wire2Api<u64> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_apply_project_funds",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_project_id = project_id.wire2api();
+            let api_amount = amount.wire2api();
+            let api_ext = ext.wire2api();
+            move |task_callback| {
+                dao_apply_project_funds(
+                    api_from,
+                    api_client,
+                    api_dao_id,
+                    api_project_id,
+                    api_amount,
+                    api_ext,
                 )
             }
         },

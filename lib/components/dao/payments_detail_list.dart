@@ -12,11 +12,13 @@ class PaymentsDetailList extends StatelessWidget {
   final AssetAccountData nativeAmount;
   final AssetAccountData share;
   final String address;
+  final int userPoint;
   const PaymentsDetailList({
     Key? key,
     required this.address,
     required this.nativeAmount,
     required this.share,
+    required this.userPoint,
   }) : super(key: key);
 
   @override
@@ -41,8 +43,15 @@ class PaymentsDetailList extends StatelessWidget {
               SizedBox(height: 10.w),
               Text("SHARE:  ${share.free}", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
               SizedBox(height: 6.w),
-              Text("WTE:  ${nativeAmount.free}",
-                  style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
+              Text(
+                "WTE:  ${nativeAmount.free}",
+                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
+              ),
+              SizedBox(height: 5.w),
+              Text(
+                "Point:  ${userPoint.toString()}",
+                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
+              ),
               SizedBox(height: 5.w),
             ],
           ),

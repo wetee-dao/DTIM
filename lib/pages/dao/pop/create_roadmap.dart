@@ -44,6 +44,8 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
       return;
     }
     _formKey.currentState!.save();
+
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -58,10 +60,10 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
         );
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
@@ -81,7 +83,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建任务",
+              title: "Create task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -91,7 +93,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建任务",
+              title: "Create task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -110,7 +112,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
               TextFormField(
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: '任务内容',
+                  hintText: 'Task content',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -121,10 +123,6 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                   _data.name = v ?? "";
                 },
                 validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                  if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
-                  }
                   if (value == null || value.isEmpty) {
                     return '名称不能为空';
                   }
@@ -165,7 +163,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                   ),
                 ],
                 decoration: InputDecoration(
-                  hintText: '时间',
+                  hintText: 'time',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -196,7 +194,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                     ),
                 ],
                 decoration: InputDecoration(
-                  hintText: '优先级',
+                  hintText: 'Priority',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -234,7 +232,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                 ),
                 prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor, size: 18.w),
                 decoration: InputDecoration(
-                  hintText: '标签',
+                  hintText: 'Tag',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -266,7 +264,7 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '创建任务',
+                            'Create task',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,

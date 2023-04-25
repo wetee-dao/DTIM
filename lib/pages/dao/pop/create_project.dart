@@ -3,6 +3,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../bridge_generated.dart';
 import '../../../components/components.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
@@ -36,6 +37,8 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       return;
     }
     _formKey.currentState!.save();
+
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -46,6 +49,11 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
             daoId: daoCtx.org.daoId,
             name: _data.name,
             desc: _data.desc,
+            ext: const WithGovPs(
+              runType: 1,
+              amount: 100,
+              member: MemberGroup(scope: 1, id: 0),
+            ),
           );
         } else {
           await rustApi.createProject(
@@ -54,14 +62,19 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
             daoId: daoCtx.org.daoId,
             name: _data.name,
             desc: _data.desc,
+            ext: const WithGovPs(
+              runType: 1,
+              amount: 100,
+              member: MemberGroup(scope: 1, id: 0),
+            ),
           );
         }
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
@@ -76,7 +89,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建项目/工会",
+              title: "Create a project/guild",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -86,7 +99,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建项目/工会",
+              title: "Create a project/guild",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -157,7 +170,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   },
                   child: renderType(
                     Appicon.zuzhiDataOrganization6,
-                    "工会",
+                    "Guild",
                     "Everything is for interest, exploration and growth .",
                     _data.type == 0,
                   ),
@@ -170,7 +183,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   },
                   child: renderType(
                     Appicon.xiangmu,
-                    "项目",
+                    "Project",
                     "Use Projects to manage tasks that .",
                     _data.type == 1,
                   ),

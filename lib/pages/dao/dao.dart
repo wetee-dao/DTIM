@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:asyou_app/pages/dao/referendum.dart';
 import 'package:asyou_app/utils/screen.dart';
@@ -35,9 +36,10 @@ class _DaoPageState extends State<DaoPage> {
     ProjectPage(key: projectKey)
   ];
   late PageController pageController = PageController();
+  late final IMProvider im;
   final StreamController<String> currentId = StreamController<String>.broadcast();
   String pageStr = "Overview";
-  late final IMProvider im;
+  String title = "";
   Timer? _timer;
   int? c;
 
@@ -55,7 +57,10 @@ class _DaoPageState extends State<DaoPage> {
   }
 
   getData() async {
-    setState(() {});
+    daoCtx.getVoteData();
+    setState(() {
+      title = daoCtx.dao.name;
+    });
   }
 
   @override
@@ -85,24 +90,10 @@ class _DaoPageState extends State<DaoPage> {
                 },
               ),
             ),
-      appBar: !isPc()
-          ? AppBar(
-              elevation: 0,
-              backgroundColor: constTheme.sidebarHeaderBg,
-              leading: IconButton(
-                onPressed: () {
-                  drawerKey.currentState!.openDrawer();
-                },
-                icon: Icon(
-                  Icons.menu,
-                  color: constTheme.sidebarHeaderTextColor,
-                ),
-              ),
-              // actions: const [AppBarActionItem()],
-            )
-          : SideBarAppBar(
+      appBar: isPc() && !Platform.isMacOS
+          ? SideBarAppBar(
               height: 45.w,
-              title: "Wetee DAO",
+              title: "$title DAO",
               showMacosTop: false,
               leading: Padding(
                 padding: EdgeInsets.only(left: 8.w),
@@ -117,7 +108,8 @@ class _DaoPageState extends State<DaoPage> {
                 ),
               ),
               tools: CloseBar(color: constTheme.sidebarText),
-            ),
+            )
+          : null,
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -174,7 +166,7 @@ class _DaoPageState extends State<DaoPage> {
       Timer(const Duration(milliseconds: 100), () {
         final guildState = guildKey.currentState as GuildpageState;
         final guild = daoCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
-        guildState.getData(guild);
+        guildState.init(guild);
       });
     }
     if (pageStr.contains("Projects")) {
@@ -183,7 +175,7 @@ class _DaoPageState extends State<DaoPage> {
         final projectState = projectKey.currentState as ProjectPageState;
         final project = daoCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
         // guildKey.currentState?.getData();
-        projectState.getData(project);
+        projectState.init(project);
       });
     }
   }

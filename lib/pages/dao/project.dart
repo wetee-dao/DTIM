@@ -1,10 +1,14 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:asyou_app/bridge_generated.dart';
 import 'package:asyou_app/utils/screen.dart';
 
+import '../../components/appicon.dart';
 import '../../components/dao/text.dart';
+import '../../components/loading_dialog.dart';
 import '../../router.dart';
 import '../../rust_wraper.io.dart';
 import '../../store/dao_ctx.dart';
@@ -46,17 +50,24 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
     dao = context.read<DAOCTX>();
   }
 
-  getData(ProjectInfo project) async {
+  init(ProjectInfo project) {
     info = project;
-    members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: project.id);
+    getData();
+  }
 
-    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, daoId: dao.org.daoId, projectId: project.id);
+  getData() async {
+    members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: info!.id);
+
+    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, daoId: dao.org.daoId, projectId: info!.id);
     todo = ps.where((p) => p.status == 0).toList();
     inProgress = ps.where((p) => p.status == 1).toList();
     inReview = ps.where((p) => p.status == 2).toList();
     done = ps.where((p) => p.status == 3).toList();
 
-    share = await rustApi.daoBalance(client: dao.chainClient, daoId: dao.org.daoId, address: project.daoAccountId);
+    share = await rustApi.daoBalance(client: dao.chainClient, daoId: dao.org.daoId, address: info!.daoAccountId);
+
+    pending = dao.pending.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == info!.id).toList();
+    going = dao.going.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == info!.id).toList();
 
     if (mounted) setState(() {});
   }
@@ -77,7 +88,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.library_add_rounded,
+                    Appicon.xiangmu,
                     size: 25.w,
                     color: constTheme.centerChannelColor,
                   ),
@@ -96,30 +107,72 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   ),
                   Expanded(child: Container()),
                   InkWell(
-                    onTap: () {
-                      // showModelOrPage(context, "/create_roadmap");
+                    onTap: () async {
+                      // showOkCancelAlertDialog(
+                      //   context: context,
+                      //   title: "Delete project",
+                      //   message: "Are you sure you want to delete this project?",
+                      //   onOk: () async {
+                      //     await rustApi.daoProjectDelete(
+                      //       from: dao.user.address,
+                      //       client: dao.chainClient,
+                      //       daoId: dao.org.daoId,
+                      //       projectId: info!.id,
+                      //     );
+                      //     Navigator.of(context).pop();
+                      //     Navigator.of(context).pop();
+                      //   },
+                      // );
+                      if (OkCancelResult.ok ==
+                          await showOkCancelAlertDialog(
+                            useRootNavigator: false,
+                            title: "Notice",
+                            message: "Do you confirm to join? Your application will be reviewed by internal members",
+                            context: globalCtx(),
+                            okLabel: L10n.of(globalCtx())!.next,
+                            cancelLabel: L10n.of(globalCtx())!.cancel,
+                          )) {
+                        if (!daoCtx.checkAfterTx()) return;
+                        await waitFutureLoading(
+                          context: globalCtx(),
+                          future: () async {
+                            await rustApi.daoProjectJoinRequest(
+                              from: dao.user.address,
+                              client: dao.chainClient,
+                              daoId: dao.org.daoId,
+                              projectId: info!.id,
+                              ext: WithGovPs(
+                                runType: 1,
+                                amount: 100,
+                                member: MemberGroup(
+                                  scope: 3,
+                                  id: info!.id,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                        await daoCtx.daoRefresh();
+                        getData();
+                      }
                     },
                     child: Container(
                       height: 30.w,
                       padding: EdgeInsets.all(5.w),
-                      decoration: BoxDecoration(
-                        color: constTheme.buttonBg,
-                        borderRadius: BorderRadius.circular(5.w),
-                      ),
                       alignment: Alignment.center,
                       child: Row(
                         children: [
                           Icon(
-                            Icons.add_circle_outline_rounded,
+                            Icons.group_add_rounded,
                             size: 20.w,
-                            color: constTheme.buttonColor,
+                            color: constTheme.centerChannelColor,
                           ),
                           SizedBox(width: 5.w),
                           Text(
-                            "加入项目",
+                            "Join",
                             style: TextStyle(
                               fontSize: 14.w,
-                              color: constTheme.buttonColor,
+                              color: constTheme.centerChannelColor,
                             ),
                           )
                         ],
@@ -148,7 +201,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                           ),
                           SizedBox(width: 5.w),
                           Text(
-                            "添加任务",
+                            "Add task",
                             style: TextStyle(
                               fontSize: 14.w,
                               color: constTheme.buttonColor,
@@ -161,9 +214,45 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                 ],
               ),
               SizedBox(height: 8.w),
-              PrimaryText(
-                text: "Share: ${share != null ? share!.free : "-"}",
-                size: 14.w,
+              Row(
+                children: [
+                  PrimaryText(
+                    text: "Share: ${share != null ? share!.free : "-"}",
+                    size: 14.w,
+                  ),
+                  SizedBox(width: 10.w),
+                  InkWell(
+                    onTap: () {
+                      showModelOrPage(context, "/apply_project_funding/${info!.id}", width: 500, height: 300);
+                    },
+                    child: Container(
+                      height: 25.w,
+                      padding: EdgeInsets.all(5.w),
+                      decoration: BoxDecoration(
+                        color: constTheme.buttonBg.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(5.w),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.approval_rounded,
+                            size: 15.w,
+                            color: constTheme.buttonColor,
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            "Apply for project funding",
+                            style: TextStyle(
+                              fontSize: 10.w,
+                              color: constTheme.buttonColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 5.w),
             ],
@@ -172,8 +261,8 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
         TabBar(
           controller: _tabController,
           isScrollable: true,
-          labelColor: constTheme.sidebarHeaderTextColor,
-          unselectedLabelColor: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
+          labelColor: constTheme.centerChannelColor,
+          unselectedLabelColor: constTheme.centerChannelColor.withOpacity(0.6),
           labelStyle: TextStyle(fontSize: 13.w),
           unselectedLabelStyle: TextStyle(fontSize: 13.w),
           padding: EdgeInsets.symmetric(horizontal: 8.w),

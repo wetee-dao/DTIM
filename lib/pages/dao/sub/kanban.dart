@@ -395,6 +395,7 @@ class Kanban extends StatelessWidget {
       BotToast.showText(text: "验证者不能为空", duration: const Duration(seconds: 2));
       return;
     }
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
@@ -411,6 +412,7 @@ class Kanban extends StatelessWidget {
 
   requestReview(TaskInfo data) async {
     print(data.id);
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
@@ -426,6 +428,7 @@ class Kanban extends StatelessWidget {
   }
 
   taskDone(TaskInfo data) async {
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {

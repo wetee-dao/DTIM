@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/dao/text.dart';
+import '../../components/loading_dialog.dart';
 import '../../rust_wraper.io.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
@@ -62,8 +63,16 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     Expanded(child: Container()),
                     if (dao.votes.isNotEmpty)
                       InkWell(
-                        onTap: () {
-                          rustApi.daoGovUnlock(from: dao.user.address, client: dao.chainClient, daoId: dao.org.daoId);
+                        onTap: () async {
+                          if (!daoCtx.checkAfterTx()) return;
+                          await waitFutureLoading(
+                            context: context,
+                            future: () async {
+                              await rustApi.daoGovUnlock(
+                                  from: dao.user.address, client: dao.chainClient, daoId: dao.org.daoId);
+                            },
+                          );
+                          await daoCtx.daoRefresh();
                         },
                         child: Container(
                           height: 30.w,
@@ -96,7 +105,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: '工会与项目',
+                  text: daoCtx.dao.purpose,
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),
@@ -109,7 +118,12 @@ class _ReferendumPageState extends State<ReferendumPage> {
             color: constTheme.centerChannelDivider,
           ),
           Expanded(
-            child: Referendums(pending: dao.pending, going: dao.going),
+            child: Consumer<DAOCTX>(builder: (_, dao, child) {
+              return Referendums(
+                pending: dao.pending.where((r) => r.memberGroup.scope == 1).toList(),
+                going: dao.going.where((r) => r.memberGroup.scope == 1).toList(),
+              );
+            }),
           ),
         ],
       ),

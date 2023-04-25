@@ -1,16 +1,16 @@
-// 初始化一个页面
 import 'package:asyou_app/components/appicon.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../components/dao/dao_is_joined.dart';
-import '../../components/dao/history_table.dart';
 import '../../components/dao/info_card.dart';
 import '../../components/dao/payments_detail_list.dart';
 import '../../components/dao/text.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 import '../../utils/responsive.dart';
+import 'sub/referendum.dart';
 
 class Overviewpage extends StatelessWidget {
   const Overviewpage({Key? key}) : super(key: key);
@@ -105,7 +105,14 @@ class Overviewpage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 15.w),
-                  const HistoryTable(),
+                  Consumer<DAOCTX>(builder: (_, dao, child) {
+                    return Referendums(
+                      wrap: false,
+                      showTitle: false,
+                      pending: dao.pending.where((r) => r.memberGroup.scope == 1).toList(),
+                      going: dao.going.where((r) => r.memberGroup.scope == 1).toList(),
+                    );
+                  })
                 ],
               ),
             ),
@@ -130,6 +137,7 @@ class Overviewpage extends StatelessWidget {
                     address: dao.ss58Address,
                     share: dao.share,
                     nativeAmount: dao.nativeAmount,
+                    userPoint: dao.userPoint,
                   ),
                 ),
               );

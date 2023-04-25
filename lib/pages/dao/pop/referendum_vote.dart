@@ -39,6 +39,8 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
       return;
     }
     _formKey.currentState!.save();
+
+    if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
@@ -52,10 +54,10 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
         );
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
-    BotToast.showText(text: '频道创建成功，现在返回主页面', duration: const Duration(seconds: 2));
     if (widget.closeModel != null) {
       widget.closeModel!.call();
       return;
@@ -70,7 +72,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "为公投 #${widget.id} 投票",
+              title: "Vote for referendum #${widget.id}",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -80,7 +82,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "为公投 #${widget.id} 投票",
+              title: "Vote for referendum #${widget.id}",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -120,7 +122,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
               SwitchFormField(
                 initialValue: _data.approve,
                 decoration: InputDecoration(
-                  hintText: 'Approve',
+                  hintText: 'Whether approve',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -149,7 +151,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '为公投投票',
+                            'Vote for the referendum',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,

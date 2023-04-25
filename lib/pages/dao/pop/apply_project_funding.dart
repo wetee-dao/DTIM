@@ -3,28 +3,26 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../bridge_generated.dart';
 import '../../../components/components.dart';
-import '../../../components/form/switch.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
 import '../../../utils/screen.dart';
 import '../../../store/theme.dart';
 
-class MakeReviewPage extends StatefulWidget {
+class ApplyProjectFundingPage extends StatefulWidget {
   final Function? closeModel;
-  final String id;
   final String projectId;
-  const MakeReviewPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
+  const ApplyProjectFundingPage({Key? key, this.closeModel, required this.projectId}) : super(key: key);
 
   @override
-  State<MakeReviewPage> createState() => _MakeReviewPageState();
+  State<ApplyProjectFundingPage> createState() => _ApplyProjectFundingPageState();
 }
 
-class _MakeReviewPageState extends State<MakeReviewPage> {
+class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    msg: "",
-    approve: true,
+    amount: 0,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -38,19 +36,25 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
       return;
     }
     _formKey.currentState!.save();
-
+    if (_data.amount <= 0) {
+      BotToast.showText(text: 'The application amount is not less than 0.', duration: const Duration(seconds: 2));
+      return;
+    }
     if (!daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
-        await rustApi.daoProjectMakeReview(
+        await rustApi.daoApplyProjectFunds(
           from: daoCtx.user.address,
           client: daoCtx.chainClient,
           daoId: daoCtx.org.daoId,
           projectId: int.parse(widget.projectId),
-          taskId: int.parse(widget.id),
-          approve: _data.approve,
-          meta: _data.msg,
+          amount: _data.amount,
+          ext: const WithGovPs(
+            runType: 1,
+            amount: 10,
+            member: MemberGroup(scope: 1, id: 0),
+          ),
         );
       },
     );
@@ -72,7 +76,7 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "为任务 #${widget.id} 提交审核报告",
+              title: "Apply for funding for task #${widget.projectId}",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -82,7 +86,7 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "为任务 #${widget.id} 提交审核报告",
+              title: "Apply for funding for task #${widget.projectId}",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -99,40 +103,34 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
             children: [
               SizedBox(height: 15.w),
               TextFormField(
+                initialValue: _data.amount.toString(),
                 style: TextStyle(color: constTheme.centerChannelColor),
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  hintText: 'Review message',
+                  hintText: 'Amount',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.rate_review_rounded, color: constTheme.centerChannelColor),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
+                  prefixIcon: Icon(Icons.payment_rounded, color: constTheme.centerChannelColor, size: 18.w),
+                  suffixText: "WTE",
                 ),
                 onSaved: (v) {
-                  _data.msg = v ?? "";
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '不能为空';
+                  var i = 0;
+                  if (v != null && v != "") {
+                    i = int.tryParse(v) ?? 0;
                   }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10.w),
-              SwitchFormField(
-                initialValue: _data.approve,
-                decoration: InputDecoration(
-                  hintText: 'Approve',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.swipe_rounded, color: constTheme.centerChannelColor),
-                ),
-                onSaved: (v) {
-                  _data.approve = v ?? true;
+                  _data.amount = i;
                 },
                 validator: (value) {
+                  final reg = RegExp(r"^[0-9_]+$");
+                  if (!reg.hasMatch(value ?? "")) {
+                    return '请输入数字';
+                  }
+                  if (value == null || value.isEmpty) {
+                    return '任务奖励不能为空';
+                  }
                   return null;
                 },
               ),
@@ -151,7 +149,7 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            '为公投投票',
+                            'Start applying',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -222,11 +220,9 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
 }
 
 class SubmitData {
-  bool approve;
-  String msg;
+  int amount;
 
   SubmitData({
-    required this.approve,
-    required this.msg,
+    required this.amount,
   });
 }
