@@ -37,7 +37,7 @@ class DaoIsJoined extends StatelessWidget {
                 height: 230.w,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
-                  color: constTheme.centerChannelBg,
+                  color: constTheme.centerChannelBg.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(10.w),
                 ),
                 child: Column(

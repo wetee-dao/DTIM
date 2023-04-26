@@ -55,3 +55,25 @@
 - Send test msg to chat
 
 <img src="images/Screenshot from 2023-03-22 22-29-38.png" width="500" style="padding-left: 50px;">
+
+## join DAO
+
+## create Guild
+
+## create Project
+
+## start Regerendum
+
+## join CoreTeam
+
+## create RoadMap
+
+## join Project
+
+## join Task
+
+## start Task
+
+## review Task
+
+## done Task

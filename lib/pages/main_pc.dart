@@ -116,7 +116,7 @@ class _PCPageState extends State<PCPage> {
                       builder: (BuildContext context, AsyncSnapshot<int> id) {
                         return Column(
                           children: [
-                            SiderBarItem(Appicon.wode4, "消息", selected: id.data == 0, onTap: () {
+                            SiderBarItem(Appicon.wode4, "MES", selected: id.data == 0, onTap: () {
                               onSelect(0);
                             }),
                             // DAO管理

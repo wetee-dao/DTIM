@@ -41,7 +41,7 @@ class InfoCard extends StatelessWidget {
           ),
           PrimaryText(
             text: amount!,
-            size: 16.w,
+            size: 15.w,
             fontWeight: FontWeight.w800,
           )
         ],
