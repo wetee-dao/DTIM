@@ -28,6 +28,10 @@ class DAOCTX with ChangeNotifier {
   List<GovReferendum> going = [];
 
   connectChain(porg, puser, callback) {
+    if (chainClient > -1) {
+      callback();
+      return;
+    }
     if (porg.chainUrl != null) {
       rustApi.connect(url: porg.chainUrl!).then((v) async {
         printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");

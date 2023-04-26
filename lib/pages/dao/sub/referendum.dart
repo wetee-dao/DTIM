@@ -286,7 +286,7 @@ class Referendums extends StatelessWidget {
     if (going.status == 0 && going.end - daoCtx.blockNumber <= 0 && going.end + going.delay - daoCtx.blockNumber > 0) {
       return renderBox(
         PrimaryText(
-          text: "Delay period",
+          text: "Delay time",
           size: 13.w,
           color: constTheme.buttonColor,
         ),

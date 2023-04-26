@@ -59,7 +59,7 @@ class Overviewpage extends StatelessWidget {
                           children: [
                             InfoCard(
                               icon: Appicon.zichan,
-                              label: "Treasury assets ",
+                              label: "Treasury",
                               amount: 'WTE ${dao.daoAmount.free.toString()}',
                             ),
                             InfoCard(

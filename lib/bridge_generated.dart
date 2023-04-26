@@ -776,7 +776,7 @@ class RustWraperImpl implements RustWraper {
     var arg0 = _platform.api2wire_String(url);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_connect(port_, arg0),
-      parseSuccessData: _wire2api_u32,
+      parseSuccessData: _wire2api_usize,
       constMeta: kConnectConstMeta,
       argValues: [url],
       hint: hint,
@@ -2160,6 +2160,10 @@ class RustWraperImpl implements RustWraper {
 
   Uint8List _wire2api_uint_8_list(dynamic raw) {
     return raw as Uint8List;
+  }
+
+  int _wire2api_usize(dynamic raw) {
+    return castInt(raw);
   }
 }
 
