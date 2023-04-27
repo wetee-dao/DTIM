@@ -2,7 +2,6 @@ import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../store/theme.dart';
-import '../../utils/responsive.dart';
 import 'text.dart';
 
 class InfoCard extends StatelessWidget {
@@ -16,7 +15,7 @@ class InfoCard extends StatelessWidget {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       constraints: BoxConstraints(minWidth: isPc() ? 140.w : 100.w, maxWidth: double.maxFinite),
-      padding: EdgeInsets.fromLTRB(20.w, 20.w, 40.w, 20.w),
+      padding: EdgeInsets.fromLTRB(20.w, 20.w, 10.w, 20.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: constTheme.centerChannelColor.withOpacity(0.05),
@@ -29,16 +28,12 @@ class InfoCard extends StatelessWidget {
             size: 25.w,
             color: constTheme.centerChannelColor,
           ),
-          SizedBox(
-            height: SizeConfig.blockSizeHorizontal! * 2,
-          ),
+          SizedBox(height: 15.w),
           PrimaryText(
             text: label!,
             size: 13.w,
           ),
-          SizedBox(
-            height: SizeConfig.blockSizeHorizontal! * 1,
-          ),
+          SizedBox(height: 2.w),
           PrimaryText(
             text: amount!,
             size: 15.w,

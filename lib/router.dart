@@ -25,6 +25,7 @@ import 'utils/screen.dart';
 import 'preloader.dart';
 import 'store/theme.dart';
 
+bool runInTest = false;
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 BuildContext globalCtx() {
   return rootNavigatorKey.currentContext!;

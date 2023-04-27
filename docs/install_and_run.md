@@ -1,7 +1,7 @@
-# DAO-entrance phase 1 - Milestone 2
-> NOTE Window flutter_rust_bridge is not ready
+# DAO-entrance phase 1 - Milestone 2/3
+> NOTE Window flutter_rust_bridge config is not ready
 
-This repository is for the submission of milestone 2 of the Web 3 Foundation Grant
+This repository is for the submission of milestone 3 of the Web 3 Foundation Grant
 
 ### Rust Setup
 - [Linux development environment](https://docs.substrate.io/install/linux/).
@@ -43,6 +43,7 @@ This repository is for the submission of milestone 2 of the Web 3 Foundation Gra
     ```
 
 ### RUN client
+> please uninstalling Flutter Snap and installing it manually,It is best to install version 3.7.3
 - run environment
     ```
     $ rustup update
@@ -61,7 +62,12 @@ This repository is for the submission of milestone 2 of the Web 3 Foundation Gra
     $ flutter run -d macos
     ```
 
-### RUN E2E 测试
+### RUN E2E CHAT
 ```
-flutter test integration_test/main_test.dart
+flutter test integration_test/chat_test.dart
+```
+
+### RUN E2E DAO
+```
+flutter test integration_test/dao_test.dart
 ```

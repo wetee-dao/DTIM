@@ -31,6 +31,11 @@ pub extern "C" fn wire_add_keyring(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_add_seed(port_: i64, seed: *mut wire_uint_8_list) {
+    wire_add_seed_impl(port_, seed)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_sign_from_address(
     port_: i64,
     address: *mut wire_uint_8_list,
@@ -47,6 +52,11 @@ pub extern "C" fn wire_get_block_number(port_: i64, client: u32) {
 #[no_mangle]
 pub extern "C" fn wire_native_balance(port_: i64, client: u32, address: *mut wire_uint_8_list) {
     wire_native_balance_impl(port_, client, address)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_init_from_pair(port_: i64, client: u32, address: *mut wire_uint_8_list) {
+    wire_dao_init_from_pair_impl(port_, client, address)
 }
 
 #[no_mangle]
@@ -234,24 +244,18 @@ pub extern "C" fn wire_dao_project_member_list(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_dao_project_task_list(
-    port_: i64,
-    client: u32,
-    dao_id: u64,
-    project_id: u64,
-) {
-    wire_dao_project_task_list_impl(port_, client, dao_id, project_id)
+pub extern "C" fn wire_dao_project_task_list(port_: i64, client: u32, project_id: u64) {
+    wire_dao_project_task_list_impl(port_, client, project_id)
 }
 
 #[no_mangle]
 pub extern "C" fn wire_dao_project_task_info(
     port_: i64,
     client: u32,
-    dao_id: u64,
     project_id: u64,
     task_id: u64,
 ) {
-    wire_dao_project_task_info_impl(port_, client, dao_id, project_id, task_id)
+    wire_dao_project_task_info_impl(port_, client, project_id, task_id)
 }
 
 #[no_mangle]
@@ -399,6 +403,18 @@ pub extern "C" fn wire_dao_project_join_request(
     ext: *mut wire_WithGovPs,
 ) {
     wire_dao_project_join_request_impl(port_, from, client, dao_id, project_id, ext)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_project_join_request_with_root(
+    port_: i64,
+    from: *mut wire_uint_8_list,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    user: *mut wire_uint_8_list,
+) {
+    wire_dao_project_join_request_with_root_impl(port_, from, client, dao_id, project_id, user)
 }
 
 #[no_mangle]

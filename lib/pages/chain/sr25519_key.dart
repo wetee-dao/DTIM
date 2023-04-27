@@ -340,7 +340,8 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 rustApi
                     .getSeedPhrase(seedStr: seeds.join(" "), name: _name, password: _password)
                     .then((accountStr) async {
-                  print(accountStr);
+                  // print(accountStr);
+
                   // 解码区块链账户问题
                   final chainData = ChainData.fromJson(
                     convert.jsonDecode(accountStr),

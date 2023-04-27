@@ -60,6 +60,7 @@ class DaoIsJoined extends StatelessWidget {
                     ),
                     SizedBox(height: 10.w),
                     ElevatedButton(
+                      key: const Key('joinDao'),
                       onPressed: () {
                         if (daoCtx.nativeAmount.free < 100) {
                           BotToast.showText(

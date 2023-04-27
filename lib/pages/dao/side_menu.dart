@@ -38,6 +38,7 @@ class SideMenu extends StatelessWidget {
                     height: 50,
                   ),
             iconBuilder(
+              key: const Key("Overview"),
               assetName: Icons.apps_rounded,
               name: "Overview",
               color: constTheme,
@@ -45,6 +46,7 @@ class SideMenu extends StatelessWidget {
               onTap: () => onTap("Overview"),
             ),
             iconBuilder(
+              key: const Key("RoadMap"),
               assetName: Icons.integration_instructions_rounded,
               name: "RoadMap",
               color: constTheme,
@@ -52,6 +54,7 @@ class SideMenu extends StatelessWidget {
               onTap: () => onTap("RoadMap"),
             ),
             iconBuilder(
+              key: const Key("Referendums"),
               assetName: Icons.how_to_vote_rounded,
               name: "Referendums",
               color: constTheme,
@@ -70,6 +73,7 @@ class SideMenu extends StatelessWidget {
               return Column(
                 children: [
                   ...dao.guilds.map((e) => iconBuilder(
+                        key: Key("Guilds ${e.id.toString()}"),
                         assetName: Appicon.zuzhiDataOrganization6,
                         name: e.name,
                         color: constTheme,
@@ -77,6 +81,7 @@ class SideMenu extends StatelessWidget {
                         onTap: () => onTap("Guilds ${e.id.toString()}"),
                       )),
                   ...dao.projects.map((e) => iconBuilder(
+                        key: Key("Projects ${e.id.toString()}"),
                         assetName: Appicon.xiangmu,
                         name: e.name,
                         color: constTheme,
@@ -87,6 +92,7 @@ class SideMenu extends StatelessWidget {
               );
             }),
             InkWell(
+              key: const Key("createGuildProject"),
               child: Container(
                 margin: EdgeInsets.all(10.w),
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
@@ -122,6 +128,7 @@ class SideMenu extends StatelessWidget {
 }
 
 iconBuilder({
+  Key? key,
   required IconData assetName,
   required String name,
   required ExtColors color,
@@ -129,6 +136,7 @@ iconBuilder({
   Function? onTap,
 }) =>
     InkWell(
+      key: key,
       child: Container(
         padding: EdgeInsets.only(top: 10.w, bottom: 10.w, left: 12.w),
         decoration: BoxDecoration(

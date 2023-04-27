@@ -18,7 +18,7 @@ import 'store/theme.dart';
 import 'utils/screen.dart';
 
 final botToastBuilder = BotToastInit();
-void main({bool test = false}) async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // 等待桌面初始化
   await windowManager.ensureInitialized();
@@ -42,8 +42,8 @@ void main({bool test = false}) async {
       winSize = Size(winsystem.width, winsystem.height);
     }
 
-    if (test) {
-      winSize = const Size(1300, 1000);
+    if (runInTest) {
+      winSize = const Size(1250, 750);
     }
 
     WindowOptions windowOptions = WindowOptions(

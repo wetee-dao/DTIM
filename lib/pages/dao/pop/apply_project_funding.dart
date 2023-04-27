@@ -58,6 +58,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
         );
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -66,7 +67,6 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
-    await daoCtx.daoRefresh();
   }
 
   @override

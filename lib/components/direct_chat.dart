@@ -30,7 +30,6 @@ class _DirectChatsState extends State<DirectChats> {
 
   @override
   void initState() {
-    print("DirectChatsDirectChatsDirectChatsDirectChats");
     super.initState();
   }
 

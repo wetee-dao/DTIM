@@ -64,7 +64,7 @@ class IMProvider with ChangeNotifier {
     // 构建账户密码
     final userName = '${me!.address}@${org.domain}/${platformGet()}';
 
-    printError("connect => $userName");
+    printInfo("connect => $userName");
 
     // 已有的连接
     if (connections[userName] != null) {

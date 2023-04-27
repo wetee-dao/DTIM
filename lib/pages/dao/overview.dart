@@ -18,7 +18,6 @@ class Overviewpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       body: Row(
@@ -134,6 +133,7 @@ class Overviewpage extends StatelessWidget {
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(30),
                   child: PaymentsDetailList(
+                    dao: dao.dao,
                     address: dao.ss58Address,
                     share: dao.share,
                     nativeAmount: dao.nativeAmount,

@@ -71,6 +71,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
         }
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -79,7 +80,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
-    await daoCtx.daoRefresh();
   }
 
   @override
@@ -116,6 +116,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
             children: [
               SizedBox(height: 15.w),
               TextFormField(
+                key: const Key("spaceName"),
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
                   hintText: 'Space Name',
@@ -129,10 +130,6 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   _data.name = v ?? "";
                 },
                 validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                  if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
-                  }
                   if (value == null || value.isEmpty) {
                     return '名称不能为空';
                   }
@@ -141,6 +138,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               ),
               SizedBox(height: 10.w),
               TextFormField(
+                key: const Key("spaceDescription"),
                 style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
                   hintText: 'Space Description',
@@ -163,6 +161,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               SizedBox(height: 20.w),
               Row(children: [
                 GestureDetector(
+                  key: const Key("selectGuild"),
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     _data.type = 0;
@@ -176,6 +175,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   ),
                 ),
                 GestureDetector(
+                  key: const Key("selectProject"),
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     _data.type = 1;
@@ -193,6 +193,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               Expanded(child: Container()),
               // SizedBox(height: 50.w),
               InkWell(
+                key: const Key("createSpace"),
                 onTap: submitAction,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),

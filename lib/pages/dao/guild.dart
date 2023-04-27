@@ -58,7 +58,6 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       body: Column(

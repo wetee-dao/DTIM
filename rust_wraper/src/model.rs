@@ -246,6 +246,8 @@ pub struct DaoInfo {
     //// meta data
     /// DAO 元数据 图片等内容
     pub meta_data: String,
+    /// 区块链 1 Unit 等于多少余额
+    pub chain_unit: u64,
 }
 
 /// vote yes or no

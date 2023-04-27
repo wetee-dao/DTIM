@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:asyou_app/rust_wraper.io.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -69,6 +68,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
         );
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -77,17 +77,17 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
       return;
     }
     rootNavigatorKey.currentContext?.pop();
-    await daoCtx.daoRefresh();
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
+      key: const Key("createTaskView"),
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "创建任务",
+              title: "Create a task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -97,7 +97,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "创建任务",
+              title: "Create a task",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -156,12 +156,13 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
             ),
         ],
         decoration: InputDecoration(
-          hintText: '优先级',
+          hintText: 'Priority',
           hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
           filled: true,
           fillColor: constTheme.centerChannelColor.withOpacity(0.1),
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           prefixIcon: Icon(Appicon.youxianji, color: constTheme.centerChannelColor, size: 18.w),
+          contentPadding: EdgeInsets.symmetric(vertical: 9.w, horizontal: 9.w),
         ),
         onSaved: (v) {
           _data.priority = v ?? 0;
@@ -194,7 +195,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
         ),
         prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor, size: 18.w),
         decoration: InputDecoration(
-          hintText: '标签',
+          hintText: 'Tag',
           hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
           filled: true,
           fillColor: constTheme.centerChannelColor.withOpacity(0.1),
@@ -218,12 +219,13 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
         style: TextStyle(color: constTheme.centerChannelColor),
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          hintText: '任务奖励',
+          hintText: 'Task reward',
           hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
           filled: true,
           fillColor: constTheme.centerChannelColor.withOpacity(0.1),
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           prefixIcon: Icon(Icons.payment_rounded, color: constTheme.centerChannelColor, size: 18.w),
+          contentPadding: EdgeInsets.symmetric(vertical: 9.w, horizontal: 9.w),
           suffixText: "WTE",
         ),
         onSaved: (v) {
@@ -250,12 +252,13 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
         style: TextStyle(color: constTheme.centerChannelColor),
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          hintText: '任务奖励荣誉点',
+          hintText: 'Task reward points',
           hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
           filled: true,
           fillColor: constTheme.centerChannelColor.withOpacity(0.1),
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           prefixIcon: Icon(Icons.scoreboard_rounded, color: constTheme.centerChannelColor, size: 18.w),
+          contentPadding: EdgeInsets.symmetric(vertical: 9.w, horizontal: 9.w),
         ),
         onSaved: (v) {
           var i = 0;
@@ -282,23 +285,21 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return [
       TextFormField(
+        key: const Key("taskTitle"),
         style: TextStyle(color: constTheme.centerChannelColor),
         decoration: InputDecoration(
-          hintText: '任务内容',
+          hintText: 'Task title',
           hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
           filled: true,
           fillColor: constTheme.centerChannelColor.withOpacity(0.1),
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor, size: 18.w),
+          contentPadding: EdgeInsets.symmetric(vertical: 9.w, horizontal: 9.w),
         ),
         onSaved: (v) {
           _data.name = v ?? "";
         },
         validator: (value) {
-          RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-          if (!reg.hasMatch(value ?? "")) {
-            return '请输入中文、英文、数字、下划线组成昵称';
-          }
           if (value == null || value.isEmpty) {
             return '名称不能为空';
           }
@@ -315,31 +316,29 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 7.w, top: 9.w),
+              padding: EdgeInsets.only(left: 7.w, top: 8.w),
               child: Icon(Icons.description_rounded, color: constTheme.centerChannelColor, size: 18.w),
             ),
             Expanded(
               child: TextFormField(
+                key: const Key("taskDesc"),
                 style: TextStyle(color: constTheme.centerChannelColor),
                 maxLines: 4,
                 decoration: InputDecoration(
-                  hintText: '任务详情',
+                  hintText: 'Task detail',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: Colors.transparent,
                   border: InputBorder.none,
                   hoverColor: Colors.transparent,
+                  contentPadding: EdgeInsets.symmetric(vertical: 9.w, horizontal: 9.w),
                 ),
                 onSaved: (v) {
                   _data.desc = v ?? "";
                 },
                 validator: (value) {
-                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                  if (!reg.hasMatch(value ?? "")) {
-                    return '请输入中文、英文、数字、下划线组成昵称';
-                  }
                   if (value == null || value.isEmpty) {
-                    return '名称不能为空';
+                    return 'Task details cannot be empty';
                   }
                   return null;
                 },
@@ -351,6 +350,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
       Expanded(child: Container()),
       // SizedBox(height: 50.w),
       InkWell(
+        key: const Key("createTask"),
         onTap: submitAction,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),
@@ -364,7 +364,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
               Expanded(
                 child: Center(
                   child: Text(
-                    '创建任务',
+                    'Create task',
                     style: TextStyle(
                       color: constTheme.buttonColor,
                       fontWeight: FontWeight.bold,

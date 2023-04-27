@@ -39,7 +39,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (daoCtx.nativeAmount.free < 100) {
+    if (daoCtx.nativeAmount.free < daoCtx.dao.chainUnit) {
       BotToast.showText(
         text: "The user's balance is not enough to pay the handling fee",
         duration: const Duration(seconds: 2),
@@ -58,6 +58,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
         );
       },
     );
+    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;
@@ -65,9 +66,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       widget.closeModel!.call();
       return;
     }
-
     rootNavigatorKey.currentContext?.pop();
-    await daoCtx.daoRefresh();
   }
 
   @override
@@ -176,6 +175,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
               Expanded(child: Container()),
               // SizedBox(height: 50.w),
               InkWell(
+                key: const Key('joinDaoSubmit'),
                 onTap: submitAction,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),

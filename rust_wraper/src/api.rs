@@ -5,11 +5,12 @@ use crate::model::{
 use anyhow::{self, Ok};
 use asyou_rust_sdk::{
     account,
+    chain::UNIT,
     hander::{
         balance::Balance,
         wetee_asset::WeteeAsset,
         wetee_dao::WeteeDAO,
-        wetee_gov::{Opinion, Pledge, Referendum, ReferendumStatus, WeteeGov},
+        wetee_gov::{Opinion, Pledge, ReferendumStatus, WeteeGov},
         wetee_guild::WeteeGuild,
         wetee_project::{TaskStatus, WeteeProject},
     },
@@ -59,6 +60,11 @@ pub fn add_keyring(keyring_str: String, password: String) -> anyhow::Result<bool
     Ok(true)
 }
 
+pub fn add_seed(seed: String) -> anyhow::Result<String> {
+    let (address, _) = account::add_keyring_from_seed(seed)?;
+    Ok(address)
+}
+
 pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String> {
     let addr = account::sign_from_address(address, ctx)?;
     return Ok(addr);
@@ -80,6 +86,16 @@ pub fn native_balance(client: u32, address: String) -> anyhow::Result<AssetAccou
         frozen: b.frozen.try_into().unwrap(),
         reserved: b.reserved.try_into().unwrap(),
     })
+}
+
+pub fn dao_init_from_pair(client: u32, address: String) -> anyhow::Result<()> {
+    let c: Client = Client::from_index(client)?;
+    let mut balance = Balance::new(c);
+
+    balance
+        .init_from_pair(address.clone(), (UNIT * 500).into())
+        .unwrap();
+    Ok(())
 }
 
 pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<AssetAccountData> {
@@ -107,6 +123,7 @@ pub fn dao_info(client: u32, dao_id: u64) -> anyhow::Result<DaoInfo> {
         name: String::from_utf8(info.name).unwrap(),
         purpose: String::from_utf8(info.purpose).unwrap(),
         meta_data: String::from_utf8(info.meta_data).unwrap(),
+        chain_unit: UNIT,
     })
 }
 
@@ -494,11 +511,7 @@ pub fn dao_project_member_list(
         .collect())
 }
 
-pub fn dao_project_task_list(
-    client: u32,
-    dao_id: u64,
-    project_id: u64,
-) -> anyhow::Result<Vec<TaskInfo>> {
+pub fn dao_project_task_list(client: u32, project_id: u64) -> anyhow::Result<Vec<TaskInfo>> {
     let c = Client::from_index(client)?;
     let mut project = WeteeProject::new(c);
 
@@ -553,7 +566,6 @@ pub fn dao_project_task_list(
 
 pub fn dao_project_task_info(
     client: u32,
-    dao_id: u64,
     project_id: u64,
     task_id: u64,
 ) -> anyhow::Result<TaskInfo> {
@@ -805,6 +817,21 @@ pub fn dao_project_join_request(
             None
         },
     )?;
+
+    Ok(true)
+}
+
+pub fn dao_project_join_request_with_root(
+    from: String,
+    client: u32,
+    dao_id: u64,
+    project_id: u64,
+    user: String,
+) -> anyhow::Result<bool> {
+    let c = Client::from_index(client)?;
+    let mut project = WeteeProject::new(c);
+
+    project.project_join_request_with_root(from, dao_id, project_id, user)?;
 
     Ok(true)
 }

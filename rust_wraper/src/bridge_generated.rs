@@ -97,6 +97,19 @@ fn wire_add_keyring_impl(
         },
     )
 }
+fn wire_add_seed_impl(port_: MessagePort, seed: impl Wire2Api<String> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "add_seed",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_seed = seed.wire2api();
+            move |task_callback| add_seed(api_seed)
+        },
+    )
+}
 fn wire_sign_from_address_impl(
     port_: MessagePort,
     address: impl Wire2Api<String> + UnwindSafe,
@@ -143,6 +156,24 @@ fn wire_native_balance_impl(
             let api_client = client.wire2api();
             let api_address = address.wire2api();
             move |task_callback| native_balance(api_client, api_address)
+        },
+    )
+}
+fn wire_dao_init_from_pair_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    address: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_init_from_pair",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_address = address.wire2api();
+            move |task_callback| dao_init_from_pair(api_client, api_address)
         },
     )
 }
@@ -642,7 +673,6 @@ fn wire_dao_project_member_list_impl(
 fn wire_dao_project_task_list_impl(
     port_: MessagePort,
     client: impl Wire2Api<u32> + UnwindSafe,
-    dao_id: impl Wire2Api<u64> + UnwindSafe,
     project_id: impl Wire2Api<u64> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
@@ -653,16 +683,14 @@ fn wire_dao_project_task_list_impl(
         },
         move || {
             let api_client = client.wire2api();
-            let api_dao_id = dao_id.wire2api();
             let api_project_id = project_id.wire2api();
-            move |task_callback| dao_project_task_list(api_client, api_dao_id, api_project_id)
+            move |task_callback| dao_project_task_list(api_client, api_project_id)
         },
     )
 }
 fn wire_dao_project_task_info_impl(
     port_: MessagePort,
     client: impl Wire2Api<u32> + UnwindSafe,
-    dao_id: impl Wire2Api<u64> + UnwindSafe,
     project_id: impl Wire2Api<u64> + UnwindSafe,
     task_id: impl Wire2Api<u64> + UnwindSafe,
 ) {
@@ -674,12 +702,9 @@ fn wire_dao_project_task_info_impl(
         },
         move || {
             let api_client = client.wire2api();
-            let api_dao_id = dao_id.wire2api();
             let api_project_id = project_id.wire2api();
             let api_task_id = task_id.wire2api();
-            move |task_callback| {
-                dao_project_task_info(api_client, api_dao_id, api_project_id, api_task_id)
-            }
+            move |task_callback| dao_project_task_info(api_client, api_project_id, api_task_id)
         },
     )
 }
@@ -1027,6 +1052,38 @@ fn wire_dao_project_join_request_impl(
         },
     )
 }
+fn wire_dao_project_join_request_with_root_impl(
+    port_: MessagePort,
+    from: impl Wire2Api<String> + UnwindSafe,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    project_id: impl Wire2Api<u64> + UnwindSafe,
+    user: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "dao_project_join_request_with_root",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_from = from.wire2api();
+            let api_client = client.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_project_id = project_id.wire2api();
+            let api_user = user.wire2api();
+            move |task_callback| {
+                dao_project_join_request_with_root(
+                    api_from,
+                    api_client,
+                    api_dao_id,
+                    api_project_id,
+                    api_user,
+                )
+            }
+        },
+    )
+}
 fn wire_dao_guild_join_request_impl(
     port_: MessagePort,
     from: impl Wire2Api<String> + UnwindSafe,
@@ -1182,6 +1239,7 @@ impl support::IntoDart for DaoInfo {
             self.name.into_dart(),
             self.purpose.into_dart(),
             self.meta_data.into_dart(),
+            self.chain_unit.into_dart(),
         ]
         .into_dart()
     }

@@ -7,7 +7,6 @@ import '../../components/loading_dialog.dart';
 import '../../rust_wraper.io.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
-import '../../utils/responsive.dart';
 import 'sub/referendum.dart';
 
 class ReferendumPage extends StatefulWidget {
@@ -35,8 +34,8 @@ class _ReferendumPageState extends State<ReferendumPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    SizeConfig().init(context);
     return Scaffold(
+      key: const Key("ReferendumView"),
       backgroundColor: constTheme.centerChannelBg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +49,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                 Row(
                   children: [
                     Icon(
-                      Icons.integration_instructions_rounded,
+                      Icons.how_to_vote_rounded,
                       size: 30.w,
                       color: constTheme.centerChannelColor,
                     ),

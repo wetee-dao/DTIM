@@ -3,7 +3,6 @@ import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../bridge_generated.dart';
-import '../../../components/appicon.dart';
 import '../../../components/components.dart';
 import '../../../components/dao/text.dart';
 import '../../../router.dart';
@@ -61,7 +60,7 @@ class Referendums extends StatelessWidget {
         for (var index = 0; index < pending.length; index++)
           Container(
             margin: EdgeInsets.only(top: 6.w, bottom: 6.w),
-            padding: EdgeInsets.only(top: 6.w, bottom: 6.w),
+            padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.05),
               borderRadius: BorderRadius.all(Radius.circular(5.w)),
@@ -93,6 +92,7 @@ class Referendums extends StatelessWidget {
                 ),
                 SizedBox(width: 10.w),
                 InkWell(
+                  key: Key("referendumStart${pending[index].index}"),
                   onTap: () async {
                     if (!daoCtx.checkAfterTx()) return;
                     await waitFutureLoading(
@@ -148,7 +148,7 @@ class Referendums extends StatelessWidget {
         for (var index = going.length - 1; index >= 0; index--)
           Container(
             margin: EdgeInsets.only(top: 6.w, bottom: 6.w),
-            padding: EdgeInsets.only(top: 6.w, bottom: 6.w),
+            padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.05),
               borderRadius: BorderRadius.all(Radius.circular(5.w)),
@@ -240,7 +240,7 @@ class Referendums extends StatelessWidget {
     );
   }
 
-  renderAction(going) {
+  renderAction(GovReferendum going) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     if (going.status > 0) {
       return renderBox(
@@ -266,6 +266,7 @@ class Referendums extends StatelessWidget {
               disabled: true,
             )
           : InkWell(
+              key: Key("referendumDo${going.id}"),
               onTap: () {
                 showModelOrPage(
                   globalCtx(),
@@ -293,30 +294,42 @@ class Referendums extends StatelessWidget {
       );
     }
     if (going.status == 0 && going.end - daoCtx.blockNumber < 0) {
-      return InkWell(
-        onTap: () async {
-          if (!daoCtx.checkAfterTx()) return;
-          await waitFutureLoading(
-            context: globalCtx(),
-            future: () async {
-              await rustApi.daoGovRunProposal(
-                from: daoCtx.user.address,
-                client: daoCtx.chainClient,
-                daoId: daoCtx.org.daoId,
-                index: going.id,
-              );
-            },
-          );
-          await daoCtx.daoRefresh();
-        },
-        child: renderBox(
+      if (going.tally.yes > 0) {
+        return InkWell(
+          key: Key("referendumExecute${going.id}"),
+          onTap: () async {
+            if (!daoCtx.checkAfterTx()) return;
+            await waitFutureLoading(
+              context: globalCtx(),
+              future: () async {
+                await rustApi.daoGovRunProposal(
+                  from: daoCtx.user.address,
+                  client: daoCtx.chainClient,
+                  daoId: daoCtx.org.daoId,
+                  index: going.id,
+                );
+              },
+            );
+            await daoCtx.daoRefresh();
+          },
+          child: renderBox(
+            PrimaryText(
+              text: "Execute",
+              size: 13.w,
+              color: constTheme.buttonColor,
+            ),
+          ),
+        );
+      } else {
+        return renderBox(
+          disabled: true,
           PrimaryText(
-            text: "Execute",
+            text: "Rejected",
             size: 13.w,
             color: constTheme.buttonColor,
           ),
-        ),
-      );
+        );
+      }
     }
   }
 

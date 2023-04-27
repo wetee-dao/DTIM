@@ -14,9 +14,9 @@ class HistoryTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return SingleChildScrollView(
-      scrollDirection: Responsive.isDesktop(context) ? Axis.vertical : Axis.horizontal,
+      scrollDirection: Axis.vertical,
       child: SizedBox(
-        width: Responsive.isDesktop(context) ? double.infinity : SizeConfig.screenWidth,
+        width: double.infinity,
         child: Table(
           // columnWidths: const {
           //   0: FlexColumnWidth(0.2),

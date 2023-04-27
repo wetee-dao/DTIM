@@ -144,6 +144,7 @@ class _DaoPageState extends State<DaoPage> {
           Expanded(
             child: daoCtx.chainClient > -1
                 ? ChangeNotifierProvider.value(
+                    key: const Key("daoView"),
                     value: daoCtx,
                     child: PageView(
                       physics: const NeverScrollableScrollPhysics(),

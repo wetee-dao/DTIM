@@ -57,23 +57,35 @@
 <img src="images/Screenshot from 2023-03-22 22-29-38.png" width="500" style="padding-left: 50px;">
 
 ## join DAO
+- Click join button 
+- Send join call
 
-## create Guild
+<img src="images/Screenshot from 2023-04-27 16-11-26.png" width="550" style="padding-left: 20px;">
+
 
 ## create Project
+- Click "Create guild or project" button 
+- Send create call
+
+<img src="images/Screenshot from 2023-04-27 16-22-39.png" width="550" style="padding-left: 20px;">
+
 
 ## start Regerendum
+- Click "Regerendums" to  Regerendums page
+- Click "start" button  to start Regerendum
 
-## join CoreTeam
+<img src="images/Screenshot from 2023-04-27 16-24-37.png" width="550" style="padding-left: 20px;">
 
-## create RoadMap
 
 ## join Project
+- Click "test" to test Project page
+- Click "join" button  to start Regerendum
+- Wait for the referendum within the organization to be completed, then you can join the project (The script automatically agrees)
 
-## join Task
+<img src="images/Screenshot from 2023-04-27 16-29-10.png" width="550" style="padding-left: 20px;">
 
-## start Task
+## add Task
+- Click "test" to test Project page
+- Click "Add Task" button  to start Regerendum
 
-## review Task
-
-## done Task
+<img src="images/Screenshot from 2023-04-27 16-32-15.png" width="550" style="padding-left: 20px;">

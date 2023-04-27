@@ -52,7 +52,6 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
     rustApi
         .daoProjectTaskInfo(
       client: daoCtx.chainClient,
-      daoId: daoCtx.org.daoId,
       projectId: int.parse(widget.projectId),
       taskId: int.parse(widget.id),
     )

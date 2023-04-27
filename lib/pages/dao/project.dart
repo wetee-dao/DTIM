@@ -58,7 +58,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   getData() async {
     members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: info!.id);
 
-    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, daoId: dao.org.daoId, projectId: info!.id);
+    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, projectId: info!.id);
     todo = ps.where((p) => p.status == 0).toList();
     inProgress = ps.where((p) => p.status == 1).toList();
     inReview = ps.where((p) => p.status == 2).toList();
@@ -76,6 +76,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Column(
+      key: const Key("projectView"),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
@@ -99,11 +100,14 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                     height: 1,
                     fontWeight: FontWeight.w800,
                   ),
-                  SizedBox(width: 20.w),
-                  PrimaryText(
-                    text: info != null ? info!.description : "",
-                    size: 14.w,
-                    height: 1.9,
+                  SizedBox(width: 10.w),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.w),
+                    child: PrimaryText(
+                      text: info != null ? info!.description : "",
+                      size: 14.w,
+                      height: 1.9,
+                    ),
                   ),
                   Expanded(child: Container()),
                   InkWell(
@@ -181,6 +185,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   ),
                   SizedBox(width: 10.w),
                   InkWell(
+                    key: const Key("createTaskBtn"),
                     onTap: () {
                       showModelOrPage(context, "/create_task/${info!.id}/-1", width: 800, height: 500);
                     },

@@ -13,12 +13,14 @@ class PaymentsDetailList extends StatelessWidget {
   final AssetAccountData share;
   final String address;
   final int userPoint;
+  final DaoInfo dao;
   const PaymentsDetailList({
     Key? key,
     required this.address,
     required this.nativeAmount,
     required this.share,
     required this.userPoint,
+    required this.dao,
   }) : super(key: key);
 
   @override
@@ -41,10 +43,11 @@ class PaymentsDetailList extends StatelessWidget {
               SizedBox(height: 15.w),
               Text(address, style: TextStyle(color: constTheme.centerChannelColor, fontSize: 16.w)),
               SizedBox(height: 10.w),
-              Text("SHARE:  ${share.free}", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
+              Text("SHARE:  ${share.free}",
+                  key: const Key("myShare"), style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
               SizedBox(height: 6.w),
               Text(
-                "WTE:  ${nativeAmount.free}",
+                "WTE:  ${(nativeAmount.free / dao.chainUnit).toStringAsFixed(2)} UNIT",
                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
               ),
               SizedBox(height: 5.w),

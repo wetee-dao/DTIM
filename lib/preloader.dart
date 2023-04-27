@@ -42,7 +42,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     super.initState();
     im = context.read<IMProvider>();
     getList();
-    if (accounts.isNotEmpty) {
+    if (accounts.isNotEmpty && !runInTest) {
       autoLogin();
     }
     if (im.connections.keys.isEmpty) {
