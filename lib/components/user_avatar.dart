@@ -28,16 +28,19 @@ class _UserAvatarState extends State<UserAvatar> {
     final imgw = (widget.avatarWidth * 0.7).toInt();
     final imgbg = widget.color ?? constTheme.centerChannelColor;
     final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue])
-        .generate(widget.avatarSrc, scale: (widget.avatarWidth / 30).ceil());
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(
+      getUserShortId(widget.avatarSrc),
+      scale: (widget.avatarWidth / 50).ceil(),
+    );
+
     ctx = Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(widget.avatarWidth * 0.1), color: boxBg),
       padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
       alignment: Alignment.topLeft,
       child: Image.memory(
         img,
-        cacheHeight: imgw,
-        cacheWidth: imgw,
+        width: imgw.toDouble(),
+        height: imgw.toDouble(),
         fit: BoxFit.contain,
       ),
     );
@@ -85,7 +88,8 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
     final imgw = (widget.avatarWidth * 0.7).toInt();
     final imgbg = widget.color ?? constTheme.centerChannelColor.withOpacity(0.04);
     final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.04);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(getUserShortId(widget.id), scale: 1);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue])
+        .generate(getUserShortId(widget.id), scale: (widget.avatarWidth / 50).ceil());
     return BasePopupMenu(
       verticalMargin: 5.w,
       horizontalMargin: 0,

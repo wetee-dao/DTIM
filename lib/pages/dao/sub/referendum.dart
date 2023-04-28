@@ -63,7 +63,7 @@ class Referendums extends StatelessWidget {
             padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.05),
-              borderRadius: BorderRadius.all(Radius.circular(5.w)),
+              borderRadius: BorderRadius.all(Radius.circular(10.w)),
             ),
             child: Row(
               children: [
@@ -151,7 +151,7 @@ class Referendums extends StatelessWidget {
             padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.05),
-              borderRadius: BorderRadius.all(Radius.circular(5.w)),
+              borderRadius: BorderRadius.all(Radius.circular(10.w)),
             ),
             child: Row(
               children: [

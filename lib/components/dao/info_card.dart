@@ -17,7 +17,7 @@ class InfoCard extends StatelessWidget {
       constraints: BoxConstraints(minWidth: isPc() ? 140.w : 100.w, maxWidth: double.maxFinite),
       padding: EdgeInsets.fromLTRB(20.w, 20.w, 10.w, 20.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10.w),
         color: constTheme.centerChannelColor.withOpacity(0.05),
       ),
       child: Column(

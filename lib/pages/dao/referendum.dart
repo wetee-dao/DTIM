@@ -113,7 +113,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
           ),
           SizedBox(height: 15.w),
           Divider(
-            height: 20,
+            height: 1,
             color: constTheme.centerChannelDivider,
           ),
           Expanded(
