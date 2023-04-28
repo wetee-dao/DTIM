@@ -9,18 +9,18 @@ import '../utils/screen.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 
-class ChatList extends StatefulWidget {
+class ChannelList extends StatefulWidget {
   final List<link.Room> channelsList;
   final String currentId;
   final Function onSelect;
 
-  const ChatList(this.channelsList, this.currentId, this.onSelect, {Key? key}) : super(key: key);
+  const ChannelList(this.channelsList, this.currentId, this.onSelect, {Key? key}) : super(key: key);
 
   @override
-  State<ChatList> createState() => _ChatListState();
+  State<ChannelList> createState() => _ChannelListState();
 }
 
-class _ChatListState extends State<ChatList> {
+class _ChannelListState extends State<ChannelList> {
   // 当前激活
   int hover = -1;
 

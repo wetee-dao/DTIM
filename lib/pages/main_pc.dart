@@ -166,7 +166,7 @@ class _PCPageState extends State<PCPage> {
                       width: 40.w,
                       height: 40.w,
                       padding: EdgeInsets.all(2.w),
-                      margin: EdgeInsets.fromLTRB(0, 12.w, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
                       decoration: BoxDecoration(
                         color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.w),

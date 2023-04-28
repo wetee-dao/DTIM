@@ -284,7 +284,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       height: 66.w,
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.w),
       decoration: BoxDecoration(
         color: constTheme.centerChannelBg,
         border: Border(top: BorderSide(color: constTheme.centerChannelDivider)),

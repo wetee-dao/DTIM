@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:asyou_app/utils/localized_extension.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
+import '../../components/chat/chat_scroll_physics.dart';
 import '../../components/close_bar.dart';
 import '../../components/components.dart';
 import '../../models/models.dart';
@@ -37,12 +39,16 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   late link.Room? room;
   late link.Client? client;
   late Account me;
+  final int _loadHistoryCount = 200;
 
   link.Timeline? timeline;
   Stream<bool>? sub;
   String srcAvatar = "";
   String nameAuthor = "";
   Condition<ImMessages>? get condition => null;
+
+  bool get canLoadMore =>
+      timeline != null && (timeline!.events.isEmpty || timeline!.events.last.type != link.EventTypes.RoomCreate);
 
   @override
   void initState() {
@@ -63,10 +69,18 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       }
       getTimeline();
     }
+    _listController.addListener(scrollListener);
+  }
+
+  void scrollListener() {
+    if (_listController.position.pixels <= _listController.position.minScrollExtent) {
+      if (timeline!.canRequestHistory && !timeline!.isRequestingHistory) requestHistory();
+    }
   }
 
   @override
   void dispose() {
+    _listController.removeListener(scrollListener);
     _listController.dispose();
     super.dispose();
   }
@@ -129,6 +143,23 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     }
     timeline!.requestKeys(onlineKeyBackupOnly: false);
     return true;
+  }
+
+  void requestHistory() async {
+    if (canLoadMore) {
+      try {
+        await timeline!.requestHistory(historyCount: _loadHistoryCount);
+      } catch (err) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              (err).toLocalizedString(context),
+            ),
+          ),
+        );
+        rethrow;
+      }
+    }
   }
 
   void recreateChat() async {
@@ -245,19 +276,28 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   List<link.Event> events = timeline != null ? timeline!.events.reversed.toList() : [];
                   return ListView.builder(
                     key: Key("chat_list_${widget.channerlID}"),
-                    itemCount: events.length + 1,
+                    itemCount: events.length + 2,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const ChatScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     controller: _listController,
                     itemBuilder: (context, index) {
-                      if (index == events.length) {
+                      if (index == 0) {
+                        if (timeline != null && timeline!.isRequestingHistory) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+                          );
+                        }
+                        return Container();
+                      }
+
+                      if (index == events.length + 1) {
                         return SizedBox(height: 10.w);
                       }
-                      link.Event event = events[index];
+                      link.Event event = events[index - 1];
                       link.Event? preEvent;
-                      if (index - 1 > 0) {
-                        preEvent = events[index - 1];
+                      if (index > 2) {
+                        preEvent = events[index - 2];
                       }
                       if (event.type == link.EventTypes.RoomCreate) {
                         return renderCreate(event);

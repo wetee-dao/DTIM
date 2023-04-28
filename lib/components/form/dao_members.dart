@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
 import '../../utils/screen.dart';
-import '../avatar.dart';
+import '../components.dart';
 import '../dao/text.dart';
 
 class DaoMemberList extends StatelessWidget {
@@ -50,6 +50,7 @@ class DaoMemberList extends StatelessWidget {
                 children: [
                   UserAvatar(
                     members[i],
+                    true,
                     35.w,
                     color: constTheme.centerChannelColor,
                   ),

@@ -1,3 +1,4 @@
+import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -8,7 +9,7 @@ import '../../utils/time.dart';
 import 'content/content.dart';
 import 'content/verification_request_content.dart';
 
-class Msg extends StatefulWidget {
+class Msg extends StatelessWidget {
   final link.Event event;
   final link.Event? preEvent;
   final link.Client client;
@@ -18,33 +19,20 @@ class Msg extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Msg> createState() => _MsgState();
-}
-
-class _MsgState extends State<Msg> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final event = widget.event;
-    final showAvatar = isShowAvatar(event, widget.preEvent);
+    final showAvatar = isShowAvatar(event, preEvent);
     var showDate = false;
-    if (event.type == link.EventTypes.RoomMember ||
-        event.type == link.EventTypes.RoomPowerLevels ||
-        event.type == link.EventTypes.RoomJoinRules ||
-        event.type == link.EventTypes.HistoryVisibility ||
-        event.type == link.EventTypes.RoomName) {
-      return const SizedBox(height: 0);
-    }
+    // if (event.type == link.EventTypes.RoomMember ||
+    //     event.type == link.EventTypes.RoomPowerLevels ||
+    //     event.type == link.EventTypes.RoomJoinRules ||
+    //     event.type == link.EventTypes.HistoryVisibility ||
+    //     event.type == link.EventTypes.RoomName) {
+    //   return const SizedBox(height: 0);
+    // }
 
-    if (widget.preEvent != null) {
-      link.Event preEvent = widget.preEvent!;
-
+    if (preEvent != null) {
       if ("${event.originServerTs.year}-${event.originServerTs.month}-${event.originServerTs.day}" !=
-          "${preEvent.originServerTs.year}-${preEvent.originServerTs.month}-${preEvent.originServerTs.day}") {
+          "${preEvent!.originServerTs.year}-${preEvent!.originServerTs.month}-${preEvent!.originServerTs.day}") {
         showDate = true;
       }
     }
@@ -60,13 +48,6 @@ class _MsgState extends State<Msg> {
   isShowAvatar(link.Event event, link.Event? preEvent) {
     var showAvatar = true;
     if (preEvent == null) return true;
-    if (preEvent.type == link.EventTypes.RoomMember ||
-        preEvent.type == link.EventTypes.RoomPowerLevels ||
-        preEvent.type == link.EventTypes.RoomJoinRules ||
-        preEvent.type == link.EventTypes.HistoryVisibility ||
-        preEvent.type == link.EventTypes.RoomName) {
-      return true;
-    }
     if (event.originServerTs.millisecondsSinceEpoch - preEvent.originServerTs.millisecondsSinceEpoch < 240000 &&
         event.senderId == preEvent.senderId) {
       showAvatar = false;
@@ -75,7 +56,7 @@ class _MsgState extends State<Msg> {
   }
 
   buildMsg(link.Event event, bool showAvatar) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     return FutureBuilder<link.User?>(
       future: event.fetchSenderUser(),
       builder: (context, snapshot) {
@@ -84,7 +65,7 @@ class _MsgState extends State<Msg> {
           key: Key(event.eventId),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(width: 20.w),
+            SizedBox(width: 15.w),
             if (showAvatar)
               Column(
                 children: [
@@ -108,7 +89,7 @@ class _MsgState extends State<Msg> {
                   if (showAvatar)
                     RichText(
                       text: TextSpan(
-                        text: event.senderId == widget.client.userID ? "我" : user.displayName,
+                        text: event.senderId == client.userID ? "我" : user.displayName,
                         style: TextStyle(
                           color: constTheme.centerChannelColor,
                           fontWeight: FontWeight.bold,
@@ -139,7 +120,7 @@ class _MsgState extends State<Msg> {
   }
 
   renderBody(link.Event event) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     if (event.type == link.EventTypes.Encryption) {
       return Container(
         padding: EdgeInsets.all(8.w),
@@ -162,7 +143,7 @@ class _MsgState extends State<Msg> {
       );
     }
     if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {
-      return VerificationRequestContent(event: event, timeline: widget.timeline);
+      return VerificationRequestContent(event: event, timeline: timeline);
     }
 
     // if (event.messageType == link.MessageTypes.Image) {
@@ -178,7 +159,7 @@ class _MsgState extends State<Msg> {
   }
 
   buildDayTag(event) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     return SizedBox(
       width: double.maxFinite,
       height: 40.w,

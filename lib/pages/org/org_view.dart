@@ -237,8 +237,8 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   key: const Key("room"),
                   controller: _controllerChannels,
                   collapsed: const SizedBox(),
-                  expanded: ChatList(
-                    key: const Key("ChatList"),
+                  expanded: ChannelList(
+                    key: const Key("ChannelList"),
                     channels,
                     channelId,
                     (id) {

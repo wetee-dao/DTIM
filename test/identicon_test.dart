@@ -10,7 +10,7 @@ void main() {
   testWidgets("test user_avatar.dart", (WidgetTester tester) async {
     initScreen(1200);
     const imgbg = Colors.red;
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate("test", size: 50);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate("test", scale: 1);
     await tester.pumpWidget(
       MaterialApp(
         theme: theme(),

@@ -5,36 +5,27 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:image/image.dart';
 
-final colourCache = <String, List<List<int>>>{};
-
 class Identicon {
-  late int _rows;
-  late int _cols;
+  final int _rows = 10;
+  final int _cols = 10;
   late Function(List<int>) _digest;
 
   List<int> _fgColour = [255, 255, 255];
-  // List<int>? _bgColour;
-
-  Identicon({int rows = 10, List<int>? fg, List<int>? bg}) {
-    _rows = rows;
-    _cols = rows;
+  Identicon({List<int>? fg, List<int>? bg}) {
     if (fg != null) {
       _fgColour = fg;
     }
 
-    // _bgColour = bg;
     _digest = md5.convert;
   }
 
   _bitIsOne(int n, List<int> hashBytes) {
-    final scale = 16;
+    const scale = 16;
     return hashBytes[n ~/ (scale / 2)] >> ((scale / 2) - ((n % (scale / 2)) + 1)).toInt() & 1 == 1;
   }
 
-  List<int> _createImage(List<List<bool>> matrix, int width, int height, int pad) {
+  List<int> _createImage(List<List<bool>> matrix, int width, int height, int space, int pad) {
     final image = Image(width + (pad * 2), height + (pad * 2));
-    // image
-    //     .fill(Color.fromRgba(_bgColour![0], _bgColour![1], _bgColour![2], 255));
 
     final blockWidth = width ~/ _cols;
     final blockHeight = height ~/ _rows;
@@ -44,10 +35,10 @@ class Identicon {
         if (matrix[row][col]) {
           fillRect(
             image,
-            pad + col * blockWidth + 1,
-            pad + row * blockHeight + 1,
-            pad + (col + 1) * blockWidth - 2,
-            pad + (row + 1) * blockHeight - 2,
+            pad + col * blockWidth + space + 1,
+            pad + row * blockHeight + space + 1,
+            pad + (col + 1) * blockWidth - space - 1,
+            pad + (row + 1) * blockHeight - space - 1,
             Color.fromRgb(_fgColour[0], _fgColour[1], _fgColour[2]),
           );
         }
@@ -72,9 +63,9 @@ class Identicon {
     return matrix;
   }
 
-  Uint8List generate(String text, {int size = 36}) {
-    size = toSize(size);
-    final bytesLength = 16;
+  Uint8List generate(String text, {int scale = 1}) {
+    var size = toSize(70 * scale);
+    const bytesLength = 16;
     final hexDigest = _digest(utf8.encode(text)).toString();
 
     final hexDigestByteList = List<int>.generate(bytesLength, (int i) {
@@ -82,14 +73,14 @@ class Identicon {
     });
 
     final matrix = _createMatrix(hexDigestByteList);
-    final bt = _createImage(matrix, size, size, 0);
+    final bt = _createImage(matrix, size, size, scale, 0);
     Uint8List bytes = Uint8List.fromList(bt);
     return bytes;
   }
 
-  String generateBase64(String text, {int size = 36}) {
-    size = toSize(size);
-    final bytesLength = 16;
+  String generateBase64(String text, {int scale = 1}) {
+    var size = toSize(70 * scale);
+    const bytesLength = 16;
     final hexDigest = _digest(utf8.encode(text)).toString();
 
     final hexDigestByteList = List<int>.generate(bytesLength, (int i) {
@@ -97,7 +88,7 @@ class Identicon {
     });
 
     final matrix = _createMatrix(hexDigestByteList);
-    final bt = _createImage(matrix, size, size, 0);
+    final bt = _createImage(matrix, size, size, scale, 0);
     return "data:image/png;base64,${base64Encode(bt)}";
   }
 
@@ -105,6 +96,7 @@ class Identicon {
     if (size % _rows == 0) {
       return size;
     }
+    print(_rows * ((size - size % _rows) + 1));
     return _rows * ((size - size % _rows) + 1);
   }
 }

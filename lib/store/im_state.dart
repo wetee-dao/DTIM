@@ -128,7 +128,7 @@ class ImState {
       client.onSync.stream.first.then((s) {
         html.Notification.requestPermission();
         onNotification = client.onEvent.stream.where((e) {
-          print("===========================================onNotification");
+          print("===========================================onNotification ==> ${e.type}");
           return e.type == link.EventUpdateType.timeline &&
               [
                 link.EventTypes.Message,

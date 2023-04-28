@@ -43,14 +43,17 @@ class PaymentsDetailList extends StatelessWidget {
               SizedBox(height: 15.w),
               Text(address, style: TextStyle(color: constTheme.centerChannelColor, fontSize: 16.w)),
               SizedBox(height: 10.w),
-              Text("SHARE:  ${share.free}",
-                  key: const Key("myShare"), style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w)),
-              SizedBox(height: 6.w),
+              Text(
+                "SHARE:  ${share.free}",
+                key: const Key("myShare"),
+                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
+              ),
+              SizedBox(height: 3.w),
               Text(
                 "WTE:  ${(nativeAmount.free / dao.chainUnit).toStringAsFixed(2)} UNIT",
                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
               ),
-              SizedBox(height: 5.w),
+              SizedBox(height: 3.w),
               Text(
                 "Point:  ${userPoint.toString()}",
                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),

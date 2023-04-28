@@ -6,6 +6,7 @@ import '../store/theme.dart';
 import '../utils/identicon.dart';
 import '../utils/screen.dart';
 import 'mxc_image.dart';
+import 'user_avatar.dart';
 
 class Avatar extends StatelessWidget {
   final Uri? mxContent;
@@ -84,7 +85,13 @@ class Avatar extends StatelessWidget {
                 child: textWidget,
               ),
             )
-          : UserAvatar(id, size);
+          : UserAvatar(
+              id,
+              true,
+              40.w,
+              bg: constTheme.sidebarText.withOpacity(0.1),
+              color: constTheme.sidebarText,
+            );
     }
 
     if (onTap == null) return container;
@@ -95,32 +102,32 @@ class Avatar extends StatelessWidget {
   }
 }
 
-class UserAvatar extends StatelessWidget {
-  final String avatarSrc;
-  final double size;
-  final Color? bg;
-  final Color? color;
-  const UserAvatar(this.avatarSrc, this.size, {Key? key, this.bg, this.color}) : super(key: key);
+// class UserAvatar extends StatelessWidget {
+//   final String avatarSrc;
+//   final double size;
+//   final Color? bg;
+//   final Color? color;
+//   const UserAvatar(this.avatarSrc, this.size, {Key? key, this.bg, this.color}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final imgw = (size * 0.7).toInt();
-    final imgbg = color ?? constTheme.centerChannelColor;
-    final boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, size: 50);
-    return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
-      padding: EdgeInsets.all((size - imgw) / 2),
-      alignment: Alignment.topLeft,
-      width: size,
-      height: size,
-      child: Image.memory(
-        img,
-        width: imgw.toDouble(),
-        height: imgw.toDouble(),
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final constTheme = Theme.of(context).extension<ExtColors>()!;
+//     final imgw = (size * 0.7).toInt();
+//     final imgbg = color ?? constTheme.centerChannelColor;
+//     final boxBg = bg ?? constTheme.centerChannelColor.withOpacity(0.1);
+//     final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(avatarSrc, scale: 1);
+//     return Container(
+//       decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
+//       padding: EdgeInsets.all((size - imgw) / 2),
+//       alignment: Alignment.topLeft,
+//       width: size,
+//       height: size,
+//       child: Image.memory(
+//         img,
+//         width: imgw.toDouble(),
+//         height: imgw.toDouble(),
+//         fit: BoxFit.contain,
+//       ),
+//     );
+//   }
+// }

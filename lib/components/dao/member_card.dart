@@ -2,7 +2,7 @@ import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../store/theme.dart';
-import '../avatar.dart';
+import '../user_avatar.dart';
 import 'text.dart';
 
 class MemberCard extends StatelessWidget {
@@ -25,6 +25,7 @@ class MemberCard extends StatelessWidget {
         children: [
           UserAvatar(
             label ?? "",
+            true,
             50.w,
             color: constTheme.centerChannelColor,
           ),
