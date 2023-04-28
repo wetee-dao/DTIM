@@ -112,11 +112,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     if (!mounted) return;
     print("updateView ===> ${timeline!.events.length}");
     _msgController.add(timeline!.events.reversed.last.eventId);
-    Timer(const Duration(milliseconds: 20), () {
-      try {
-        _listController.jumpTo(_listController.position.maxScrollExtent);
-      } catch (e) {}
-    });
+    // Timer(const Duration(milliseconds: 20), () {
+    //   try {
+    //     _listController.jumpTo(_listController.position.maxScrollExtent);
+    //   } catch (e) {}
+    // });
   }
 
   Future<bool> getTimeline() async {
@@ -284,8 +284,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         if (timeline != null && timeline!.isRequestingHistory) {
-                          return const Center(
-                            child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10.w),
+                              child: CircularProgressIndicator.adaptive(strokeWidth: 4.w),
+                            ),
                           );
                         }
                         return Container();
@@ -371,7 +374,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             ),
             SizedBox(height: 5.w),
             Text(
-              "你于 在 ${formatDate(
+              "你于 ${formatDate(
                 event.originServerTs,
                 [
                   yyyy,

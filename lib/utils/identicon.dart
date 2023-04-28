@@ -1,4 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -96,7 +95,6 @@ class Identicon {
     if (size % _rows == 0) {
       return size;
     }
-    print(_rows * ((size - size % _rows) + 1));
     return _rows * ((size - size % _rows) + 1);
   }
 }

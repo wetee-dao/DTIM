@@ -51,9 +51,9 @@ class Kanban extends StatelessWidget {
       decoration: BoxDecoration(
         color: constTheme.centerChannelColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(5.w),
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: constTheme.sidebarBg.withOpacity(0.2), blurRadius: 10.w),
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(color: constTheme.sidebarBg.withOpacity(0.2), blurRadius: 10.w),
+        // ],
       ),
       width: 250.w,
       margin: EdgeInsets.only(right: 10.w, bottom: 15.w),

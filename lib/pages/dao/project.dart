@@ -102,7 +102,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   ),
                   SizedBox(width: 10.w),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.w),
+                    padding: EdgeInsets.only(top: 8.w),
                     child: PrimaryText(
                       text: info != null ? info!.description : "",
                       size: 14.w,

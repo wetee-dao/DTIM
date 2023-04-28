@@ -15,7 +15,6 @@ import '../../../store/theme.dart';
 import '../../../utils/screen.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/platform_infos.dart';
-import 'participant_list_item.dart';
 
 enum AliasActions { copy, delete, setCanonical }
 
@@ -361,151 +360,169 @@ class ChatDetailsController extends State<ChatDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              renderTile(
-                Icons.people_outline_outlined,
-                L10n.of(context)!.changeTheNameOfTheGroup,
-                room.getLocalizedDisplayname(
-                  MatrixLocals(L10n.of(context)!),
-                ),
-                onTap: room.canSendEvent(EventTypes.RoomName) ? setDisplaynameAction : null,
-              ),
-
-              renderTile(
-                Icons.description,
-                L10n.of(context)!.groupDescription,
-                room.topic.isEmpty ? L10n.of(context)!.addGroupDescription : room.topic,
-                onTap: room.canSendEvent(EventTypes.RoomTopic) ? setTopicAction : null,
-              ),
-
-              renderTile(
-                Icons.link_outlined,
-                L10n.of(context)!.editRoomAliases,
-                (room.canonicalAlias.isNotEmpty) ? room.canonicalAlias : L10n.of(context)!.none,
-                onTap: (room.joinRules == JoinRules.public) ? editAliases : null,
-              ),
-
-              PopupMenuButton(
-                color: constTheme.centerChannelBg,
-                onSelected: setJoinRulesAction,
-                position: PopupMenuPosition.under,
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<JoinRules>>[
-                  if (room.canChangeJoinRules)
-                    PopupMenuItem<JoinRules>(
-                      value: JoinRules.public,
-                      child: Text(
-                        JoinRules.public.getLocalizedString(
-                          MatrixLocals(L10n.of(context)!),
-                        ),
-                        style: titleStyle,
-                      ),
-                    ),
-                  if (room.canChangeJoinRules)
-                    PopupMenuItem<JoinRules>(
-                      value: JoinRules.invite,
-                      child: Text(
-                        JoinRules.invite.getLocalizedString(
-                          MatrixLocals(L10n.of(context)!),
-                        ),
-                        style: titleStyle,
-                      ),
-                    ),
-                ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.w),
                 child: renderTile(
-                  Icons.shield_outlined,
-                  L10n.of(context)!.whoIsAllowedToJoinThisGroup,
-                  room.joinRules?.getLocalizedString(
-                        MatrixLocals(L10n.of(context)!),
-                      ) ??
-                      L10n.of(context)!.none,
+                  Icons.people_outline_outlined,
+                  L10n.of(context)!.changeTheNameOfTheGroup,
+                  room.getLocalizedDisplayname(
+                    MatrixLocals(L10n.of(context)!),
+                  ),
+                  onTap: room.canSendEvent(EventTypes.RoomName) ? setDisplaynameAction : null,
                 ),
               ),
 
-              PopupMenuButton(
-                color: constTheme.centerChannelBg,
-                onSelected: setHistoryVisibilityAction,
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<HistoryVisibility>>[
-                  if (room.canChangeHistoryVisibility)
-                    PopupMenuItem<HistoryVisibility>(
-                      value: HistoryVisibility.invited,
-                      child: Text(
-                        HistoryVisibility.invited.getLocalizedString(
-                          MatrixLocals(L10n.of(context)!),
-                        ),
-                        style: titleStyle,
-                      ),
-                    ),
-                  if (room.canChangeHistoryVisibility)
-                    PopupMenuItem<HistoryVisibility>(
-                      value: HistoryVisibility.joined,
-                      child: Text(
-                        HistoryVisibility.joined.getLocalizedString(
-                          MatrixLocals(L10n.of(context)!),
-                        ),
-                        style: titleStyle,
-                      ),
-                    ),
-                  if (room.canChangeHistoryVisibility)
-                    PopupMenuItem<HistoryVisibility>(
-                      value: HistoryVisibility.shared,
-                      child: Text(
-                        HistoryVisibility.shared.getLocalizedString(
-                          MatrixLocals(L10n.of(context)!),
-                        ),
-                        style: titleStyle,
-                      ),
-                    ),
-                  if (room.canChangeHistoryVisibility)
-                    PopupMenuItem<HistoryVisibility>(
-                      value: HistoryVisibility.worldReadable,
-                      child: Text(
-                        HistoryVisibility.worldReadable.getLocalizedString(
-                          MatrixLocals(L10n.of(context)!),
-                        ),
-                        style: titleStyle,
-                      ),
-                    ),
-                ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.w),
                 child: renderTile(
-                  Icons.visibility_outlined,
-                  L10n.of(context)!.visibilityOfTheChatHistory,
-                  room.historyVisibility?.getLocalizedString(
-                        MatrixLocals(L10n.of(context)!),
-                      ) ??
-                      L10n.of(context)!.none,
+                  Icons.description,
+                  L10n.of(context)!.groupDescription,
+                  room.topic.isEmpty ? L10n.of(context)!.addGroupDescription : room.topic,
+                  onTap: room.canSendEvent(EventTypes.RoomTopic) ? setTopicAction : null,
                 ),
               ),
 
-              if (room.joinRules == JoinRules.public)
-                PopupMenuButton(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.w),
+                child: renderTile(
+                  Icons.link_outlined,
+                  L10n.of(context)!.editRoomAliases,
+                  (room.canonicalAlias.isNotEmpty) ? room.canonicalAlias : L10n.of(context)!.none,
+                  onTap: (room.joinRules == JoinRules.public) ? editAliases : null,
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.w),
+                child: PopupMenuButton(
                   color: constTheme.centerChannelBg,
-                  onSelected: setGuestAccessAction,
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<GuestAccess>>[
-                    if (room.canChangeGuestAccess)
-                      PopupMenuItem<GuestAccess>(
-                        value: GuestAccess.canJoin,
+                  onSelected: setJoinRulesAction,
+                  position: PopupMenuPosition.under,
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<JoinRules>>[
+                    if (room.canChangeJoinRules)
+                      PopupMenuItem<JoinRules>(
+                        value: JoinRules.public,
                         child: Text(
-                          GuestAccess.canJoin.getLocalizedString(MatrixLocals(
-                            L10n.of(context)!,
-                          )),
+                          JoinRules.public.getLocalizedString(
+                            MatrixLocals(L10n.of(context)!),
+                          ),
                           style: titleStyle,
                         ),
                       ),
-                    if (room.canChangeGuestAccess)
-                      PopupMenuItem<GuestAccess>(
-                        value: GuestAccess.forbidden,
+                    if (room.canChangeJoinRules)
+                      PopupMenuItem<JoinRules>(
+                        value: JoinRules.invite,
                         child: Text(
-                          GuestAccess.forbidden.getLocalizedString(MatrixLocals(
-                            L10n.of(context)!,
-                          )),
+                          JoinRules.invite.getLocalizedString(
+                            MatrixLocals(L10n.of(context)!),
+                          ),
                           style: titleStyle,
                         ),
                       ),
                   ],
                   child: renderTile(
-                    Icons.person_add_alt_1_outlined,
-                    L10n.of(context)!.areGuestsAllowedToJoin,
-                    room.guestAccess.getLocalizedString(
-                      MatrixLocals(L10n.of(context)!),
+                    Icons.shield_outlined,
+                    L10n.of(context)!.whoIsAllowedToJoinThisGroup,
+                    room.joinRules?.getLocalizedString(
+                          MatrixLocals(L10n.of(context)!),
+                        ) ??
+                        L10n.of(context)!.none,
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.w),
+                child: PopupMenuButton(
+                  color: constTheme.centerChannelBg,
+                  onSelected: setHistoryVisibilityAction,
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<HistoryVisibility>>[
+                    if (room.canChangeHistoryVisibility)
+                      PopupMenuItem<HistoryVisibility>(
+                        value: HistoryVisibility.invited,
+                        child: Text(
+                          HistoryVisibility.invited.getLocalizedString(
+                            MatrixLocals(L10n.of(context)!),
+                          ),
+                          style: titleStyle,
+                        ),
+                      ),
+                    if (room.canChangeHistoryVisibility)
+                      PopupMenuItem<HistoryVisibility>(
+                        value: HistoryVisibility.joined,
+                        child: Text(
+                          HistoryVisibility.joined.getLocalizedString(
+                            MatrixLocals(L10n.of(context)!),
+                          ),
+                          style: titleStyle,
+                        ),
+                      ),
+                    if (room.canChangeHistoryVisibility)
+                      PopupMenuItem<HistoryVisibility>(
+                        value: HistoryVisibility.shared,
+                        child: Text(
+                          HistoryVisibility.shared.getLocalizedString(
+                            MatrixLocals(L10n.of(context)!),
+                          ),
+                          style: titleStyle,
+                        ),
+                      ),
+                    if (room.canChangeHistoryVisibility)
+                      PopupMenuItem<HistoryVisibility>(
+                        value: HistoryVisibility.worldReadable,
+                        child: Text(
+                          HistoryVisibility.worldReadable.getLocalizedString(
+                            MatrixLocals(L10n.of(context)!),
+                          ),
+                          style: titleStyle,
+                        ),
+                      ),
+                  ],
+                  child: renderTile(
+                    Icons.visibility_outlined,
+                    L10n.of(context)!.visibilityOfTheChatHistory,
+                    room.historyVisibility?.getLocalizedString(
+                          MatrixLocals(L10n.of(context)!),
+                        ) ??
+                        L10n.of(context)!.none,
+                  ),
+                ),
+              ),
+
+              if (room.joinRules == JoinRules.public)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.w),
+                  child: PopupMenuButton(
+                    color: constTheme.centerChannelBg,
+                    onSelected: setGuestAccessAction,
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<GuestAccess>>[
+                      if (room.canChangeGuestAccess)
+                        PopupMenuItem<GuestAccess>(
+                          value: GuestAccess.canJoin,
+                          child: Text(
+                            GuestAccess.canJoin.getLocalizedString(MatrixLocals(
+                              L10n.of(context)!,
+                            )),
+                            style: titleStyle,
+                          ),
+                        ),
+                      if (room.canChangeGuestAccess)
+                        PopupMenuItem<GuestAccess>(
+                          value: GuestAccess.forbidden,
+                          child: Text(
+                            GuestAccess.forbidden.getLocalizedString(MatrixLocals(
+                              L10n.of(context)!,
+                            )),
+                            style: titleStyle,
+                          ),
+                        ),
+                    ],
+                    child: renderTile(
+                      Icons.person_add_alt_1_outlined,
+                      L10n.of(context)!.areGuestsAllowedToJoin,
+                      room.guestAccess.getLocalizedString(
+                        MatrixLocals(L10n.of(context)!),
+                      ),
                     ),
                   ),
                 ),
@@ -593,7 +610,7 @@ class ChatDetailsController extends State<ChatDetails> {
     );
 
     return Container(
-      margin: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w),
+      // margin: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w),
       decoration: BoxDecoration(
         color: constTheme.centerChannelColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(5.w),
