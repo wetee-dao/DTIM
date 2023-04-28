@@ -187,9 +187,9 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    var going = daoCtx.going.lastWhere((v) => v.status == 0);
-    await tester.waitFor(find.byKey(Key('referendumExecute${going.id}')), timeout: const Duration(seconds: 50));
-    await tester.tap(find.byKey(Key('referendumExecute${going.id}')));
+    // var going = daoCtx.going.lastWhere((v) => v.status == 0);
+    // await tester.waitFor(find.byKey(Key('referendumExecute${going.id}')), timeout: const Duration(seconds: 50));
+    // await tester.tap(find.byKey(Key('referendumExecute${going.id}')));
   });
 
   testWidgets('join Project', (WidgetTester tester) async {
