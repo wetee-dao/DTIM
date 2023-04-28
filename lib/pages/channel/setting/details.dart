@@ -357,6 +357,7 @@ class ChatDetailsController extends State<ChatDetails> {
       stream: room.onUpdate.stream,
       builder: (context, snapshot) {
         return SingleChildScrollView(
+          padding: EdgeInsets.only(top: 10.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

@@ -85,11 +85,6 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final imgw = (widget.avatarWidth * 0.7).toInt();
-    final imgbg = widget.color ?? constTheme.centerChannelColor.withOpacity(0.04);
-    final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.04);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue])
-        .generate(getUserShortId(widget.id), scale: (widget.avatarWidth / 50).ceil());
     return BasePopupMenu(
       verticalMargin: 5.w,
       horizontalMargin: 0,
@@ -97,16 +92,12 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
       controller: menuController,
       position: PreferredPosition.bottomLeft,
       pressType: PressType.mouseHover,
-      child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w), color: boxBg),
-        padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
-        alignment: Alignment.topLeft,
-        child: Image.memory(
-          img,
-          width: imgw.toDouble(),
-          height: imgw.toDouble(),
-          fit: BoxFit.contain,
-        ),
+      child: UserAvatar(
+        getUserShortId(widget.id),
+        widget.online,
+        widget.avatarWidth,
+        bg: widget.bg,
+        color: widget.color,
       ),
       menuBuilder: () => Container(
         width: 320.w,
@@ -127,8 +118,8 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                     getUserShortId(widget.id),
                     true,
                     65.w,
-                    bg: constTheme.sidebarText.withOpacity(0.1),
-                    color: constTheme.sidebarText,
+                    bg: constTheme.centerChannelColor.withOpacity(0.1),
+                    color: constTheme.centerChannelColor,
                   ),
                 ),
                 WidgetUserNameEmoji(getUserShortName(widget.name), null),

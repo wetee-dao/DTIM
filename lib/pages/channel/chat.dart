@@ -15,6 +15,7 @@ import '../../models/models.dart';
 import '../../router.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
+import '../../utils/debounce.dart';
 import '../../utils/functions.dart';
 import '../../objectbox.g.dart';
 import '../../utils/screen.dart';
@@ -73,7 +74,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   }
 
   void scrollListener() {
-    if (_listController.position.pixels <= _listController.position.minScrollExtent) {
+    if (_listController.position.pixels >= _listController.position.maxScrollExtent) {
       if (timeline!.canRequestHistory && !timeline!.isRequestingHistory) requestHistory();
     }
   }
@@ -108,7 +109,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     return u.address;
   }
 
-  void updateView(index) {
+  void updateView() {
     if (!mounted) return;
     print("updateView ===> ${timeline!.events.length}");
     _msgController.add(timeline!.events.reversed.last.eventId);
@@ -123,23 +124,17 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     if (timeline == null && im.currentState != null) {
       await im.currentState!.client.roomsLoading;
       await im.currentState!.client.accountDataLoading;
-      timeline = await room!.getTimeline(onInsert: updateView);
+      timeline = await room!.getTimeline(
+        onInsert: (i) => EasyDebounce.debounce(
+          'updateView',
+          const Duration(milliseconds: 200),
+          () => updateView(),
+        ),
+      );
       if (timeline!.events.isNotEmpty) {
         if (room!.isUnread) setReadMarker();
       }
-      updateView(0);
-      // when the scroll controller is attached we want to scroll to an event id, if specified
-      // and update the scroll controller...which will trigger a request history, if the
-      // "load more" button is visible on the screen
-      // SchedulerBinding.instance.addPostFrameCallback((_) async {
-      //   if (mounted) {
-      //     final event = VRouter.of(context).queryParameters['event'];
-      //     if (event != null) {
-      //       scrollToEventId(event);
-      //     }
-      //     _updateScrollController();
-      //   }
-      // });
+      updateView();
     }
     timeline!.requestKeys(onlineKeyBackupOnly: false);
     return true;
@@ -273,16 +268,20 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 stream: _msgController.stream,
                 initialData: "",
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  List<link.Event> events = timeline != null ? timeline!.events.reversed.toList() : [];
+                  List<link.Event> events = timeline != null ? timeline!.events : [];
                   return ListView.builder(
                     key: Key("chat_list_${widget.channerlID}"),
                     itemCount: events.length + 2,
                     shrinkWrap: true,
+                    reverse: true,
                     scrollDirection: Axis.vertical,
                     physics: const ChatScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     controller: _listController,
                     itemBuilder: (context, index) {
                       if (index == 0) {
+                        return SizedBox(height: 10.w);
+                      }
+                      if (index == events.length + 1) {
                         if (timeline != null && timeline!.isRequestingHistory) {
                           return Center(
                             child: Padding(
@@ -294,13 +293,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         return Container();
                       }
 
-                      if (index == events.length + 1) {
-                        return SizedBox(height: 10.w);
-                      }
                       link.Event event = events[index - 1];
                       link.Event? preEvent;
-                      if (index > 2) {
-                        preEvent = events[index - 2];
+                      if (index < events.length - 1) {
+                        preEvent = events[index + 1];
                       }
                       if (event.type == link.EventTypes.RoomCreate) {
                         return renderCreate(event);
@@ -359,8 +355,17 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   renderCreate(link.Event event) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (event.type == link.EventTypes.RoomCreate) {
-      return Padding(
+      return Container(
         padding: EdgeInsets.all(20.w),
+        margin: EdgeInsets.only(bottom: 10.w),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 1,
+              color: constTheme.centerChannelDivider,
+            ),
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

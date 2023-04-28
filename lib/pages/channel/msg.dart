@@ -48,7 +48,7 @@ class Msg extends StatelessWidget {
   isShowAvatar(link.Event event, link.Event? preEvent) {
     var showAvatar = true;
     if (preEvent == null) return true;
-    if (event.originServerTs.millisecondsSinceEpoch - preEvent.originServerTs.millisecondsSinceEpoch < 240000 &&
+    if (event.originServerTs.millisecondsSinceEpoch - preEvent.originServerTs.millisecondsSinceEpoch < 600000 &&
         event.senderId == preEvent.senderId) {
       showAvatar = false;
     }
@@ -76,6 +76,8 @@ class Msg extends StatelessWidget {
                     user.displayName ?? "-",
                     true,
                     40.w,
+                    color: constTheme.centerChannelColor,
+                    bg: constTheme.centerChannelDivider,
                   ),
                 ],
               ),
@@ -145,16 +147,6 @@ class Msg extends StatelessWidget {
     if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {
       return VerificationRequestContent(event: event, timeline: timeline);
     }
-
-    // if (event.messageType == link.MessageTypes.Image) {
-    //   return ClipRRect(
-    //     borderRadius: BorderRadius.circular(10.w),
-    //     child: Image.network(
-    //       detailMessages[index].srcImage!,
-    //       width: MediaQuery.of(context).size.width * 0.7,
-    //     ),
-    //   );
-    // }
     return MessageContent(event, textColor: constTheme.centerChannelColor);
   }
 

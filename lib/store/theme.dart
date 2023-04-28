@@ -500,11 +500,20 @@ ThemeData setTheme(String name) {
 
 ThemeData theme() {
   final t = themes[currentTheme];
-
+  final b = t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light;
+  final colors = getExtTheme(currentTheme);
   return ThemeData(
     useMaterial3: true,
-    brightness: t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light,
-    extensions: [getExtTheme(currentTheme)],
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: MaterialColorGenerator.from(hexToColor(t["centerChannelColor"]!)),
+      brightness: b,
+    ),
+    brightness: b,
+    dialogTheme: DialogTheme(
+      backgroundColor: colors.centerChannelBg,
+      titleTextStyle: TextStyle(color: colors.centerChannelColor),
+    ),
+    extensions: [colors],
   );
 }
 
@@ -616,5 +625,22 @@ class ExtColors extends ThemeExtension<ExtColors> {
       return this;
     }
     return this;
+  }
+}
+
+class MaterialColorGenerator {
+  static MaterialColor from(Color color) {
+    return MaterialColor(color.value, <int, Color>{
+      50: color.withOpacity(0.1),
+      100: color.withOpacity(0.2),
+      200: color.withOpacity(0.3),
+      300: color.withOpacity(0.4),
+      400: color.withOpacity(0.5),
+      500: color.withOpacity(0.6),
+      600: color.withOpacity(0.7),
+      700: color.withOpacity(0.8),
+      800: color.withOpacity(0.9),
+      900: color.withOpacity(1.0),
+    });
   }
 }

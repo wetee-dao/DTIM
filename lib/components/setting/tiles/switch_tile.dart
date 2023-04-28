@@ -27,7 +27,7 @@ class Switchtile extends AbstractSettingsTile {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    Color activeSwitchColor = constTheme.mentionBg;
+    Color activeSwitchColor = constTheme.buttonBg;
 
     return IgnorePointer(
       ignoring: !enabled,
@@ -101,7 +101,7 @@ class Switchtile extends AbstractSettingsTile {
                       value: initialValue!,
                       onChanged: onToggle,
                       inactiveTrackColor: constTheme.centerChannelColor,
-                      activeColor: enabled ? activeSwitchColor : constTheme.centerChannelColor.darker(2),
+                      activeColor: enabled ? activeSwitchColor : constTheme.centerChannelColor.withOpacity(0.5),
                     ),
                   ),
                 ],

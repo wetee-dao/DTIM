@@ -102,9 +102,10 @@ class MessageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final im = context.read<IMProvider>();
-    final client = im.currentState!.client;
-    final buttonTextColor = event.senderId == client.userID ? textColor : null;
+    // final im = context.read<IMProvider>();
+    // final client = im.currentState!.client;
+    // final buttonTextColor = event.senderId == client.userID ? textColor : null;
+    final buttonTextColor = textColor;
     switch (event.type) {
       case EventTypes.Message:
       case EventTypes.Encrypted:

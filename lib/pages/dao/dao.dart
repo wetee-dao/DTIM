@@ -93,7 +93,7 @@ class _DaoPageState extends State<DaoPage> {
       appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
-              title: title,
+              title: title == "" ? "DAO" : title,
               showMacosTop: false,
               leading: Padding(
                 padding: EdgeInsets.only(left: 8.w),
@@ -154,7 +154,7 @@ class _DaoPageState extends State<DaoPage> {
                       children: mainPages,
                     ),
                   )
-                : Container(),
+                : Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w)),
           ),
         ],
       ),

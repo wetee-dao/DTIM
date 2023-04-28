@@ -96,7 +96,7 @@ class _PCPageState extends State<PCPage> {
                     ),
                   ),
                   Container(
-                    width: 4.w,
+                    width: 6.w,
                     height: 4.w,
                     margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
                     decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),

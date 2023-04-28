@@ -284,7 +284,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       height: 66.w,
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
       decoration: BoxDecoration(
         color: constTheme.centerChannelBg,
         border: Border(top: BorderSide(color: constTheme.centerChannelDivider)),
@@ -293,102 +293,104 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          PopupMenuButton<String>(
-            icon: Container(
-              alignment: Alignment.center,
-              width: 25.w,
-              height: 25.w,
-              decoration: BoxDecoration(
-                color: constTheme.centerChannelColor.withAlpha(200),
-                borderRadius: BorderRadius.circular(25.w),
+          SizedBox(
+            width: 25.w,
+            child: PopupMenuButton<String>(
+              icon: Container(
+                alignment: Alignment.center,
+                width: 25.w,
+                height: 25.w,
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelColor.withAlpha(200),
+                  borderRadius: BorderRadius.circular(25.w),
+                ),
+                child: Icon(
+                  Icons.add,
+                  color: constTheme.centerChannelBg,
+                  size: 20.w,
+                ),
               ),
-              child: Icon(
-                Icons.add,
-                color: constTheme.centerChannelBg,
-                size: 20.w,
-              ),
+              padding: EdgeInsets.zero,
+              onSelected: onAddPopupMenuButtonSelected,
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'file',
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      child: Icon(Icons.attachment_outlined),
+                    ),
+                    title: Text(L10n.of(context)!.sendFile),
+                    contentPadding: const EdgeInsets.all(0),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'image',
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      child: Icon(Icons.image_outlined),
+                    ),
+                    title: Text(L10n.of(context)!.sendImage),
+                    contentPadding: const EdgeInsets.all(0),
+                  ),
+                ),
+                if (PlatformInfos.isMobile)
+                  PopupMenuItem<String>(
+                    value: 'camera',
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.purple,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.camera_alt_outlined),
+                      ),
+                      title: Text(L10n.of(context)!.openCamera),
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+                if (PlatformInfos.isMobile)
+                  PopupMenuItem<String>(
+                    value: 'camera-video',
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.videocam_outlined),
+                      ),
+                      title: Text(L10n.of(context)!.openVideoCamera),
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+                // if (widget.room.getImagePacks(ImagePackUsage.sticker).isNotEmpty)
+                //   PopupMenuItem<String>(
+                //     value: 'sticker',
+                //     child: ListTile(
+                //       leading: const CircleAvatar(
+                //         backgroundColor: Colors.orange,
+                //         foregroundColor: Colors.white,
+                //         child: Icon(Icons.emoji_emotions_outlined),
+                //       ),
+                //       title: Text(L10n.of(context)!.sendSticker),
+                //       contentPadding: const EdgeInsets.all(0),
+                //     ),
+                //   ),
+                if (PlatformInfos.isMobile)
+                  PopupMenuItem<String>(
+                    value: 'location',
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.brown,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.gps_fixed_outlined),
+                      ),
+                      title: Text(L10n.of(context)!.shareLocation),
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+              ],
             ),
-            iconSize: 25.w,
-            padding: EdgeInsets.zero,
-            onSelected: onAddPopupMenuButtonSelected,
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'file',
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    child: Icon(Icons.attachment_outlined),
-                  ),
-                  title: Text(L10n.of(context)!.sendFile),
-                  contentPadding: const EdgeInsets.all(0),
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'image',
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    child: Icon(Icons.image_outlined),
-                  ),
-                  title: Text(L10n.of(context)!.sendImage),
-                  contentPadding: const EdgeInsets.all(0),
-                ),
-              ),
-              if (PlatformInfos.isMobile)
-                PopupMenuItem<String>(
-                  value: 'camera',
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.purple,
-                      foregroundColor: Colors.white,
-                      child: Icon(Icons.camera_alt_outlined),
-                    ),
-                    title: Text(L10n.of(context)!.openCamera),
-                    contentPadding: const EdgeInsets.all(0),
-                  ),
-                ),
-              if (PlatformInfos.isMobile)
-                PopupMenuItem<String>(
-                  value: 'camera-video',
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      child: Icon(Icons.videocam_outlined),
-                    ),
-                    title: Text(L10n.of(context)!.openVideoCamera),
-                    contentPadding: const EdgeInsets.all(0),
-                  ),
-                ),
-              // if (widget.room.getImagePacks(ImagePackUsage.sticker).isNotEmpty)
-              //   PopupMenuItem<String>(
-              //     value: 'sticker',
-              //     child: ListTile(
-              //       leading: const CircleAvatar(
-              //         backgroundColor: Colors.orange,
-              //         foregroundColor: Colors.white,
-              //         child: Icon(Icons.emoji_emotions_outlined),
-              //       ),
-              //       title: Text(L10n.of(context)!.sendSticker),
-              //       contentPadding: const EdgeInsets.all(0),
-              //     ),
-              //   ),
-              if (PlatformInfos.isMobile)
-                PopupMenuItem<String>(
-                  value: 'location',
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.brown,
-                      foregroundColor: Colors.white,
-                      child: Icon(Icons.gps_fixed_outlined),
-                    ),
-                    title: Text(L10n.of(context)!.shareLocation),
-                    contentPadding: const EdgeInsets.all(0),
-                  ),
-                ),
-            ],
           ),
           SizedBox(
             width: 10.w,
