@@ -175,8 +175,6 @@ class _DirectChatsState extends State<DirectChats> {
                       room.directChatMatrixID ?? "-",
                       true,
                       25.w,
-                      bg: constTheme.sidebarText.withOpacity(0.1),
-                      color: constTheme.sidebarText,
                     ),
                   ),
                 ),

@@ -28,7 +28,8 @@ class _UserAvatarState extends State<UserAvatar> {
     final imgw = (widget.avatarWidth * 0.7).toInt();
     final imgbg = widget.color ?? constTheme.centerChannelColor;
     final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
-    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(widget.avatarSrc, scale: 1);
+    final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue])
+        .generate(widget.avatarSrc, scale: (widget.avatarWidth / 30).ceil());
     ctx = Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(widget.avatarWidth * 0.1), color: boxBg),
       padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
