@@ -287,7 +287,7 @@ List<Org> orgs = [
   Org(
     "asyoume",
     daoId: 5000,
-    name: "我门",
+    name: "WeteeDAO",
     desc: "we3 在线协作，分布式办公软件",
     chainUrl: "ws://chain-ws.tc.asyou.me",
     metaData: OrgMetaData(

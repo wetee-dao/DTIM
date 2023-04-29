@@ -93,7 +93,7 @@ class _DaoPageState extends State<DaoPage> {
       appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
-              title: title == "" ? "DAO" : title,
+              title: title == "" ? im.currentState!.org.orgName! : title,
               showMacosTop: false,
               leading: Padding(
                 padding: EdgeInsets.only(left: 8.w),
@@ -104,6 +104,7 @@ class _DaoPageState extends State<DaoPage> {
                   icon: Icon(
                     Appicon.organcode,
                     color: constTheme.sidebarHeaderTextColor,
+                    size: 16.w,
                   ),
                 ),
               ),

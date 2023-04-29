@@ -52,7 +52,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
     Timer(const Duration(milliseconds: 300), () {
       im = context.read<IMProvider>();
-      // im!.addListener(onImInit);
       onImInit();
     });
   }
@@ -107,6 +106,11 @@ class _OrgViewPageState extends State<OrgViewPage> {
     }
   }
 
+  String orgName(String str) {
+    if (str.length < 5) return str;
+    return "${str.substring(0, 4)}...";
+  }
+
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
@@ -142,7 +146,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                       child: Row(
                         children: [
                           Text(
-                            org != null ? org!.orgName ?? "" : '',
+                            org != null && org!.orgName != null ? orgName(org!.orgName!) : '',
                             style: TextStyle(
                               color: constTheme.sidebarText,
                               fontWeight: FontWeight.w800,

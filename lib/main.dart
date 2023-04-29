@@ -88,7 +88,7 @@ class App extends StatelessWidget {
           ChangeNotifierProvider<IMProvider>(create: (_) => im),
         ],
         child: MaterialApp.router(
-          title: '我门',
+          title: 'DAO',
           debugShowCheckedModeBanner: false,
           routeInformationProvider: _router.routeInformationProvider,
           routeInformationParser: _router.routeInformationParser,
