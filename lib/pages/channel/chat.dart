@@ -224,17 +224,23 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   return FutureBuilder<link.EncryptionHealthState>(
                     future: room!.calcEncryptionHealthState(),
                     builder: (BuildContext context, snapshot) => IconButton(
-                      padding: EdgeInsets.all(3.w),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(minWidth: 27.w, maxWidth: 27.w, minHeight: 27.w, maxHeight: 27.w),
+                      style: IconButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.w),
+                        ),
+                      ),
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
                         room!.encrypted ? Icons.lock_outline : Icons.lock_open,
-                        size: 19.w,
+                        size: 18.w,
                         color: room!.joinRules != link.JoinRules.public && !room!.encrypted
-                            ? constTheme.centerChannelColor.withAlpha(150)
+                            ? constTheme.centerChannelColor
                             : room!.joinRules != link.JoinRules.public &&
                                     snapshot.data == link.EncryptionHealthState.unverifiedDevices
                                 ? constTheme.mentionBg
-                                : constTheme.centerChannelColor.withAlpha(150),
+                                : constTheme.centerChannelColor,
                       ),
                       onPressed: () {
                         showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/e2e");
@@ -247,13 +253,20 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
                 },
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(minWidth: 27.w, maxWidth: 27.w, minHeight: 27.w, maxHeight: 27.w),
+                style: IconButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.w),
+                  ),
+                ),
                 icon: Icon(
                   Icons.info_outline,
-                  color: constTheme.centerChannelColor.withAlpha(150),
+                  color: constTheme.centerChannelColor,
                   size: 19.w,
                 ),
               ),
-              SizedBox(width: 5.w),
+              SizedBox(width: 9.w),
             ],
           ),
         ),
@@ -296,7 +309,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       link.Event event = events[index - 1];
                       link.Event? preEvent;
                       if (index < events.length - 1) {
-                        preEvent = events[index + 1];
+                        preEvent = events[index];
                       }
                       if (event.type == link.EventTypes.RoomCreate) {
                         return renderCreate(event);

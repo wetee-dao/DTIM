@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'package:asyou_app/components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../components/components.dart';
 import '../utils/screen.dart';
 import '../store/theme.dart';
 
@@ -71,45 +72,53 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 2.w, top: 5.w, right: 5.w, bottom: 2.w),
-          child: renderIcons(constTheme),
-        ),
-        SizedBox(height: 9.w),
-        widget.child!
+        renderIcons(constTheme),
+        SizedBox(height: 10.w),
+        widget.child!,
       ],
     );
   }
 
   renderIcons(constTheme) {
-    var iconColor = widget.color ?? constTheme.centerChannelColor;
+    var iconColor = widget.color ?? constTheme.centerChannelColor.withOpacity(0.5);
+    var size = 25.w;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            windowManager.minimize();
-          },
-          child: Icon(Appicon.zuixiaohua, color: iconColor, size: 17.w),
+        IconButton(
+          onPressed: () => windowManager.minimize(),
+          icon: Icon(Appicon.zuixiaohua, color: iconColor, size: 17.w),
+          iconSize: 17.w,
+          constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
+          padding: EdgeInsets.zero,
+          tooltip: "minimize",
+          style: IconButton.styleFrom(
+            shape: const RoundedRectangleBorder(
+              // borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.zero, //Rectangular border
+            ),
+          ),
         ),
-        SizedBox(width: 15.w),
         if (_isMaximized)
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              windowManager.unmaximize();
-            },
-            child: Icon(Appicon.chuangkouhua, color: iconColor, size: 13.w),
+          IconButton(
+            onPressed: () => windowManager.unmaximize(),
+            icon: Icon(Appicon.chuangkouhua, color: iconColor, size: 12.w),
+            iconSize: 17.w,
+            constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
+            padding: EdgeInsets.zero,
+            tooltip: "unmaximize",
+            style: IconButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                // borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.zero, //Rectangular border
+              ),
+            ),
           ),
         if (!_isMaximized)
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              windowManager.maximize();
-            },
-            child: Container(
+          IconButton(
+            onPressed: () => windowManager.maximize(),
+            icon: Container(
               width: 12.w,
               height: 12.w,
               decoration: BoxDecoration(
@@ -117,18 +126,33 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
                 borderRadius: BorderRadius.all(Radius.circular(2.w)),
               ),
             ),
+            iconSize: 17.w,
+            constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
+            padding: EdgeInsets.zero,
+            tooltip: "maximize",
+            style: IconButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                // borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.zero, //Rectangular border
+              ),
+            ),
           ),
-        SizedBox(width: 13.w),
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            // windowManager.close();
-            // windowManager.minimize();
-            windowManager.hide();
-          },
-          child: Icon(Appicon.tuopanhua, color: iconColor, size: 17.w),
+        IconButton(
+          onPressed: () => windowManager.hide(),
+          icon: Icon(Appicon.tuopanhua, color: iconColor, size: 17.w),
+          iconSize: 17.w,
+          constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
+          padding: EdgeInsets.zero,
+          tooltip: L10n.of(context)!.close,
+          style: IconButton.styleFrom(
+            shape: const RoundedRectangleBorder(
+              // borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.zero, //Rectangular border
+            ),
+            hoverColor: constTheme.errorTextColor.withOpacity(0.5),
+          ),
         ),
-        SizedBox(width: 2.w),
+        if (widget.child != null) SizedBox(width: 10.w)
       ],
     );
   }
