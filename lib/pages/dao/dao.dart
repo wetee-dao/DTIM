@@ -95,7 +95,7 @@ class _DaoPageState extends State<DaoPage> {
               title: title == "" ? im.currentState!.org.orgName! : title,
               showMacosTop: false,
               leading: Padding(
-                padding: EdgeInsets.only(left: 8.w),
+                padding: EdgeInsets.only(left: 5.w),
                 child: IconButton(
                   onPressed: () {
                     drawerKey.currentState!.openDrawer();

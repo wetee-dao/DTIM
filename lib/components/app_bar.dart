@@ -128,7 +128,7 @@ class SideBarAppBar extends StatelessWidget implements PreferredSizeWidget {
                     context.pop();
                   },
                 ),
-            SizedBox(width: 8.w * _height / 60.w),
+            SizedBox(width: 2.w * _height / 60.w),
             Text(
               _title,
               style: TextStyle(color: constTheme.sidebarText, fontSize: 14.w),

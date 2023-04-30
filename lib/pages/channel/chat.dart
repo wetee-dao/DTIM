@@ -74,7 +74,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   }
 
   void scrollListener() {
-    if (_listController.position.pixels >= _listController.position.maxScrollExtent) {
+    if (_listController.position.pixels + 30 >= _listController.position.maxScrollExtent) {
       if (timeline!.canRequestHistory && !timeline!.isRequestingHistory) requestHistory();
     }
   }
@@ -369,7 +369,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (event.type == link.EventTypes.RoomCreate) {
       return Container(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.all(18.w),
         margin: EdgeInsets.only(bottom: 10.w),
         decoration: BoxDecoration(
           border: Border(
