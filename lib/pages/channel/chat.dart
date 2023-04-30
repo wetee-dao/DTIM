@@ -225,7 +225,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                     future: room!.calcEncryptionHealthState(),
                     builder: (BuildContext context, snapshot) => IconButton(
                       padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(minWidth: 27.w, maxWidth: 27.w, minHeight: 27.w, maxHeight: 27.w),
+                      constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
                       style: IconButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.w),
@@ -234,7 +234,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
                         room!.encrypted ? Icons.lock_outline : Icons.lock_open,
-                        size: 18.w,
+                        size: 21.w,
                         color: room!.joinRules != link.JoinRules.public && !room!.encrypted
                             ? constTheme.centerChannelColor
                             : room!.joinRules != link.JoinRules.public &&
@@ -249,21 +249,23 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   );
                 },
               ),
+              SizedBox(width: 5.w),
               IconButton(
                 onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
                 },
                 padding: EdgeInsets.zero,
-                constraints: BoxConstraints(minWidth: 27.w, maxWidth: 27.w, minHeight: 27.w, maxHeight: 27.w),
+                constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
                 style: IconButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4.w),
                   ),
                 ),
+                tooltip: "info",
                 icon: Icon(
                   Icons.info_outline,
                   color: constTheme.centerChannelColor,
-                  size: 19.w,
+                  size: 21.w,
                 ),
               ),
               SizedBox(width: 9.w),

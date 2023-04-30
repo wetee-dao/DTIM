@@ -152,7 +152,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
             hoverColor: constTheme.errorTextColor.withOpacity(0.5),
           ),
         ),
-        if (widget.child != null) SizedBox(width: 10.w)
+        if (widget.child != null) SizedBox(width: 8.w)
       ],
     );
   }
