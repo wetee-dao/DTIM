@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
+import '../../components/app_bar.dart';
 import '../../components/mxc_image.dart';
+import '../../store/theme.dart';
 import '../../utils/platform_infos.dart';
 import 'image_viewer.dart';
 
@@ -13,43 +15,45 @@ class ImageViewerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: constTheme.centerChannelBg,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
+      appBar: LocalAppBar(
+        backgroundColor: constTheme.sidebarHeaderBg.withOpacity(0.6),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: Navigator.of(context).pop,
           color: Colors.white,
           tooltip: L10n.of(context)!.close,
         ),
-        backgroundColor: const Color(0x44000000),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.reply_outlined),
-            onPressed: controller.forwardAction,
-            color: Colors.white,
-            tooltip: L10n.of(context)!.share,
-          ),
-          if (!PlatformInfos.isIOS)
+        tools: Row(
+          children: [
             IconButton(
-              icon: const Icon(Icons.download_outlined),
-              onPressed: () => controller.saveFileAction(context),
+              icon: const Icon(Icons.reply_outlined),
+              onPressed: controller.forwardAction,
               color: Colors.white,
-              tooltip: L10n.of(context)!.downloadFile,
+              tooltip: L10n.of(context)!.share,
             ),
-          if (PlatformInfos.isMobile)
-            // Use builder context to correctly position the share dialog on iPad
-            Builder(
-              builder: (context) => IconButton(
-                onPressed: () => controller.shareFileAction(context),
-                tooltip: L10n.of(context)!.share,
+            if (!PlatformInfos.isIOS)
+              IconButton(
+                icon: const Icon(Icons.download_outlined),
+                onPressed: () => controller.saveFileAction(context),
                 color: Colors.white,
-                icon: Icon(Icons.adaptive.share_outlined),
+                tooltip: L10n.of(context)!.downloadFile,
               ),
-            )
-        ],
+            if (PlatformInfos.isMobile)
+              // Use builder context to correctly position the share dialog on iPad
+              Builder(
+                builder: (context) => IconButton(
+                  onPressed: () => controller.shareFileAction(context),
+                  tooltip: L10n.of(context)!.share,
+                  color: Colors.white,
+                  icon: Icon(Icons.adaptive.share_outlined),
+                ),
+              )
+          ],
+        ),
       ),
       body: InteractiveViewer(
         minScale: 1.0,

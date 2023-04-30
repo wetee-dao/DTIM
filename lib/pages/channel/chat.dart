@@ -40,7 +40,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   late link.Room? room;
   late link.Client? client;
   late Account me;
-  final int _loadHistoryCount = 200;
+  final int _loadHistoryCount = 30;
 
   link.Timeline? timeline;
   Stream<bool>? sub;

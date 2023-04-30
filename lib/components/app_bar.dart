@@ -14,9 +14,18 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? tools;
   final Function? onBack;
   final bool _showMacosTop;
-  final double macosTop = Platform.isMacOS ? 18.w : 0;
-  LocalAppBar({Key? key, this.onBack, this.tools, String? title, double? height, bool? showMacosTop, this.leading})
-      : _height = height ?? 60.w,
+  final double macosTop = Platform.isMacOS ? 20.w : 0;
+  final Color? backgroundColor;
+  LocalAppBar({
+    Key? key,
+    this.onBack,
+    this.tools,
+    String? title,
+    double? height,
+    bool? showMacosTop,
+    this.leading,
+    this.backgroundColor,
+  })  : _height = height ?? 60.w,
         _title = title ?? "",
         _showMacosTop = showMacosTop ?? true,
         super(key: key);
@@ -29,7 +38,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
         height: _height + (_showMacosTop ? macosTop : 0),
         padding: EdgeInsets.only(top: (_showMacosTop ? macosTop : 0)),
         decoration: BoxDecoration(
-          color: constTheme.sidebarHeaderBg,
+          color: backgroundColor ?? constTheme.sidebarHeaderBg,
           // border: Border(bottom: BorderSide(color: constTheme.sidebarHeaderTextColor.withOpacity(0.15))),
         ),
         child: Row(
@@ -39,7 +48,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
             leading ??
                 InkWell(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 15.w),
+                    padding: EdgeInsets.only(left: 5.w),
                     child: Icon(
                       Icons.arrow_back,
                       color: constTheme.sidebarHeaderTextColor,
