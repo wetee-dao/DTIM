@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:asyou_app/pages/dao/referendum.dart';
 import 'package:asyou_app/utils/screen.dart';
@@ -165,20 +164,16 @@ class _DaoPageState extends State<DaoPage> {
   pageHook() {
     if (pageStr.contains("Guilds")) {
       final ids = pageStr.split(" ");
-      Timer(const Duration(milliseconds: 100), () {
-        final guildState = guildKey.currentState as GuildpageState;
-        final guild = daoCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
-        guildState.init(guild);
-      });
+      final guildState = guildKey.currentState as GuildpageState;
+      final guild = daoCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
+      guildState.init(guild);
     }
     if (pageStr.contains("Projects")) {
       final ids = pageStr.split(" ");
-      Timer(const Duration(milliseconds: 100), () {
-        final projectState = projectKey.currentState as ProjectPageState;
-        final project = daoCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
-        // guildKey.currentState?.getData();
-        projectState.init(project);
-      });
+      final projectState = projectKey.currentState as ProjectPageState;
+      final project = daoCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
+      // guildKey.currentState?.getData();
+      projectState.init(project);
     }
   }
 

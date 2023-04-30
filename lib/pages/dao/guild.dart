@@ -43,7 +43,9 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   }
 
   init(GuildInfo guild) {
-    info = guild;
+    setState(() {
+      info = guild;
+    });
     getData();
   }
 

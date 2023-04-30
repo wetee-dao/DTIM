@@ -51,7 +51,9 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   }
 
   init(ProjectInfo project) {
-    info = project;
+    setState(() {
+      info = project;
+    });
     getData();
   }
 
