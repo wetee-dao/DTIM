@@ -40,11 +40,11 @@ class PaymentsDetailList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(Icons.wallet_rounded, color: constTheme.centerChannelColor.withOpacity(0.5), size: 30.w),
-              SizedBox(height: 15.w),
-              Text(address, style: TextStyle(color: constTheme.centerChannelColor, fontSize: 16.w)),
-              SizedBox(height: 10.w),
+              SizedBox(height: 5.w),
+              Text(address, style: TextStyle(color: constTheme.centerChannelColor, fontSize: 15.w)),
+              SizedBox(height: 12.w),
               Text(
-                "SHARE:  ${share.free}",
+                "Share:  ${share.free}",
                 key: const Key("myShare"),
                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
               ),

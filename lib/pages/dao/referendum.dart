@@ -45,7 +45,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30.w),
+                SizedBox(height: 20.w),
                 Row(
                   children: [
                     Icon(

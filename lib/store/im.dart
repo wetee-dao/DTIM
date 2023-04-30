@@ -119,9 +119,6 @@ class IMProvider with ChangeNotifier {
             auth: auth,
           );
         });
-        if (client.userID != null) {
-          await client.setDisplayName(client.userID!, me!.name);
-        }
       } catch (e) {
         print("注册出现错误 => $e");
       }
@@ -142,6 +139,13 @@ class IMProvider with ChangeNotifier {
 
     if (!client.isLogged()) {
       throw "连接错误";
+    }
+
+    if (client.userID != null) {
+      var displayName = await client.getDisplayName(client.userID!);
+      if (displayName == getUserShortId(client.userID!)) {
+        await client.setDisplayName(client.userID!, me!.name);
+      }
     }
 
     connections[userName] = client;

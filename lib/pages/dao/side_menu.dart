@@ -31,7 +31,7 @@ class SideMenu extends StatelessWidget {
           children: [
             isPc()
                 ? Container(
-                    height: 15.w,
+                    height: 20.w,
                     alignment: Alignment.topCenter,
                   )
                 : const SizedBox(

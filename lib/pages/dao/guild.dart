@@ -12,7 +12,6 @@ import '../../components/components.dart';
 import '../../components/dao/text.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
-import '../../utils/responsive.dart';
 import 'sub/member.dart';
 import 'sub/referendum.dart';
 
@@ -50,11 +49,12 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   }
 
   getData() async {
-    await dao.getVoteData();
     members = await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: info!.id);
+    if (mounted) setState(() {});
+
+    await dao.getVoteData();
     pending = dao.pending.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == info!.id).toList();
     going = dao.going.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == info!.id).toList();
-    if (mounted) setState(() {});
   }
 
   @override
@@ -70,7 +70,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 15.w),
+                SizedBox(height: 20.w),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

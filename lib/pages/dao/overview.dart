@@ -9,7 +9,6 @@ import '../../components/dao/payments_detail_list.dart';
 import '../../components/dao/text.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
-import '../../utils/responsive.dart';
 import 'sub/referendum.dart';
 
 class Overviewpage extends StatelessWidget {
@@ -69,12 +68,12 @@ class Overviewpage extends StatelessWidget {
                             InfoCard(
                               icon: Appicon.zuzhiDataOrganization6,
                               label: "Skilled Guild",
-                              amount: '${dao.guilds.length}个',
+                              amount: '${dao.guilds.length}',
                             ),
                             InfoCard(
                               icon: Appicon.xiangmu,
                               label: "Project",
-                              amount: '${dao.projects.length}个',
+                              amount: '${dao.projects.length}',
                             ),
                           ],
                         ),

@@ -63,7 +63,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 30.w),
+              SizedBox(height: 20.w),
               Row(
                 children: [
                   Icon(
@@ -113,7 +113,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                 text: daoCtx.dao.purpose,
                 size: 14.w,
               ),
-              SizedBox(height: 15.w),
+              SizedBox(height: 10.w),
             ],
           ),
         ),
@@ -132,7 +132,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
               controller: boardScrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
-                SizedBox(width: 20.w),
+                SizedBox(width: 10.w),
                 for (var quarter in quarters)
                   _createListView(
                     "${quarter.year}.Q${quarter.quarter}",

@@ -247,7 +247,7 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
             color: constTheme.centerChannelBg,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: constTheme.centerChannelBg.withOpacity(0.4),
                 blurRadius: 8.w,
               ),
             ],

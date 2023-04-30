@@ -86,7 +86,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 15.w),
+              SizedBox(height: 20.w),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
