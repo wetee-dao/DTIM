@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:asyou_app/pages/web_render/webf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:webf/css.dart';
+import 'package:webf/module.dart';
 
 import '../components/components.dart';
 import '../components/sider_bar.dart';
@@ -32,6 +35,17 @@ class _PCPageState extends State<PCPage> {
   final mainPages = [
     const OrgPage(),
     const DaoPage(),
+    WebFage(
+      WebFNavigationAction(
+        NONE,
+        // 'http://192.168.111.105:3333/kraken/home.kbc1',
+        // "http://192.168.111.105:3333/home.html",
+        // 'http://asyoume-contract-ui.oss-cn-hangzhou.aliyuncs.com',
+        'https://trace-s.asyou.me/kraken/home.kbc1',
+        // "https://www.baidu.com/",
+        WebFNavigationType.prerender,
+      ),
+    ),
   ];
 
   @override
@@ -124,6 +138,10 @@ class _PCPageState extends State<PCPage> {
                             SiderBarItem(Appicon.organcode, "DAO", key: const Key("DAO"), selected: id.data == 1,
                                 onTap: () {
                               onSelect(1);
+                            }),
+                            SiderBarItem(Appicon.organcode, "FF", key: const Key("FF"), selected: id.data == 2,
+                                onTap: () {
+                              onSelect(2);
                             }),
                           ],
                         );

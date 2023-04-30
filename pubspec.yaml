@@ -64,7 +64,11 @@ dependencies:
   flutter_blurhash: ^0.7.0
   # 视频播放器
   video_player: ^2.6.0
+  # html
   universal_html: ^2.2.1
+  # webf 渲染框架
+  webf: 
+    path: ../webf/webf
 
   chewie: ^1.4.0
   flutter_map: ^3.1.0

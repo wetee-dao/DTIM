@@ -31,6 +31,8 @@ BuildContext globalCtx() {
   return rootNavigatorKey.currentContext!;
 }
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 routers() {
   return <GoRoute>[
     GoRoute(
