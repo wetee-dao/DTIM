@@ -1,3 +1,4 @@
+import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -21,11 +22,14 @@ class ImageViewerView extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: LocalAppBar(
         backgroundColor: constTheme.sidebarHeaderBg.withOpacity(0.6),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: Navigator.of(context).pop,
-          color: Colors.white,
-          tooltip: L10n.of(context)!.close,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: Navigator.of(context).pop,
+            color: Colors.white,
+            tooltip: L10n.of(context)!.close,
+          ),
         ),
         tools: Row(
           children: [

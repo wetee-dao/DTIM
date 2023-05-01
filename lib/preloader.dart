@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'components/avatar.dart';
 import 'components/components.dart';
@@ -48,9 +50,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     if (im.connections.keys.isEmpty) {
       Timer(const Duration(milliseconds: 2000), () {
         if (!mounted) return;
-        setState(() {
-          _loading = false;
-        });
+        setState(() => _loading = false);
       });
     }
   }
@@ -170,18 +170,28 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       backgroundColor: constTheme.centerChannelBg,
       body: Center(
         child: _loading
-            ? moveWindow(
-                SizedBox(
-                  width: 150.w,
-                  child: Opacity(
-                    opacity: 0.6,
-                    child: Lottie.asset(
-                      'assets/app_loader.json',
-                      repeat: true,
+            ? moveWindow(Stack(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 150.w,
+                    margin: EdgeInsets.only(bottom: 50.w),
+                    child: Opacity(
+                      opacity: 0.6,
+                      child: Lottie.asset('assets/infinite-loader.json', repeat: true, fit: BoxFit.cover),
                     ),
                   ),
-                ),
-              )
+                  Positioned(
+                    top: 100.w,
+                    child: Text(
+                      "Web3",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 25.w, color: constTheme.centerChannelColor.withOpacity(0.3)),
+                    ),
+                  ),
+                ],
+              ))
             : Row(
                 children: [
                   Expanded(
@@ -443,14 +453,30 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             Expanded(
                               child: Opacity(
                                 opacity: 0.3,
-                                // child: Lottie.asset(
-                                //   'assets/crypto-wallet.json',
-                                //   repeat: true,
-                                // ),
-                                child: Image.asset(
-                                  'assets/banner.png',
-                                  width: 350.w,
-                                  filterQuality: FilterQuality.medium,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/banner.png',
+                                      width: 350.w,
+                                      filterQuality: FilterQuality.medium,
+                                    ),
+                                    SizedBox(height: 20.w),
+                                    Text(
+                                      "100% open source",
+                                      style: TextStyle(
+                                        fontSize: 30.w,
+                                        color: constTheme.centerChannelColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      "decentralized office tools",
+                                      style: TextStyle(
+                                        fontSize: 30.w,
+                                        color: constTheme.centerChannelColor,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),

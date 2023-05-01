@@ -239,7 +239,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                             ? constTheme.centerChannelColor
                             : room!.joinRules != link.JoinRules.public &&
                                     snapshot.data == link.EncryptionHealthState.unverifiedDevices
-                                ? constTheme.mentionBg
+                                ? constTheme.buttonBg
                                 : constTheme.centerChannelColor,
                       ),
                       onPressed: () {

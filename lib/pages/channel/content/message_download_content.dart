@@ -34,14 +34,14 @@ class MessageDownloadContent extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(vertical: 15.w),
               child: Row(
                 children: [
                   Icon(
                     Icons.file_download_outlined,
                     color: textColor,
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 10.w),
                   Text(
                     filename,
                     maxLines: 1,
@@ -55,7 +55,7 @@ class MessageDownloadContent extends StatelessWidget {
             ),
             Divider(height: 1.w, color: constTheme.centerChannelColor.withOpacity(0.4)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.w),
               child: Row(
                 children: [
                   Text(

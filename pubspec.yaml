@@ -64,7 +64,12 @@ dependencies:
   flutter_blurhash: ^0.7.0
   # 视频播放器
   video_player: ^2.6.0
+  # html
   universal_html: ^2.2.1
+  # 文字动画
+  animated_text_kit: ^4.2.2
+  # svg
+  flutter_svg: ^0.22.0
 
   chewie: ^1.4.0
   flutter_map: ^3.1.0
