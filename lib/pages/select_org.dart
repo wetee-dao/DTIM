@@ -77,7 +77,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     if (subscription != null) {
       await subscription!.cancel();
     }
-    im.removeListener(onImInit);
+    // im.removeListener(onImInit);
     return;
   }
 

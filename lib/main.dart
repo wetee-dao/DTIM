@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:asyou_app/bloc/app/app.dart';
 import 'package:asyou_app/utils/tray.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -18,13 +19,15 @@ import 'store/theme.dart';
 import 'utils/screen.dart';
 
 final botToastBuilder = BotToastInit();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // 等待桌面初始化
   await windowManager.ensureInitialized();
   await windowManager.hide();
 
-  AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
+  AdaptiveDialog.instance
+      .updateConfiguration(defaultStyle: AdaptiveStyle.material);
   // 数据库初始化
   await initDB();
   final winsystem = SystemApi.create().get();
@@ -58,7 +61,8 @@ Future<void> main() async {
       if (Platform.isMacOS || Platform.isWindows) {
         await windowManager.setHasShadow(true);
       }
-      await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
+      await windowManager.setTitleBarStyle(TitleBarStyle.hidden,
+          windowButtonVisibility: true);
       await windowManager.setSize(winSize);
       await windowManager.show();
       await showtray();
@@ -68,24 +72,20 @@ Future<void> main() async {
     initScreen(400);
   }
 
-  // 构建IM全局对象
-  IMProvider im = IMProvider();
-
-  runApp(App(im: im));
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  final IMProvider im;
-  App({Key? key, required this.im}) : super(key: key);
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,
       light: theme(),
-      builder: (light, dark) => MultiProvider(
+      builder: (light, dark) => MultiBlocProvider(
         providers: [
-          ChangeNotifierProvider<IMProvider>(create: (_) => im),
+          BlocProvider(create: (_) => AppCubit()),
         ],
         child: MaterialApp.router(
           title: 'DAO',
