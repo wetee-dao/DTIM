@@ -17,7 +17,7 @@ This repository is for the submission of milestone 3 of the Web 3 Foundation Gra
 - [Install golang](https://go.dev/doc/install)
 - Run Node
     ```
-    $ git clone https://github.com/dao-entrance/org-node
+    $ git clone https://github.com/WeteeDAO/dao-entrance-node
     $ cd org-node
     $ ./build.sh
 

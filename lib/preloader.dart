@@ -177,10 +177,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   Container(
                     width: 150.w,
                     margin: EdgeInsets.only(bottom: 50.w),
-                    child: Opacity(
-                      opacity: 0.6,
-                      child: Lottie.asset('assets/infinite-loader.json', repeat: true, fit: BoxFit.cover),
-                    ),
+                    child: Lottie.asset('assets/infinite-loader.json', repeat: true, fit: BoxFit.cover),
                   ),
                   Positioned(
                     top: 100.w,
