@@ -37,7 +37,7 @@ dependencies:
   objectbox: ^1.7.2
   objectbox_flutter_libs: ^1.7.2
   # 全局状态树
-  provider: ^6.0.4
+  flutter_bloc: ^8.1.2
   # 表情包
   emoji_picker_flutter: ^1.5.2
   # c库调用
