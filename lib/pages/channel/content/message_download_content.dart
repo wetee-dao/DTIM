@@ -40,6 +40,7 @@ class MessageDownloadContent extends StatelessWidget {
                   Icon(
                     Icons.file_download_outlined,
                     color: textColor,
+                    size: 14.w,
                   ),
                   SizedBox(width: 10.w),
                   Text(
@@ -48,6 +49,7 @@ class MessageDownloadContent extends StatelessWidget {
                     style: TextStyle(
                       color: textColor,
                       fontWeight: FontWeight.bold,
+                      fontSize: 14.w,
                     ),
                   ),
                 ],
@@ -61,6 +63,7 @@ class MessageDownloadContent extends StatelessWidget {
                   Text(
                     filetype,
                     style: TextStyle(
+                      fontSize: 14.w,
                       color: textColor.withAlpha(150),
                     ),
                   ),
@@ -69,6 +72,7 @@ class MessageDownloadContent extends StatelessWidget {
                     Text(
                       sizeString,
                       style: TextStyle(
+                        fontSize: 14.w,
                         color: textColor.withAlpha(150),
                       ),
                     ),
