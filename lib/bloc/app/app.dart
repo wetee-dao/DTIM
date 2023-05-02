@@ -183,9 +183,16 @@ class AppCubit extends Cubit<AppState> {
       }
     }
 
-    connections[userName] = client;
-    connectionStates[userName] = ImState(client, org, me!, stateChange);
-
+    emit(state.copyWith(
+      connections: {
+        ...connections,
+        userName: client,
+      },
+      connectionStates: {
+        ...connectionStates,
+        userName: ImState(client, org, me!, stateChange),
+      },
+    ));
     return true;
   }
 
