@@ -15,13 +15,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Corrosion)
 
-# corrosion_import_crate(MANIFEST_PATH ../rust_wraper/Cargo.toml)
-corrosion_import_crate(MANIFEST_PATH ../rust_wraper/Cargo.toml CRATES rust_wraper)
-
-# Flutter-specific
-
-set(CRATE_NAME "rust_wraper")
-
-target_link_libraries(${BINARY_NAME} PUBLIC ${CRATE_NAME})
-
-list(APPEND PLUGIN_BUNDLED_LIBRARIES $<TARGET_FILE:${CRATE_NAME}-shared>)
+corrosion_import_crate(MANIFEST_PATH ../rust_wraper/Cargo.toml IMPORTED_CRATES imported_crates)
+target_link_libraries(${BINARY_NAME} PRIVATE ${imported_crates})
+foreach(imported_crate ${imported_crates})
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES $<TARGET_FILE:${imported_crate}-shared>)
+endforeach()
