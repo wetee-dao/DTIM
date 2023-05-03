@@ -69,3 +69,7 @@ We provide DAO templates the substrate pallet and ink! Smart contracts:
  - https://pub.flutter-io.cn/packages/tray_manager
  - https://pub.flutter-io.cn/packages/window_manager
  - https://cjycode.com/flutter_rust_bridge/quickstart.html
+
+## Contribution
+
+[Install & Run](./docs/install_and_run.md)
