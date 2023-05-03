@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:asyou_app/bloc/app/app.dart';
+import 'package:asyou_app/config/injector.dart';
 import 'package:asyou_app/utils/tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -20,8 +22,11 @@ import 'utils/screen.dart';
 
 final botToastBuilder = BotToastInit();
 
-Future<void> main() async {
+Future<void> main({EnvSign env = EnvSign.prod}) async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 依赖注入
+  await initPackageDI(GetIt.I, env);
+
   // 等待桌面初始化
   await windowManager.ensureInitialized();
   await windowManager.hide();
