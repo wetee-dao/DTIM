@@ -3,12 +3,7 @@ import 'package:asyou_app/store/im_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:matrix/matrix.dart'
-    show
-        Client,
-        LoginType,
-        AuthenticationUserIdentifier,
-        HiveCollectionsDatabase;
+import 'package:matrix/matrix.dart' show Client, LoginType, AuthenticationUserIdentifier, HiveCollectionsDatabase;
 import 'package:path_provider/path_provider.dart';
 
 import '../../models/models.dart';
@@ -177,8 +172,8 @@ class AppCubit extends Cubit<AppState> {
     }
 
     if (client.userID != null) {
-      var displayName = await client.getDisplayName(client.userID!);
-      if (displayName == getUserShortId(client.userID!)) {
+      var displayName = await client.getDisplayName(client.userID!) ?? "";
+      if (getUserShortId(displayName) == getUserShortId(client.userID!)) {
         await client.setDisplayName(client.userID!, me!.name);
       }
     }
