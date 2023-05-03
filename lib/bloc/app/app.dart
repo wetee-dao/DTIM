@@ -107,7 +107,7 @@ class AppCubit extends Cubit<AppState> {
             password: "$signCtx||$sign",
           );
         } catch (e) {
-          print("注册出现错误 => $e");
+          printDebug("注册出现错误 => $e");
         }
       }
       // connectionStates[userName]!.connectChain();
@@ -124,7 +124,7 @@ class AppCubit extends Cubit<AppState> {
       userName,
       databaseBuilder: (_) async {
         final dir = await getApplicationSupportDirectory();
-        print("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
+        printDebug("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
         final db = HiveCollectionsDatabase(
           org.domain!.replaceAll(".", "_"),
           "${dir.path}/${me!.address}",
@@ -150,7 +150,7 @@ class AppCubit extends Cubit<AppState> {
           );
         });
       } catch (e) {
-        print("注册出现错误 => $e");
+        printDebug("注册出现错误 => $e");
       }
     }
 
@@ -163,7 +163,7 @@ class AppCubit extends Cubit<AppState> {
           password: "$signCtx||$sign",
         );
       } catch (e) {
-        print("注册出现错误 => $e");
+        printError("登陆出现错误 => $e");
       }
     }
 
@@ -207,13 +207,4 @@ class AppCubit extends Cubit<AppState> {
   stateChange() {
     emit(state.copyWith());
   }
-
-// // 通讯录
-// List<xmpp.Buddy> getAddresslist() {
-//   if (connections[_currentId] == null) {stateChange
-//     throw Exception('连接错误');
-//   }
-//   final rosterHandler = xmpp.RosterManager.getInstance(connections[_currentId]!);
-//   return rosterHandler.getRoster();
-// }
 }

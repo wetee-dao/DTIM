@@ -2,7 +2,7 @@ import 'package:asyou_app/components/appicon.dart';
 import 'package:asyou_app/router.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bridge_generated.dart';
 import '../../components/dao/priority_icon.dart';
 import '../../components/dao/text.dart';

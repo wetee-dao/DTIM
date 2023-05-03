@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../components/components.dart';
 import '../components/sider_bar.dart';
@@ -24,7 +24,7 @@ class PCPage extends StatefulWidget {
 class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
   late List<AccountOrg> aorgs;
-  late IMProvider im;
+  late AppCubit im;
   late PageController pageController;
   double rightWidth = 200.w;
   String rightUrl = "";
@@ -38,7 +38,7 @@ class _PCPageState extends State<PCPage> {
   void initState() {
     super.initState();
     pageController = PageController();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     aorgs = AccountOrgApi.create().listByAccount(im.me!.address);
     currentId.add(0);
   }

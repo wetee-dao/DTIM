@@ -5,10 +5,9 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'components/avatar.dart';
 import 'components/components.dart';
@@ -17,7 +16,6 @@ import 'utils/screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
-import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'apis/account_api.dart';
@@ -42,7 +40,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read();
     getList();
     if (accounts.isNotEmpty && !runInTest) {
       autoLogin();
@@ -170,23 +168,24 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       backgroundColor: constTheme.centerChannelBg,
       body: Center(
         child: _loading
-            ? moveWindow(Stack(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                alignment: Alignment.center,
+            ? moveWindow(Column(
                 children: [
-                  Container(
-                    width: 150.w,
-                    margin: EdgeInsets.only(bottom: 50.w),
-                    child: Lottie.asset('assets/infinite-loader.json', repeat: true, fit: BoxFit.cover),
-                  ),
-                  Positioned(
-                    top: 100.w,
-                    child: Text(
-                      "Web3",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25.w, color: constTheme.centerChannelColor.withOpacity(0.3)),
+                  Expanded(
+                    child: Center(
+                      child: Lottie.asset(
+                        'assets/infinite-loader.json',
+                        repeat: true,
+                        fit: BoxFit.cover,
+                        width: 150.w,
+                      ),
                     ),
                   ),
+                  Text(
+                    "DAO entrance",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20.w, color: constTheme.centerChannelColor.withOpacity(0.2)),
+                  ),
+                  SizedBox(height: 20.w),
                 ],
               ))
             : Row(

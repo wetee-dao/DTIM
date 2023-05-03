@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:asyou_app/utils/localized_extension.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -36,7 +36,7 @@ class ChannelDetailPage extends StatefulWidget {
 class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListener {
   final StreamController<String> _msgController = StreamController<String>();
   final _listController = ScrollController();
-  late final IMProvider im;
+  late final AppCubit im;
   late link.Room? room;
   late link.Client? client;
   late Account me;
@@ -54,7 +54,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     me = im.me!;
     if (im.currentState != null) {
       client = im.currentState!.client;
