@@ -112,14 +112,17 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
           children: [
             Row(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
-                  child: UserAvatar(
-                    getUserShortId(widget.id),
-                    true,
-                    65.w,
-                    bg: constTheme.centerChannelColor.withOpacity(0.1),
-                    color: constTheme.centerChannelColor,
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
+                    child: UserAvatar(
+                      getUserShortId(widget.id),
+                      true,
+                      65.w,
+                      bg: constTheme.centerChannelColor.withOpacity(0.1),
+                      color: constTheme.centerChannelColor,
+                    ),
                   ),
                 ),
                 WidgetUserNameEmoji(getUserShortName(widget.name), null),

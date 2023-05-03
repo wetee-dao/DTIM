@@ -232,7 +232,6 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (context, i) {
                                       return Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 15.w),
                                         margin: EdgeInsets.only(bottom: 10.w),
                                         decoration: BoxDecoration(
                                           color: constTheme.centerChannelColor.withOpacity(0.05),
@@ -240,6 +239,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                         ),
                                         child: Row(
                                           children: [
+                                            SizedBox(width: 10.w),
                                             Avatar(
                                               id: accounts[i].address,
                                               name: accounts[i].address,
@@ -268,17 +268,45 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(width: 10.w, height: 70.w),
+                                            SizedBox(width: 15.w, height: 70.w),
+                                            InkWell(
+                                              key: Key("${accounts[i].name ?? "acount_$i"}_del"),
+                                              onTap: () async {
+                                                if (OkCancelResult.ok ==
+                                                    await showOkCancelAlertDialog(
+                                                      useRootNavigator: false,
+                                                      title: "提示",
+                                                      message: "确认删除用户，用户为本地账户，删除后无法恢复",
+                                                      context: globalCtx(),
+                                                      okLabel: L10n.of(globalCtx())!.next,
+                                                      cancelLabel: L10n.of(globalCtx())!.cancel,
+                                                    )) {
+                                                  AccountApi.create().remove(accounts[i].id);
+                                                  BotToast.showText(
+                                                    text: '用户删除成功',
+                                                    duration: const Duration(seconds: 2),
+                                                  );
+                                                  getList();
+                                                }
+                                              },
+                                              child: Icon(
+                                                Icons.delete_outline_rounded,
+                                                color: constTheme.errorTextColor.withOpacity(0.3),
+                                                size: 24.w,
+                                              ),
+                                            ),
+                                            SizedBox(width: 10.w),
                                             Container(
-                                              height: 40.w,
-                                              width: 40.w,
+                                              height: 70.w,
                                               decoration: BoxDecoration(
                                                 color: constTheme.linkColor.withOpacity(0.3),
-                                                borderRadius: BorderRadius.circular(25.w),
+                                                borderRadius: BorderRadius.horizontal(
+                                                  right: Radius.circular(5.w),
+                                                ),
                                               ),
-                                              child: IconButton(
+                                              child: InkWell(
                                                 key: Key(accounts[i].name ?? "acount_$i"),
-                                                onPressed: () async {
+                                                onTap: () async {
                                                   final input = await showTextInputDialog(
                                                     useRootNavigator: false,
                                                     context: context,
@@ -308,45 +336,25 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                     },
                                                   );
                                                 },
-                                                icon: Icon(
-                                                  Icons.login,
-                                                  size: 18.w,
-                                                  color: constTheme.centerChannelBg,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10.w),
-                                            Container(
-                                              height: 40.w,
-                                              width: 40.w,
-                                              decoration: BoxDecoration(
-                                                color: constTheme.errorTextColor.withOpacity(0.3),
-                                                borderRadius: BorderRadius.circular(25.w),
-                                              ),
-                                              child: IconButton(
-                                                key: Key("${accounts[i].name ?? "acount_$i"}_del"),
-                                                onPressed: () async {
-                                                  if (OkCancelResult.ok ==
-                                                      await showOkCancelAlertDialog(
-                                                        useRootNavigator: false,
-                                                        title: "提示",
-                                                        message: "确认删除用户，用户为本地账户，删除后无法恢复",
-                                                        context: globalCtx(),
-                                                        okLabel: L10n.of(globalCtx())!.next,
-                                                        cancelLabel: L10n.of(globalCtx())!.cancel,
-                                                      )) {
-                                                    AccountApi.create().remove(accounts[i].id);
-                                                    BotToast.showText(
-                                                      text: '用户删除成功',
-                                                      duration: const Duration(seconds: 2),
-                                                    );
-                                                    getList();
-                                                  }
-                                                },
-                                                icon: Icon(
-                                                  Icons.close,
-                                                  size: 18.w,
-                                                  color: constTheme.centerChannelBg,
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(width: 10.w),
+                                                    Text(
+                                                      "Login",
+                                                      style: TextStyle(
+                                                        color: constTheme.centerChannelColor,
+                                                        fontSize: 16.w,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 5.w),
+                                                    Icon(
+                                                      Icons.login_rounded,
+                                                      color: constTheme.centerChannelColor,
+                                                      size: 19.w,
+                                                    ),
+                                                    SizedBox(width: 10.w),
+                                                  ],
                                                 ),
                                               ),
                                             ),
