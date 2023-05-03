@@ -740,10 +740,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_rust_bridge
-      sha256: "30174b3ee63aa657e3975e76c9b1569fd55d25832856eb6f43bde66368cb690f"
+      sha256: "83d4b4d2847e438eb647437c14d780f293dc2407f04854b227c18af2e6426eab"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.71.2"
+    version: "1.75.1"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -900,7 +900,7 @@ packages:
     description:
       name: http
       sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
-      url: "https://pub.dev"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.13.6"
   http_multi_server:
@@ -940,7 +940,7 @@ packages:
     description:
       name: image_picker_android
       sha256: "271e0448e82268b3fa1cb2a48e4a911cbc2135587123d7df8e7ca703c5b10da2"
-      url: "https://pub.dev"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.8.6+11"
   image_picker_for_web:
@@ -1990,7 +1990,7 @@ packages:
     description:
       name: video_player_avfoundation
       sha256: "824dad3e2986a13766fcccfd1c48c83eef9f896c220a53292e3019b9e98615bb"
-      url: "https://pub.dev"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.5"
   video_player_platform_interface:
@@ -2158,7 +2158,7 @@ packages:
     description:
       name: yaml_edit
       sha256: "1579d4a0340a83cf9e4d580ea51a16329c916973bffd5bd4b45e911b25d46bfd"
-      url: "https://pub.dev"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.1"
 sdks:

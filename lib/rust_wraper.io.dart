@@ -6,5 +6,5 @@ import './bridge_generated.dart';
 // rust 桥
 const base = 'rust_wraper';
 var path = Platform.isWindows ? '$base.dll' : (Platform.isMacOS ? "$base.dylib" : 'lib$base.so');
-final dylib = loadDylib(path);
-final rustApi = RustWraperImpl(dylib);
+final dylib = loadLibForFlutter(path);
+late final rustApi = RustWraperImpl(dylib);
