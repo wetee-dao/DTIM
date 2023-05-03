@@ -269,9 +269,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                               ),
                                             ),
                                             SizedBox(width: 15.w, height: 70.w),
-                                            InkWell(
+                                            IconButton(
                                               key: Key("${accounts[i].name ?? "acount_$i"}_del"),
-                                              onTap: () async {
+                                              onPressed: () async {
                                                 if (OkCancelResult.ok ==
                                                     await showOkCancelAlertDialog(
                                                       useRootNavigator: false,
@@ -289,13 +289,13 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                   getList();
                                                 }
                                               },
-                                              child: Icon(
+                                              icon: Icon(
                                                 Icons.delete_outline_rounded,
-                                                color: constTheme.errorTextColor.withOpacity(0.3),
+                                                color: constTheme.centerChannelColor.withOpacity(0.3),
                                                 size: 24.w,
                                               ),
                                             ),
-                                            SizedBox(width: 10.w),
+                                            SizedBox(width: 5.w),
                                             Container(
                                               height: 70.w,
                                               decoration: BoxDecoration(
