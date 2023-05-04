@@ -292,7 +292,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                               icon: Icon(
                                                 Icons.delete_outline_rounded,
                                                 color: constTheme.centerChannelColor.withOpacity(0.3),
-                                                size: 24.w,
+                                                size: 25.w,
                                               ),
                                             ),
                                             SizedBox(width: 5.w),
@@ -339,7 +339,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 child: Row(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    SizedBox(width: 10.w),
+                                                    SizedBox(width: 25.w),
                                                     Text(
                                                       "Login",
                                                       style: TextStyle(
@@ -347,13 +347,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                         fontSize: 16.w,
                                                       ),
                                                     ),
-                                                    SizedBox(width: 5.w),
-                                                    Icon(
-                                                      Icons.login_rounded,
-                                                      color: constTheme.centerChannelColor,
-                                                      size: 19.w,
-                                                    ),
-                                                    SizedBox(width: 10.w),
+                                                    SizedBox(width: 25.w),
                                                   ],
                                                 ),
                                               ),
