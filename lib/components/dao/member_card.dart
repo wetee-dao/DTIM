@@ -35,7 +35,7 @@ class MemberCard extends StatelessWidget {
           Expanded(
             child: PrimaryText(
               text: label!,
-              size: isPc() ? 16 : 14,
+              size: 12.w,
             ),
           ),
         ],

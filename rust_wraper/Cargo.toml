@@ -5,7 +5,7 @@ edition = "2021"
 
 [lib]
 name = "rust_wraper"
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
 hex = "0.4.3"
