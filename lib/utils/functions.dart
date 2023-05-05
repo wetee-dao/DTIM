@@ -59,6 +59,17 @@ void printDebug(String text) {
   print('\x1B[35m$text\x1B[0m');
 }
 
+String completeChainUrl(String url) {
+  if (url.startsWith("ws://")) {
+    if (!url.replaceAll("ws://", "").contains(":")) url = "$url:80";
+  }
+  if (url.startsWith("wss://")) {
+    if (!url.replaceAll("wss://", "").contains(":")) url = "$url:443";
+  }
+  print(url);
+  return url;
+}
+
 extension StringExtension on String {
   String fisrtUpperCase() {
     if (isEmpty) {
