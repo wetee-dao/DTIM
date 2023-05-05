@@ -48,11 +48,14 @@ class _DaoPageState extends State<DaoPage> {
     currentId.add(pageStr);
     im = context.read<IMProvider>();
     daoCtx.connectChain(im.currentState!.org, im.me!, () {
-      getData();
+      // getData();
+      _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+        daoCtx.timeTick();
+      });
     });
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      daoCtx.timeTick();
-    });
+    // _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    //   daoCtx.timeTick();
+    // });
   }
 
   getData() async {
