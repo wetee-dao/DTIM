@@ -5,8 +5,8 @@ This repository is for the submission of milestone 3 of the Web 3 Foundation Gra
 
 ### Rust Setup
 - [Linux development environment](https://docs.substrate.io/install/linux/).
-- [MacOS development environment](https://docs.substrate.io/install/linux/).
-- [Windows development environment](https://docs.substrate.io/install/linux/).
+- [MacOS development environment](https://docs.substrate.io/install/macos/).
+- [Windows development environment](https://docs.substrate.io/install/windows/).
 
 ### Flutter Setup
 - [Linux development environment](https://docs.flutter.dev/get-started/install/linux/).
