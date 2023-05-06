@@ -26,10 +26,10 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
-		64714D02296BC83C00076A0A /* librust_wraper_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64714CFB296BC82200076A0A /* librust_wraper_static.a */; };
-		64A8273A29CB212400F9E621 /* rust_wraper.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64714CFD296BC82200076A0A /* rust_wraper.dylib */; platformFilter = maccatalyst; };
-		64A8273B29CB212400F9E621 /* rust_wraper.dylib in Bundle Framework */ = {isa = PBXBuildFile; fileRef = 64714CFD296BC82200076A0A /* rust_wraper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		FBEDCF6FA9AFCB06053BA51C /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A73237F90D7F2EC0D40A52D2 /* Pods_Runner.framework */; };
+		643FC8182A064251005433ED /* rust_wraper.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; };
+		643FC81B2A064353005433ED /* bridge_generated.h in Resources */ = {isa = PBXBuildFile; fileRef = 643FC8192A0642F9005433ED /* bridge_generated.h */; };
+		643FC82E2A065BAA005433ED /* rust_wraper.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		76E1FB9537C897D97B7AB838 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B244347CC18FEF5A32D113 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,25 +40,25 @@
 			remoteGlobalIDString = 33CC111A2044C6BA0003C045;
 			remoteInfo = FLX;
 		};
-		64714CFA296BC82200076A0A /* PBXContainerItemProxy */ = {
+		643FC8122A064233005433ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 64714CF5296BC82100076A0A /* rust_wraper.xcodeproj */;
+			containerPortal = 643FC80D2A064233005433ED /* rust_wraper.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = CA60E2E7443B8732BE24AAFD;
+			remoteGlobalIDString = CA60E49145B6537EB31ECD0E;
 			remoteInfo = "rust_wraper-staticlib";
 		};
-		64714CFC296BC82200076A0A /* PBXContainerItemProxy */ = {
+		643FC8142A064233005433ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 64714CF5296BC82100076A0A /* rust_wraper.xcodeproj */;
+			containerPortal = 643FC80D2A064233005433ED /* rust_wraper.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = CA60E7962788C264CD99E87A;
+			remoteGlobalIDString = CA60F6BA56F636FDA8E35F60;
 			remoteInfo = "rust_wraper-cdylib";
 		};
-		64714D00296BC83500076A0A /* PBXContainerItemProxy */ = {
+		643FC8162A064240005433ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 64714CF5296BC82100076A0A /* rust_wraper.xcodeproj */;
+			containerPortal = 643FC80D2A064233005433ED /* rust_wraper.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = CA60E796278898A374F2ED98;
+			remoteGlobalIDString = CA60CE47FC4ABE13D6A35245;
 			remoteInfo = "rust_wraper-cdylib";
 		};
 /* End PBXContainerItemProxy section */
@@ -70,18 +70,27 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				64A8273B29CB212400F9E621 /* rust_wraper.dylib in Bundle Framework */,
 			);
 			name = "Bundle Framework";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		643FC82C2A065B8C005433ED /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				643FC82E2A065BAA005433ED /* rust_wraper.dylib in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		19619142E996D6DEA2124EF0 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		22B244347CC18FEF5A32D113 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		333000ED22D3DE5D00554162 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedPluginRegistrant.swift; sourceTree = "<group>"; };
-		33CC10ED2044A3C60003C045 /* asyou_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = asyou_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		33CC10ED2044A3C60003C045 /* wetee_dao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wetee_dao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33CC10F02044A3C60003C045 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33CC10F22044A3C60003C045 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Runner/Assets.xcassets; sourceTree = "<group>"; };
 		33CC10F52044A3C60003C045 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -93,12 +102,13 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
-		4CDE59A6E7B5C48683414966 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
-		64714CF5296BC82100076A0A /* rust_wraper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = rust_wraper.xcodeproj; path = ../../rust_wraper/rust_wraper.xcodeproj; sourceTree = "<group>"; };
-		7746B6A18B42B3B5CE330CA8 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		643FC80D2A064233005433ED /* rust_wraper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = rust_wraper.xcodeproj; path = ../../rust_wraper/rust_wraper.xcodeproj; sourceTree = "<group>"; };
+		643FC8192A0642F9005433ED /* bridge_generated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bridge_generated.h; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		A73237F90D7F2EC0D40A52D2 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC61377F0A11EA457FACBD0A /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		CC6D582C00733931F7076A82 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		E91A9A686C9B4828ABFD9DDF /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,9 +116,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64A8273A29CB212400F9E621 /* rust_wraper.dylib in Frameworks */,
-				64714D02296BC83C00076A0A /* librust_wraper_static.a in Frameworks */,
-				FBEDCF6FA9AFCB06053BA51C /* Pods_Runner.framework in Frameworks */,
+				643FC8182A064251005433ED /* rust_wraper.dylib in Frameworks */,
+				76E1FB9537C897D97B7AB838 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,14 +142,14 @@
 				33CEB47122A05771004F2AC0 /* Flutter */,
 				33CC10EE2044A3C60003C045 /* Products */,
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
-				CA657183C5EF49A5122B55B1 /* Pods */,
+				EFEA5170E31278A681673060 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
 		33CC10EE2044A3C60003C045 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				33CC10ED2044A3C60003C045 /* asyou_app.app */,
+				33CC10ED2044A3C60003C045 /* wetee_dao.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,8 +179,9 @@
 		33FAB671232836740065AC1E /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				64714CF5296BC82100076A0A /* rust_wraper.xcodeproj */,
+				643FC80D2A064233005433ED /* rust_wraper.xcodeproj */,
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
+				643FC8192A0642F9005433ED /* bridge_generated.h */,
 				33CC11122044BFA00003C045 /* MainFlutterWindow.swift */,
 				33E51913231747F40026EE4D /* DebugProfile.entitlements */,
 				33E51914231749380026EE4D /* Release.entitlements */,
@@ -181,31 +191,31 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
-		64714CF6296BC82100076A0A /* Products */ = {
+		643FC80E2A064233005433ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				64714CFB296BC82200076A0A /* librust_wraper_static.a */,
-				64714CFD296BC82200076A0A /* rust_wraper.dylib */,
+				643FC8132A064233005433ED /* librust_wraper_static.a */,
+				643FC8152A064233005433ED /* rust_wraper.dylib */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		CA657183C5EF49A5122B55B1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				4CDE59A6E7B5C48683414966 /* Pods-Runner.debug.xcconfig */,
-				19619142E996D6DEA2124EF0 /* Pods-Runner.release.xcconfig */,
-				7746B6A18B42B3B5CE330CA8 /* Pods-Runner.profile.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A73237F90D7F2EC0D40A52D2 /* Pods_Runner.framework */,
+				22B244347CC18FEF5A32D113 /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EFEA5170E31278A681673060 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CC6D582C00733931F7076A82 /* Pods-Runner.debug.xcconfig */,
+				E91A9A686C9B4828ABFD9DDF /* Pods-Runner.release.xcconfig */,
+				CC61377F0A11EA457FACBD0A /* Pods-Runner.profile.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,23 +225,24 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33CC10FB2044A3C60003C045 /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				36B9E778A5262267B3BD6881 /* [CP] Check Pods Manifest.lock */,
+				4B86737865C1CDE8796EE5C6 /* [CP] Check Pods Manifest.lock */,
 				33CC10E92044A3C60003C045 /* Sources */,
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
 				33CC110E2044A8840003C045 /* Bundle Framework */,
-				3399D490228B24CF009A79C7 /* Run Script */,
-				440CBE1CB3E9AB512990B728 /* [CP] Embed Pods Frameworks */,
+				3399D490228B24CF009A79C7 /* ShellScript */,
+				0A724329D8149DBA6D33B836 /* [CP] Embed Pods Frameworks */,
+				643FC82C2A065B8C005433ED /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				64714D01296BC83500076A0A /* PBXTargetDependency */,
+				643FC8172A064240005433ED /* PBXTargetDependency */,
 				33CC11202044C79F0003C045 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
-			productReference = 33CC10ED2044A3C60003C045 /* asyou_app.app */;
+			productReference = 33CC10ED2044A3C60003C045 /* wetee_dao.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -273,8 +284,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 64714CF6296BC82100076A0A /* Products */;
-					ProjectRef = 64714CF5296BC82100076A0A /* rust_wraper.xcodeproj */;
+					ProductGroup = 643FC80E2A064233005433ED /* Products */;
+					ProjectRef = 643FC80D2A064233005433ED /* rust_wraper.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -286,18 +297,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		64714CFB296BC82200076A0A /* librust_wraper_static.a */ = {
+		643FC8132A064233005433ED /* librust_wraper_static.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = librust_wraper_static.a;
-			remoteRef = 64714CFA296BC82200076A0A /* PBXContainerItemProxy */;
+			remoteRef = 643FC8122A064233005433ED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		64714CFD296BC82200076A0A /* rust_wraper.dylib */ = {
+		643FC8152A064233005433ED /* rust_wraper.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
 			path = rust_wraper.dylib;
-			remoteRef = 64714CFC296BC82200076A0A /* PBXContainerItemProxy */;
+			remoteRef = 643FC8142A064233005433ED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -307,6 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				643FC81B2A064353005433ED /* bridge_generated.h in Resources */,
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
 			);
@@ -315,8 +327,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3399D490228B24CF009A79C7 /* Run Script */ = {
+		0A724329D8149DBA6D33B836 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3399D490228B24CF009A79C7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -324,7 +354,6 @@
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -353,7 +382,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"$FLUTTER_ROOT\"/packages/flutter_tools/bin/macos_assemble.sh && touch Flutter/ephemeral/tripwire";
 		};
-		36B9E778A5262267B3BD6881 /* [CP] Check Pods Manifest.lock */ = {
+		4B86737865C1CDE8796EE5C6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -373,23 +402,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		440CBE1CB3E9AB512990B728 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -413,10 +425,10 @@
 			target = 33CC111A2044C6BA0003C045 /* Flutter Assemble */;
 			targetProxy = 33CC111F2044C79F0003C045 /* PBXContainerItemProxy */;
 		};
-		64714D01296BC83500076A0A /* PBXTargetDependency */ = {
+		643FC8172A064240005433ED /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "rust_wraper-cdylib";
-			targetProxy = 64714D00296BC83500076A0A /* PBXContainerItemProxy */;
+			targetProxy = 643FC8162A064240005433ED /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -493,7 +505,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				OTHER_CODE_SIGN_FLAGS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Runner/bridge_generated.h;
 				SWIFT_VERSION = 5.0;
@@ -621,7 +633,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				OTHER_CODE_SIGN_FLAGS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Runner/bridge_generated.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -643,7 +655,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				OTHER_CODE_SIGN_FLAGS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Runner/bridge_generated.h;
 				SWIFT_VERSION = 5.0;

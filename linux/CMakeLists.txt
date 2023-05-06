@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "daoent")
-set(APPLICATION_ID "app.wetee.daoent")
+set(APPLICATION_ID "dao_wetee.appent")
 
 cmake_policy(SET CMP0063 NEW)
 
