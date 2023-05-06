@@ -9,16 +9,18 @@ import 'package:matrix/matrix.dart' as link;
 import './org_menu.dart';
 import '../../router.dart';
 import '../../utils/screen.dart';
-import '../../components/jump_to.dart';
 import '../../components/components.dart';
 import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 
+GlobalKey _orgNameKey = GlobalKey();
+
 class OrgViewPage extends StatefulWidget {
   final Function(String) onChannel;
-  const OrgViewPage({Key? key, required this.onChannel}) : super(key: key);
+  final double width;
+  const OrgViewPage({Key? key, required this.onChannel, required this.width}) : super(key: key);
 
   @override
   State<OrgViewPage> createState() => _OrgViewPageState();
@@ -106,20 +108,16 @@ class _OrgViewPageState extends State<OrgViewPage> {
     }
   }
 
-  String orgName(String str) {
-    if (str.length < 5) return str;
-    return "${str.substring(0, 4)}...";
-  }
-
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Column(
+      key: _orgNameKey,
       children: [
         moveWindow(
           Row(
             children: [
-              SizedBox(width: 15.w),
+              SizedBox(width: 14.w),
               BasePopupMenu(
                 verticalMargin: -1.w,
                 horizontalMargin: 5.w,
@@ -132,47 +130,60 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   initialData: false,
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                     return Container(
-                      height: 40.w,
+                      height: 35.w,
+                      width: widget.width - 79.w,
                       padding: EdgeInsets.only(left: 10.w, right: 7.w, top: 2.w, bottom: 2.w),
                       decoration: BoxDecoration(
                         color: snapshot.data != null && snapshot.data!
                             ? constTheme.sidebarText.withOpacity(0.25)
                             : constTheme.sidebarText.withOpacity(0.1),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(3.w),
-                          bottomLeft: Radius.circular(3.w),
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(3.w)),
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            org != null && org!.orgName != null ? orgName(org!.orgName!) : '',
-                            style: TextStyle(
-                              color: constTheme.sidebarText,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 13.w,
-                              height: 1.3,
+                          Expanded(
+                            child: Text(
+                              org != null && org!.orgName != null ? org!.orgName! : '',
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: constTheme.sidebarText,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15.w,
+                                height: 1.3,
+                              ),
                             ),
                           ),
                           Icon(
                             Icons.keyboard_arrow_down_outlined,
                             color: constTheme.sidebarText,
-                            size: 16.w,
+                            size: 18.w,
                           ),
                         ],
                       ),
                     );
                   },
                 ),
-                menuBuilder: () => orgMenuRender(menuController),
+                menuBuilder: () => orgMenuRender(menuController, widget.width - 30.w),
               ),
-              SizedBox(width: 1.w),
-              Expanded(
-                child: JumpTo(false, MediaQuery.of(context).size.width - 40, () {
+              SizedBox(width: 10.w),
+              InkWell(
+                onTap: () {
                   showModelOrPage(context, "/search");
-                  return null;
-                }),
-              )
+                },
+                child: Container(
+                  height: 35.w,
+                  width: 35.w,
+                  margin: EdgeInsets.only(left: 0.w, right: 15.w, top: 15.w, bottom: 15.w),
+                  // padding: EdgeInsets.only(left: 10.w),
+                  decoration: BoxDecoration(
+                    color: constTheme.sidebarText.withOpacity(0.1),
+                    borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText),
+                ),
+              ),
             ],
           ),
         ),

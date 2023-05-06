@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../store/theme.dart';
 import '../utils/screen.dart';
 import '../utils/functions.dart';
-import '../components/jump_to.dart';
 import '../components/user_avatar.dart';
 import './search.dart';
 
@@ -35,13 +34,13 @@ class _DirectMessagePageState extends State<DirectMessagePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            JumpTo(false, MediaQuery.of(context).size.width - 40, () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SearchPage(),
-                ),
-              );
-            }),
+            // JumpTo(false, MediaQuery.of(context).size.width - 40, () {
+            //   Navigator.of(context).push(
+            //     MaterialPageRoute(
+            //       builder: (context) => SearchPage(),
+            //     ),
+            //   );
+            // }),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

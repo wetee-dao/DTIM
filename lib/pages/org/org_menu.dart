@@ -31,10 +31,10 @@ List<List<ItemModel>> menuItems = [
   ]
 ];
 
-orgMenuRender(controller) {
+orgMenuRender(controller, width) {
   final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
   return Container(
-    width: 200.w,
+    width: width,
     margin: EdgeInsets.all(5.w),
     decoration: BoxDecoration(
       border: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
