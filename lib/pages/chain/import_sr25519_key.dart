@@ -93,38 +93,29 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(5.w),
+            padding: EdgeInsets.all(10.w),
             decoration: BoxDecoration(
               color: constTheme.centerChannelColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(5.w),
             ),
-            child: Container(
-              height: 40.w,
-              margin: EdgeInsets.all(10.w),
-              padding: EdgeInsets.only(left: 10.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(3.w)),
-              ),
-              alignment: Alignment.center,
-              child: TextField(
-                controller: seed,
-                autofocus: false,
-                minLines: 5,
-                maxLines: 6,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.go,
-                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
-                decoration: InputDecoration(
-                  label: null,
-                  hintText: L10n.of(context)!.inputMnemonic,
-                  hintStyle: TextStyle(
-                    height: 1.5,
-                    color: constTheme.centerChannelColor,
-                    fontSize: 14.w,
-                  ),
-                  contentPadding: const EdgeInsets.all(0),
-                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+            child: TextField(
+              controller: seed,
+              autofocus: false,
+              minLines: 5,
+              maxLines: 6,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.go,
+              style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
+              decoration: InputDecoration(
+                label: null,
+                hintText: L10n.of(context)!.inputMnemonic,
+                hintStyle: TextStyle(
+                  height: 1.5,
+                  color: constTheme.centerChannelColor,
+                  fontSize: 14.w,
                 ),
+                contentPadding: const EdgeInsets.all(0),
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
               ),
             ),
           ),

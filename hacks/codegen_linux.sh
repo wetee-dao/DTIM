@@ -1,4 +1,4 @@
-# 来源于网络，用于获取当前shell文件的路径
+# 获取当前shell文件的路径
 SOURCE="$0"
 while [ -h "$SOURCE"  ]; do
     DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
@@ -20,3 +20,6 @@ cd "$DIR/../rust_wraper"
 
 # cargo build
 # cp -r "$DIR/../rust_wraper/target/debug/librust_wraper.so" "$DIR/../linux/shared/librust_wraper.so"
+
+chmod +x "$DIR/base_build.sh"
+exec "$DIR/base_build.sh"

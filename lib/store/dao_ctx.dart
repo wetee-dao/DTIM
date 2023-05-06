@@ -27,8 +27,9 @@ class DAOCTX with ChangeNotifier {
   List<GovProps> pending = [];
   List<GovReferendum> going = [];
 
-  connectChain(porg, puser, callback) {
+  connectChain(porg, puser, callback) async {
     if (chainClient > -1) {
+      await getData();
       callback();
       return;
     }

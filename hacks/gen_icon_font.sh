@@ -1,1 +1,0 @@
-icon_font_generator --from=icons --class-name=UiIcons --out-font=assets/fonts/iconfont.ttf --out-flutter=lib/widgets/icons.dart

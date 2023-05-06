@@ -226,137 +226,148 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   height: 40.w,
                                 ),
                                 Expanded(
-                                  child: ListView.builder(
-                                    itemCount: accounts.length,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder: (context, i) {
-                                      return Container(
-                                        margin: EdgeInsets.only(bottom: 10.w),
-                                        decoration: BoxDecoration(
-                                          color: constTheme.centerChannelColor.withOpacity(0.05),
-                                          borderRadius: BorderRadius.circular(5.w),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 10.w),
-                                            Avatar(
-                                              id: accounts[i].address,
-                                              name: accounts[i].address,
-                                              size: 50.w,
-                                              fontSize: 36,
-                                            ),
-                                            SizedBox(width: 10.w),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                  child: accounts.isNotEmpty
+                                      ? ListView.builder(
+                                          itemCount: accounts.length,
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          itemBuilder: (context, i) {
+                                            return Container(
+                                              margin: EdgeInsets.only(bottom: 10.w),
+                                              decoration: BoxDecoration(
+                                                color: constTheme.centerChannelColor.withOpacity(0.05),
+                                                borderRadius: BorderRadius.circular(5.w),
+                                              ),
+                                              child: Row(
                                                 children: [
-                                                  Text(
-                                                    accounts[i].name!,
-                                                    style: TextStyle(
-                                                      color: constTheme.centerChannelColor,
-                                                      fontSize: 16.w,
+                                                  SizedBox(width: 10.w),
+                                                  Avatar(
+                                                    id: accounts[i].address,
+                                                    name: accounts[i].address,
+                                                    size: 50.w,
+                                                    fontSize: 36,
+                                                  ),
+                                                  SizedBox(width: 10.w),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          accounts[i].name!,
+                                                          style: TextStyle(
+                                                            color: constTheme.centerChannelColor,
+                                                            fontSize: 16.w,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          accounts[i].address,
+                                                          style: TextStyle(
+                                                            color: constTheme.centerChannelColor,
+                                                            fontSize: 12.w,
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
-                                                  Text(
-                                                    accounts[i].address,
-                                                    style: TextStyle(
-                                                      color: constTheme.centerChannelColor,
-                                                      fontSize: 12.w,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(width: 15.w, height: 70.w),
-                                            IconButton(
-                                              key: Key("${accounts[i].name ?? "acount_$i"}_del"),
-                                              onPressed: () async {
-                                                if (OkCancelResult.ok ==
-                                                    await showOkCancelAlertDialog(
-                                                      useRootNavigator: false,
-                                                      title: "提示",
-                                                      message: "确认删除用户，用户为本地账户，删除后无法恢复",
-                                                      context: globalCtx(),
-                                                      okLabel: L10n.of(globalCtx())!.next,
-                                                      cancelLabel: L10n.of(globalCtx())!.cancel,
-                                                    )) {
-                                                  AccountApi.create().remove(accounts[i].id);
-                                                  BotToast.showText(
-                                                    text: '用户删除成功',
-                                                    duration: const Duration(seconds: 2),
-                                                  );
-                                                  getList();
-                                                }
-                                              },
-                                              icon: Icon(
-                                                Icons.delete_outline_rounded,
-                                                color: constTheme.centerChannelColor.withOpacity(0.3),
-                                                size: 25.w,
-                                              ),
-                                            ),
-                                            SizedBox(width: 5.w),
-                                            Container(
-                                              height: 70.w,
-                                              decoration: BoxDecoration(
-                                                color: constTheme.linkColor.withOpacity(0.3),
-                                                borderRadius: BorderRadius.horizontal(
-                                                  right: Radius.circular(5.w),
-                                                ),
-                                              ),
-                                              child: InkWell(
-                                                key: Key(accounts[i].name ?? "acount_$i"),
-                                                onTap: () async {
-                                                  final input = await showTextInputDialog(
-                                                    useRootNavigator: false,
-                                                    context: context,
-                                                    title: L10n.of(context)!.password,
-                                                    okLabel: L10n.of(context)!.ok,
-                                                    cancelLabel: L10n.of(context)!.cancel,
-                                                    textFields: [
-                                                      DialogTextField(
-                                                        obscureText: true,
-                                                        hintText: L10n.of(context)!.pleaseEnterYourPassword,
-                                                        initialText: "",
-                                                      )
-                                                    ],
-                                                  );
-                                                  if (input == null) return;
-                                                  await waitFutureLoading(
-                                                    context: globalCtx(),
-                                                    future: () async {
-                                                      await im.login(accounts[i], input[0]);
-                                                      const storage = FlutterSecureStorage();
-                                                      await storage.write(
-                                                        key: "login_state",
-                                                        value: "${accounts[i].address},${input[0]}",
-                                                      );
-                                                      // ignore: use_build_context_synchronously
-                                                      globalCtx().push("/select_org?auto=t");
+                                                  SizedBox(width: 15.w, height: 70.w),
+                                                  IconButton(
+                                                    key: Key("${accounts[i].name ?? "acount_$i"}_del"),
+                                                    onPressed: () async {
+                                                      if (OkCancelResult.ok ==
+                                                          await showOkCancelAlertDialog(
+                                                            useRootNavigator: false,
+                                                            title: "提示",
+                                                            message: "确认删除用户，用户为本地账户，删除后无法恢复",
+                                                            context: globalCtx(),
+                                                            okLabel: L10n.of(globalCtx())!.next,
+                                                            cancelLabel: L10n.of(globalCtx())!.cancel,
+                                                          )) {
+                                                        AccountApi.create().remove(accounts[i].id);
+                                                        BotToast.showText(
+                                                          text: '用户删除成功',
+                                                          duration: const Duration(seconds: 2),
+                                                        );
+                                                        getList();
+                                                      }
                                                     },
-                                                  );
-                                                },
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(width: 25.w),
-                                                    Text(
-                                                      "Login",
-                                                      style: TextStyle(
-                                                        color: constTheme.centerChannelColor,
-                                                        fontSize: 16.w,
+                                                    icon: Icon(
+                                                      Icons.delete_outline_rounded,
+                                                      color: constTheme.centerChannelColor.withOpacity(0.3),
+                                                      size: 25.w,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 5.w),
+                                                  Container(
+                                                    height: 70.w,
+                                                    decoration: BoxDecoration(
+                                                      color: constTheme.linkColor.withOpacity(0.3),
+                                                      borderRadius: BorderRadius.horizontal(
+                                                        right: Radius.circular(5.w),
                                                       ),
                                                     ),
-                                                    SizedBox(width: 25.w),
-                                                  ],
-                                                ),
+                                                    child: InkWell(
+                                                      key: Key(accounts[i].name ?? "acount_$i"),
+                                                      onTap: () async {
+                                                        final input = await showTextInputDialog(
+                                                          useRootNavigator: false,
+                                                          context: context,
+                                                          title: L10n.of(context)!.password,
+                                                          okLabel: L10n.of(context)!.ok,
+                                                          cancelLabel: L10n.of(context)!.cancel,
+                                                          textFields: [
+                                                            DialogTextField(
+                                                              obscureText: true,
+                                                              hintText: L10n.of(context)!.pleaseEnterYourPassword,
+                                                              initialText: "",
+                                                            )
+                                                          ],
+                                                        );
+                                                        if (input == null) return;
+                                                        await waitFutureLoading(
+                                                          context: globalCtx(),
+                                                          future: () async {
+                                                            await im.login(accounts[i], input[0]);
+                                                            const storage = FlutterSecureStorage();
+                                                            await storage.write(
+                                                              key: "login_state",
+                                                              value: "${accounts[i].address},${input[0]}",
+                                                            );
+                                                            // ignore: use_build_context_synchronously
+                                                            globalCtx().push("/select_org?auto=t");
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          SizedBox(width: 25.w),
+                                                          Text(
+                                                            "Login",
+                                                            style: TextStyle(
+                                                              color: constTheme.centerChannelColor,
+                                                              fontSize: 16.w,
+                                                            ),
+                                                          ),
+                                                          SizedBox(width: 25.w),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
+                                            );
+                                          },
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 10.w),
+                                          child: Text(
+                                            L10n.of(context)!.noAccount,
+                                            style: TextStyle(
+                                              color: constTheme.centerChannelColor.withOpacity(0.3),
+                                              fontSize: 20.w,
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      );
-                                    },
-                                  ),
                                 ),
                                 SizedBox(
                                   height: 10.w,
@@ -400,6 +411,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               return;
                             }
                             context.push("/importSr25519key");
+                            GoRouter.of(context).addListener(watchRouteChange);
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),

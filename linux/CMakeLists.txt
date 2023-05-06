@@ -69,8 +69,7 @@ set_target_properties(${BINARY_NAME}
 include(flutter/generated_plugins.cmake)
 
 # Installing Rust crates
-
-include(./rust.cmake)
+# include(./rust.cmake)
 
 # === Installation ===
 # By default, "installing" just makes a relocatable bundle in the build
@@ -119,7 +118,7 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
 endif()
 
 
-# set(RUST_BRIDGE "librust_wraper.so")
-# set(RUST_BRIDGE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/shared/${RUST_BRIDGE}")
-# install(CODE "file(REMOVE_RECURSE \"${INSTALL_BUNDLE_LIB_DIR}/${RUST_BRIDGE}\")" COMPONENT Runtime)
-# install(FILES "${RUST_BRIDGE_PATH}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}" COMPONENT Runtime)
+set(RUST_BRIDGE "librust_wraper.so")
+set(RUST_BRIDGE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/shared/${RUST_BRIDGE}")
+install(CODE "file(REMOVE_RECURSE \"${INSTALL_BUNDLE_LIB_DIR}/${RUST_BRIDGE}\")" COMPONENT Runtime)
+install(FILES "${RUST_BRIDGE_PATH}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}" COMPONENT Runtime)

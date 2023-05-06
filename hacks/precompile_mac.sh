@@ -1,4 +1,4 @@
-# 来源于网络，用于获取当前shell文件的路径
+# 获取当前shell文件的路径
 SOURCE="$0"
 while [ -h "$SOURCE"  ]; do
     DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"

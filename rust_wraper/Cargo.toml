@@ -18,8 +18,11 @@ asyou_rust_sdk = { git = "https://github.com/WeteeDAO/wetee-rust-sdk.git" }
 wetee-runtime = { git = "https://github.com/WeteeDAO/wetee" }
 # asyou_rust_sdk = { path = "../../rust-sdk" }
 
-[target.'cfg(not(target_os = "macos"))'.dependencies]
+[target.'cfg(target_os = "windows")'.dependencies]
 openssl = { version = "0.10" }
 
 [target.'cfg(target_os = "macos")'.dependencies]
+openssl = { version = "0.10", features = ["vendored"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
 openssl = { version = "0.10", features = ["vendored"] }
