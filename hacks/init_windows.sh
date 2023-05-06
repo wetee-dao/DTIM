@@ -9,11 +9,6 @@ DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
 cd "$DIR/"
 
 SHARE_BUILD="$DIR/../windows/shared"
-if [ -d "$SHARE_BUILD" ];then
-    rm -rf "$SHARE_BUILD"
-fi
-mkdir -p "$SHARE_BUILD"
-
 echo "开始下载预编译文件..."
 
 cd "$SHARE_BUILD"
