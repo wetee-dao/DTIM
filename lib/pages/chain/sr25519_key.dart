@@ -249,6 +249,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   Icons.account_balance_wallet,
                   color: constTheme.centerChannelColor,
                 ),
+                errorMaxLines: 2,
               ),
               onSaved: (v) {
                 _name = v ?? "";
@@ -285,6 +286,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   Icons.password,
                   color: constTheme.centerChannelColor,
                 ),
+                errorMaxLines: 2,
               ),
               onSaved: (v) {
                 _password = v ?? "";
@@ -317,6 +319,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   Icons.password,
                   color: constTheme.centerChannelColor,
                 ),
+                errorMaxLines: 2,
               ),
               onSaved: (v) {
                 _password = v ?? "";
