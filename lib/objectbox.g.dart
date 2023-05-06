@@ -4,7 +4,7 @@
 // With a Dart package, run `dart run build_runner build`.
 // See also https://docs.objectbox.io/getting-started#generate-objectbox-code
 
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, depend_on_referenced_packages
 // coverage:ignore-file
 
 import 'dart:typed_data';
@@ -612,18 +612,16 @@ ModelDefinition getObjectBoxModel() {
             ..updatedAt = updatedAtValue == null
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
-          InternalToManyAccess.setRelInfo(
+          InternalToManyAccess.setRelInfo<Account>(
               object.orgs,
               store,
               RelInfo<AccountOrg>.toOneBacklink(
-                  4, object.id, (AccountOrg srcObject) => srcObject.account),
-              store.box<Account>());
-          InternalToManyAccess.setRelInfo(
+                  4, object.id, (AccountOrg srcObject) => srcObject.account));
+          InternalToManyAccess.setRelInfo<Account>(
               object.friends,
               store,
               RelInfo<User>.toOneBacklink(
-                  12, object.id, (User srcObject) => srcObject.account),
-              store.box<Account>());
+                  12, object.id, (User srcObject) => srcObject.account));
           return object;
         }),
     AccountOrg: EntityDefinition<AccountOrg>(

@@ -18,8 +18,5 @@ flutter_rust_bridge_codegen \
 
 cd "$DIR/../rust_wraper"
 
-# cargo build
-# cp -r "$DIR/../rust_wraper/target/debug/librust_wraper.so" "$DIR/../linux/shared/librust_wraper.so"
-
 chmod +x "$DIR/base_build.sh"
 exec "$DIR/base_build.sh"

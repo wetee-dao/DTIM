@@ -34,8 +34,8 @@ dependencies:
   # 桌面客户端样式
   window_manager: ^0.3.0
   # nosql 数据库
-  objectbox: ^1.7.2
-  objectbox_flutter_libs: ^1.7.2
+  objectbox: ^2.0.0
+  objectbox_flutter_libs: ^2.0.0
   # 全局状态树
   flutter_bloc: ^8.1.2
   # 表情包
