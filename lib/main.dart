@@ -6,7 +6,6 @@ import 'package:asyou_app/bloc/app/app.dart';
 import 'package:asyou_app/utils/tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -26,8 +25,7 @@ Future<void> main() async {
   await windowManager.ensureInitialized();
   await windowManager.hide();
 
-  AdaptiveDialog.instance
-      .updateConfiguration(defaultStyle: AdaptiveStyle.material);
+  AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
   // 数据库初始化
   await initDB();
   final winsystem = SystemApi.create().get();
@@ -61,8 +59,7 @@ Future<void> main() async {
       if (Platform.isMacOS || Platform.isWindows) {
         await windowManager.setHasShadow(true);
       }
-      await windowManager.setTitleBarStyle(TitleBarStyle.hidden,
-          windowButtonVisibility: true);
+      await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
       await windowManager.setSize(winSize);
       await windowManager.show();
       await showtray();
@@ -90,9 +87,7 @@ class App extends StatelessWidget {
         child: MaterialApp.router(
           title: 'DAO',
           debugShowCheckedModeBanner: false,
-          routeInformationProvider: _router.routeInformationProvider,
-          routeInformationParser: _router.routeInformationParser,
-          routerDelegate: _router.routerDelegate,
+          routerConfig: rootRouter.config(),
           localizationsDelegates: L10n.localizationsDelegates,
           locale: const Locale('en'),
           supportedLocales: L10n.supportedLocales,
@@ -110,9 +105,9 @@ class App extends StatelessWidget {
     );
   }
 
-  final GoRouter _router = GoRouter(
-    navigatorKey: rootNavigatorKey,
-    routes: routers(),
-    observers: [BotToastNavigatorObserver()],
-  );
+  // final GoRouter _router = GoRouter(
+  //   navigatorKey: rootNavigatorKey,
+  //   routes: routers(),
+  //   observers: [BotToastNavigatorObserver()],
+  // );
 }

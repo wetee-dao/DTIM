@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
@@ -15,9 +16,9 @@ import '../models/models.dart';
 import '../store/im.dart';
 import '../store/theme.dart';
 
+@RoutePage(name: "selectOrg")
 class SelectOrgPage extends StatefulWidget {
-  final String auto;
-  const SelectOrgPage({Key? key, required this.auto}) : super(key: key);
+  const SelectOrgPage({Key? key}) : super(key: key);
 
   @override
   State<SelectOrgPage> createState() => _SelectOrgPageState();
@@ -33,10 +34,11 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   @override
   void initState() {
     accounts = AccountApi.create().getUsers();
+    final query = context.routeData.queryParams;
     // currentAddress = accounts[0].address;
     Future.delayed(Duration.zero).then((value) async {
       im = context.read<IMProvider>();
-      if (widget.auto == "t") {
+      if (query.getString("auto") == "t") {
         await gotoOrg();
       }
     });
@@ -63,10 +65,10 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
             // ignore: use_build_context_synchronously
-            globalCtx().go("/pc/im");
+            globalCtx().router.replaceNamed("/pc/im");
           } else {
             // ignore: use_build_context_synchronously
-            globalCtx().go("/mobile");
+            globalCtx().router.replaceNamed("/mobile");
           }
         },
       );
@@ -84,9 +86,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   onImInit() {
     if (im.current == null || im.currentState == null) {
       if (isPc()) {
-        context.go("/pc/im");
+        context.router.replaceNamed("/pc/im");
       } else {
-        context.go("/mobile");
+        context.router.replaceNamed("/mobile");
       }
       return;
     }
@@ -201,7 +203,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //           ),
           //         ),
           //       InkWell(
-          //         onTap: () => context.push("/sr25519key"),
+          //         onTap: () => context.router.pushNamed("/sr25519key"),
           //         child: Container(
           //           height: 50.w,
           //           decoration: BoxDecoration(
