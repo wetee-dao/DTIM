@@ -86,7 +86,7 @@ class AppCubit extends Cubit<AppState> {
       await value.dispose();
     });
     emit(const AppState());
-    globalCtx().router.pushNamed("/");
+    globalCtx().router.back();
   }
 
   // 连接账户

@@ -15,8 +15,6 @@ import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 
-GlobalKey _orgNameKey = GlobalKey();
-
 class OrgViewPage extends StatefulWidget {
   final Function(String) onChannel;
   final double width;
@@ -112,7 +110,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Column(
-      key: _orgNameKey,
       children: [
         moveWindow(
           Row(

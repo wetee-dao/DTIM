@@ -64,10 +64,10 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           im.setCurrent(orgs[0]);
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
-            // ignore: use_build_context_synchronously
+            globalCtx().router.back();
             globalCtx().router.replaceNamed("/pc/im");
           } else {
-            // ignore: use_build_context_synchronously
+            globalCtx().router.back();
             globalCtx().router.replaceNamed("/mobile");
           }
         },
@@ -79,24 +79,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     if (subscription != null) {
       await subscription!.cancel();
     }
-    // im.removeListener(onImInit);
     return;
-  }
-
-  onImInit() {
-    if (im.current == null || im.currentState == null) {
-      if (isPc()) {
-        context.router.replaceNamed("/pc/im");
-      } else {
-        context.router.replaceNamed("/mobile");
-      }
-      return;
-    }
-    // final queryStream = AccountOrgApi.create().storeBox.query(AccountOrg_.withAddr.equals(currentAddress)).watch();
-    // subscription = queryStream.listen((query) {
-    //   final qmsgs = query.find();
-    //   print(qmsgs);
-    // });
   }
 
   @override

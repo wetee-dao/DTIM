@@ -12,6 +12,7 @@ import 'package:bot_toast/bot_toast.dart';
 
 import 'apis/apis.dart';
 import 'router.dart';
+import 'router/router.dart';
 import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
@@ -74,9 +75,11 @@ Future<void> main() async {
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
+  final rootRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
+    setGlobalKey(rootRouter.navigatorKey);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,
       light: theme(),

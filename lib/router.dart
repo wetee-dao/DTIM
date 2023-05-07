@@ -4,8 +4,11 @@ import 'router/router.dart';
 export 'router/pop_router.dart';
 
 bool runInTest = false;
-final rootRouter = AppRouter();
-final GlobalKey<NavigatorState> rootNavigatorKey = rootRouter.navigatorKey;
+GlobalKey<NavigatorState>? rootNavigatorKey;
+setGlobalKey(GlobalKey<NavigatorState> key) {
+  rootNavigatorKey = key;
+}
+
 BuildContext globalCtx() {
-  return rootNavigatorKey.currentContext!;
+  return rootNavigatorKey!.currentContext!;
 }
