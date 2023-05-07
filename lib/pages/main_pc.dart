@@ -41,7 +41,6 @@ class _PCPageState extends State<PCPage> {
     super.initState();
     pageController = PageController();
     im = context.read<AppCubit>();
-    print(im.me);
     aorgs = AccountOrgApi.create().listByAccount(im.me!.address);
     currentId.add(0);
   }

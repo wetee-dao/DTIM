@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:asyou_app/utils/functions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
@@ -65,6 +66,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
             globalCtx().router.back();
+            printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
             globalCtx().router.replaceNamed("/pc/im");
           } else {
             globalCtx().router.back();
