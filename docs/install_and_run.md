@@ -11,7 +11,7 @@ This repository is for the submission of milestone 3 of the Web 3 Foundation Gra
 ### Rust precompile lib
 - window run "sh hacks/init_windows.sh"
 - mac run "sh hacks/init_mac.sh"
-- winlinuxdow run "sh hacks/init_linux.sh"  
+- linux run "sh hacks/init_linux.sh"  
   > Subsequently, if a glibc error occurs, please run "sh hacks/precompile_linux.sh"  
 
 ### Flutter Setup
