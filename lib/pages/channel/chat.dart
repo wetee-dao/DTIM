@@ -202,7 +202,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     return Scaffold(
       appBar: ChannelBar(
         room: room!,
-        height: 71.w,
+        height: 66.w,
         tools: CloseBar(
           child: Row(
             children: [
@@ -249,7 +249,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   );
                 },
               ),
-              SizedBox(width: 5.w),
+              SizedBox(width: 2.w),
               IconButton(
                 onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
