@@ -26,7 +26,7 @@ void main() {
                 onTap: () {
                   print("test");
                   showAdaptiveBottomSheet(
-                    context: rootNavigatorKey.currentContext!,
+                    context: rootNavigatorKey!.currentContext!,
                     builder: (context) {
                       return Container(
                         height: 100,

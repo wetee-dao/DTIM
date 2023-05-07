@@ -26,7 +26,7 @@ void main() {
                 onTap: () {
                   print("test");
                   waitFutureLoading(
-                    context: rootNavigatorKey.currentContext!,
+                    context: rootNavigatorKey!.currentContext!,
                     future: () async {
                       await Future.delayed(const Duration(seconds: 1));
                     },
