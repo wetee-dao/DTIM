@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
           ? LocalAppBar(
               title: "搜索频道",
               onBack: () {
-                context.pop();
+                context.router.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
@@ -62,7 +63,7 @@ class _SearchPageState extends State<SearchPage> {
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ),
       body: Column(
@@ -143,7 +144,7 @@ class _SearchPageState extends State<SearchPage> {
                             future: () async {
                               await client.joinRoomById(rooms[index].roomId);
                               // ignore: use_build_context_synchronously
-                              globalCtx().pop();
+                              globalCtx().router.pop();
                             },
                           );
                         },

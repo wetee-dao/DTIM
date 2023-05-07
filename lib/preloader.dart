@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:asyou_app/router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'components/avatar.dart';
 import 'components/components.dart';
 import 'store/theme.dart';
 import 'utils/screen.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:window_manager/window_manager.dart';
@@ -23,6 +23,7 @@ import 'apis/apis.dart';
 import 'models/account.dart';
 import 'store/im.dart';
 
+@RoutePage(name: "preloader")
 class PreloaderPage extends StatefulWidget {
   const PreloaderPage({Key? key}) : super(key: key);
 
@@ -72,7 +73,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
               // ignore: use_build_context_synchronously
               Timer(const Duration(milliseconds: 1000), () {
                 if (!mounted) return;
-                globalCtx().push("/select_org?auto=t");
+                globalCtx().router.pushNamed("/select_org?auto=t");
               });
             },
           );
@@ -134,8 +135,8 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   ],
                 ),
               ),
-              onTap: () {
-                context.pop();
+              onTap: () async {
+                context.router.pop();
                 if (accounts.length >= 3) {
                   BotToast.showText(
                     text: L10n.of(context)!.tooManyUsers,
@@ -143,8 +144,8 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   );
                   return;
                 }
-                context.push("/sr25519key");
-                GoRouter.of(context).addListener(watchRouteChange);
+                await context.router.pushNamed("/sr25519key");
+                getList();
               },
             ),
             SizedBox(
@@ -154,11 +155,6 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         );
       },
     );
-  }
-
-  watchRouteChange() {
-    getList();
-    GoRouter.of(context).removeListener(watchRouteChange);
   }
 
   @override
@@ -333,7 +329,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                               value: "${accounts[i].address},${input[0]}",
                                                             );
                                                             // ignore: use_build_context_synchronously
-                                                            globalCtx().push("/select_org?auto=t");
+                                                            globalCtx().router.pushNamed("/select_org?auto=t");
                                                           },
                                                         );
                                                       },
@@ -402,7 +398,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                         ),
                         SizedBox(height: 5.w),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
                             if (accounts.length >= 3) {
                               BotToast.showText(
                                 text: L10n.of(context)!.tooManyUsers,
@@ -410,8 +406,8 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               );
                               return;
                             }
-                            context.push("/importSr25519key");
-                            GoRouter.of(context).addListener(watchRouteChange);
+                            await context.router.pushNamed("/importSr25519key");
+                            getList();
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),

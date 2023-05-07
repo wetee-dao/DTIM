@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../router.dart';
@@ -14,6 +15,7 @@ import '../../apis/account_api.dart';
 import '../../rust_wraper.io.dart';
 import '../../components/app_bar.dart';
 
+@RoutePage(name: "sr25519key")
 class Sr25519KeyPage extends StatefulWidget {
   const Sr25519KeyPage({Key? key}) : super(key: key);
 
@@ -52,7 +54,8 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
         title: L10n.of(context)!.signUp,
         onBack: () {
           if (step == 0) {
-            context.pop();
+            context.router.pop();
+            ;
           } else {
             setState(() {
               step = step - 1;
@@ -358,7 +361,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   AccountApi.create().addUser(initUser);
                   BotToast.showText(text: L10n.of(context)!.accountCreated, duration: const Duration(seconds: 2));
 
-                  rootNavigatorKey.currentContext?.pop();
+                  globalCtx().router.pop();
                 });
               },
               child: Container(

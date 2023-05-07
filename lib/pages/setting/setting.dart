@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -77,7 +78,7 @@ class _SettingPageState extends State<SettingPage> {
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
@@ -87,7 +88,7 @@ class _SettingPageState extends State<SettingPage> {
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ),
       body: Row(
