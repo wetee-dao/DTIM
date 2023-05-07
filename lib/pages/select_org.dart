@@ -65,12 +65,12 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           im.setCurrent(orgs[0]);
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
-            globalCtx().router.back();
+            globalCtx().router.root.back();
             printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
-            globalCtx().router.replaceNamed("/pc/im");
+            globalCtx().router.root.replaceNamed("/pc/im");
           } else {
-            globalCtx().router.back();
-            globalCtx().router.replaceNamed("/mobile");
+            globalCtx().router.root.back();
+            globalCtx().router.root.replaceNamed("/mobile");
           }
         },
       );

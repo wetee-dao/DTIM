@@ -103,15 +103,6 @@ class _PCPageState extends State<PCPage> {
                     margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
                     decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
                   ),
-                  // 设置
-                  // SiderBarItem(
-                  //   Icons.settings_applications,
-                  //   "设置",
-                  //   selected: false,
-                  //   onTap: () {
-                  //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
-                  //   },
-                  // ),
                   Flexible(
                     child: StreamBuilder(
                       stream: currentId.stream,
