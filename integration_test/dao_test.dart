@@ -200,6 +200,9 @@ void main() {
     await tester.tap(find.byKey(const Key('DAO')));
     await tester.waitFor(find.byKey(const Key('daoView')), timeout: const Duration(seconds: 50));
 
+    await Future.delayed(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
+
     // 点击进入公投页面
     await tester.tap(find.byKey(const Key('Projects 1')));
     await tester.waitFor(find.byKey(const Key('projectView')), timeout: const Duration(seconds: 50));

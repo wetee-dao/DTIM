@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
@@ -26,15 +26,15 @@ List<List<ItemModel>> menuItems = [
   ],
   [
     ItemModel('创建或加入组织', onTap: (id) {
-      rootNavigatorKey.currentContext?.push("/select_org");
+      globalCtx().router.pushNamed("/select_org");
     })
   ]
 ];
 
-orgMenuRender(controller) {
+orgMenuRender(controller, width) {
   final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
   return Container(
-    width: 200.w,
+    width: width,
     margin: EdgeInsets.all(5.w),
     decoration: BoxDecoration(
       border: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),

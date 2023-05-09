@@ -21,4 +21,4 @@ flutter_rust_bridge_codegen \
 chmod +x "$DIR/base_build.sh"
 exec "$DIR/base_build.sh"
 
-
+# cargo build  --features= --lib --release --target=aarch64-apple-darwin

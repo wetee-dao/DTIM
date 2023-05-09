@@ -22,6 +22,7 @@ class RoadMapPage extends StatefulWidget {
 class _RoadMapPageState extends State<RoadMapPage> {
   late final IMProvider im;
   late final DAOCTX dao;
+  bool _loading = true;
   List<Quarter> quarters = [];
 
   @override
@@ -46,7 +47,9 @@ class _RoadMapPageState extends State<RoadMapPage> {
       year: 2023,
     );
     if (mounted) {
-      setState(() {});
+      setState(() {
+        _loading = false;
+      });
     }
   }
 
@@ -122,25 +125,27 @@ class _RoadMapPageState extends State<RoadMapPage> {
           color: constTheme.centerChannelDivider,
         ),
         Expanded(
-          child: Scrollbar(
-            radius: const Radius.circular(9),
-            thumbVisibility: true,
-            controller: boardScrollController,
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              controller: boardScrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                SizedBox(width: 10.w),
-                for (var quarter in quarters)
-                  _createListView(
-                    "${quarter.year}.Q${quarter.quarter}",
-                    quarter.tasks,
+          child: !_loading
+              ? Scrollbar(
+                  radius: const Radius.circular(9),
+                  thumbVisibility: true,
+                  controller: boardScrollController,
+                  child: ListView(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    controller: boardScrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(width: 10.w),
+                      for (var quarter in quarters)
+                        _createListView(
+                          "${quarter.year}.Q${quarter.quarter}",
+                          quarter.tasks,
+                        ),
+                    ],
                   ),
-              ],
-            ),
-          ),
+                )
+              : Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w)),
         ),
       ],
     );

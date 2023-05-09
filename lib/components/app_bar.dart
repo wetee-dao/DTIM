@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 
 import '../../store/theme.dart';
 import '../../utils/screen.dart';
@@ -60,7 +60,8 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onBack!();
                       return;
                     }
-                    context.pop();
+                    context.router.pop();
+                    ;
                   },
                 ),
             SizedBox(width: 10.w),
@@ -134,7 +135,8 @@ class SideBarAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onBack!();
                       return;
                     }
-                    context.pop();
+                    context.router.pop();
+                    ;
                   },
                 ),
             SizedBox(width: 2.w * _height / 60.w),

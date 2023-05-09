@@ -1,3 +1,11 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'dart:async';
 
 /// A void callback, i.e. (){}, so we don't need to import e.g. `dart.ui`

@@ -70,6 +70,41 @@ pub extern "C" fn wire_dao_balance(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_create_dao(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    name: *mut wire_uint_8_list,
+    purpose: *mut wire_uint_8_list,
+    meta_data: *mut wire_uint_8_list,
+) {
+    wire_create_dao_impl(port_, client, from, name, purpose, meta_data)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_create_asset(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    dao_id: u64,
+    name: *mut wire_uint_8_list,
+    symbol: *mut wire_uint_8_list,
+    total_supply: u64,
+    decimals: u8,
+) {
+    wire_create_asset_impl(
+        port_,
+        client,
+        from,
+        dao_id,
+        name,
+        symbol,
+        total_supply,
+        decimals,
+    )
+}
+
+#[no_mangle]
 pub extern "C" fn wire_dao_info(port_: i64, client: u32, dao_id: u64) {
     wire_dao_info_impl(port_, client, dao_id)
 }

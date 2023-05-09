@@ -44,7 +44,7 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
             height: double.maxFinite,
             width: leftWidth,
             color: constTheme.sidebarBg,
-            child: OrgViewPage(key: const Key("OrgViewPage"), onChannel: setChannelId),
+            child: OrgViewPage(key: const Key("OrgViewPage"), width: leftWidth, onChannel: setChannelId),
           ),
           GestureDetector(
             child: MouseRegion(

@@ -12,8 +12,7 @@ echo "RUST项目根目录 => $CRATE"
 cd "$DIR/../"
 
 rm -rf lib/objectbox.g.dart
-
 flutter pub run build_runner build --delete-conflicting-outputs
 
-rm ./lib/components/appicon.dart
-iconfont_builder --from ./assets/fonts --to ./lib/components/appicon.dart  --class Appicon
+# rm ./lib/components/appicon.dart
+# iconfont_builder --from ./assets/fonts --to ./lib/components/appicon.dart  --class Appicon

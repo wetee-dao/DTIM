@@ -6,6 +6,7 @@ while [ -h "$SOURCE"  ]; do
     [[ $SOURCE != /*  ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
+cd "$DIR/"
 
-brew install libolm
-cp /opt/homebrew/Cellar/libolm/3.2.14/lib/libolm.3.2.14.dylib /Users/asyou/Work/asyou.me/app
+# brew install libolm
+# cp /opt/homebrew/Cellar/libolm/3.2.14/lib/libolm.3.2.14.dylib /Users/asyou/Work/asyou.me/app

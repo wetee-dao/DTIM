@@ -49,9 +49,10 @@ class _DaoPageState extends State<DaoPage> {
     im = context.read<IMProvider>();
     daoCtx.connectChain(im.currentState!.org, im.me!, () {
       getData();
-    });
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      daoCtx.timeTick();
+      _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+        // print("获取新的区块头");
+        daoCtx.timeTick();
+      });
     });
   }
 

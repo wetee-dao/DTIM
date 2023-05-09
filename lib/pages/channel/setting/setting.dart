@@ -1,5 +1,13 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -73,7 +81,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
               height: 40.w,
               onBack: () {
-                context.pop();
+                context.router.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
@@ -84,7 +92,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ),
       body: Column(

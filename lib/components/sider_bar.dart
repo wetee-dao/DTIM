@@ -1,6 +1,6 @@
 // 写一个组件
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 
 import '../utils/screen.dart';
 import '../store/theme.dart';

@@ -21,8 +21,8 @@ class AccountOrgApi {
     return storeBox.getAll();
   }
 
-  List<AccountOrg> listByAccount(String address) {
-    final query = storeBox.query(AccountOrg_.withAddr.equals(address)).build();
+  List<AccountOrg> listByAccount(String userId) {
+    final query = storeBox.query(AccountOrg_.withAddr.equals(userId)).build();
     final storeOrgs = query.find();
     query.close();
 
@@ -30,17 +30,17 @@ class AccountOrgApi {
   }
 
   List<AccountOrg> accountSyncOrgs(
-    String address,
+    String userId,
     List<String> fs,
     List<Org> orgs,
   ) {
     final accountStoreBox = Box<Account>(DB!);
-    final aquery = accountStoreBox.query(Account_.address.equals(address)).build();
+    final aquery = accountStoreBox.query(Account_.address.equals(userId)).build();
     final account = aquery.findUnique();
     aquery.close();
 
     // 查询当前的团队
-    final query = storeBox.query(AccountOrg_.withAddr.equals(address)).build();
+    final query = storeBox.query(AccountOrg_.withAddr.equals(userId)).build();
     final storeOrgs = query.find();
     query.close();
 
@@ -77,7 +77,7 @@ class AccountOrgApi {
           at.domain = org.metaData!.domain;
           at.chainUrl = org.chainUrl;
           at.status = 1;
-          at.withAddr = address;
+          at.withAddr = userId;
           at.account.target = account;
           at.daoId = org.daoId;
           storeBox.put(at);
@@ -91,7 +91,7 @@ class AccountOrgApi {
           storeOrgs[storeIndex].domain = org.metaData!.domain;
           storeOrgs[storeIndex].chainUrl = org.chainUrl;
           storeOrgs[storeIndex].status = 1;
-          storeOrgs[storeIndex].withAddr = address;
+          storeOrgs[storeIndex].withAddr = userId;
           storeOrgs[storeIndex].account.target = account;
           storeOrgs[storeIndex].daoId = org.daoId;
           storeBox.put(storeOrgs[storeIndex]);

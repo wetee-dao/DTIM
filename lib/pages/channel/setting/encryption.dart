@@ -1,3 +1,11 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +17,9 @@ import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../components/components.dart';
-import '../../../config/app_config.dart';
 import '../../../router.dart';
 import '../../../store/im.dart';
 import '../../../utils/functions.dart';
-import '../../../utils/string_ectenstion.dart';
 import 'key_verification_dialog.dart';
 
 class ChatEncryptionSettings extends StatefulWidget {
@@ -222,11 +228,6 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                             Flexible(
                               fit: FlexFit.loose,
                               child: Material(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppConfig.borderRadius,
-                                  ),
-                                ),
                                 color: constTheme.centerChannelBg,
                                 child: Padding(
                                   padding: EdgeInsets.all(4.w),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../config/app_config.dart';
+import '../router.dart';
 
 abstract class PlatformInfos {
   static bool get isWeb => kIsWeb;
@@ -29,29 +29,17 @@ abstract class PlatformInfos {
 
   static bool get platformCanRecord => (isMobile || isMacOS);
 
-  static String get clientName =>
-      '${AppConfig.applicationName} ${isWeb ? 'web' : Platform.operatingSystem}${kReleaseMode ? '' : 'Debug'}';
-
   static Future<String> getVersion() async {
-    final version = kIsWeb ? 'Web' : 'Unknown';
-    return version;
+    return kIsWeb ? 'Web' : 'Unknown';
   }
 
   static void showDialog(BuildContext context) async {
     final version = await PlatformInfos.getVersion();
     showAboutDialog(
-      context: context,
+      context: globalCtx(),
       useRootNavigator: false,
       children: [
         Text('Version: $version'),
-        // OutlinedButton(
-        //   onPressed: () => launchUrlString(AppConfig.sourceCodeUrl),
-        //   child: Text(L10n.of(context)!.sourceCode),
-        // ),
-        OutlinedButton(
-          onPressed: () => launchUrlString(AppConfig.emojiFontUrl),
-          child: const Text(AppConfig.emojiFontName),
-        ),
         OutlinedButton(
           onPressed: () {
             // VRouter.of(context).to('logs')
@@ -65,7 +53,7 @@ abstract class PlatformInfos {
         height: 64,
         filterQuality: FilterQuality.medium,
       ),
-      applicationName: AppConfig.applicationName,
+      applicationName: "Wetee",
     );
   }
 }

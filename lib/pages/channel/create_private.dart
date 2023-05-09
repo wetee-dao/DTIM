@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -59,7 +59,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               title: "添加私信",
               height: 50.w,
               onBack: () {
-                context.pop();
+                context.router.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
@@ -70,7 +70,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ),
       body: Column(
@@ -170,7 +170,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                               future: () async {
                                 await client.startDirectChat(userList[index].userId);
                                 BotToast.showText(text: '创建私信成功', duration: const Duration(seconds: 2));
-                                globalCtx().pop();
+                                globalCtx().router.pop();
                               },
                             );
                           },
@@ -225,7 +225,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                         await client.startDirectChat("${id.text}:${org.domain}");
                         BotToast.showText(text: '创建私信成功', duration: const Duration(seconds: 2));
                         // ignore: use_build_context_synchronously
-                        globalCtx().pop();
+                        globalCtx().router.pop();
                       },
                     );
                   },

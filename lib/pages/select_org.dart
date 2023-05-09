@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:asyou_app/utils/functions.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
@@ -15,9 +17,9 @@ import '../models/models.dart';
 import '../store/im.dart';
 import '../store/theme.dart';
 
+@RoutePage(name: "selectOrg")
 class SelectOrgPage extends StatefulWidget {
-  final String auto;
-  const SelectOrgPage({Key? key, required this.auto}) : super(key: key);
+  const SelectOrgPage({Key? key}) : super(key: key);
 
   @override
   State<SelectOrgPage> createState() => _SelectOrgPageState();
@@ -33,10 +35,17 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   @override
   void initState() {
     accounts = AccountApi.create().getUsers();
-    // currentAddress = accounts[0].address;
+    final query = context.routeData.queryParams;
+    im = context.read<IMProvider>();
+    final orgList = AccountOrgApi.create().listByAccount(im.me!.address).map((o) => o.orgHash).toList();
+    selected = orgList;
     Future.delayed(Duration.zero).then((value) async {
-      im = context.read<IMProvider>();
-      if (widget.auto == "t") {
+      if (query.getString("auto") == "t") {
+        AccountOrgApi.create().accountSyncOrgs(
+          im.me!.address,
+          selected,
+          orgs,
+        );
         await gotoOrg();
       }
     });
@@ -62,11 +71,12 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           im.setCurrent(orgs[0]);
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
-            // ignore: use_build_context_synchronously
-            globalCtx().go("/pc/im");
+            globalCtx().router.root.back();
+            printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
+            globalCtx().router.root.replaceNamed("/pc/im");
           } else {
-            // ignore: use_build_context_synchronously
-            globalCtx().go("/mobile");
+            globalCtx().router.root.back();
+            globalCtx().router.root.replaceNamed("/mobile");
           }
         },
       );
@@ -77,24 +87,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     if (subscription != null) {
       await subscription!.cancel();
     }
-    // im.removeListener(onImInit);
     return;
-  }
-
-  onImInit() {
-    if (im.current == null || im.currentState == null) {
-      if (isPc()) {
-        context.go("/pc/im");
-      } else {
-        context.go("/mobile");
-      }
-      return;
-    }
-    // final queryStream = AccountOrgApi.create().storeBox.query(AccountOrg_.withAddr.equals(currentAddress)).watch();
-    // subscription = queryStream.listen((query) {
-    //   final qmsgs = query.find();
-    //   print(qmsgs);
-    // });
   }
 
   @override
@@ -201,7 +194,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //           ),
           //         ),
           //       InkWell(
-          //         onTap: () => context.push("/sr25519key"),
+          //         onTap: () => context.router.pushNamed("/sr25519key"),
           //         child: Container(
           //           height: 50.w,
           //           decoration: BoxDecoration(
@@ -289,7 +282,8 @@ List<Org> orgs = [
     daoId: 5000,
     name: "WeteeDAO",
     desc: "we3 在线协作，分布式办公软件",
-    chainUrl: "ws://chain-ws.tc.asyou.me",
+    // chainUrl: "ws://chain-ws.tc.asyou.me",
+    chainUrl: "ws://127.0.0.1:3994",
     metaData: OrgMetaData(
       domain: "im.tc.asyou.me",
       color: "#000000",

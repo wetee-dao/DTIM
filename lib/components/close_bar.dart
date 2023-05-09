@@ -73,7 +73,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         renderIcons(constTheme),
-        SizedBox(height: 10.w),
+        SizedBox(height: 6.w),
         widget.child!,
       ],
     );

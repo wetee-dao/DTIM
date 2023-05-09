@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = asyou_app
+PRODUCT_NAME = wetee_dao
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = me.asyou.asyouApp
+PRODUCT_BUNDLE_IDENTIFIER = wetee.dao.weteeDao
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 me.asyou. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 wetee.dao. All rights reserved.

@@ -1,7 +1,15 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -171,7 +179,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                                 await client.startDirectChat(userList[index].id);
                                 BotToast.showText(text: '创建私信成功', duration: const Duration(seconds: 2));
                                 // ignore: use_build_context_synchronously
-                                globalCtx().pop();
+                                globalCtx().router.pop();
                               },
                             );
                           },

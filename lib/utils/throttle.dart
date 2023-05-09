@@ -17,15 +17,6 @@ class _EasyThrottleOperation {
 class EasyThrottle {
   static Map<String, _EasyThrottleOperation> _operations = {};
 
-  /// Will execute [onExecute] immediately and ignore additional attempts to
-  /// call throttle with the same [tag] happens for the given [duration].
-  ///
-  /// [tag] is any arbitrary String, and is used to identify this particular throttle
-  /// operation in subsequent calls to [throttle()] or [cancel()].
-  ///
-  /// [duration] is the amount of time subsequent attempts will be ignored.
-  ///
-  /// Returns whether the operation was throttled
   static bool throttle(
     String tag,
     Duration duration,

@@ -1,10 +1,10 @@
 import 'package:asyou_app/components/components.dart';
 import 'package:asyou_app/router.dart';
-import 'package:asyou_app/utils/size_string.dart';
+import 'package:asyou_app/utils/string.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:matrix/matrix.dart';
 
 import '../utils/localized_extension.dart';
@@ -58,7 +58,7 @@ class SendFileDialogState extends State<SendFileDialog> {
         },
       );
     }
-    globalCtx().pop();
+    globalCtx().router.pop();
 
     return;
   }
