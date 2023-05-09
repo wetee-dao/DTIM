@@ -22,7 +22,7 @@ openWindow() async{
     ..registerJavaScriptMessageHandler("test", (name, body) {
       print('on javaScipt message: $name $body');
     })
-    ..setApplicationNameForUserAgent(" WebviewExample/1.0.0")
+    ..setApplicationNameForUserAgent("WebviewExample/1.0.0")
     ..setPromptHandler((prompt, defaultText) {
       if (prompt == "test") {
         return "Hello World!";

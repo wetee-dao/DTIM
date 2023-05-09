@@ -23,7 +23,8 @@ final botToastBuilder = BotToastInit();
 
 Future<void> main(args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (runWebViewTitleBarWidget(args)) {
+  var ctheme = extTheme();
+  if (runWebViewTitleBarWidget(args,backgroundColor: ctheme.sidebarHeaderBg,color: ctheme.sidebarHeaderTextColor)) {
     debugPrint('webview args: $args');
     return;
   }

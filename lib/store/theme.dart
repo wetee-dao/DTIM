@@ -548,6 +548,10 @@ ExtColors getExtTheme(i) {
   );
 }
 
+ExtColors extTheme(){
+  return getExtTheme(currentTheme);
+}
+
 setThemeIndex(String name) {
   if (name == "") {
     return;
