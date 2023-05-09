@@ -1,3 +1,11 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:asyou_app/store/theme.dart';
 import 'package:asyou_app/utils/screen.dart';
 import 'package:flutter/material.dart';
