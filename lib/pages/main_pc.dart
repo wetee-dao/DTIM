@@ -14,6 +14,7 @@ import '../models/models.dart';
 import '../store/theme.dart';
 import './dao/dao.dart';
 import './org/org.dart';
+import 'webview/utils.dart';
 
 @RoutePage(name: "pc")
 class PCPage extends StatefulWidget {
@@ -112,11 +113,16 @@ class _PCPageState extends State<PCPage> {
                             SiderBarItem(Appicon.wode4, "MES", key: const Key("MES"), selected: id.data == 0,
                                 onTap: () {
                               onSelect(0);
-                            }),
+                            },),
                             // DAO管理
                             SiderBarItem(Appicon.organcode, "DAO", key: const Key("DAO"), selected: id.data == 1,
                                 onTap: () {
                               onSelect(1);
+                            },),
+                            // DAO管理
+                            SiderBarItem(Appicon.organcode, "VW", key: const Key("VW"), selected: id.data == 99,
+                                onTap: () {
+                              openWindow();
                             }),
                           ],
                         );

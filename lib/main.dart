@@ -4,6 +4,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:asyou_app/bloc/app/app.dart';
 import 'package:asyou_app/utils/tray.dart';
+import 'package:desktop_webview_window/desktop_webview_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
@@ -20,8 +21,13 @@ import 'utils/screen.dart';
 
 final botToastBuilder = BotToastInit();
 
-Future<void> main() async {
+Future<void> main(args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (runWebViewTitleBarWidget(args)) {
+    debugPrint('webview args: $args');
+    return;
+  }
+
   // 等待桌面初始化
   await windowManager.ensureInitialized();
   await windowManager.hide();

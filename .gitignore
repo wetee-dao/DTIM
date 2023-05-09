@@ -49,7 +49,7 @@ app.*.map.json
 **/target/
 **/build/
 
-exts/xmpp_dart
+exts
 libolm.3.dylib
 rust_wraper/Cargo.lock
 linux/shared/librust_wraper.so

@@ -69,6 +69,9 @@ dependencies:
   animated_text_kit: ^4.2.2
   # svg
   flutter_svg: ^2.0.5
+  # webview
+  desktop_webview_window:
+    path: ./exts/desktop_webview_window
 
   chewie: ^1.4.0
   flutter_map: ^4.0.0
