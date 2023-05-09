@@ -222,11 +222,6 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
                             Flexible(
                               fit: FlexFit.loose,
                               child: Material(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppConfig.borderRadius,
-                                  ),
-                                ),
                                 color: constTheme.centerChannelBg,
                                 child: Padding(
                                   padding: EdgeInsets.all(4.w),

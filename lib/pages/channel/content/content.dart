@@ -146,7 +146,7 @@ class MessageContent extends StatelessWidget {
           case MessageTypes.Text:
           case MessageTypes.Notice:
           case MessageTypes.Emote:
-            if (AppConfig.renderHtml && !event.redacted && event.isRichMessage) {
+            if (!event.redacted && event.isRichMessage) {
               var html = event.formattedText;
               if (event.messageType == MessageTypes.Emote) {
                 html = '* $html';

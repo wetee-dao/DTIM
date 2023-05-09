@@ -29,9 +29,6 @@ abstract class PlatformInfos {
 
   static bool get platformCanRecord => (isMobile || isMacOS);
 
-  static String get clientName =>
-      '${AppConfig.applicationName} ${isWeb ? 'web' : Platform.operatingSystem}${kReleaseMode ? '' : 'Debug'}';
-
   static Future<String> getVersion() async {
     final version = kIsWeb ? 'Web' : 'Unknown';
     return version;
@@ -44,14 +41,6 @@ abstract class PlatformInfos {
       useRootNavigator: false,
       children: [
         Text('Version: $version'),
-        // OutlinedButton(
-        //   onPressed: () => launchUrlString(AppConfig.sourceCodeUrl),
-        //   child: Text(L10n.of(context)!.sourceCode),
-        // ),
-        OutlinedButton(
-          onPressed: () => launchUrlString(AppConfig.emojiFontUrl),
-          child: const Text(AppConfig.emojiFontName),
-        ),
         OutlinedButton(
           onPressed: () {
             // VRouter.of(context).to('logs')
@@ -65,7 +54,7 @@ abstract class PlatformInfos {
         height: 64,
         filterQuality: FilterQuality.medium,
       ),
-      applicationName: AppConfig.applicationName,
+      applicationName: "Wetee",
     );
   }
 }

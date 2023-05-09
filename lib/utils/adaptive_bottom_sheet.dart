@@ -20,10 +20,10 @@ Future<T?> showAdaptiveBottomSheet<T>({
         maxWidth: 500.w,
       ),
       clipBehavior: Clip.hardEdge,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(AppConfig.borderRadius),
-          topRight: Radius.circular(AppConfig.borderRadius),
+          topLeft: Radius.circular(5.w),
+          topRight: Radius.circular(5.w),
         ),
       ),
     );

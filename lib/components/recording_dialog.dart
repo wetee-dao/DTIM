@@ -134,7 +134,7 @@ class RecordingDialogState extends State<RecordingDialog> {
                           width: 4,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(AppConfig.borderRadius),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           height: maxDecibalWidth * (amplitude / 100),
                         ),
