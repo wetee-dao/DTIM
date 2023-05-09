@@ -9,11 +9,9 @@ import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../components/components.dart';
-import '../../../config/app_config.dart';
 import '../../../router.dart';
 import '../../../store/im.dart';
 import '../../../utils/functions.dart';
-import '../../../utils/string_ectenstion.dart';
 import 'key_verification_dialog.dart';
 
 class ChatEncryptionSettings extends StatefulWidget {

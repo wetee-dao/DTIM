@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../config/app_config.dart';
+import '../router.dart';
 
 abstract class PlatformInfos {
   static bool get isWeb => kIsWeb;
@@ -30,14 +30,13 @@ abstract class PlatformInfos {
   static bool get platformCanRecord => (isMobile || isMacOS);
 
   static Future<String> getVersion() async {
-    final version = kIsWeb ? 'Web' : 'Unknown';
-    return version;
+    return kIsWeb ? 'Web' : 'Unknown';
   }
 
   static void showDialog(BuildContext context) async {
     final version = await PlatformInfos.getVersion();
     showAboutDialog(
-      context: context,
+      context: globalCtx(),
       useRootNavigator: false,
       children: [
         Text('Version: $version'),

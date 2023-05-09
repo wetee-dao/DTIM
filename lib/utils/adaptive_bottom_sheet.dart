@@ -1,6 +1,15 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.gnu.org/licenses
+//
+
 import 'package:flutter/material.dart';
 
-import '../../config/app_config.dart';
 import './screen.dart';
 
 Future<T?> showAdaptiveBottomSheet<T>({

@@ -8,7 +8,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../config/app_config.dart';
 import '../pages/channel/content/audio_player.dart';
 import '../utils/platform_infos.dart';
 // import 'events/audio_player.dart';

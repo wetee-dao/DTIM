@@ -1,3 +1,13 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.gnu.org/licenses
+//
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -28,8 +38,7 @@ extension DateTimeExtension on DateTime {
   /// Checks if two DateTimes are close enough to belong to the same
   /// environment.
   bool sameEnvironment(DateTime prevTime) {
-    return millisecondsSinceEpoch - prevTime.millisecondsSinceEpoch <
-        1000 * 60 * minutesBetweenEnvironments;
+    return millisecondsSinceEpoch - prevTime.millisecondsSinceEpoch < 1000 * 60 * minutesBetweenEnvironments;
   }
 
   /// Returns a simple time String.
@@ -51,10 +60,8 @@ extension DateTimeExtension on DateTime {
 
     final sameDay = sameYear && now.month == month && now.day == day;
 
-    final sameWeek = sameYear &&
-        !sameDay &&
-        now.millisecondsSinceEpoch - millisecondsSinceEpoch <
-            1000 * 60 * 60 * 24 * 7;
+    final sameWeek =
+        sameYear && !sameDay && now.millisecondsSinceEpoch - millisecondsSinceEpoch < 1000 * 60 * 60 * 24 * 7;
 
     if (sameDay) {
       return localizedTimeOfDay(context);

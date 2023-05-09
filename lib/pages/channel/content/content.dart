@@ -1,3 +1,13 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.gnu.org/licenses
+//
+
 import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +23,6 @@ import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/screen.dart';
 import '../../../components/avatar.dart';
 import '../../../utils/platform_infos.dart';
-import '../../../utils/url_launcher.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
 import 'html_message.dart';
@@ -123,11 +132,7 @@ class MessageContent extends StatelessWidget {
           case CuteEventContent.eventType:
             return CuteContent(event);
           case MessageTypes.Audio:
-            if (PlatformInfos.isMobile || PlatformInfos.isMacOS || PlatformInfos.isWeb
-                // Disabled until https://github.com/bleonard252/just_audio_mpv/issues/3
-                // is fixed
-                //   || PlatformInfos.isLinux
-                ) {
+            if (PlatformInfos.isMobile || PlatformInfos.isMacOS || PlatformInfos.isWeb) {
               return AudioPlayerWidget(
                 event,
                 color: textColor,
@@ -192,7 +197,7 @@ class MessageContent extends StatelessWidget {
                     const SizedBox(height: 6),
                     OutlinedButton.icon(
                       icon: Icon(Icons.location_on_outlined, color: textColor),
-                      onPressed: UrlLauncher(context, geoUri.toString()).launchUrl,
+                      onPressed: () {},
                       label: Text(
                         L10n.of(context)!.openInMaps,
                         style: TextStyle(color: textColor),
@@ -245,7 +250,7 @@ class MessageContent extends StatelessWidget {
                     decoration: TextDecoration.underline,
                     decorationColor: textColor.withAlpha(150),
                   ),
-                  onLinkTap: (url) => UrlLauncher(context, url).launchUrl(),
+                  onLinkTap: (url) => {},
                 );
               },
             );

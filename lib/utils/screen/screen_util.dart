@@ -31,28 +31,6 @@ class ScreenUtil {
     return _instance;
   }
 
-  /// Manually wait for window size to be initialized
-  ///
-  /// `Recommended` to use before you need access window size
-  /// or in custom splash/bootstrap screen [FutureBuilder]
-  ///
-  /// example:
-  /// ```dart
-  /// ...
-  /// ScreenUtil.init(context, ...);
-  /// ...
-  ///   FutureBuilder(
-  ///     future: Future.wait([..., ensureScreenSize(), ...]),
-  ///     builder: (context, snapshot) {
-  ///       if (snapshot.hasData) return const HomeScreen();
-  ///       return Material(
-  ///         child: LayoutBuilder(
-  ///           ...
-  ///         ),
-  ///       );
-  ///     },
-  ///   )
-  /// ```
   static Future<void> ensureScreenSize([
     ui.FlutterWindow? window,
     Duration duration = const Duration(milliseconds: 10),

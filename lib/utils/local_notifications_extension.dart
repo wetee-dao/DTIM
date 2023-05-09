@@ -12,7 +12,6 @@ import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../config/app_config.dart';
 import './matrix_sdk_extensions/matrix_locals.dart';
 import './platform_infos.dart';
 

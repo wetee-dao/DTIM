@@ -1,3 +1,13 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.gnu.org/licenses
+//
+
 import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
@@ -22,24 +32,20 @@ IconData _getIconFromName(String displayname) {
   }.any((s) => name.contains(s))) {
     return Icons.web_outlined;
   }
-  if ({'desktop', 'windows', 'macos', 'linux', 'ubuntu'}
-      .any((s) => name.contains(s))) {
+  if ({'desktop', 'windows', 'macos', 'linux', 'ubuntu'}.any((s) => name.contains(s))) {
     return Icons.desktop_mac_outlined;
   }
   return Icons.device_unknown_outlined;
 }
 
 extension DeviceExtension on Device {
-  String get displayname =>
-      (displayName?.isNotEmpty ?? false) ? displayName! : 'Unknown device';
+  String get displayname => (displayName?.isNotEmpty ?? false) ? displayName! : 'Unknown device';
 
   IconData get icon => _getIconFromName(displayname);
 }
 
 extension DeviceKeysExtension on DeviceKeys {
-  String get displayname => (deviceDisplayName?.isNotEmpty ?? false)
-      ? deviceDisplayName!
-      : 'Unknown device';
+  String get displayname => (deviceDisplayName?.isNotEmpty ?? false) ? deviceDisplayName! : 'Unknown device';
 
   IconData get icon => _getIconFromName(displayname);
 }

@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../store/im.dart';
 import '../store/theme.dart';
-import '../utils/url_launcher.dart';
 import 'avatar.dart';
 import '../utils/localized_extension.dart';
 import 'loading_dialog.dart';
@@ -163,7 +162,7 @@ class PublicRoomBottomSheet extends StatelessWidget {
                         fontSize: 14,
                         color: Theme.of(context).textTheme.bodyMedium!.color,
                       ),
-                      onLinkTap: (url) => UrlLauncher(context, url).launchUrl(),
+                      onLinkTap: (url) {},
                     ),
                   ),
               ],

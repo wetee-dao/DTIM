@@ -11,16 +11,9 @@ import '../pages/dao/pop/make_review.dart';
 import '../pages/dao/pop/referendum_vote.dart';
 import '../pages/dao/pop/task_info.dart';
 import '../pages/setting/setting.dart';
-import '../pages/chain/import_sr25519_key.dart';
-import '../pages/channel/invitation.dart';
 import '../pages/dao/pop/join_task.dart';
 import '../pages/channel/create.dart';
-import '../pages/main_mobile.dart';
-import '../pages/main_pc.dart';
-import '../pages/chain/sr25519_key.dart';
 import '../pages/search.dart';
-import '../pages/select_org.dart';
-import '../preloader.dart';
 import '../utils/screen.dart';
 import '../store/theme.dart';
 
@@ -73,10 +66,6 @@ getPage(String url, Function closeModel) {
   } else if (url.indexOf("/invitation/") == 0) {
     final pstr = url.replaceAll("/invitation/", "");
     final ps = pstr.split("/");
-    return InvitationPage(
-      closeModel: closeModel,
-      id: Uri.decodeComponent(ps[0]),
-    );
   }
 
   return const Center(child: Text("404"));

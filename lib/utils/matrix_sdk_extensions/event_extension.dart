@@ -5,7 +5,7 @@ import 'package:matrix/matrix.dart';
 
 import '../../components/components.dart';
 import 'matrix_file_extension.dart';
-import '../size_string.dart';
+import '../string.dart';
 
 extension LocalizedBody on Event {
   Future<LoadingDialogResult<MatrixFile?>> _getFile(BuildContext context) => waitFutureLoading(
