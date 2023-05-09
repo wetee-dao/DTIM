@@ -6,7 +6,6 @@ import 'package:matrix/matrix.dart';
 import 'package:matrix_link_text/link_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../config/app_config.dart';
 import '../../../store/im.dart';
 import '../../../utils/adaptive_bottom_sheet.dart';
 import '../../../utils/date_time_extension.dart';
