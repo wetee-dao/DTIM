@@ -110,6 +110,51 @@ pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<
     })
 }
 
+pub fn create_dao(
+    client: u32,
+    from: String,
+    name: String,
+    purpose: String,
+    meta_data: String,
+) -> anyhow::Result<()> {
+    let c = Client::from_index(client)?;
+    let mut dao = WeteeDAO::new(c);
+
+    dao.create_dao(
+        from.clone(),
+        name.clone(),
+        purpose.clone(),
+        meta_data.clone(),
+    )
+    .unwrap();
+    Ok(())
+}
+
+pub fn create_asset(
+    client: u32,
+    from: String,
+    dao_id: u64,
+    name: String,
+    symbol: String,
+    total_supply: u64,
+    decimals: u8,
+) -> anyhow::Result<()> {
+    let c = Client::from_index(client)?;
+    let mut asset = WeteeAsset::new(c);
+
+    asset
+        .create_asset(
+            from.clone(),
+            dao_id,
+            name.clone(),
+            symbol.clone(),
+            total_supply.into(),
+            decimals.into(),
+        )
+        .unwrap();
+    Ok(())
+}
+
 pub fn dao_info(client: u32, dao_id: u64) -> anyhow::Result<DaoInfo> {
     let c = Client::from_index(client)?;
     let mut dao = WeteeDAO::new(c);

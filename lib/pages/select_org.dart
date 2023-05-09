@@ -36,11 +36,10 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   void initState() {
     accounts = AccountApi.create().getUsers();
     final query = context.routeData.queryParams;
-    final orgList = AccountOrgApi.create().listAll().map((o) => o.orgHash).toList();
+    im = context.read<IMProvider>();
+    final orgList = AccountOrgApi.create().listByAccount(im.me!.address).map((o) => o.orgHash).toList();
     selected = orgList;
-    // currentAddress = accounts[0].address;
     Future.delayed(Duration.zero).then((value) async {
-      im = context.read<IMProvider>();
       if (query.getString("auto") == "t") {
         AccountOrgApi.create().accountSyncOrgs(
           im.me!.address,
@@ -284,7 +283,7 @@ List<Org> orgs = [
     name: "WeteeDAO",
     desc: "we3 在线协作，分布式办公软件",
     // chainUrl: "ws://chain-ws.tc.asyou.me",
-    chainUrl: "ws://8.209.103.88:9944",
+    chainUrl: "ws://127.0.0.1:3994",
     metaData: OrgMetaData(
       domain: "im.tc.asyou.me",
       color: "#000000",
