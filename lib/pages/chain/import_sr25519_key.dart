@@ -3,7 +3,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../router.dart';
