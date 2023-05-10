@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/user_avatar.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../store/theme.dart';
 import '../../utils/time.dart';
 import 'content/content.dart';

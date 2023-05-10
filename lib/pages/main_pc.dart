@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../components/components.dart';
 import '../components/sider_bar.dart';
 import '../store/im.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
 import '../store/theme.dart';

@@ -6,7 +6,7 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';

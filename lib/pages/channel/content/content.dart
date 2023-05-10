@@ -18,7 +18,7 @@ import '../../../store/im.dart';
 import '../../../utils/adaptive_bottom_sheet.dart';
 import '../../../utils/date_time_extension.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import '../../../components/avatar.dart';
 import '../../../utils/platform_infos.dart';
 import 'audio_player.dart';

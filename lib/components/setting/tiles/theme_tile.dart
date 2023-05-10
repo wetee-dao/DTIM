@@ -1,7 +1,7 @@
 import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 import '../tiles/abstract_settings_tile.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import 'theme_prew.dart';
 
 class ThemeSettingsTile extends AbstractSettingsTile {

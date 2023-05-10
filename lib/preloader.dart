@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'components/avatar.dart';
 import 'components/components.dart';
 import 'store/theme.dart';
-import 'utils/screen.dart';
+import 'utils/screen/screen.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:window_manager/window_manager.dart';

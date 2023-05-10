@@ -5,7 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
 import '../../components/hover_list_item.dart';
 import '../../store/im.dart';

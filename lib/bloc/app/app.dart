@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../models/models.dart';
 import '../../rust_wraper.io.dart';
 import '../../utils/functions.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 
 part 'app.freezed.dart';
 

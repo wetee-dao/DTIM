@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../store/theme.dart';
 import '../settings_ui.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 
 class Switchtile extends AbstractSettingsTile {
   final Widget? leading;

@@ -1,4 +1,4 @@
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/dao/member_card.dart';

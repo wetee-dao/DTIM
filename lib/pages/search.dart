@@ -6,7 +6,7 @@ import 'package:matrix/matrix.dart' as link;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../router.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import '../store/theme.dart';
 import '../components/components.dart';
 import '../store/im.dart';

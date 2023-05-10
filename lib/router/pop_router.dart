@@ -14,7 +14,7 @@ import '../pages/setting/setting.dart';
 import '../pages/dao/pop/join_task.dart';
 import '../pages/channel/create.dart';
 import '../pages/search.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import '../store/theme.dart';
 
 getPage(String url, Function closeModel) {

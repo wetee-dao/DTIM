@@ -8,7 +8,7 @@
 
 import 'package:flutter/material.dart';
 
-import './screen.dart';
+import 'screen/screen.dart';
 
 Future<T?> showAdaptiveBottomSheet<T>({
   required BuildContext context,

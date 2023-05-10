@@ -7,7 +7,7 @@
 //
 
 import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';

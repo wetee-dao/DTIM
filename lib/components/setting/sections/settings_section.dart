@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../store/theme.dart';
 import '../tiles/abstract_settings_tile.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import 'abstract_settings_section.dart';
 
 class SettingsSection extends AbstractSettingsSection {

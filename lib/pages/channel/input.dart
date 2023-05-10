@@ -21,7 +21,7 @@ import '../../models/models.dart';
 import '../../store/theme.dart';
 import '../../objectbox.g.dart';
 import '../../utils/platform_infos.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../utils/matrix_sdk_extensions/matrix_file_extension.dart';
 
 // ignore: must_be_immutable

@@ -16,7 +16,7 @@ import 'router/router.dart';
 import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
-import 'utils/screen.dart';
+import 'utils/screen/screen.dart';
 
 final botToastBuilder = BotToastInit();
 

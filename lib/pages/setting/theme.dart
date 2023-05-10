@@ -7,7 +7,7 @@ import '../../components/setting/settings_ui.dart';
 import '../../objectbox.g.dart';
 import '../../store/theme.dart';
 import '../../models/system.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);

@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../objectbox.g.dart';
 import '../router.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import '../apis/apis.dart';
 import '../components/components.dart';
 import '../models/models.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../store/theme.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 
 class ThemePrew extends StatelessWidget {
   final Map<String, String> theme;

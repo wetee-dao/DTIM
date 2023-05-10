@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
 import '../../store/theme.dart';
-import '../../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import 'move_window.dart';
 
 class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {

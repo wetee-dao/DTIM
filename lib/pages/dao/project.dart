@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:asyou_app/bridge_generated.dart';
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 
 import '../../components/appicon.dart';
 import '../../components/dao/text.dart';

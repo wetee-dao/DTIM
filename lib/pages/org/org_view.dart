@@ -8,7 +8,7 @@ import 'package:matrix/matrix.dart' as link;
 
 import './org_menu.dart';
 import '../../router.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
 import '../../components/popup.dart';
 import '../../models/models.dart';

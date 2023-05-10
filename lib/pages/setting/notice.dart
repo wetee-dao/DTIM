@@ -11,7 +11,7 @@ import '../../components/components.dart';
 import '../../components/setting/settings_ui.dart';
 import '../../router.dart';
 import '../../store/im.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);

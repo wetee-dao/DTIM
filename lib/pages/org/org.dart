@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
 import '../../store/theme.dart';
 import '../channel/chat.dart';

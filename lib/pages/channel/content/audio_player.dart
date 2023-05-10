@@ -20,7 +20,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../utils/localized_extension.dart';
 import '../../../utils/matrix_sdk_extensions/event_extension.dart';
 
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final Color color;

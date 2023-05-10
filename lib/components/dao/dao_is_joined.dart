@@ -1,5 +1,5 @@
 import 'package:asyou_app/store/dao_ctx.dart';
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 

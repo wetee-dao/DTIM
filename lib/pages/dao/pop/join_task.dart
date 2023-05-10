@@ -6,7 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import '../../../components/components.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import '../../../store/theme.dart';
 
 class JoinTaskPage extends StatefulWidget {

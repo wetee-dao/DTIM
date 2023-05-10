@@ -8,7 +8,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../router.dart';
 import '../../store/theme.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../models/account.dart';
 import '../../apis/account_api.dart';
 import '../../rust_wraper.io.dart';

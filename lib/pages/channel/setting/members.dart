@@ -15,7 +15,7 @@ import 'package:matrix/matrix.dart' as link;
 
 import '../../../components/components.dart';
 import '../../../router.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import '../../../store/im.dart';
 import '../../../store/theme.dart';
 import '../../../utils/functions.dart';
