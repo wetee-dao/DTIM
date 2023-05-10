@@ -1,3 +1,10 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
 import 'dart:io';
 
 import 'package:asyou_app/router.dart';

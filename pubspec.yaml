@@ -95,6 +95,7 @@ dependencies:
   video_compress: ^3.1.2
   device_info_plus: ^8.1.0
   record: ^4.4.4
+  easy_debounce: ^2.0.3
 
 dev_dependencies:
   flutter_test:
