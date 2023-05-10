@@ -14,7 +14,7 @@ import 'package:matrix/matrix.dart';
 
 import '../../../components/mxc_image.dart';
 import '../../../store/theme.dart';
-import '../../image_viewer/image_viewer.dart';
+import '../../unils/image_viewer/image_viewer.dart';
 
 class ImageBubble extends StatelessWidget {
   final Event event;
