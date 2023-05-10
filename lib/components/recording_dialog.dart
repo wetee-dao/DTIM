@@ -1,3 +1,11 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
@@ -8,7 +16,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../config/app_config.dart';
 import '../pages/channel/content/audio_player.dart';
 import '../utils/platform_infos.dart';
 // import 'events/audio_player.dart';
@@ -134,7 +141,7 @@ class RecordingDialogState extends State<RecordingDialog> {
                           width: 4,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(AppConfig.borderRadius),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           height: maxDecibalWidth * (amplitude / 100),
                         ),

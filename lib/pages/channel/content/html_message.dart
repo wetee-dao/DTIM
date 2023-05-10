@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../store/im.dart';
-import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
-import '../../../utils/url_launcher.dart';
-import '../../image_viewer/image_viewer.dart';
 
 class HtmlMessage extends StatelessWidget {
   final String html;

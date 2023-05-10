@@ -1,6 +1,6 @@
 import 'package:asyou_app/components/components.dart';
 import 'package:asyou_app/router.dart';
-import 'package:asyou_app/utils/size_string.dart';
+import 'package:asyou_app/utils/string.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
