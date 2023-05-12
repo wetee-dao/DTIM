@@ -1229,6 +1229,26 @@ fn wire_dao_apply_project_funds_impl(
         },
     )
 }
+fn wire_init_work_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "init_work",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(init_work()),
+    )
+}
+fn wire_send_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "send",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(send()),
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks

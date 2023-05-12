@@ -17,6 +17,7 @@ use asyou_rust_sdk::{
     model::{account::KeyringJSON, dao::WithGov},
     Client,
 };
+use tokio::runtime::Runtime;
 
 // use std::sync::Arc;
 // pub enum Platform {
@@ -949,3 +950,31 @@ pub fn dao_apply_project_funds(
 
     Ok(true)
 }
+
+
+pub fn init_work() {
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        let mut client = Client::new("ws://chain-ws.tc.asyou.me:80".to_owned()).unwrap();
+        client.start().await;
+    });
+}
+
+pub fn send(){
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        let work = Client::from_index(0).unwrap();
+        work.query().await;
+    });
+}
+
+#[derive(Clone, PartialEq, Eq, Default, Debug)]
+pub struct API {
+    // 年
+    pub year: u32,
+    // 季度
+    pub quarter: u32,
+    // 任务
+    pub tasks: Vec<QuarterTask>,
+}
+

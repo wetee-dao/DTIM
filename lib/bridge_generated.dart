@@ -405,6 +405,14 @@ abstract class RustWraper {
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoApplyProjectFundsConstMeta;
+
+  Future<void> initWork({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kInitWorkConstMeta;
+
+  Future<void> send({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kSendConstMeta;
 }
 
 class AssetAccountData {
@@ -2081,6 +2089,38 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "dao_apply_project_funds",
         argNames: ["from", "client", "daoId", "projectId", "amount", "ext"],
+      );
+
+  Future<void> initWork({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_init_work(port_),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kInitWorkConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kInitWorkConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "init_work",
+        argNames: [],
+      );
+
+  Future<void> send({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_send(port_),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kSendConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kSendConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "send",
+        argNames: [],
       );
 
   void dispose() {
@@ -3879,6 +3919,32 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       _wire_dao_apply_project_fundsPtr.asFunction<
           void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int, int,
               ffi.Pointer<wire_WithGovPs>)>();
+
+  void wire_init_work(
+    int port_,
+  ) {
+    return _wire_init_work(
+      port_,
+    );
+  }
+
+  late final _wire_init_workPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'wire_init_work');
+  late final _wire_init_work =
+      _wire_init_workPtr.asFunction<void Function(int)>();
+
+  void wire_send(
+    int port_,
+  ) {
+    return _wire_send(
+      port_,
+    );
+  }
+
+  late final _wire_sendPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_send');
+  late final _wire_send = _wire_sendPtr.asFunction<void Function(int)>();
 
   ffi.Pointer<wire_StringList> new_StringList_0(
     int len,

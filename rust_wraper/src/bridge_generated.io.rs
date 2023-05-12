@@ -487,6 +487,16 @@ pub extern "C" fn wire_dao_apply_project_funds(
     wire_dao_apply_project_funds_impl(port_, from, client, dao_id, project_id, amount, ext)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_init_work(port_: i64) {
+    wire_init_work_impl(port_)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_send(port_: i64) {
+    wire_send_impl(port_)
+}
+
 // Section: allocate functions
 
 #[no_mangle]
