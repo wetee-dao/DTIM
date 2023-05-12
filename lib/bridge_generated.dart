@@ -43,27 +43,9 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kSignFromAddressConstMeta;
 
-  Future<int> getBlockNumber({required int client, dynamic hint});
+  Future<void> startClient({required int client, dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kGetBlockNumberConstMeta;
-
-  Future<AssetAccountData> nativeBalance(
-      {required int client, required String address, dynamic hint});
-
-  FlutterRustBridgeTaskConstMeta get kNativeBalanceConstMeta;
-
-  Future<void> daoInitFromPair(
-      {required int client, required String address, dynamic hint});
-
-  FlutterRustBridgeTaskConstMeta get kDaoInitFromPairConstMeta;
-
-  Future<AssetAccountData> daoBalance(
-      {required int client,
-      required int daoId,
-      required String address,
-      dynamic hint});
-
-  FlutterRustBridgeTaskConstMeta get kDaoBalanceConstMeta;
+  FlutterRustBridgeTaskConstMeta get kStartClientConstMeta;
 
   Future<void> createDao(
       {required int client,
@@ -86,6 +68,28 @@ abstract class RustWraper {
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kCreateAssetConstMeta;
+
+  Future<int> getBlockNumber({required int client, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kGetBlockNumberConstMeta;
+
+  Future<AssetAccountData> nativeBalance(
+      {required int client, required String address, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kNativeBalanceConstMeta;
+
+  Future<void> daoInitFromPair(
+      {required int client, required String address, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoInitFromPairConstMeta;
+
+  Future<AssetAccountData> daoBalance(
+      {required int client,
+      required int daoId,
+      required String address,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDaoBalanceConstMeta;
 
   Future<DaoInfo> daoInfo(
       {required int client, required int daoId, dynamic hint});
@@ -405,14 +409,6 @@ abstract class RustWraper {
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoApplyProjectFundsConstMeta;
-
-  Future<void> initWork({dynamic hint});
-
-  FlutterRustBridgeTaskConstMeta get kInitWorkConstMeta;
-
-  Future<void> send({dynamic hint});
-
-  FlutterRustBridgeTaskConstMeta get kSendConstMeta;
 }
 
 class AssetAccountData {
@@ -934,6 +930,91 @@ class RustWraperImpl implements RustWraper {
         argNames: ["address", "ctx"],
       );
 
+  Future<void> startClient({required int client, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_start_client(port_, arg0),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kStartClientConstMeta,
+      argValues: [client],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kStartClientConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "start_client",
+        argNames: ["client"],
+      );
+
+  Future<void> createDao(
+      {required int client,
+      required String from,
+      required String name,
+      required String purpose,
+      required String metaData,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(from);
+    var arg2 = _platform.api2wire_String(name);
+    var arg3 = _platform.api2wire_String(purpose);
+    var arg4 = _platform.api2wire_String(metaData);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_create_dao(port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kCreateDaoConstMeta,
+      argValues: [client, from, name, purpose, metaData],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kCreateDaoConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "create_dao",
+        argNames: ["client", "from", "name", "purpose", "metaData"],
+      );
+
+  Future<void> createAsset(
+      {required int client,
+      required String from,
+      required int daoId,
+      required String name,
+      required String symbol,
+      required int totalSupply,
+      required int decimals,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(from);
+    var arg2 = _platform.api2wire_u64(daoId);
+    var arg3 = _platform.api2wire_String(name);
+    var arg4 = _platform.api2wire_String(symbol);
+    var arg5 = _platform.api2wire_u64(totalSupply);
+    var arg6 = api2wire_u8(decimals);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_create_asset(port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kCreateAssetConstMeta,
+      argValues: [client, from, daoId, name, symbol, totalSupply, decimals],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kCreateAssetConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "create_asset",
+        argNames: [
+          "client",
+          "from",
+          "daoId",
+          "name",
+          "symbol",
+          "totalSupply",
+          "decimals"
+        ],
+      );
+
   Future<int> getBlockNumber({required int client, dynamic hint}) {
     var arg0 = api2wire_u32(client);
     return _platform.executeNormal(FlutterRustBridgeTask(
@@ -1013,74 +1094,6 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "dao_balance",
         argNames: ["client", "daoId", "address"],
-      );
-
-  Future<void> createDao(
-      {required int client,
-      required String from,
-      required String name,
-      required String purpose,
-      required String metaData,
-      dynamic hint}) {
-    var arg0 = api2wire_u32(client);
-    var arg1 = _platform.api2wire_String(from);
-    var arg2 = _platform.api2wire_String(name);
-    var arg3 = _platform.api2wire_String(purpose);
-    var arg4 = _platform.api2wire_String(metaData);
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_create_dao(port_, arg0, arg1, arg2, arg3, arg4),
-      parseSuccessData: _wire2api_unit,
-      constMeta: kCreateDaoConstMeta,
-      argValues: [client, from, name, purpose, metaData],
-      hint: hint,
-    ));
-  }
-
-  FlutterRustBridgeTaskConstMeta get kCreateDaoConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "create_dao",
-        argNames: ["client", "from", "name", "purpose", "metaData"],
-      );
-
-  Future<void> createAsset(
-      {required int client,
-      required String from,
-      required int daoId,
-      required String name,
-      required String symbol,
-      required int totalSupply,
-      required int decimals,
-      dynamic hint}) {
-    var arg0 = api2wire_u32(client);
-    var arg1 = _platform.api2wire_String(from);
-    var arg2 = _platform.api2wire_u64(daoId);
-    var arg3 = _platform.api2wire_String(name);
-    var arg4 = _platform.api2wire_String(symbol);
-    var arg5 = _platform.api2wire_u64(totalSupply);
-    var arg6 = api2wire_u8(decimals);
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner
-          .wire_create_asset(port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6),
-      parseSuccessData: _wire2api_unit,
-      constMeta: kCreateAssetConstMeta,
-      argValues: [client, from, daoId, name, symbol, totalSupply, decimals],
-      hint: hint,
-    ));
-  }
-
-  FlutterRustBridgeTaskConstMeta get kCreateAssetConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "create_asset",
-        argNames: [
-          "client",
-          "from",
-          "daoId",
-          "name",
-          "symbol",
-          "totalSupply",
-          "decimals"
-        ],
       );
 
   Future<DaoInfo> daoInfo(
@@ -2091,38 +2104,6 @@ class RustWraperImpl implements RustWraper {
         argNames: ["from", "client", "daoId", "projectId", "amount", "ext"],
       );
 
-  Future<void> initWork({dynamic hint}) {
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_init_work(port_),
-      parseSuccessData: _wire2api_unit,
-      constMeta: kInitWorkConstMeta,
-      argValues: [],
-      hint: hint,
-    ));
-  }
-
-  FlutterRustBridgeTaskConstMeta get kInitWorkConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "init_work",
-        argNames: [],
-      );
-
-  Future<void> send({dynamic hint}) {
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_send(port_),
-      parseSuccessData: _wire2api_unit,
-      constMeta: kSendConstMeta,
-      argValues: [],
-      hint: hint,
-    ));
-  }
-
-  FlutterRustBridgeTaskConstMeta get kSendConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "send",
-        argNames: [],
-      );
-
   void dispose() {
     _platform.dispose();
   }
@@ -2716,80 +2697,21 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       void Function(
           int, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
 
-  void wire_get_block_number(
+  void wire_start_client(
     int port_,
     int client,
   ) {
-    return _wire_get_block_number(
+    return _wire_start_client(
       port_,
       client,
     );
   }
 
-  late final _wire_get_block_numberPtr =
+  late final _wire_start_clientPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
-          'wire_get_block_number');
-  late final _wire_get_block_number =
-      _wire_get_block_numberPtr.asFunction<void Function(int, int)>();
-
-  void wire_native_balance(
-    int port_,
-    int client,
-    ffi.Pointer<wire_uint_8_list> address,
-  ) {
-    return _wire_native_balance(
-      port_,
-      client,
-      address,
-    );
-  }
-
-  late final _wire_native_balancePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Uint32,
-              ffi.Pointer<wire_uint_8_list>)>>('wire_native_balance');
-  late final _wire_native_balance = _wire_native_balancePtr
-      .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
-
-  void wire_dao_init_from_pair(
-    int port_,
-    int client,
-    ffi.Pointer<wire_uint_8_list> address,
-  ) {
-    return _wire_dao_init_from_pair(
-      port_,
-      client,
-      address,
-    );
-  }
-
-  late final _wire_dao_init_from_pairPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Uint32,
-              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_init_from_pair');
-  late final _wire_dao_init_from_pair = _wire_dao_init_from_pairPtr
-      .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
-
-  void wire_dao_balance(
-    int port_,
-    int client,
-    int dao_id,
-    ffi.Pointer<wire_uint_8_list> address,
-  ) {
-    return _wire_dao_balance(
-      port_,
-      client,
-      dao_id,
-      address,
-    );
-  }
-
-  late final _wire_dao_balancePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Int64, ffi.Uint32, ffi.Uint64,
-              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_balance');
-  late final _wire_dao_balance = _wire_dao_balancePtr.asFunction<
-      void Function(int, int, int, ffi.Pointer<wire_uint_8_list>)>();
+          'wire_start_client');
+  late final _wire_start_client =
+      _wire_start_clientPtr.asFunction<void Function(int, int)>();
 
   void wire_create_dao(
     int port_,
@@ -2870,6 +2792,81 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
           ffi.Pointer<wire_uint_8_list>,
           int,
           int)>();
+
+  void wire_get_block_number(
+    int port_,
+    int client,
+  ) {
+    return _wire_get_block_number(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire_get_block_numberPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
+          'wire_get_block_number');
+  late final _wire_get_block_number =
+      _wire_get_block_numberPtr.asFunction<void Function(int, int)>();
+
+  void wire_native_balance(
+    int port_,
+    int client,
+    ffi.Pointer<wire_uint_8_list> address,
+  ) {
+    return _wire_native_balance(
+      port_,
+      client,
+      address,
+    );
+  }
+
+  late final _wire_native_balancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_native_balance');
+  late final _wire_native_balance = _wire_native_balancePtr
+      .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_dao_init_from_pair(
+    int port_,
+    int client,
+    ffi.Pointer<wire_uint_8_list> address,
+  ) {
+    return _wire_dao_init_from_pair(
+      port_,
+      client,
+      address,
+    );
+  }
+
+  late final _wire_dao_init_from_pairPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_init_from_pair');
+  late final _wire_dao_init_from_pair = _wire_dao_init_from_pairPtr
+      .asFunction<void Function(int, int, ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_dao_balance(
+    int port_,
+    int client,
+    int dao_id,
+    ffi.Pointer<wire_uint_8_list> address,
+  ) {
+    return _wire_dao_balance(
+      port_,
+      client,
+      dao_id,
+      address,
+    );
+  }
+
+  late final _wire_dao_balancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Uint32, ffi.Uint64,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_dao_balance');
+  late final _wire_dao_balance = _wire_dao_balancePtr.asFunction<
+      void Function(int, int, int, ffi.Pointer<wire_uint_8_list>)>();
 
   void wire_dao_info(
     int port_,
@@ -3919,32 +3916,6 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       _wire_dao_apply_project_fundsPtr.asFunction<
           void Function(int, ffi.Pointer<wire_uint_8_list>, int, int, int, int,
               ffi.Pointer<wire_WithGovPs>)>();
-
-  void wire_init_work(
-    int port_,
-  ) {
-    return _wire_init_work(
-      port_,
-    );
-  }
-
-  late final _wire_init_workPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-          'wire_init_work');
-  late final _wire_init_work =
-      _wire_init_workPtr.asFunction<void Function(int)>();
-
-  void wire_send(
-    int port_,
-  ) {
-    return _wire_send(
-      port_,
-    );
-  }
-
-  late final _wire_sendPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_send');
-  late final _wire_send = _wire_sendPtr.asFunction<void Function(int)>();
 
   ffi.Pointer<wire_StringList> new_StringList_0(
     int len,
