@@ -1,0 +1,26 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: libbuild
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'rust_wraper'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2023-02-04
+          override: true
+      - run: cd rust_wraper && cargo build --release 
+          
