@@ -19,5 +19,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build
-        run: cd rust_wraper && cargo build --release 
+        run: cd rust_wraper && rustup target add wasm32-unknown-unknown && cargo build --release 
           
