@@ -8,8 +8,8 @@ name: lib_build
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'rust_wraper'
+    # paths:
+    #   - 'rust_wraper'
   pull_request:
     branches: [ "main" ]
 
