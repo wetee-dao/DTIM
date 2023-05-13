@@ -270,7 +270,7 @@ class MessageContent extends StatelessWidget {
           },
         );
       case EventTypes.RoomMember:
-        return  Text("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(150)));
+        return  Text("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),
