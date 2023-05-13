@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: libbuild
+name: lib_build
 
 on:
   push:
@@ -17,10 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly-2023-02-04
-          override: true
-      - run: cd rust_wraper && cargo build --release 
+      - uses: actions/checkout@v3
+      - name: Build
+        run: cd rust_wraper && cargo build --release 
           
