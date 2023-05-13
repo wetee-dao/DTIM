@@ -7,7 +7,7 @@ name: lib_build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "release" ]
     # paths:
     #   - 'rust_wraper'
   pull_request:
