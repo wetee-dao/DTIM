@@ -45,28 +45,8 @@ pub extern "C" fn wire_sign_from_address(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_get_block_number(port_: i64, client: u32) {
-    wire_get_block_number_impl(port_, client)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_native_balance(port_: i64, client: u32, address: *mut wire_uint_8_list) {
-    wire_native_balance_impl(port_, client, address)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_dao_init_from_pair(port_: i64, client: u32, address: *mut wire_uint_8_list) {
-    wire_dao_init_from_pair_impl(port_, client, address)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_dao_balance(
-    port_: i64,
-    client: u32,
-    dao_id: u64,
-    address: *mut wire_uint_8_list,
-) {
-    wire_dao_balance_impl(port_, client, dao_id, address)
+pub extern "C" fn wire_start_client(port_: i64, client: u32) {
+    wire_start_client_impl(port_, client)
 }
 
 #[no_mangle]
@@ -102,6 +82,31 @@ pub extern "C" fn wire_create_asset(
         total_supply,
         decimals,
     )
+}
+
+#[no_mangle]
+pub extern "C" fn wire_get_block_number(port_: i64, client: u32) {
+    wire_get_block_number_impl(port_, client)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_native_balance(port_: i64, client: u32, address: *mut wire_uint_8_list) {
+    wire_native_balance_impl(port_, client, address)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_init_from_pair(port_: i64, client: u32, address: *mut wire_uint_8_list) {
+    wire_dao_init_from_pair_impl(port_, client, address)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_dao_balance(
+    port_: i64,
+    client: u32,
+    dao_id: u64,
+    address: *mut wire_uint_8_list,
+) {
+    wire_dao_balance_impl(port_, client, dao_id, address)
 }
 
 #[no_mangle]

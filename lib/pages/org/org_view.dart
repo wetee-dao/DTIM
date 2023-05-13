@@ -342,3 +342,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
     );
   }
 }
+
+// Future<String> rustChainCall(int clientId,String model,String func,String params) async {
+//   return "";
+// }

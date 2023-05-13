@@ -111,6 +111,8 @@ class MessageContent extends StatelessWidget {
     // final im = context.read<IMProvider>();
     // final client = im.currentState!.client;
     // final buttonTextColor = event.senderId == client.userID ? textColor : null;
+    // print(event.body);
+    // print(event.type);
     final buttonTextColor = textColor;
     switch (event.type) {
       case EventTypes.Message:
@@ -267,6 +269,8 @@ class MessageContent extends StatelessWidget {
             );
           },
         );
+      case EventTypes.RoomMember:
+        return  Text("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),

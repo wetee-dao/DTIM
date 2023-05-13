@@ -70,13 +70,6 @@ class _PCPageState extends State<PCPage> {
               decoration: BoxDecoration(
                 color: constTheme.sidebarHeaderBg,
                 border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
-                // boxShadow: <BoxShadow>[
-                //   BoxShadow(
-                //     color: constTheme.sidebarHeaderTextColor,
-                //     blurRadius: 3.w,
-                //     offset: Offset(3.w, 0),
-                //   ),
-                // ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
