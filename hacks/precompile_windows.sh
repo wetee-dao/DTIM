@@ -13,5 +13,5 @@ echo "RUST项目根目录 => $CRATE"
 cd "$DIR/../rust_wraper"
 
 rm ./Cargo.lock
-cargo build --release
+cargo build --target=x86_64-pc-windows-msvc --release
 cp -r "$DIR/../rust_wraper/target/release/rust_wraper.dll" "$DIR/../windows/shared/rust_wraper.dll"
