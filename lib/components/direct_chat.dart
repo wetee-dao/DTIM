@@ -9,7 +9,7 @@ import '../components/user_avatar.dart';
 import '../router.dart';
 import '../store/theme.dart';
 import '../utils/functions.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 

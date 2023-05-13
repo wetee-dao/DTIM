@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 
 Widget moveWindow(Widget wigdet) {
   if (!isPc()) {

@@ -1,3 +1,11 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:asyou_app/store/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -6,15 +14,13 @@ import 'package:matrix/matrix.dart';
 import 'package:matrix_link_text/link_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../config/app_config.dart';
 import '../../../store/im.dart';
 import '../../../utils/adaptive_bottom_sheet.dart';
 import '../../../utils/date_time_extension.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import '../../../components/avatar.dart';
 import '../../../utils/platform_infos.dart';
-import '../../../utils/url_launcher.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
 import 'html_message.dart';
@@ -105,6 +111,8 @@ class MessageContent extends StatelessWidget {
     // final im = context.read<IMProvider>();
     // final client = im.currentState!.client;
     // final buttonTextColor = event.senderId == client.userID ? textColor : null;
+    // print(event.body);
+    // print(event.type);
     final buttonTextColor = textColor;
     switch (event.type) {
       case EventTypes.Message:
@@ -124,11 +132,7 @@ class MessageContent extends StatelessWidget {
           case CuteEventContent.eventType:
             return CuteContent(event);
           case MessageTypes.Audio:
-            if (PlatformInfos.isMobile || PlatformInfos.isMacOS || PlatformInfos.isWeb
-                // Disabled until https://github.com/bleonard252/just_audio_mpv/issues/3
-                // is fixed
-                //   || PlatformInfos.isLinux
-                ) {
+            if (PlatformInfos.isMobile || PlatformInfos.isMacOS || PlatformInfos.isWeb) {
               return AudioPlayerWidget(
                 event,
                 color: textColor,
@@ -146,7 +150,7 @@ class MessageContent extends StatelessWidget {
           case MessageTypes.Text:
           case MessageTypes.Notice:
           case MessageTypes.Emote:
-            if (AppConfig.renderHtml && !event.redacted && event.isRichMessage) {
+            if (!event.redacted && event.isRichMessage) {
               var html = event.formattedText;
               if (event.messageType == MessageTypes.Emote) {
                 html = '* $html';
@@ -193,7 +197,7 @@ class MessageContent extends StatelessWidget {
                     const SizedBox(height: 6),
                     OutlinedButton.icon(
                       icon: Icon(Icons.location_on_outlined, color: textColor),
-                      onPressed: UrlLauncher(context, geoUri.toString()).launchUrl,
+                      onPressed: () {},
                       label: Text(
                         L10n.of(context)!.openInMaps,
                         style: TextStyle(color: textColor),
@@ -246,7 +250,7 @@ class MessageContent extends StatelessWidget {
                     decoration: TextDecoration.underline,
                     decorationColor: textColor.withAlpha(150),
                   ),
-                  onLinkTap: (url) => UrlLauncher(context, url).launchUrl(),
+                  onLinkTap: (url) => {},
                 );
               },
             );
@@ -265,6 +269,8 @@ class MessageContent extends StatelessWidget {
             );
           },
         );
+      case EventTypes.RoomMember:
+        return  Text("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),

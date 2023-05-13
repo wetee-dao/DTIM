@@ -5,7 +5,7 @@ import 'package:matrix/matrix.dart' as link;
 
 import '../router.dart';
 import '../store/theme.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 

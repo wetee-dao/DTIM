@@ -128,6 +128,83 @@ fn wire_sign_from_address_impl(
         },
     )
 }
+fn wire_start_client_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "start_client",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            move |task_callback| start_client(api_client)
+        },
+    )
+}
+fn wire_create_dao_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    from: impl Wire2Api<String> + UnwindSafe,
+    name: impl Wire2Api<String> + UnwindSafe,
+    purpose: impl Wire2Api<String> + UnwindSafe,
+    meta_data: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "create_dao",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_from = from.wire2api();
+            let api_name = name.wire2api();
+            let api_purpose = purpose.wire2api();
+            let api_meta_data = meta_data.wire2api();
+            move |task_callback| {
+                create_dao(api_client, api_from, api_name, api_purpose, api_meta_data)
+            }
+        },
+    )
+}
+fn wire_create_asset_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    from: impl Wire2Api<String> + UnwindSafe,
+    dao_id: impl Wire2Api<u64> + UnwindSafe,
+    name: impl Wire2Api<String> + UnwindSafe,
+    symbol: impl Wire2Api<String> + UnwindSafe,
+    total_supply: impl Wire2Api<u64> + UnwindSafe,
+    decimals: impl Wire2Api<u8> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "create_asset",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_from = from.wire2api();
+            let api_dao_id = dao_id.wire2api();
+            let api_name = name.wire2api();
+            let api_symbol = symbol.wire2api();
+            let api_total_supply = total_supply.wire2api();
+            let api_decimals = decimals.wire2api();
+            move |task_callback| {
+                create_asset(
+                    api_client,
+                    api_from,
+                    api_dao_id,
+                    api_name,
+                    api_symbol,
+                    api_total_supply,
+                    api_decimals,
+                )
+            }
+        },
+    )
+}
 fn wire_get_block_number_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {

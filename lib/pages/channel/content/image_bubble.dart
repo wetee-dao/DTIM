@@ -1,4 +1,12 @@
-import 'package:asyou_app/utils/screen.dart';
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blurhash/flutter_blurhash.dart';
@@ -6,7 +14,7 @@ import 'package:matrix/matrix.dart';
 
 import '../../../components/mxc_image.dart';
 import '../../../store/theme.dart';
-import '../../image_viewer/image_viewer.dart';
+import '../../utils/image_viewer/image_viewer.dart';
 
 class ImageBubble extends StatelessWidget {
   final Event event;

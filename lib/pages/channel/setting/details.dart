@@ -1,3 +1,11 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,7 +20,7 @@ import '../../../components/components.dart';
 import '../../../router.dart';
 import '../../../store/im.dart';
 import '../../../store/theme.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/platform_infos.dart';
 

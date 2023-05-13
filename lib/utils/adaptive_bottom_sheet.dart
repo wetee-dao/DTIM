@@ -1,7 +1,14 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
 import 'package:flutter/material.dart';
 
-import '../../config/app_config.dart';
-import './screen.dart';
+import 'screen/screen.dart';
 
 Future<T?> showAdaptiveBottomSheet<T>({
   required BuildContext context,
@@ -20,10 +27,10 @@ Future<T?> showAdaptiveBottomSheet<T>({
         maxWidth: 500.w,
       ),
       clipBehavior: Clip.hardEdge,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(AppConfig.borderRadius),
-          topRight: Radius.circular(AppConfig.borderRadius),
+          topLeft: Radius.circular(5.w),
+          topRight: Radius.circular(5.w),
         ),
       ),
     );

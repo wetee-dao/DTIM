@@ -1,3 +1,10 @@
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
 import 'dart:io';
 
 import 'package:asyou_app/router.dart';
@@ -12,7 +19,6 @@ import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../config/app_config.dart';
 import './matrix_sdk_extensions/matrix_locals.dart';
 import './platform_infos.dart';
 
@@ -86,7 +92,7 @@ extension LocalNotificationsExtension on ImState {
         title,
         body: body,
         replacesId: linuxNotificationId ?? 0,
-        appName: AppConfig.applicationName,
+        appName: "Wetee",
         appIcon: appIconFile?.path ?? '',
         actions: [
           NotificationAction(

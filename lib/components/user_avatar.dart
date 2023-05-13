@@ -4,7 +4,7 @@ import '../store/theme.dart';
 import '../components/popup.dart';
 import '../utils/functions.dart';
 import '../utils/identicon.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import 'name_with_emoji.dart';
 
 class UserAvatar extends StatefulWidget {

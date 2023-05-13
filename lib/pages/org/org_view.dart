@@ -8,14 +8,12 @@ import 'package:matrix/matrix.dart' as link;
 
 import './org_menu.dart';
 import '../../router.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
 import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
-
-GlobalKey _orgNameKey = GlobalKey();
 
 class OrgViewPage extends StatefulWidget {
   final Function(String) onChannel;
@@ -112,7 +110,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Column(
-      key: _orgNameKey,
       children: [
         moveWindow(
           Row(
@@ -345,3 +342,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
     );
   }
 }
+
+// Future<String> rustChainCall(int clientId,String model,String func,String params) async {
+//   return "";
+// }

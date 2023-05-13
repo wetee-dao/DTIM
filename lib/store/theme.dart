@@ -489,7 +489,7 @@ const themes = [
   },
 ];
 
-int currentTheme = 13;
+int currentTheme = 14;
 
 ThemeData setTheme(String name) {
   currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);

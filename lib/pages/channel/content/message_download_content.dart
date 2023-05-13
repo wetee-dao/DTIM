@@ -1,4 +1,12 @@
-import 'package:asyou_app/utils/screen.dart';
+// Copyright 2023 FluffyChat.
+// This file is part of FluffyChat
+
+// Licensed under the AGPL;
+//
+// https://gitlab.com/famedly/fluffychat
+//
+
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';

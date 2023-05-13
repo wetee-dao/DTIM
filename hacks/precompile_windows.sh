@@ -9,8 +9,7 @@ DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
 CRATE="$DIR/../rust_wraper"
 
 echo "RUST项目根目录 => $CRATE"
-
-cd "$DIR/../rust_wraper"
+cd "$CRATE"
 
 rm ./Cargo.lock
 cargo build --target=x86_64-pc-windows-msvc --release

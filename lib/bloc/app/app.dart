@@ -2,14 +2,14 @@ import 'package:asyou_app/router.dart';
 import 'package:asyou_app/store/im_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:matrix/matrix.dart' show Client, LoginType, AuthenticationUserIdentifier, HiveCollectionsDatabase;
 import 'package:path_provider/path_provider.dart';
 
 import '../../models/models.dart';
 import '../../rust_wraper.io.dart';
 import '../../utils/functions.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 
 part 'app.freezed.dart';
 
@@ -86,7 +86,7 @@ class AppCubit extends Cubit<AppState> {
       await value.dispose();
     });
     emit(const AppState());
-    globalCtx().go("/");
+    globalCtx().router.back();
   }
 
   // 连接账户

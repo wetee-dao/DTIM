@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:asyou_app/utils/localized_extension.dart';
 import 'package:date_format/date_format.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
@@ -15,10 +16,9 @@ import '../../models/models.dart';
 import '../../router.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
-import '../../utils/debounce.dart';
 import '../../utils/functions.dart';
 import '../../objectbox.g.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import 'bar.dart';
 import 'input.dart';
 import 'msg.dart';
@@ -202,7 +202,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     return Scaffold(
       appBar: ChannelBar(
         room: room!,
-        height: 71.w,
+        height: 66.w,
         tools: CloseBar(
           child: Row(
             children: [
@@ -249,7 +249,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   );
                 },
               ),
-              SizedBox(width: 5.w),
+              SizedBox(width: 2.w),
               IconButton(
                 onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");

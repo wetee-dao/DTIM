@@ -3,44 +3,21 @@
 
 This repository is for the submission of milestone 3 of the Web 3 Foundation Grant
 
-### Rust Setup
+### Rust Setup 
 - [Linux development environment](https://docs.substrate.io/install/linux/).
-- [MacOS development environment](https://docs.substrate.io/install/linux/).
-- [Windows development environment](https://docs.substrate.io/install/linux/).
+- [MacOS development environment](https://docs.substrate.io/install/macos/).
+- [Windows development environment](https://docs.substrate.io/install/windows/).
+
+### Rust precompile lib
+- window run "sh hacks/init_windows.sh"
+- mac run "sh hacks/init_mac.sh"
+- linux run "sh hacks/init_linux.sh"  
+  > Subsequently, if a glibc error occurs, please run "sh hacks/precompile_linux.sh"  
 
 ### Flutter Setup
 - [Linux development environment](https://docs.flutter.dev/get-started/install/linux/).
 - [MacOS development environment](https://docs.flutter.dev/get-started/install/macos/).
 - [Windows development environment](https://docs.flutter.dev/get-started/install/windows/).
-
-### Run matrix Server（Not necessary, because the project is a slightly modified matrix official server）
-- [Install golang](https://go.dev/doc/install)
-- Run Node
-    ```
-    $ git clone https://github.com/WeteeDAO/dao-entrance-node
-    $ cd org-node
-    $ ./build.sh
-
-    # Generate a Matrix signing key for federation (required)
-    $ ./bin/generate-keys --private-key matrix_key.pem
-
-    # Generate a self-signed certificate (optional, but a valid TLS certificate is normally
-    # needed for Matrix federation/clients to work properly!)
-    $ ./bin/generate-keys --tls-cert server.crt --tls-key server.key
-
-    # Copy and modify the config file - you'll need to set a server name and paths to the keys
-    # at the very least, along with setting up the database connection strings.
-    $ cp dendrite-sample.yaml dendrite.yaml
-
-    # Build and run the server:
-    $ ./bin/dendrite --tls-cert server.crt --tls-key server.key --config dendrite.yaml
-
-    # Create an user account (add -admin for an admin user).
-    # Specify the localpart only, e.g. 'alice' for '@alice:domain.com'
-    $ ./bin/create-account --config dendrite.yaml --username alice
-
-    $ ./bin/dendrite-monolith-server --tls-cert server.crt --tls-key server.key --config dendrite.yaml
-    ```
 
 ### RUN client
 > please uninstalling Flutter Snap and installing it manually,It is best to install version 3.7.3
@@ -51,9 +28,10 @@ This repository is for the submission of milestone 3 of the Web 3 Foundation Gra
     $ flutter config --enable-macos-desktop
     $ flutter config --enable-linux-desktop
     $ flutter config --enable-windows-desktop
+
+    # for linux
     $ apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
     $ apt install libsecret-1-dev libjsoncpp-dev  libolm3 libclang-dev  libayatana-appindicator3-dev
-    $ cargo install flutter_rust_bridge_codegen
     ```
 - run in macos/linux
     ```

@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
 

@@ -1,0 +1,33 @@
+name: Builds
+on: workflow_dispatch
+
+# Declare default permissions as read only.
+permissions: read-all
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # target: ["apk --debug", "appbundle --debug", "ios --no-codesign", macos, web]
+        target: [web, windows]
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 # v3.11.0
+        with:
+          java-version: 11
+          distribution: temurin
+      # Set up Flutter.
+      - name: Clone Flutter repository with 3.7.7
+        uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa # v2.10.0
+        with:
+          flutter-version: '3.7.7'
+          channel: 'stable'
+      - run: flutter doctor -v
+      # Checkout WeTee code and get packages.
+      - name: Checkout WeTee code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - run: flutter pub get
+      - run: flutter build ${{ matrix.target }}

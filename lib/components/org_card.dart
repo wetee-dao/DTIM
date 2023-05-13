@@ -4,7 +4,7 @@ import 'package:animated_checkmark/animated_checkmark.dart';
 
 import '../models/models.dart';
 import '../store/theme.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 
 class OrgCard extends StatelessWidget {
   final Org org;

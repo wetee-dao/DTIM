@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../components/components.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import '../store/theme.dart';
 
 class CloseBar extends StatefulWidget {
@@ -73,7 +73,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         renderIcons(constTheme),
-        SizedBox(height: 10.w),
+        SizedBox(height: 6.w),
         widget.child!,
       ],
     );

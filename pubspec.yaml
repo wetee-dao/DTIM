@@ -28,7 +28,7 @@ dependencies:
   # 语法扩展
   expandable: ^5.0.1
   # 路由
-  go_router: ^6.0.9
+  auto_route: ^7.1.0
   # 主题
   adaptive_theme: ^3.2.0
   # 桌面客户端样式
@@ -51,7 +51,6 @@ dependencies:
   # matrix 连接库
   matrix: ^0.18.0
   matrix_link_text: ^1.0.2
-  flutter_matrix_html: ^1.1.0
   # 日期格式化插件
   date_format: ^2.0.7
   # easy_localization: ^3.0.1
@@ -69,10 +68,10 @@ dependencies:
   # 文字动画
   animated_text_kit: ^4.2.2
   # svg
-  flutter_svg: ^0.22.0
+  flutter_svg: ^2.0.5
 
   chewie: ^1.4.0
-  flutter_map: ^3.1.0
+  flutter_map: ^4.0.0
   latlong2: ^0.8.1
   punycode: ^1.0.0
   url_launcher: ^6.1.10
@@ -92,10 +91,11 @@ dependencies:
   vs_scrollbar: ^0.2.1
   equatable: ^2.0.5
   appflowy_board: ^0.1.0
-  fl_chart: ^0.61.0
+  fl_chart: ^0.62.0
   video_compress: ^3.1.2
   device_info_plus: ^8.1.0
   record: ^4.4.4
+  easy_debounce: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -103,11 +103,13 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  auto_route_generator: ^7.0.0
   objectbox_generator: any
   freezed: ^2.2.0
   build_runner: ^2.2.0
   ffigen: ^7.2.6
   json_serializable: ^6.5.4
+  dart_code_metrics: ^5.7.3
 
 dependency_overrides:
   # c库调用
@@ -150,3 +152,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

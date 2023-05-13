@@ -1,6 +1,6 @@
 import 'package:asyou_app/router.dart';
 import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,7 +26,7 @@ void main() {
                 onTap: () {
                   print("test");
                   waitFutureLoading(
-                    context: rootNavigatorKey.currentContext!,
+                    context: rootNavigatorKey!.currentContext!,
                     future: () async {
                       await Future.delayed(const Duration(seconds: 1));
                     },

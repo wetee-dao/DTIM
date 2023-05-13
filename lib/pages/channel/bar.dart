@@ -7,7 +7,7 @@ import '../../components/popup.dart';
 import '../../router.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import 'bar_menu.dart';
 
 class ChannelBar extends StatefulWidget implements PreferredSizeWidget {

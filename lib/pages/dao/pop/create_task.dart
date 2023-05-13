@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:asyou_app/rust_wraper.io.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 
 import '../../../components/components.dart';
 import '../../../components/dao/priority_icon.dart';
@@ -12,7 +12,7 @@ import '../../../components/form/select.dart';
 import '../../../models/models.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';
-import '../../../utils/screen.dart';
+import '../../../utils/screen/screen.dart';
 import '../../../store/theme.dart';
 
 class CreateTaskPage extends StatefulWidget {
@@ -76,7 +76,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
       widget.closeModel!.call();
       return;
     }
-    rootNavigatorKey.currentContext?.pop();
+    globalCtx().router.pop();
   }
 
   @override
@@ -93,7 +93,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
@@ -103,7 +103,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
                   widget.closeModel!.call();
                   return;
                 }
-                context.pop();
+                context.router.pop();
               },
             ),
       body: Form(

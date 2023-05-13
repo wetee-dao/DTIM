@@ -45,6 +45,46 @@ pub extern "C" fn wire_sign_from_address(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_start_client(port_: i64, client: u32) {
+    wire_start_client_impl(port_, client)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_create_dao(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    name: *mut wire_uint_8_list,
+    purpose: *mut wire_uint_8_list,
+    meta_data: *mut wire_uint_8_list,
+) {
+    wire_create_dao_impl(port_, client, from, name, purpose, meta_data)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_create_asset(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    dao_id: u64,
+    name: *mut wire_uint_8_list,
+    symbol: *mut wire_uint_8_list,
+    total_supply: u64,
+    decimals: u8,
+) {
+    wire_create_asset_impl(
+        port_,
+        client,
+        from,
+        dao_id,
+        name,
+        symbol,
+        total_supply,
+        decimals,
+    )
+}
+
+#[no_mangle]
 pub extern "C" fn wire_get_block_number(port_: i64, client: u32) {
     wire_get_block_number_impl(port_, client)
 }

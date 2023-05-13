@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,13 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../components/components.dart';
 import '../components/sider_bar.dart';
 import '../store/im.dart';
-import '../utils/screen.dart';
+import '../utils/screen/screen.dart';
 import '../apis/apis.dart';
 import '../models/models.dart';
 import '../store/theme.dart';
 import './dao/dao.dart';
 import './org/org.dart';
 
+@RoutePage(name: "pc")
 class PCPage extends StatefulWidget {
   const PCPage({Key? key}) : super(key: key);
 
@@ -68,13 +70,6 @@ class _PCPageState extends State<PCPage> {
               decoration: BoxDecoration(
                 color: constTheme.sidebarHeaderBg,
                 border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
-                // boxShadow: <BoxShadow>[
-                //   BoxShadow(
-                //     color: constTheme.sidebarHeaderTextColor,
-                //     blurRadius: 3.w,
-                //     offset: Offset(3.w, 0),
-                //   ),
-                // ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,15 +96,6 @@ class _PCPageState extends State<PCPage> {
                     margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
                     decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
                   ),
-                  // 设置
-                  // SiderBarItem(
-                  //   Icons.settings_applications,
-                  //   "设置",
-                  //   selected: false,
-                  //   onTap: () {
-                  //     showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
-                  //   },
-                  // ),
                   Flexible(
                     child: StreamBuilder(
                       stream: currentId.stream,

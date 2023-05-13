@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
+import 'package:auto_route/auto_route.dart';
 
 import '../../store/theme.dart';
-import '../../utils/screen.dart';
+import '../../utils/screen/screen.dart';
 import '../../router.dart';
 
 class ItemModel {
@@ -26,7 +26,7 @@ List<List<ItemModel>> menuItems = [
   ],
   [
     ItemModel('创建或加入组织', onTap: (id) {
-      rootNavigatorKey.currentContext?.push("/select_org");
+      globalCtx().router.pushNamed("/select_org");
     })
   ]
 ];

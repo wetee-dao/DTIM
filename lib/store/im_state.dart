@@ -10,7 +10,6 @@ import '../models/models.dart';
 import '../pages/channel/setting/key_verification_dialog.dart';
 import '../router.dart';
 import '../utils/platform_infos.dart';
-import '../utils/uia_request_manager.dart';
 import '../utils/local_notifications_extension.dart';
 
 // class ImState implements xmpp.ConnectionStateChangedListener {
@@ -52,25 +51,6 @@ class ImState {
 
   String? get cachedPassword => _cachedPassword;
 
-  void _initWithStore() async {
-    try {
-      if (client.isLogged()) {
-        // final statusMsg = await store.getItem(SettingKeys.ownStatusMessage);
-        // if (statusMsg?.isNotEmpty ?? false) {
-        //   print('Send cached status message: "$statusMsg"');
-        //   await client.setPresence(
-        //     client.userID!,
-        //     link.PresenceType.online,
-        //     statusMsg: statusMsg,
-        //   );
-        // }
-      }
-    } catch (e, s) {
-      client.onLoginStateChanged.addError(e, s);
-      rethrow;
-    }
-  }
-
   set cachedPassword(String? p) {
     print('Password cached');
     _cachedPasswordClearTimer?.cancel();
@@ -94,15 +74,6 @@ class ImState {
     print("===========================================_registerImSub");
     onRoomKeyRequestSub = client.onRoomKeyRequest.stream.listen((RoomKeyRequest request) async {
       print("===========================================onRoomKeyRequest");
-      // if (widget.clients.any(
-      //   ((cl) =>
-      //       cl.userID == request.requestingDevice.userId && cl.identityKey == request.requestingDevice.curve25519Key),
-      // )) {
-      //   print(
-      //     '[Key Request] Request is from one of our own clients, forwarding the key...',
-      //   );
-      //   await request.forwardKey();
-      // }
     });
     onKeyVerificationRequestSub = client.onKeyVerificationRequest.stream.listen((KeyVerification request) async {
       print("===========================================onKeyVerificationRequeston");
@@ -123,7 +94,7 @@ class ImState {
         _cancelSubs();
       }
     });
-    onUiaRequest = client.onUiaRequest.stream.listen(uiaRequestHandler);
+
     if (PlatformInfos.isWeb || PlatformInfos.isLinux) {
       client.onSync.stream.first.then((s) {
         html.Notification.requestPermission();

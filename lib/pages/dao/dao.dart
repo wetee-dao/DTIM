@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:asyou_app/pages/dao/referendum.dart';
-import 'package:asyou_app/utils/screen.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,9 +49,10 @@ class _DaoPageState extends State<DaoPage> {
     im = context.read<IMProvider>();
     daoCtx.connectChain(im.currentState!.org, im.me!, () {
       getData();
-    });
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      daoCtx.timeTick();
+      _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+        // print("获取新的区块头");
+        daoCtx.timeTick();
+      });
     });
   }
 
