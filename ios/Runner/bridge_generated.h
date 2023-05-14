@@ -61,6 +61,24 @@ void wire_sign_from_address(int64_t port_,
                             struct wire_uint_8_list *address,
                             struct wire_uint_8_list *ctx);
 
+void wire_start_client(int64_t port_, uint32_t client);
+
+void wire_create_dao(int64_t port_,
+                     uint32_t client,
+                     struct wire_uint_8_list *from,
+                     struct wire_uint_8_list *name,
+                     struct wire_uint_8_list *purpose,
+                     struct wire_uint_8_list *meta_data);
+
+void wire_create_asset(int64_t port_,
+                       uint32_t client,
+                       struct wire_uint_8_list *from,
+                       uint64_t dao_id,
+                       struct wire_uint_8_list *name,
+                       struct wire_uint_8_list *symbol,
+                       uint64_t total_supply,
+                       uint8_t decimals);
+
 void wire_get_block_number(int64_t port_, uint32_t client);
 
 void wire_native_balance(int64_t port_, uint32_t client, struct wire_uint_8_list *address);
@@ -298,6 +316,9 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_add_keyring);
     dummy_var ^= ((int64_t) (void*) wire_add_seed);
     dummy_var ^= ((int64_t) (void*) wire_sign_from_address);
+    dummy_var ^= ((int64_t) (void*) wire_start_client);
+    dummy_var ^= ((int64_t) (void*) wire_create_dao);
+    dummy_var ^= ((int64_t) (void*) wire_create_asset);
     dummy_var ^= ((int64_t) (void*) wire_get_block_number);
     dummy_var ^= ((int64_t) (void*) wire_native_balance);
     dummy_var ^= ((int64_t) (void*) wire_dao_init_from_pair);

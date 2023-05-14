@@ -1,4 +1,4 @@
-# 获取当前shell文件的路径
+# get shell path
 SOURCE="$0"
 while [ -h "$SOURCE"  ]; do
     DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"

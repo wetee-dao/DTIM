@@ -1,4 +1,4 @@
-# 获取当前shell文件的路径
+# get shell path
 SOURCE="$0"
 while [ -h "$SOURCE"  ]; do
     DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
@@ -8,7 +8,8 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
 cd "$DIR/"
 
-MAC_BUILD="$DIR/../build/macos/Build/Intermediates.noindex/rust_wraper.build"
+# brew install libolm
+MAC_BUILD="$DIR/../build/macos/Build/Intermediates.noindex/rust_wraper.build/cargo_target/aarch64-apple-darwin"
 if [ -d "$MAC_BUILD" ];then
     rm -rf "$MAC_BUILD"
 fi
@@ -18,9 +19,20 @@ echo "开始下载预编译文件..."
 
 cd "$MAC_BUILD"
 
-curl -# -O https://wetee.app/precompile/cargo_target.zip
-tar -xvf cargo_target.zip
-rm -rf cargo_target.zip
+curl -# -O https://wetee.app/precompile/debug.zip
+tar -xvf debug.zip
+rm -rf debug.zip
+cp -r debug release
 
-# brew install libolm
-# cp /opt/homebrew/Cellar/libolm/3.2.14/lib/libolm.3.2.14.dylib /Users/asyou/Work/asyou.me/app
+MAC86_BUILD="$DIR/../build/macos/Build/Intermediates.noindex/rust_wraper.build/cargo_target/x86_64-apple-darwin"
+if [ -d "$MAC86_BUILD" ];then
+    rm -rf "$MAC86_BUILD"
+fi
+mkdir -p "$MAC86_BUILD"
+
+cd "$MAC86_BUILD"
+curl -# -O https://wetee.app/precompile/debug86.zip
+
+tar -xvf debug86.zip
+rm -rf debug86.zip
+cp -r debug release
