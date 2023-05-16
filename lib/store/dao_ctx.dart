@@ -37,8 +37,17 @@ class DAOCTX with ChangeNotifier {
       rustApi.connect(url: porg.chainUrl!).then((v) async {
         user = puser;
         org = porg;
-        rustApi.startClient(client: v);
-        Future.delayed(new Duration(seconds:1),() async {
+        rustApi.startClient(client: v).then((e) {
+          chainClient = -1;
+          printSuccess("连接断开");
+          notifyListeners();
+        }).catchError((e) {
+          chainClient = -1;
+          printSuccess("连接错误");
+          notifyListeners();
+        });
+
+        Future.delayed(new Duration(seconds: 1), () async {
           printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
           chainClient = v;
           await getData();
