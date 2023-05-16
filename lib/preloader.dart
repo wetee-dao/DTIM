@@ -43,16 +43,17 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   void initState() {
     super.initState();
     im = context.read();
-    getList();
-    if (accounts.isNotEmpty && !runInTest) {
-      autoLogin();
-    }
-    if (im.connections.keys.isEmpty) {
-      Timer(const Duration(milliseconds: 2000), () {
-        if (!mounted) return;
-        setState(() => _loading = false);
-      });
-    }
+    getList((){
+      if (accounts.isNotEmpty && !runInTest) {
+        autoLogin();
+      }
+      if (im.connections.keys.isEmpty) {
+        Timer(const Duration(milliseconds: 2000), () {
+          if (!mounted) return;
+          setState(() => _loading = false);
+        });
+      }
+    });
   }
 
   @override
@@ -83,12 +84,13 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     });
   }
 
-  getList() async {
-   accountStore = await AccountApi.create();
-   var as = await accountStore.getUsers();
+  getList(Function? callback) async {
+    accountStore = await AccountApi.create();
+    var as = await accountStore.getUsers();
     setState(() {
       accounts = as;
     });
+    callback?.call();
   }
 
   @override
@@ -148,7 +150,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   return;
                 }
                 await context.router.pushNamed("/sr25519key");
-                getList();
+                getList(null);
               },
             ),
             SizedBox(
@@ -286,7 +288,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                           text: '用户删除成功',
                                                           duration: const Duration(seconds: 2),
                                                         );
-                                                        getList();
+                                                        getList(null);
                                                       }
                                                     },
                                                     icon: Icon(
@@ -410,7 +412,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               return;
                             }
                             await context.router.pushNamed("/importSr25519key");
-                            getList();
+                            getList(null);
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
