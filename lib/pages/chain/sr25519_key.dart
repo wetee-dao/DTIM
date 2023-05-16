@@ -11,7 +11,7 @@ import '../../store/theme.dart';
 import '../../utils/screen/screen.dart';
 import '../../models/account.dart';
 import '../../apis/account_api.dart';
-import '../../rust_wraper.io.dart';
+import '../../native_wraper.dart';
 import '../../components/app_bar.dart';
 
 @RoutePage(name: "sr25519key")

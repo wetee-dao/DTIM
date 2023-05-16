@@ -1,9 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import '../bridge_generated.dart';
+import '../bridge_struct.dart';
 import '../models/models.dart';
-import '../rust_wraper.io.dart';
+import '../native_wraper.dart';
 import '../utils/functions.dart';
 
 class DAOCTX with ChangeNotifier {

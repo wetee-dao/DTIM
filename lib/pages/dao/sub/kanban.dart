@@ -3,14 +3,14 @@ import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import '../../../bridge_generated.dart';
+import '../../../bridge_struct.dart';
 import '../../../components/appicon.dart';
 import '../../../components/dao/member_card.dart';
 import '../../../components/dao/priority_icon.dart';
 import '../../../components/loading_dialog.dart';
 import '../../../models/tag.dart';
 import '../../../router.dart';
-import '../../../rust_wraper.io.dart';
+import '../../../native_wraper.dart';
 import '../../../store/theme.dart';
 
 class Kanban extends StatelessWidget {

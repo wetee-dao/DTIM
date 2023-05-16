@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:asyou_app/rust_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';

@@ -14,7 +14,8 @@ cd "$DIR/../"
 # 生成自动绑定代码
 flutter_rust_bridge_codegen \
     -r $CRATE/src/api.rs \
-    -d lib/bridge_generated.dart 
+    -d lib/bridge_generated.dart \
+    --dart-decl-output lib/bridge_struct.dart \
 
 cd "$DIR/../rust_wraper"
 

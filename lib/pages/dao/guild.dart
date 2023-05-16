@@ -1,13 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:asyou_app/rust_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/store/dao_ctx.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
-import '../../bridge_generated.dart';
+import '../../bridge_struct.dart';
 import '../../components/components.dart';
 import '../../components/dao/text.dart';
 import '../../router.dart';

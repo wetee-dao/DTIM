@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../components/dao/text.dart';
 import '../../components/loading_dialog.dart';
-import '../../rust_wraper.io.dart';
+import '../../native_wraper.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 import 'sub/referendum.dart';

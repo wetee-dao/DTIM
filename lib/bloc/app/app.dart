@@ -7,7 +7,7 @@ import 'package:matrix/matrix.dart' show Client, LoginType, AuthenticationUserId
 import 'package:path_provider/path_provider.dart';
 
 import '../../models/models.dart';
-import '../../rust_wraper.io.dart';
+import '../../native_wraper.dart';
 import '../../utils/functions.dart';
 import '../../utils/screen/screen.dart';
 

@@ -7,4 +7,4 @@ import './bridge_generated.dart';
 const base = 'rust_wraper';
 var path = Platform.isWindows ? '$base.dll' : (Platform.isMacOS ? "$base.dylib" : 'lib$base.so');
 final dylib = loadLibForFlutter(path);
-late final rustApi = RustWraperImpl(dylib);
+final rustApi = RustWraperImpl(dylib);

@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:asyou_app/rust_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import '../../../bridge_generated.dart';
+import '../../../bridge_struct.dart';
 import '../../../components/components.dart';
 import '../../../components/dao/priority_icon.dart';
 import '../../../components/form/dao_members.dart';

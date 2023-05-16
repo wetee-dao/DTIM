@@ -1,9 +1,9 @@
-import 'package:asyou_app/rust_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import '../../../bridge_generated.dart';
+import '../../../bridge_struct.dart';
 import '../../../components/components.dart';
 import '../../../router.dart';
 import '../../../store/dao_ctx.dart';

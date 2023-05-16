@@ -1,5 +1,5 @@
 import 'package:asyou_app/router.dart';
-import 'package:asyou_app/rust_wraper.io.dart';
+import 'package:asyou_app/native_wraper.io.dart';
 import 'package:asyou_app/store/dao_ctx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

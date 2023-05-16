@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:asyou_app/bridge_generated.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
 
 import '../../components/appicon.dart';
 import '../../components/dao/text.dart';
 import '../../components/loading_dialog.dart';
 import '../../router.dart';
-import '../../rust_wraper.io.dart';
+import '../../native_wraper.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
+import '../../bridge_struct.dart';
 import 'sub/kanban.dart';
 import 'sub/member.dart';
 import 'sub/referendum.dart';

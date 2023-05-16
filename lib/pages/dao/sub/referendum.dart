@@ -2,11 +2,11 @@ import 'package:asyou_app/store/dao_ctx.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../../bridge_generated.dart';
+import '../../../bridge_struct.dart';
 import '../../../components/components.dart';
 import '../../../components/dao/text.dart';
 import '../../../router.dart';
-import '../../../rust_wraper.io.dart';
+import '../../../native_wraper.dart';
 import '../../../store/theme.dart';
 
 class Referendums extends StatelessWidget {

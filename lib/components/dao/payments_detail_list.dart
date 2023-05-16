@@ -2,7 +2,7 @@ import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../bridge_generated.dart';
+import '../../bridge_struct.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
 import 'payment_list_tile.dart';

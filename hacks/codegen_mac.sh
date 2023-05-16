@@ -15,6 +15,7 @@ cd "$DIR/../"
 flutter_rust_bridge_codegen \
     -r $CRATE/src/api.rs \
     -d lib/bridge_generated.dart \
+    --dart-decl-output lib/bridge_struct.dart \
     -c ios/Runner/bridge_generated.h \
     -e macos/Runner
 
