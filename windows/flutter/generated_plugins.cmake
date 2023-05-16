@@ -8,7 +8,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   emoji_picker_flutter
   file_selector_windows
   flutter_secure_storage_windows
-  objectbox_flutter_libs
   record_windows
   screen_retriever
   tray_manager

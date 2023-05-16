@@ -19,7 +19,6 @@ import '../../components/recording_dialog.dart';
 import '../../components/send_file_dialog.dart';
 import '../../models/models.dart';
 import '../../store/theme.dart';
-import '../../objectbox.g.dart';
 import '../../utils/platform_infos.dart';
 import '../../utils/screen/screen.dart';
 import '../../utils/matrix_sdk_extensions/matrix_file_extension.dart';
@@ -61,11 +60,8 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   );
   late Account me;
   String msg = "";
-
   String srcAvatar = "";
   String nameAuthor = "";
-
-  Condition<ImMessages>? get condition => null;
 
   @override
   void initState() {

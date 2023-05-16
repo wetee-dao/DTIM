@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 
 import '../../apis/system_api.dart';
 import '../../components/setting/settings_ui.dart';
-import '../../objectbox.g.dart';
 import '../../store/theme.dart';
 import '../../models/system.dart';
 import '../../utils/screen/screen.dart';
@@ -19,7 +19,6 @@ class ThemePage extends StatefulWidget {
 class _ThemePageState extends State<ThemePage> {
   bool useNotificationDotOnAppIcon = true;
   String theme = "";
-  late Query<System> query;
   late StreamSubscription<System> sub;
 
   @override
@@ -28,8 +27,8 @@ class _ThemePageState extends State<ThemePage> {
     super.initState();
   }
 
-  refresh() {
-    final sys = SystemApi.create().get();
+  refresh() async {
+    final sys = await (await SystemApi.create()).get();
     if (sys != null && sys.theme != "") {
       theme = sys.theme;
       if (mounted) {
@@ -64,9 +63,10 @@ class _ThemePageState extends State<ThemePage> {
                 title: const Text('浅色主题'),
                 initialValue: theme,
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
-                onToggle: (String v) {
-                  AdaptiveTheme.of(context).setTheme(
-                    light: setTheme(v),
+                onToggle: (String v) async {
+                  final t = await setTheme(v);
+                  AdaptiveTheme.of(globalCtx()).setTheme(
+                    light: t,
                   );
                   Timer(const Duration(milliseconds: 100), () {
                     refresh();
@@ -78,9 +78,10 @@ class _ThemePageState extends State<ThemePage> {
                 initialValue: theme,
                 type: "dark",
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
-                onToggle: (String v) {
-                  AdaptiveTheme.of(context).setTheme(
-                    light: setTheme(v),
+                onToggle: (String v) async {
+                  final t = await setTheme(v);
+                  AdaptiveTheme.of(globalCtx()).setTheme(
+                    light: t,
                   );
                   Timer(const Duration(milliseconds: 100), () {
                     refresh();

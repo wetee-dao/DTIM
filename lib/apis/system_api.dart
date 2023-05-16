@@ -1,28 +1,29 @@
+import 'package:hive/hive.dart';
+
 import '../store/db.dart';
 import '../models/system.dart';
-import '../objectbox.g.dart';
 
 class SystemApi {
-  late final Box<System> storeBox;
+  late final CollectionBox<System> storeBox;
 
-  SystemApi._create(Store store) {
-    storeBox = Box<System>(store);
+  SystemApi._create(CollectionBox<System>  store) {
+    storeBox = store;
   }
 
-  static SystemApi create() {
-    return SystemApi._create(DB!);
+  static Future<SystemApi> create() async {
+    var storeBox = await DB!.openBox<System>('System');
+    return SystemApi._create(storeBox);
   }
 
-  Box<System> store() {
+  CollectionBox<System> store() {
     return storeBox;
   }
 
-  System save(double width, double height) {
-    final sys = get();
+  Future<System> save(double width, double height) async {
+    final sys = await get();
     if (sys == null) {
       final u = System(width: width, height: height, theme: "");
-      final id = storeBox.put(u);
-      u.id = id;
+      await storeBox.put("1",u);
       return u;
     }
 
@@ -33,19 +34,19 @@ class SystemApi {
     sys.width = width;
     sys.height = height;
     sys.theme = sys.theme;
-    storeBox.put(sys);
+    await storeBox.put("1",sys);
     return sys;
   }
 
-  System saveTheme(String theme) {
-    final sys = get();
+  Future<System> saveTheme(String theme) async {
+    final sys = await get();
 
     sys!.theme = theme;
-    storeBox.put(sys);
+    await storeBox.put("1",sys);
     return sys;
   }
 
-  System? get() {
-    return storeBox.get(1);
+  Future<System?> get() async {
+    return await storeBox.get("1");
   }
 }

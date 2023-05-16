@@ -17,7 +17,6 @@ import '../../router.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
 import '../../utils/functions.dart';
-import '../../objectbox.g.dart';
 import '../../utils/screen/screen.dart';
 import 'bar.dart';
 import 'input.dart';
@@ -46,7 +45,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   Stream<bool>? sub;
   String srcAvatar = "";
   String nameAuthor = "";
-  Condition<ImMessages>? get condition => null;
 
   bool get canLoadMore =>
       timeline != null && (timeline!.events.isEmpty || timeline!.events.last.type != link.EventTypes.RoomCreate);

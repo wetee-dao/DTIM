@@ -25,7 +25,7 @@ class PCPage extends StatefulWidget {
 
 class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
-  late List<AccountOrg> aorgs;
+  List<AccountOrg>? aorgs;
   late AppCubit im;
   late PageController pageController;
   double rightWidth = 200.w;
@@ -41,8 +41,15 @@ class _PCPageState extends State<PCPage> {
     super.initState();
     pageController = PageController();
     im = context.read<AppCubit>();
-    aorgs = AccountOrgApi.create().listByAccount(im.me!.address);
     currentId.add(0);
+    getData();
+  }
+
+  getData() async {
+    final os = await (await AccountOrgApi.create()).listByAccount(im.me!.address);
+    setState(() {
+      aorgs = os;
+    });
   }
 
   @override
@@ -147,8 +154,9 @@ class _PCPageState extends State<PCPage> {
                   //     ),
                   //   ),
                   // ),
-                  for (var i = 0; i < aorgs.length; i++)
-                    Container(
+                  if(aorgs!=null)
+                    for (var i = 0; i < aorgs!.length; i++)
+                      Container(
                       width: 40.w,
                       height: 40.w,
                       padding: EdgeInsets.all(2.w),
@@ -165,18 +173,18 @@ class _PCPageState extends State<PCPage> {
                         width: 36.w,
                         height: 36.w,
                         decoration: BoxDecoration(
-                          color: aorgs[i].orgColor != null
-                              ? hexToColor(aorgs[i].orgColor!)
+                          color: aorgs![i].orgColor != null
+                              ? hexToColor(aorgs![i].orgColor!)
                               : constTheme.sidebarText.withOpacity(0.02),
                           borderRadius: BorderRadius.circular(4.w),
                         ),
-                        child: aorgs[i].orgAvater == null
+                        child: aorgs![i].orgAvater == null
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  if (aorgs[i].orgAvater == null)
+                                  if (aorgs![i].orgAvater == null)
                                     Text(
-                                      aorgs[i].orgName ?? "",
+                                      aorgs![i].orgName ?? "",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
@@ -190,7 +198,7 @@ class _PCPageState extends State<PCPage> {
                                   borderRadius: BorderRadius.circular(2.w),
                                   child: Image.network(
                                     fit: BoxFit.cover,
-                                    aorgs[i].orgAvater!,
+                                    aorgs![i].orgAvater!,
                                     width: 36.w,
                                     height: 36.w,
                                   ),

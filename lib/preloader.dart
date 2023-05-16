@@ -37,6 +37,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   bool _loading = true;
   List<Account> accounts = [];
   late IMProvider im;
+  late AccountApi accountStore;
 
   @override
   void initState() {
@@ -83,8 +84,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   getList() async {
+   accountStore = await AccountApi.create();
+   var as = await accountStore.getUsers();
     setState(() {
-      accounts = AccountApi.create().getUsers();
+      accounts = as;
     });
   }
 
@@ -278,7 +281,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                             okLabel: L10n.of(globalCtx())!.next,
                                                             cancelLabel: L10n.of(globalCtx())!.cancel,
                                                           )) {
-                                                        AccountApi.create().remove(accounts[i].id);
+                                                        await accountStore.remove(accounts[i].address);
                                                         BotToast.showText(
                                                           text: '用户删除成功',
                                                           duration: const Duration(seconds: 2),

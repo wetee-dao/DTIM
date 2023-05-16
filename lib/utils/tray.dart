@@ -71,8 +71,8 @@ class WindowManagerListener implements WindowListener {
 
   @override
   void onWindowResize() {
-    windowManager.getSize().then((value) {
-      SystemApi.create().save(value.width, value.height);
+    windowManager.getSize().then((value) async {
+      await (await SystemApi.create()).save(value.width, value.height);
     });
   }
 

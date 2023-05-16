@@ -491,10 +491,10 @@ const themes = [
 
 int currentTheme = 14;
 
-ThemeData setTheme(String name) {
+Future<ThemeData> setTheme(String name) async {
   currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);
 
-  SystemApi.create().saveTheme(name);
+  await (await SystemApi.create()).saveTheme(name);
   return theme();
 }
 

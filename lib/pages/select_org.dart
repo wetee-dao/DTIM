@@ -4,11 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import '../objectbox.g.dart';
 import '../router.dart';
 import '../utils/screen/screen.dart';
 import '../apis/apis.dart';
@@ -26,28 +24,30 @@ class SelectOrgPage extends StatefulWidget {
 }
 
 class _SelectOrgPageState extends State<SelectOrgPage> {
-  StreamSubscription<Query<AccountOrg>>? subscription;
   List<String> selected = [];
-  List<Account> accounts = [];
-  // String currentAddress = "";
+  List<Account?> accounts = [];
   late IMProvider im;
+  late AccountOrgApi accountOrgApi;
 
   @override
   void initState() {
-    accounts = AccountApi.create().getUsers();
-    final query = context.routeData.queryParams;
     im = context.read<IMProvider>();
-    final orgList = AccountOrgApi.create().listByAccount(im.me!.address).map((o) => o.orgHash).toList();
-    selected = orgList;
-    Future.delayed(Duration.zero).then((value) async {
-      if (query.getString("auto") == "t") {
-        AccountOrgApi.create().accountSyncOrgs(
-          im.me!.address,
-          selected,
-          orgs,
-        );
-        await gotoOrg();
-      }
+    final query = context.routeData.queryParams;
+    AccountApi.create().then((v) async {
+      accounts = await v.getUsers();
+      accountOrgApi = await AccountOrgApi.create();
+      final orgList = (await accountOrgApi.listByAccount(im.me!.address)).map((o) => o.orgHash).toList();
+      selected = orgList;
+      Future.delayed(Duration.zero).then((value) async {
+        if (query.getString("auto") == "t") {
+          await accountOrgApi.accountSyncOrgs(
+            im.me!.address,
+            selected,
+            orgs,
+          );
+          await gotoOrg();
+        }
+      });
     });
 
     super.initState();
@@ -60,12 +60,12 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   }
 
   Future<void> gotoOrg() async {
-    final orgs = AccountOrgApi.create().listByAccount(im.me!.address);
+    final orgs = await accountOrgApi.listByAccount(im.me!.address);
     // 登录账户
     if (orgs.isNotEmpty) {
       waitFutureLoading(
         title: "连接中...",
-        context: context,
+        context: globalCtx(),
         future: () async {
           await im.connect(orgs[0]);
           im.setCurrent(orgs[0]);
@@ -84,9 +84,6 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   }
 
   Future<void> beforeLeave() async {
-    if (subscription != null) {
-      await subscription!.cancel();
-    }
     return;
   }
 
@@ -116,7 +113,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                   return;
                 }
 
-                AccountOrgApi.create().accountSyncOrgs(
+                await accountOrgApi.accountSyncOrgs(
                   im.me!.address,
                   selected,
                   orgs,
@@ -257,7 +254,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                 return;
               }
 
-              AccountOrgApi.create().accountSyncOrgs(
+              await accountOrgApi.accountSyncOrgs(
                 im.me!.address,
                 selected,
                 orgs,

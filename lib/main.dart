@@ -27,9 +27,11 @@ Future<void> main() async {
   await windowManager.hide();
 
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
+  
   // 数据库初始化
   await initDB();
-  final winsystem = SystemApi.create().get();
+  final systemStore = await SystemApi.create();
+  final winsystem = await systemStore.get();
   if (winsystem != null) {
     setThemeIndex(winsystem.theme);
   }

@@ -358,10 +358,11 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   initUser.address = chainData.address;
                   initUser.domain = "";
                   initUser.chainData = accountStr;
+                  initUser.orgs = [];
 
                   //保存在本地
-                  AccountApi.create().addUser(initUser);
-                  BotToast.showText(text: L10n.of(context)!.accountCreated, duration: const Duration(seconds: 2));
+                  await (await AccountApi.create()).addUser(initUser);
+                  BotToast.showText(text: L10n.of(globalCtx())!.accountCreated, duration: const Duration(seconds: 2));
 
                   globalCtx().router.pop();
                 });

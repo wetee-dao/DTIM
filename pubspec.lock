@@ -73,14 +73,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.1"
-  appflowy_board:
-    dependency: "direct main"
-    description:
-      name: appflowy_board
-      sha256: "1f8c945085435e756801d1e42fcf2838978da8993017902bb95929ece5dd69a9"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.0"
   archive:
     dependency: transitive
     description:
@@ -361,14 +353,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.2"
-  cryptography:
-    dependency: transitive
-    description:
-      name: cryptography
-      sha256: df156c5109286340817d21fa7b62f9140f17915077127dd70f8bd7a2a0997a35
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.5.0"
   csslib:
     dependency: transitive
     description:
@@ -633,14 +617,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.62.0"
-  flat_buffers:
-    dependency: transitive
-    description:
-      name: flat_buffers
-      sha256: "23e2ced0d8e8ecdffbd9f267f49a668c74438393b9acaeac1c724123e3764263"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.5"
   flexi_chip:
     dependency: transitive
     description:
@@ -856,13 +832,21 @@ packages:
     source: hosted
     version: "2.3.0"
   hive:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hive
       sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.3"
+  hive_generator:
+    dependency: "direct main"
+    description:
+      name: hive_generator
+      sha256: "65998cc4d2cd9680a3d9709d893d2f6bb15e6c1f92626c3f1fa650b4b3281521"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   html:
     dependency: transitive
     description:
@@ -1164,30 +1148,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
-  objectbox:
-    dependency: "direct main"
-    description:
-      name: objectbox
-      sha256: a8a3052e430a1e6f91496dc4ffe7c2accab12d24ddfd09412f19541e9f2fe124
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.0"
-  objectbox_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: objectbox_flutter_libs
-      sha256: "03801ed3b35d73dacef612880f0a84ed0cce6b3b2efee2c93d47356584e8c942"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.0"
-  objectbox_generator:
-    dependency: "direct dev"
-    description:
-      name: objectbox_generator
-      sha256: "078796e874f33520df8ae7690f334fdcd3cd1d3cfe7aa2887e8ecf9182343c68"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.0"
   olm:
     dependency: transitive
     description:

@@ -47,7 +47,7 @@ class DAOCTX with ChangeNotifier {
           notifyListeners();
         });
 
-        Future.delayed(new Duration(seconds: 1), () async {
+        Future.delayed(const Duration(seconds: 1), () async {
           printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
           chainClient = v;
           await getData();

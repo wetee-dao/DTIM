@@ -315,9 +315,10 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                   initUser.address = chainData.address;
                   initUser.domain = "";
                   initUser.chainData = accountStr;
+                  initUser.orgs = [];
 
                   //保存在本地
-                  AccountApi.create().addUser(initUser);
+                  await (await AccountApi.create()).addUser(initUser);
                   BotToast.showText(text: '账户创建成功，稍后您需要选择您的组织连接web3网络', duration: const Duration(seconds: 2));
 
                   globalCtx().router.pop();

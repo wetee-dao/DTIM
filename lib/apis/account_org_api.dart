@@ -1,48 +1,49 @@
+import 'package:hive/hive.dart';
+
 import '../store/db.dart';
 import '../models/models.dart';
-import '../objectbox.g.dart';
 
 class AccountOrgApi {
-  late final Box<AccountOrg> storeBox;
+  late final CollectionBox<AccountOrg> storeBox;
 
-  AccountOrgApi._create(Store store) {
-    storeBox = Box<AccountOrg>(store);
+  AccountOrgApi._create(CollectionBox<AccountOrg> store) {
+    storeBox = store;
   }
 
-  static AccountOrgApi create() {
-    return AccountOrgApi._create(DB!);
+  static Future<AccountOrgApi> create() async {
+    var storeBox = await DB!.openBox<AccountOrg>('AccountOrg');
+    return AccountOrgApi._create(storeBox);
   }
 
-  Box<AccountOrg> store() {
+  CollectionBox<AccountOrg> store() {
     return storeBox;
   }
 
-  List<AccountOrg> listAll() {
-    return storeBox.getAll();
+  Future<List<AccountOrg?>> listAll() async {
+    final keys = await storeBox.getAllKeys();
+    return await storeBox.getAll(keys);
   }
 
-  List<AccountOrg> listByAccount(String userId) {
-    final query = storeBox.query(AccountOrg_.withAddr.equals(userId)).build();
-    final storeOrgs = query.find();
-    query.close();
-
-    return storeOrgs;
+  Future<List<AccountOrg>> listByAccount(String userId) async {
+    final keys = await storeBox.getAllKeys();
+    final values =  await storeBox.getAll(keys);
+    return values.where((a) => a!.account.address == userId).map((v) => v!).toList();
   }
 
-  List<AccountOrg> accountSyncOrgs(
+  Future<List<AccountOrg>> accountSyncOrgs(
     String userId,
     List<String> fs,
     List<Org> orgs,
-  ) {
-    final accountStoreBox = Box<Account>(DB!);
-    final aquery = accountStoreBox.query(Account_.address.equals(userId)).build();
-    final account = aquery.findUnique();
-    aquery.close();
+  ) async {
+    // final accountStoreBox = Box<Account>(DB!);
+    // final aquery = accountStoreBox.query(Account_.address.equals(userId)).build();
+    // final account = aquery.findUnique();
+    // aquery.close();
+    final accountStoreBox = await DB!.openBox<Account>('Account');
+    final account = await accountStoreBox.get(userId);
 
     // 查询当前的团队
-    final query = storeBox.query(AccountOrg_.withAddr.equals(userId)).build();
-    final storeOrgs = query.find();
-    query.close();
+    final storeOrgs = await listByAccount(userId);
 
     // 删除不需要的数据
     for (var j = 0; j < storeOrgs.length; j++) {
@@ -52,9 +53,10 @@ class AccountOrgApi {
           storeIndex = i;
         }
       }
+      // 删除
       if (storeIndex == -1) {
         storeOrgs[storeIndex].status = 3;
-        storeBox.put(storeOrgs[storeIndex]);
+        storeBox.put(userId + storeOrgs[j].orgHash,storeOrgs[storeIndex]);
       }
     }
 
@@ -67,7 +69,9 @@ class AccountOrgApi {
         }
       }
       final org = getOrgFromList(orgs, fs[i]);
+      
       if (storeIndex == -1) {
+        // 新增
         if (org != null) {
           final at = AccountOrg(org.hash);
           at.orgName = org.name;
@@ -78,11 +82,12 @@ class AccountOrgApi {
           at.chainUrl = org.chainUrl;
           at.status = 1;
           at.withAddr = userId;
-          at.account.target = account;
+          at.account = account!;
           at.daoId = org.daoId;
-          storeBox.put(at);
+          storeBox.put(userId + org.hash,at);
         }
       } else {
+        // 更新
         if (org != null) {
           storeOrgs[storeIndex].orgName = org.name;
           storeOrgs[storeIndex].orgAvater = org.metaData!.avater;
@@ -92,9 +97,9 @@ class AccountOrgApi {
           storeOrgs[storeIndex].chainUrl = org.chainUrl;
           storeOrgs[storeIndex].status = 1;
           storeOrgs[storeIndex].withAddr = userId;
-          storeOrgs[storeIndex].account.target = account;
+          storeOrgs[storeIndex].account = account!;
           storeOrgs[storeIndex].daoId = org.daoId;
-          storeBox.put(storeOrgs[storeIndex]);
+          storeBox.put(userId + org.hash, storeOrgs[storeIndex]);
         }
       }
     }
