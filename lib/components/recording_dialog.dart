@@ -7,6 +7,8 @@
 //
 
 import 'dart:async';
+import 'dart:io';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -43,8 +45,7 @@ class RecordingDialogState extends State<RecordingDialog> {
   Future<void> startRecording() async {
     try {
       final tempDir = await getTemporaryDirectory();
-      _recordedPath =
-          '${tempDir.path}/recording${DateTime.now().microsecondsSinceEpoch}.${RecordingDialog.recordingFileType}';
+      _recordedPath = '${tempDir.path}/recording${DateTime.now().microsecondsSinceEpoch}.${RecordingDialog.recordingFileType}';
 
       final result = await _audioRecorder.hasPermission();
       if (result != true) {
@@ -90,11 +91,25 @@ class RecordingDialogState extends State<RecordingDialog> {
 
   void _stopAndSend() async {
     _recorderSubscription?.cancel();
-    await _audioRecorder.stop();
+    final path = await _audioRecorder.stop();
+    if (path == null){
+      BotToast.showText(
+        text: 'Recording failed',
+        duration: const Duration(seconds: 2),
+      );
+      Navigator.of(globalCtx(), rootNavigator: false).pop();
+      return;
+    }
 
-    final path = _recordedPath;
-    if (path == null) throw ('Recording failed!');
-
+    final audioFile = File(path);
+    if(!(await audioFile.exists())){
+      BotToast.showText(
+        text: 'Recording failed',
+        duration: const Duration(seconds: 2),
+      );
+      Navigator.of(globalCtx(), rootNavigator: false).pop();
+      return;
+    }
     const waveCount = AudioPlayerWidget.wavesCount;
     final step = amplitudeTimeline.length < waveCount ? 1 : (amplitudeTimeline.length / waveCount).round();
     final waveform = <int>[];
@@ -114,7 +129,7 @@ class RecordingDialogState extends State<RecordingDialog> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    const maxDecibalWidth = 64.0;
+    const maxDecibalWidth = 54.0;
     final time =
         '${_duration.inMinutes.toString().padLeft(2, '0')}:${(_duration.inSeconds % 60).toString().padLeft(2, '0')}';
     final content = error
@@ -122,14 +137,12 @@ class RecordingDialogState extends State<RecordingDialog> {
         :Padding(padding: EdgeInsets.only(top:22.w),
           child: Row(
             children: [
-              Container(
-                width: 16.w,
-                height: 16.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32.w),
-                  color: constTheme.buttonBg,
-                ),
+              Icon(
+                Icons.graphic_eq_rounded,
+                size: 20.w,
+                color: constTheme.buttonBg,
               ),
+              const SizedBox(width: 10),
               Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

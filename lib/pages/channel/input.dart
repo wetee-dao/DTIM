@@ -231,7 +231,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
       barrierDismissible: false,
       builder: (c) => const RecordingDialog(),
     );
-    print(result);
+
     if (result == null) return;
     final audioFile = File(result.path);
     final file = link.MatrixAudioFile(
@@ -497,32 +497,33 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
             ),
           ),
           SizedBox(width: 10.w),
-          InkWell(
-            key: const Key("voice"),
-            onTap: voiceMessageAction,
-            child: Icon(
-              Icons.mic_none_outlined,
-              color: constTheme.centerChannelColor.withAlpha(150),
-              size: 25.w,
+          if(msg=="")
+            InkWell(
+              key: const Key("voice"),
+              onTap: voiceMessageAction,
+              child: Icon(
+                Icons.mic_none_outlined,
+                color: constTheme.centerChannelColor.withAlpha(150),
+                size: 25.w,
+              ),
             ),
-          ),
-          SizedBox(width: 10.w),
-          InkWell(
-            key: const Key("chatSendIcon"),
-            onTap: () {
-              if (_msgController.text == "") return;
-              widget.room.sendTextEvent(_msgController.text);
-              _msgController.clear();
-              setState(() {
-                msg = "";
-              });
-            },
-            child: Icon(
-              Icons.send,
-              color: constTheme.centerChannelColor.withAlpha(150),
-              size: 25.w,
+          if(msg!="")
+            InkWell(
+              key: const Key("chatSendIcon"),
+              onTap: () {
+                if (_msgController.text == "") return;
+                widget.room.sendTextEvent(_msgController.text);
+                _msgController.clear();
+                setState(() {
+                  msg = "";
+                });
+              },
+              child: Icon(
+                Icons.send,
+                color: constTheme.centerChannelColor.withAlpha(150),
+                size: 25.w,
+              ),
             ),
-          ),
         ],
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../store/theme.dart';
 import '../utils/screen/screen.dart';
+import 'appicon.dart';
 import 'move_window.dart';
 
 class ModelBar extends StatelessWidget implements PreferredSizeWidget {
@@ -17,6 +19,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final size = _height;
     return moveWindow(
       Container(
         height: _height,
@@ -37,20 +40,26 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
                     width: _height,
                     child: tools,
                   ),
-            InkWell(
-              child: Icon(
-                Icons.close,
-                color: constTheme.sidebarHeaderTextColor,
-                size: 25.w / 50.w * _height,
-              ),
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 if (onBack != null) {
                   onBack!();
                   return;
                 }
               },
+              icon: Icon(Appicon.tuopanhua, color: constTheme.sidebarHeaderTextColor, size: 17.w),
+              iconSize: 17.w,
+              constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
+              padding: EdgeInsets.zero,
+              tooltip: L10n.of(context)!.close,
+              style: IconButton.styleFrom(
+                shape: const RoundedRectangleBorder(
+                  // borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.zero, //Rectangular border
+                ),
+                hoverColor: constTheme.errorTextColor.withOpacity(0.2),
+              ),
             ),
-            SizedBox(width: 15.w),
           ],
         ),
       ),
