@@ -7,18 +7,16 @@
 //
 
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:wakelock/wakelock.dart';
 
 import '../pages/channel/content/audio_player.dart';
-import '../utils/platform_infos.dart';
-// import 'events/audio_player.dart';
+import '../router.dart';
+import '../store/theme.dart';
+import '../utils/screen/screen.dart';
 
 class RecordingDialog extends StatefulWidget {
   static const String recordingFileType = 'm4a';
@@ -53,13 +51,14 @@ class RecordingDialogState extends State<RecordingDialog> {
         setState(() => error = true);
         return;
       }
-      await Wakelock.enable();
+
       await _audioRecorder.start(
         path: _recordedPath,
         bitRate: bitRate,
         samplingRate: samplingRate,
       );
       setState(() => _duration = Duration.zero);
+      
       _recorderSubscription?.cancel();
       _recorderSubscription = Timer.periodic(const Duration(milliseconds: 100), (_) async {
         final amplitude = await _audioRecorder.getAmplitude();
@@ -84,7 +83,6 @@ class RecordingDialogState extends State<RecordingDialog> {
 
   @override
   void dispose() {
-    Wakelock.disable();
     _recorderSubscription?.cancel();
     _audioRecorder.stop();
     super.dispose();
@@ -93,15 +91,18 @@ class RecordingDialogState extends State<RecordingDialog> {
   void _stopAndSend() async {
     _recorderSubscription?.cancel();
     await _audioRecorder.stop();
+
     final path = _recordedPath;
     if (path == null) throw ('Recording failed!');
+
     const waveCount = AudioPlayerWidget.wavesCount;
     final step = amplitudeTimeline.length < waveCount ? 1 : (amplitudeTimeline.length / waveCount).round();
     final waveform = <int>[];
     for (var i = 0; i < amplitudeTimeline.length; i += step) {
       waveform.add((amplitudeTimeline[i] / 100 * 1024).round());
     }
-    Navigator.of(context, rootNavigator: false).pop<RecordingResult>(
+
+    Navigator.of(globalCtx(), rootNavigator: false).pop<RecordingResult>(
       RecordingResult(
         path: path,
         duration: _duration.inMilliseconds,
@@ -112,19 +113,21 @@ class RecordingDialogState extends State<RecordingDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     const maxDecibalWidth = 64.0;
     final time =
         '${_duration.inMinutes.toString().padLeft(2, '0')}:${(_duration.inSeconds % 60).toString().padLeft(2, '0')}';
     final content = error
         ? Text(L10n.of(context)!.oopsSomethingWentWrong)
-        : Row(
+        :Padding(padding: EdgeInsets.only(top:22.w),
+          child: Row(
             children: [
               Container(
-                width: 16,
-                height: 16,
+                width: 16.w,
+                height: 16.w,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32),
-                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(32.w),
+                  color: constTheme.buttonBg,
                 ),
               ),
               Expanded(
@@ -155,28 +158,8 @@ class RecordingDialogState extends State<RecordingDialog> {
                 child: Text(time),
               ),
             ],
-          );
-    if (PlatformInfos.isCupertinoStyle) {
-      return CupertinoAlertDialog(
-        content: content,
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => Navigator.of(context, rootNavigator: false).pop(),
-            child: Text(
-              L10n.of(context)!.cancel.toUpperCase(),
-              style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium?.color?.withAlpha(150),
-              ),
-            ),
           ),
-          if (error != true)
-            CupertinoDialogAction(
-              onPressed: _stopAndSend,
-              child: Text(L10n.of(context)!.send.toUpperCase()),
-            ),
-        ],
-      );
-    }
+        );
     return AlertDialog(
       content: content,
       actions: [
@@ -218,14 +201,14 @@ class RecordingResult {
   });
 
   factory RecordingResult.fromJson(Map<String, dynamic> json) => RecordingResult(
-        path: json['path'],
-        duration: json['duration'],
-        waveform: List<int>.from(json['waveform']),
-      );
+    path: json['path'],
+    duration: json['duration'],
+    waveform: List<int>.from(json['waveform']),
+  );
 
   Map<String, dynamic> toJson() => {
-        'path': path,
-        'duration': duration,
-        'waveform': waveform,
-      };
+    'path': path,
+    'duration': duration,
+    'waveform': waveform,
+  };
 }

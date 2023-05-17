@@ -18,13 +18,13 @@ Future<BoxCollection> initDB() async {
   }
 
   final dir = await getApplicationSupportDirectory();
-  printInfo("LocalStore ==> ${dir.path}/daoent");
+  printInfo("LocalStore ==> ${dir.path}/localstore");
   
   // DB = await openStore(directory: "${dir.path}/daoent");
   DB = await BoxCollection.open(
     'LocalStore',
     {'Account', 'AccountOrg', 'System'},
-    path:"${dir.path}/daoent",
+    path:"${dir.path}/localstore",
   );
   return DB!;
 }

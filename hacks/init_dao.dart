@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:asyou_app/bridge_generated.dart';
+import 'package:asyou_app/bridge_struct.dart';
 import 'package:asyou_app/native_wraper.io.dart';
 
 // ignore: constant_identifier_names

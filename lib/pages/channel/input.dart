@@ -37,7 +37,6 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   final _msgController = TextEditingController();
   final BasePopupMenuController emojiController = BasePopupMenuController();
   final StreamController<bool> emojiStreamController = StreamController<bool>();
-  final TextEditingController _controller = TextEditingController();
   link.Event? replyEvent;
 
   late final _msgNode = FocusNode(
@@ -232,6 +231,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
       barrierDismissible: false,
       builder: (c) => const RecordingDialog(),
     );
+    print(result);
     if (result == null) return;
     final audioFile = File(result.path);
     final file = link.MatrixAudioFile(
@@ -494,6 +494,16 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   checkPlatformCompatibility: true,
                 ),
               ),
+            ),
+          ),
+          SizedBox(width: 10.w),
+          InkWell(
+            key: const Key("voice"),
+            onTap: voiceMessageAction,
+            child: Icon(
+              Icons.mic_none_outlined,
+              color: constTheme.centerChannelColor.withAlpha(150),
+              size: 25.w,
             ),
           ),
           SizedBox(width: 10.w),

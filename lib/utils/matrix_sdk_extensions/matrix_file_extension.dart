@@ -6,13 +6,27 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
+import 'dart:io';
+import 'package:asyou_app/utils/screen/screen.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:file_picker_cross/file_picker_cross.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:matrix/matrix.dart';
 
 import '../platform_infos.dart';
 import '../string.dart';
+
+Future<File> getLocalSupportFile(String name) async {
+  if(isPc()){
+    final dir = await getDownloadsDirectory();
+    if(dir!=null){
+      return File('${dir.path}/$name');
+    }
+  }
+  final dir = await getApplicationDocumentsDirectory();
+  return File('${dir.path}/$name');
+}
 
 extension MatrixFileExtension on MatrixFile {
   void save(BuildContext context) async {
@@ -20,9 +34,13 @@ extension MatrixFileExtension on MatrixFile {
       return share(context);
     }
     final fileName = name.split('/').last;
+    final file = await getLocalSupportFile(fileName);
+    BotToast.showText(
+      text: "File save at ${file.path}",
+      duration: const Duration(seconds: 2),
+    );
 
-    final file = FilePickerCross(bytes);
-    await file.exportToStorage(fileName: fileName);
+    await file.writeAsBytes(bytes);
   }
 
   void share(BuildContext context) async {
