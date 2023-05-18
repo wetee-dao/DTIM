@@ -23,27 +23,26 @@ class Identicon {
     return hashBytes[n ~/ (scale / 2)] >> ((scale / 2) - ((n % (scale / 2)) + 1)).toInt() & 1 == 1;
   }
 
-  List<int> _createImage(List<List<bool>> matrix, int width, int height, int space, int pad) {
-    final image = img.Image(width: width + (pad * 2),height: height + (pad * 2),backgroundColor:img.ColorRgb8(255, 0, 0));
-
+  Uint8List _createImage(List<List<bool>> matrix, int width, int height, int space) {
+    var image = img.Image(width: width,height: height,numChannels:4 ,backgroundColor:img.ColorUint8.rgba(255, 0, 0,1));
+    
     final blockWidth = width ~/ _cols;
     final blockHeight = height ~/ _rows;
 
-    // for (int row = 0; row < matrix.length; row++) {
-    //   for (int col = 0; col < matrix[row].length; col++) {
-    //     if (matrix[row][col]) {
-    //       fillRect(
-    //         image,
-    //         x1: pad + col * blockWidth - space,
-    //         y1: pad + row * blockHeight - space,
-    //         x2: pad + (col + 1) * blockWidth + space,
-    //         y2: pad + (row + 1) * blockHeight + space,
-    //         color: ColorInt32.rgb(_fgColour[0], _fgColour[1], _fgColour[2]),
-    //       );
-    //     }
-    //   }
-    // }
-
+    for (int row = 0; row < matrix.length; row++) {
+      for (int col = 0; col < matrix[row].length; col++) {
+        if (matrix[row][col]) {
+          img.fillRect(
+            image,
+            x1: col * blockWidth + space + 1,
+            y1: row * blockHeight + space + 1,
+            x2: (col + 1) * blockWidth - space - 1,
+            y2: (row + 1) * blockHeight - space - 1,
+            color: img.ColorUint8.rgb(_fgColour[0], _fgColour[1], _fgColour[2]),
+          );
+        }
+      }
+    }
     return img.encodePng(image);
   }
 
@@ -72,9 +71,7 @@ class Identicon {
     });
 
     final matrix = _createMatrix(hexDigestByteList);
-    final bt = _createImage(matrix, size, size, scale, 0);
-    Uint8List bytes = Uint8List.fromList(bt);
-    return bytes;
+    return _createImage(matrix, size, size, scale);
   }
 
   String generateBase64(String text, {int scale = 1}) {
@@ -87,7 +84,7 @@ class Identicon {
     });
 
     final matrix = _createMatrix(hexDigestByteList);
-    final bt = _createImage(matrix, size, size, scale, 0);
+    final bt = _createImage(matrix, size, size, scale);
     return "data:image/png;base64,${base64Encode(bt)}";
   }
 
