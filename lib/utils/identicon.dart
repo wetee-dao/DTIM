@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
-import 'package:image/image.dart';
+import 'package:image/image.dart' as img;
 
 class Identicon {
   final int _rows = 10;
@@ -24,27 +24,27 @@ class Identicon {
   }
 
   List<int> _createImage(List<List<bool>> matrix, int width, int height, int space, int pad) {
-    final image = Image(width + (pad * 2), height + (pad * 2));
+    final image = img.Image(width: width + (pad * 2),height: height + (pad * 2),backgroundColor:img.ColorRgb8(255, 0, 0));
 
     final blockWidth = width ~/ _cols;
     final blockHeight = height ~/ _rows;
 
-    for (int row = 0; row < matrix.length; row++) {
-      for (int col = 0; col < matrix[row].length; col++) {
-        if (matrix[row][col]) {
-          fillRect(
-            image,
-            pad + col * blockWidth + space + 1,
-            pad + row * blockHeight + space + 1,
-            pad + (col + 1) * blockWidth - space - 1,
-            pad + (row + 1) * blockHeight - space - 1,
-            Color.fromRgb(_fgColour[0], _fgColour[1], _fgColour[2]),
-          );
-        }
-      }
-    }
+    // for (int row = 0; row < matrix.length; row++) {
+    //   for (int col = 0; col < matrix[row].length; col++) {
+    //     if (matrix[row][col]) {
+    //       fillRect(
+    //         image,
+    //         x1: pad + col * blockWidth - space,
+    //         y1: pad + row * blockHeight - space,
+    //         x2: pad + (col + 1) * blockWidth + space,
+    //         y2: pad + (row + 1) * blockHeight + space,
+    //         color: ColorInt32.rgb(_fgColour[0], _fgColour[1], _fgColour[2]),
+    //       );
+    //     }
+    //   }
+    // }
 
-    return encodePng(image);
+    return img.encodePng(image);
   }
 
   _createMatrix(List<int> byteList) {

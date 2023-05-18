@@ -4,9 +4,7 @@ import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/components/user_avatar.dart';
-import 'package:matrix/matrix.dart';
-import 'package:matrix/src/user.dart';
+import 'package:asyou_app/components/avatar.dart';
 
 void main() {
   testWidgets("test user_avatar.dart", (WidgetTester tester) async {

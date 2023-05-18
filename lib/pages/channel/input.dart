@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:asyou_app/router.dart';
 import 'package:asyou_app/utils/localized_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:file_picker/file_picker.dart';
@@ -211,18 +210,6 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
 
   void voiceMessageAction() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    if (PlatformInfos.isAndroid) {
-      final info = await DeviceInfoPlugin().androidInfo;
-      if (info.version.sdkInt < 19) {
-        showOkAlertDialog(
-          context: globalCtx(),
-          title: L10n.of(globalCtx())!.unsupportedAndroidVersion,
-          message: L10n.of(globalCtx())!.unsupportedAndroidVersionLong,
-          okLabel: L10n.of(globalCtx())!.close,
-        );
-        return;
-      }
-    }
 
     if (await Record().hasPermission() == false) return;
     final result = await showDialog<RecordingResult>(

@@ -2,7 +2,7 @@ import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../components/user_avatar.dart';
+import '../../components/components.dart';
 import '../../utils/screen/screen.dart';
 import '../../store/theme.dart';
 import '../../utils/time.dart';

@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
@@ -298,24 +297,17 @@ class ChatDetailsController extends State<ChatDetails> {
       return;
     }
     MatrixFile file;
-    if (PlatformInfos.isMobile) {
-      final result = await ImagePicker().pickImage(
-        source: action == AvatarAction.camera ? ImageSource.camera : ImageSource.gallery,
-        imageQuality: 50,
-      );
-      if (result == null) return;
-      file = MatrixFile(
-        bytes: await result.readAsBytes(),
-        name: result.path,
-      );
-    } else {
-      final result = await FilePickerCross.importFromStorage(type: FileTypeCross.image);
-      if (result.fileName == null) return;
-      file = MatrixFile(
-        bytes: result.toUint8List(),
-        name: result.fileName!,
-      );
-    }
+
+    final result = await ImagePicker().pickImage(
+      source: action == AvatarAction.camera ? ImageSource.camera : ImageSource.gallery,
+      imageQuality: 50,
+    );
+    if (result == null) return;
+    file = MatrixFile(
+      bytes: await result.readAsBytes(),
+      name: result.path,
+    );
+
     await waitFutureLoading(
       context: globalCtx(),
       future: () => room!.setAvatar(file),

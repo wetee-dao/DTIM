@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:asyou_app/utils/localized_extension.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:date_format/date_format.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -214,7 +215,58 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               //   color: constTheme.centerChannelColor.withAlpha(150),
               //   size: 19.w,
               // ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 9.w),
+              IconButton(
+                onPressed: () async {
+                  final voip = im.currentState!.voipTool!.voip;
+                  final success = await waitFutureLoading(
+                    context: context,
+                    future: () => voip.requestTurnServerCredentials(),
+                  );
+                  if (success.result != null) {
+                    try {
+                      await voip.inviteToCall(room!.id, link.CallType.kVoice);
+                    } catch (e) {
+                      BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                    }
+                  } else {
+                    BotToast.showText(text: "获取 turn 服务器失败");
+                  }
+                },
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                style: IconButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.w),
+                  ),
+                ),
+                tooltip: "call",
+                icon: Icon(
+                  Icons.call_rounded,
+                  color: constTheme.centerChannelColor,
+                  size: 21.w,
+                ),
+              ),
+              SizedBox(width: 5.w),
+              IconButton(
+                onPressed: () async {
+                  
+                },
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                style: IconButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.w),
+                  ),
+                ),
+                tooltip: "video call",
+                icon: Icon(
+                  Icons.duo_outlined,
+                  color: constTheme.centerChannelColor,
+                  size: 21.w,
+                ),
+              ),
+              SizedBox(width: 5.w),
               StreamBuilder<link.SyncUpdate>(
                 stream: client!.onSync.stream.where((s) => s.deviceLists != null),
                 builder: (context, snapshot) {
@@ -230,7 +282,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       ),
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
-                        room!.encrypted ? Icons.lock_outline : Icons.lock_open,
+                        room!.encrypted ? Icons.lock_rounded : Icons.lock_open_rounded,
                         size: 21.w,
                         color: room!.joinRules != link.JoinRules.public && !room!.encrypted
                             ? constTheme.centerChannelColor

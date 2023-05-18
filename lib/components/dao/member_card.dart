@@ -2,7 +2,7 @@ import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../store/theme.dart';
-import '../user_avatar.dart';
+import '../avatar.dart';
 import 'text.dart';
 
 class MemberCard extends StatelessWidget {

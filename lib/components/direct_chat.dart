@@ -5,11 +5,11 @@ import 'package:matrix/matrix.dart' as link;
 import 'package:badges/badges.dart' as badges;
 
 import '../components/name_with_emoji.dart';
-import '../components/user_avatar.dart';
 import '../router.dart';
 import '../store/theme.dart';
 import '../utils/functions.dart';
 import '../utils/screen/screen.dart';
+import 'avatar.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 

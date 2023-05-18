@@ -17,7 +17,7 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
-  flutter_rust_bridge: 1.75.1
+  flutter_rust_bridge: ^1.75.3
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
@@ -49,8 +49,8 @@ dependencies:
   # 多选框
   chips_choice: ^3.0.0
   # matrix 连接库
-  matrix: ^0.18.0
-  matrix_link_text: ^1.0.2
+  matrix: ^0.20.2
+  matrix_link_text: ^2.0.0
   # 日期格式化插件
   date_format: ^2.0.7
   # easy_localization: ^3.0.1
@@ -58,7 +58,7 @@ dependencies:
   # 音频
   just_audio: ^0.9.31
   # 弹窗
-  adaptive_dialog: ^1.8.2
+  adaptive_dialog: ^1.9.0-no-macos.2
   # 缩略图
   flutter_blurhash: ^0.7.0
   # 视频播放器
@@ -71,16 +71,15 @@ dependencies:
   flutter_svg: ^2.0.5
   # webrtc
   flutter_webrtc: ^0.9.30+hotfix.1
+  webrtc_interface: ^1.0.13
 
-  chewie: ^1.4.0
+  chewie: ^1.4.1
   flutter_map: ^4.0.0
   latlong2: ^0.8.1
   punycode: ^1.0.0
   url_launcher: ^6.1.10
-  collection: ^1.17.0
+  collection: ^1.17.1
   flutter_secure_storage: ^8.0.0
-  file_picker_cross: ^4.6.0
-  share_plus: ^4.0.10+1
   image_picker: ^0.8.7
   tab_indicator_styler: ^2.0.0
   desktop_notifications: ^0.6.3
@@ -98,6 +97,9 @@ dependencies:
   record: ^4.4.4
   easy_debounce: ^2.0.3
 
+  # 文件选择
+  file_picker: ^5.2.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -108,7 +110,7 @@ dev_dependencies:
   hive_generator: ^2.0.0
   freezed: ^2.2.0
   build_runner: ^2.2.0
-  ffigen: ^7.2.6
+  ffigen: ^8.0.2
   json_serializable: ^6.5.4
   dart_code_metrics: ^5.7.3
 

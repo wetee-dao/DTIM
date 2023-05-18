@@ -31,22 +31,6 @@ class ScreenUtil {
     return _instance;
   }
 
-  static Future<void> ensureScreenSize([
-    ui.FlutterWindow? window,
-    Duration duration = const Duration(milliseconds: 10),
-  ]) async {
-    final binding = WidgetsFlutterBinding.ensureInitialized();
-    window ??= binding.window;
-
-    if (window.viewConfiguration.geometry.isEmpty) {
-      return Future.delayed(duration, () async {
-        binding.deferFirstFrame();
-        await ensureScreenSize(window, duration);
-        return binding.allowFirstFrame();
-      });
-    }
-  }
-
   static void setConText(BuildContext? context) {
     if (_instance.context != null) return;
     _instance.context = context;
