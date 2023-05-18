@@ -32,7 +32,7 @@ class MessageDownloadContent extends StatelessWidget {
       onTap: () => event.saveFile(context),
       child: Container(
         width: 250.w,
-        padding: EdgeInsets.all(8.w),
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.w),
           color: constTheme.centerChannelColor.withOpacity(0.1),
@@ -42,23 +42,19 @@ class MessageDownloadContent extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.w),
+              padding: EdgeInsets.symmetric(vertical: 10.w),
               child: Row(
                 children: [
                   Icon(
                     Icons.file_download_outlined,
                     color: textColor,
-                    size: 14.w,
+                    size: 28.w,
                   ),
-                  SizedBox(width: 10.w),
+                  SizedBox(width: 5.w),
                   Text(
                     filename,
                     maxLines: 1,
-                    style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.w,
-                    ),
+                    style: TextStyle(color: textColor,fontSize: 16.w),
                   ),
                 ],
               ),

@@ -280,7 +280,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       height: 66.w,
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 15.w),
       decoration: BoxDecoration(
         color: constTheme.centerChannelBg,
         border: Border(top: BorderSide(color: constTheme.centerChannelDivider)),
@@ -291,6 +291,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
         children: [
           SizedBox(
             width: 25.w,
+            height: 25.w,
             child: PopupMenuButton<String>(
               icon: Container(
                 alignment: Alignment.center,
@@ -496,21 +497,27 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               ),
             ),
           ),
-          SizedBox(width: 10.w),
+          SizedBox(width: 8.w),
           if(msg=="")
-            InkWell(
+            IconButton(
               key: const Key("voice"),
-              onTap: voiceMessageAction,
-              child: Icon(
+              tooltip: "voice",
+              onPressed: voiceMessageAction,
+              constraints: BoxConstraints(minWidth: 35.w, maxWidth: 35.w, minHeight: 35.w, maxHeight: 35.w),
+              padding: EdgeInsets.zero,
+              icon: Icon(
                 Icons.mic_none_outlined,
                 color: constTheme.centerChannelColor.withAlpha(150),
                 size: 25.w,
               ),
             ),
           if(msg!="")
-            InkWell(
+            IconButton(
               key: const Key("chatSendIcon"),
-              onTap: () {
+              tooltip: "send",
+              constraints: BoxConstraints(minWidth: 35.w, maxWidth: 35.w, minHeight: 35.w, maxHeight: 35.w),
+              padding: EdgeInsets.zero,
+              onPressed: () {
                 if (_msgController.text == "") return;
                 widget.room.sendTextEvent(_msgController.text);
                 _msgController.clear();
@@ -518,7 +525,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                   msg = "";
                 });
               },
-              child: Icon(
+              icon: Icon(
                 Icons.send,
                 color: constTheme.centerChannelColor.withAlpha(150),
                 size: 25.w,

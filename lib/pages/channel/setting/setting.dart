@@ -75,7 +75,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final titleList = <String>[L10n.of(context)!.chatDetal, L10n.of(context)!.chatMemeber, L10n.of(context)!.chatE2e];
     return Scaffold(
-      backgroundColor: constTheme.centerChannelBg,
+      backgroundColor: constTheme.sidebarHeaderBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",

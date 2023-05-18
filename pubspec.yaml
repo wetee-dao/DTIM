@@ -13,6 +13,7 @@ dependencies:
   # 多语言
   flutter_localizations:
     sdk: flutter
+  # 国际化
   intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
@@ -35,7 +36,6 @@ dependencies:
   window_manager: ^0.3.0
   # nosql 数据库
   hive: ^2.2.3
-  hive_generator: ^2.0.0
   # 全局状态树
   flutter_bloc: ^8.1.2
   # 表情包
@@ -69,6 +69,8 @@ dependencies:
   animated_text_kit: ^4.2.2
   # svg
   flutter_svg: ^2.0.5
+  # webrtc
+  flutter_webrtc: ^0.9.30+hotfix.1
 
   chewie: ^1.4.0
   flutter_map: ^4.0.0
@@ -103,6 +105,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   auto_route_generator: ^7.0.0
+  hive_generator: ^2.0.0
   freezed: ^2.2.0
   build_runner: ^2.2.0
   ffigen: ^7.2.6

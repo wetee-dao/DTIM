@@ -27,6 +27,9 @@ class ImState {
   // 服务器连接
   late link.Client client;
 
+  // voip 插件
+  // VoipPlugin? voipPlugin;
+
   StreamSubscription<String>? subscription;
 
   // 构建函数

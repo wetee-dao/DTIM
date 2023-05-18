@@ -9,7 +9,6 @@ import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import '../../components/chat/chat_scroll_physics.dart';
 import '../../components/close_bar.dart';
 import '../../components/components.dart';
 import '../../models/models.dart';
@@ -288,7 +287,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                     shrinkWrap: true,
                     reverse: true,
                     scrollDirection: Axis.vertical,
-                    physics: const ChatScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     controller: _listController,
                     itemBuilder: (context, index) {
                       if (index == 0) {

@@ -77,19 +77,20 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: constTheme.sidebarHeaderBg,
-            padding: EdgeInsets.only(bottom: 10.w),
+            color: constTheme.centerChannelBg,
+            padding: EdgeInsets.only(top: 10.w,bottom: 10.w),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.only(left: 15.w),
                     child: Text(
-                      "复制ID：${getUserShortId(im.me!.address)}",
+                      "ID：${getUserShortId(im.me!.address)}",
                       style: TextStyle(
                         color: constTheme.sidebarHeaderTextColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.w,
+                        fontSize: 13.w,
                       ),
                     ),
                   ),
@@ -109,7 +110,10 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               ],
             ),
           ),
-
+          Divider(
+            height: 1.w,
+            color: constTheme.centerChannelColor.withOpacity(0.08),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: userList.length,

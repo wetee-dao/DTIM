@@ -393,6 +393,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.3.1"
+  dart_webrtc:
+    dependency: transitive
+    description:
+      name: dart_webrtc
+      sha256: a34e59ac1559cac954e48c9fe156164992163d2f4b7e75d5b0e927ee2f1e4922
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.16"
   date_format:
     dependency: "direct main"
     description:
@@ -786,6 +794,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webrtc:
+    dependency: "direct main"
+    description:
+      name: flutter_webrtc
+      sha256: a1bf442a14e54344810d1ccdc133e8d5310f5a7f1b6f559390c9f253a7c7c30b
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.30+hotfix.1"
   freezed:
     dependency: "direct dev"
     description:
@@ -840,7 +856,7 @@ packages:
     source: hosted
     version: "2.2.3"
   hive_generator:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: hive_generator
       sha256: "65998cc4d2cd9680a3d9709d893d2f6bb15e6c1f92626c3f1fa650b4b3281521"
@@ -1292,6 +1308,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.0"
+  platform_detect:
+    dependency: transitive
+    description:
+      name: platform_detect
+      sha256: "14afcb6ffcd93745e39a288db53d1d6522ea25d71f7993c13a367a86c437b54d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.7"
   plugin_platform_interface:
     dependency: transitive
     description:
