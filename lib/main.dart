@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:asyou_app/bloc/app/app.dart';
-import 'package:asyou_app/utils/tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:asyou_app/bloc/app/app.dart';
+import 'package:asyou_app/utils/tray.dart';
 
 import 'apis/apis.dart';
 import 'router.dart';
@@ -22,14 +22,15 @@ final botToastBuilder = BotToastInit();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 等待桌面初始化
   await windowManager.ensureInitialized();
   await windowManager.hide();
-
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
-  
+
+
   // 数据库初始化
   await initDB();
+
+  // 主题初始化
   final systemStore = await SystemApi.create();
   final winsystem = await systemStore.get();
   if (winsystem != null) {

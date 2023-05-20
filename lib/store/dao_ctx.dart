@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
@@ -48,9 +50,18 @@ class DAOCTX with ChangeNotifier {
         });
 
         Future.delayed(const Duration(seconds: 1), () async {
-          printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
-          chainClient = v;
-          await getData();
+          for (var i = 0; i < 20; i++) {
+            try{
+              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
+              chainClient = v;
+              await getData();
+              // 成功后结束循环
+              i = 20;
+            }catch(e){
+              printError("尝试获取区块连失败 ==> ${e.toString()}");
+            }
+            sleep(const Duration(seconds: 1));
+          }
 
           callback();
         });

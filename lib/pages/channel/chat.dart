@@ -69,6 +69,8 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       getTimeline();
     }
     _listController.addListener(scrollListener);
+
+    // im.currentState!.webrtcTool!.voip.initRenderers();
   }
 
   void scrollListener() {
@@ -218,7 +220,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               SizedBox(width: 9.w),
               IconButton(
                 onPressed: () async {
-                  final voip = im.currentState!.voipTool!.voip;
+                  final voip = im.currentState!.webrtcTool!.voip;
                   final success = await waitFutureLoading(
                     context: context,
                     future: () => voip.requestTurnServerCredentials(),
@@ -250,7 +252,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               SizedBox(width: 5.w),
               IconButton(
                 onPressed: () async {
-                  
+
                 },
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),

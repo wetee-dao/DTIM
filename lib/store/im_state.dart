@@ -11,7 +11,7 @@ import '../pages/channel/setting/key_verification_dialog.dart';
 import '../router.dart';
 import '../utils/platform_infos.dart';
 import '../utils/local_notifications_extension.dart';
-import '../utils/voip_tool.dart';
+import '../utils/webrtc/webrtc_tool.dart';
 
 // class ImState implements xmpp.ConnectionStateChangedListener {
 class ImState {
@@ -29,7 +29,7 @@ class ImState {
   late link.Client client;
 
   // voip 插件
-  VoipTool? voipTool;
+  WebrtcTool? webrtcTool;
 
   StreamSubscription<String>? subscription;
 
@@ -45,7 +45,7 @@ class ImState {
     _org = org;
     client = connection;
     _registerImSub();
-    voipTool = VoipTool(client);
+    webrtcTool = WebrtcTool(client);
   }
 
   bool webHasFocus = true;
