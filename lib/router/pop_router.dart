@@ -64,8 +64,8 @@ getPage(String url, Function closeModel) {
       t: Uri.decodeComponent(ps[1]),
     );
   } else if (url.indexOf("/invitation/") == 0) {
-    final pstr = url.replaceAll("/invitation/", "");
-    final ps = pstr.split("/");
+    // final pstr = url.replaceAll("/invitation/", "");
+    // final ps = pstr.split("/");
   }
 
   return const Center(child: Text("404"));

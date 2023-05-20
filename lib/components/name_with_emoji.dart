@@ -4,6 +4,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import '../store/theme.dart';
 import '../utils/screen/screen.dart';
 
+// ignore: must_be_immutable
 class WidgetUserNameEmoji extends StatelessWidget {
   final String name;
   String? emoji;

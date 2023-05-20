@@ -5,6 +5,7 @@ import '../../../utils/screen/screen.dart';
 
 enum SettingsTileType { simpleTile, switchTile, navigationTile }
 
+// ignore: must_be_immutable
 class SettingsTile extends AbstractSettingsTile {
   SettingsTile({
     required this.tileType,
@@ -51,7 +52,6 @@ class SettingsTile extends AbstractSettingsTile {
 
   @override
   Widget build(BuildContext context) {
-    final scaleFactor = MediaQuery.of(context).textScaleFactor;
     final constTheme = Theme.of(context).extension<ExtColors>()!;
 
     final cantShowAnimation =

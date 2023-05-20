@@ -20,7 +20,6 @@ class CloseBar extends StatefulWidget {
 
 class _CloseBarState extends State<CloseBar> with WindowListener {
   bool _isMaximized = false;
-  bool _isFullScreen = false;
 
   @override
   void initState() {
@@ -51,14 +50,12 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
   @override
   void onWindowEnterFullScreen() {
     setState(() {
-      _isFullScreen = true;
     });
   }
 
   @override
   void onWindowLeaveFullScreen() {
     setState(() {
-      _isFullScreen = false;
     });
   }
 

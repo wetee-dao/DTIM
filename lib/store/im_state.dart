@@ -13,7 +13,7 @@ import '../utils/platform_infos.dart';
 import '../utils/local_notifications_extension.dart';
 import '../utils/webrtc/webrtc_tool.dart';
 
-// class ImState implements xmpp.ConnectionStateChangedListener {
+// class ImState
 class ImState {
   // 用户
   late Account _user;
@@ -21,17 +21,20 @@ class ImState {
   Account get user => _user;
   AccountOrg get org => _org;
   int chainClient = -1;
-
-  // 外部事件触发器
-  late Function _onchange;
+  StreamSubscription? onRoomKeyRequestSub;
+  StreamSubscription? onKeyVerificationRequestSub;
+  StreamSubscription? onLoginStateChanged;
+  StreamSubscription? onUiaRequest;
+  StreamSubscription? onNotification;
+  int? linuxNotificationId;
+  late String currentClientSecret;
+  final linuxNotifications = PlatformInfos.isLinux ? NotificationsClient() : null;
 
   // 服务器连接
   late link.Client client;
 
   // voip 插件
   WebrtcTool? webrtcTool;
-
-  StreamSubscription<String>? subscription;
 
   // 构建函数
   ImState(
@@ -41,7 +44,6 @@ class ImState {
     Function onchange,
   ) {
     _user = user;
-    _onchange = onchange;
     _org = org;
     client = connection;
     _registerImSub();
@@ -65,15 +67,6 @@ class ImState {
       print('Cached Password cleared');
     });
   }
-
-  StreamSubscription? onRoomKeyRequestSub;
-  StreamSubscription? onKeyVerificationRequestSub;
-  StreamSubscription? onLoginStateChanged;
-  StreamSubscription? onUiaRequest;
-  StreamSubscription? onNotification;
-  int? linuxNotificationId;
-  late String currentClientSecret;
-  final linuxNotifications = PlatformInfos.isLinux ? NotificationsClient() : null;
 
   void _registerImSub() {
     print("===========================================_registerImSub");
