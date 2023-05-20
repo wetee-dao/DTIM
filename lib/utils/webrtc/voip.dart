@@ -7,6 +7,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart' as webrtc;
 import 'package:matrix/matrix.dart' as link;
 
 import '../signaling.dart';
+import 'call.dart';
 
 class WebrtcVoIP extends link.VoIP {
   final webrtc.RTCVideoRenderer _localRenderer = webrtc.RTCVideoRenderer();
@@ -25,11 +26,11 @@ class WebrtcVoIP extends link.VoIP {
     await _connect(globalCtx());
   }
 
-  inviteToCall2(String peerId, bool useScreen){
-    if (_signaling != null && peerId != _selfId) {
-      _signaling?.invite(peerId, 'video', useScreen);
-    }
-  }
+  // inviteToCall2(String peerId, bool useScreen){
+  //   if (_signaling != null && peerId != _selfId) {
+  //     _signaling?.invite(peerId, 'video', useScreen);
+  //   }
+  // }
 
   Future<void> _connect(BuildContext context) async {
     _signaling ??= Signaling("demo.cloudwebrtc.com", context)..connect();
@@ -82,11 +83,11 @@ class WebrtcVoIP extends link.VoIP {
   }
 
   @override
-  Future<link.CallSession> inviteToCall(String roomId, link.CallType type) async {
+  Future<WebrtcCallSession> inviteToCall(String roomId, link.CallType type) async {
     final room = client.getRoomById(roomId);
     if (room == null) {
       printDebug('[VOIP] Invalid room id [$roomId].');
-      return Null as link.CallSession;
+      return Null as WebrtcCallSession;
     }
     final callId = 'cid${DateTime.now().millisecondsSinceEpoch}';
     if (currentGroupCID == null) {
@@ -103,9 +104,9 @@ class WebrtcVoIP extends link.VoIP {
 
     final newCall = createNewCall(opts);
     currentCID = callId;
-    // await newCall.initOutboundCall(type).then((_) {
-    //   delegate.handleNewCall(newCall);
-    // });
+    await newCall.initOutboundCall(type).then((_) {
+      delegate.handleNewCall(newCall);
+    });
     currentCID = callId;
     return newCall;
   }
@@ -201,8 +202,9 @@ class WebrtcVoIP extends link.VoIP {
       await delegate.playRingtone();
     }
 
-    await newCall.initWithInvite(
-        callType, offer, sdpStreamMetadata, lifetime, confId != null);
+    // await newCall.initWithInvite(
+    //     callType, offer, sdpStreamMetadata, lifetime, confId != null
+    // );
 
     currentCID = callId;
 
@@ -213,5 +215,12 @@ class WebrtcVoIP extends link.VoIP {
 
     onIncomingCall.add(newCall);
   }
-}
+
+  @override
+  WebrtcCallSession createNewCall(link.CallOptions opts) {
+    final call = WebrtcCallSession(opts);
+    calls[opts.callId] = call;
+    return call;
+  }
+} 
 
