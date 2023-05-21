@@ -3,6 +3,7 @@ import '../../../store/theme.dart';
 import '../settings_ui.dart';
 import '../../../utils/screen/screen.dart';
 
+// ignore: must_be_immutable
 class Switchtile extends AbstractSettingsTile {
   final Widget? leading;
   final Widget? title;

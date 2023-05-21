@@ -4,7 +4,7 @@
  */
 
 import 'dart:math' show min, max;
-import 'dart:ui' as ui show FlutterWindow, window;
+import 'dart:ui' as ui show window;
 
 import 'package:flutter/widgets.dart';
 

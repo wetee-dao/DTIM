@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../../bridge_struct.dart';
 import '../../../components/appicon.dart';
-import '../../../components/dao/member_card.dart';
 import '../../../components/dao/priority_icon.dart';
 import '../../../components/loading_dialog.dart';
 import '../../../models/tag.dart';

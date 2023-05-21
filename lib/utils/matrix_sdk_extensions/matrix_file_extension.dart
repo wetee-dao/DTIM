@@ -46,7 +46,7 @@ extension MatrixFileExtension on MatrixFile {
   void share(BuildContext context) async {
     // Workaround for iPad from
     // https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus#ipad
-    final box = context.findRenderObject() as RenderBox?;
+    // final box = context.findRenderObject() as RenderBox?;
 
     // await Share.shareXFiles(
     //   [XFile.fromData(bytes)],

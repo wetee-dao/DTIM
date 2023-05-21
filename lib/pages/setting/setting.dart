@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
@@ -27,7 +25,7 @@ final settingPages = [
 ];
 
 class _SettingPageState extends State<SettingPage> {
-  int _page = 0;
+  // int _page = 0;
   bool publicGroup = false;
   late final IMProvider im;
   late link.Client? client;
@@ -55,7 +53,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void onPageChanged(int page) {
-    _page = page;
+    // _page = page;
   }
 
   onSelect(index) {
