@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../store/db.dart';
 import '../models/system.dart';
@@ -6,7 +7,7 @@ import '../models/system.dart';
 class SystemApi {
   late final CollectionBox<System> storeBox;
 
-  SystemApi._create(CollectionBox<System>  store) {
+  SystemApi._create(CollectionBox<System> store) {
     storeBox = store;
   }
 
@@ -23,7 +24,7 @@ class SystemApi {
     final sys = await get();
     if (sys == null) {
       final u = System(width: width, height: height, theme: "");
-      await storeBox.put("1",u);
+      await storeBox.put("1", u);
       return u;
     }
 
@@ -34,15 +35,20 @@ class SystemApi {
     sys.width = width;
     sys.height = height;
     sys.theme = sys.theme;
-    await storeBox.put("1",sys);
+    await storeBox.put("1", sys);
     return sys;
   }
 
   Future<System> saveTheme(String theme) async {
     final sys = await get();
-
-    sys!.theme = theme;
-    await storeBox.put("1",sys);
+    if (sys == null) {
+      var value = await windowManager.getSize();
+      final s = System(width: value.width, height: value.height, theme: "");
+      await storeBox.put("1", s);
+      return s;
+    }
+    sys.theme = theme;
+    await storeBox.put("1", sys);
     return sys;
   }
 
