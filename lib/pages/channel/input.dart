@@ -391,6 +391,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 });
               },
               onFieldSubmitted: (v) {
+                if (_msgController.text == "") return;
                 widget.room.sendTextEvent(_msgController.text);
                 _msgController.clear();
                 setState(() {
