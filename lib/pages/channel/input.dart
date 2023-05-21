@@ -38,24 +38,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   final StreamController<bool> emojiStreamController = StreamController<bool>();
   link.Event? replyEvent;
 
-  late final _msgNode = FocusNode(
-    onKey: (FocusNode node, RawKeyEvent evt) {
-      if (!evt.isShiftPressed && evt.logicalKey.keyLabel == 'Enter') {
-        if (evt is RawKeyDownEvent) {
-          if (_msgController.text == "") return KeyEventResult.handled;
-
-          widget.room.sendTextEvent(_msgController.text);
-          _msgController.clear();
-          setState(() {
-            msg = "";
-          });
-        }
-        return KeyEventResult.handled;
-      } else {
-        return KeyEventResult.ignored;
-      }
-    },
-  );
+  late final _msgNode = FocusNode();
   late Account me;
   String msg = "";
   String srcAvatar = "";
@@ -381,7 +364,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
           ),
           Expanded(
             flex: 1,
-            child: TextField(
+            child: TextFormField(
               key: const Key("chatInput"),
               controller: _msgController,
               style: TextStyle(
@@ -405,6 +388,13 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
               onChanged: (e) {
                 setState(() {
                   msg = e;
+                });
+              },
+              onFieldSubmitted: (v) {
+                widget.room.sendTextEvent(_msgController.text);
+                _msgController.clear();
+                setState(() {
+                  msg = "";
                 });
               },
               cursorColor: constTheme.centerChannelColor,
@@ -485,7 +475,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
             ),
           ),
           SizedBox(width: 8.w),
-          if(msg=="")
+          if (msg == "")
             IconButton(
               key: const Key("voice"),
               tooltip: "voice",
@@ -498,7 +488,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 size: 25.w,
               ),
             ),
-          if(msg!="")
+          if (msg != "")
             IconButton(
               key: const Key("chatSendIcon"),
               tooltip: "send",
