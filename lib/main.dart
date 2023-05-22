@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:asyou_app/bloc/app/app.dart';
 import 'package:asyou_app/utils/tray.dart';
 
 import 'apis/apis.dart';
@@ -25,7 +24,6 @@ Future<void> main() async {
   await windowManager.ensureInitialized();
   await windowManager.hide();
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
-
 
   // 数据库初始化
   await initDB();

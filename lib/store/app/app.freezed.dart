@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AppState {
-  String get currentId => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get signCtx => throw _privateConstructorUsedError;
   String get sign => throw _privateConstructorUsedError;
@@ -24,6 +23,10 @@ mixin _$AppState {
   Map<String, Client> get connections => throw _privateConstructorUsedError;
   Map<String, ImState> get connectionStates =>
       throw _privateConstructorUsedError;
+  String get currentOrg => throw _privateConstructorUsedError;
+  String get channelId => throw _privateConstructorUsedError;
+  List<Room> get channels => throw _privateConstructorUsedError;
+  List<Room> get directChats => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppStateCopyWith<AppState> get copyWith =>
@@ -36,13 +39,16 @@ abstract class $AppStateCopyWith<$Res> {
       _$AppStateCopyWithImpl<$Res, AppState>;
   @useResult
   $Res call(
-      {String currentId,
-      String password,
+      {String password,
       String signCtx,
       String sign,
       Account? me,
       Map<String, Client> connections,
-      Map<String, ImState> connectionStates});
+      Map<String, ImState> connectionStates,
+      String currentOrg,
+      String channelId,
+      List<Room> channels,
+      List<Room> directChats});
 }
 
 /// @nodoc
@@ -58,19 +64,18 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentId = null,
     Object? password = null,
     Object? signCtx = null,
     Object? sign = null,
     Object? me = freezed,
     Object? connections = null,
     Object? connectionStates = null,
+    Object? currentOrg = null,
+    Object? channelId = null,
+    Object? channels = null,
+    Object? directChats = null,
   }) {
     return _then(_value.copyWith(
-      currentId: null == currentId
-          ? _value.currentId
-          : currentId // ignore: cast_nullable_to_non_nullable
-              as String,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -95,6 +100,22 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
           ? _value.connectionStates
           : connectionStates // ignore: cast_nullable_to_non_nullable
               as Map<String, ImState>,
+      currentOrg: null == currentOrg
+          ? _value.currentOrg
+          : currentOrg // ignore: cast_nullable_to_non_nullable
+              as String,
+      channelId: null == channelId
+          ? _value.channelId
+          : channelId // ignore: cast_nullable_to_non_nullable
+              as String,
+      channels: null == channels
+          ? _value.channels
+          : channels // ignore: cast_nullable_to_non_nullable
+              as List<Room>,
+      directChats: null == directChats
+          ? _value.directChats
+          : directChats // ignore: cast_nullable_to_non_nullable
+              as List<Room>,
     ) as $Val);
   }
 }
@@ -107,13 +128,16 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String currentId,
-      String password,
+      {String password,
       String signCtx,
       String sign,
       Account? me,
       Map<String, Client> connections,
-      Map<String, ImState> connectionStates});
+      Map<String, ImState> connectionStates,
+      String currentOrg,
+      String channelId,
+      List<Room> channels,
+      List<Room> directChats});
 }
 
 /// @nodoc
@@ -127,19 +151,18 @@ class __$$_AppStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentId = null,
     Object? password = null,
     Object? signCtx = null,
     Object? sign = null,
     Object? me = freezed,
     Object? connections = null,
     Object? connectionStates = null,
+    Object? currentOrg = null,
+    Object? channelId = null,
+    Object? channels = null,
+    Object? directChats = null,
   }) {
     return _then(_$_AppState(
-      currentId: null == currentId
-          ? _value.currentId
-          : currentId // ignore: cast_nullable_to_non_nullable
-              as String,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -164,6 +187,22 @@ class __$$_AppStateCopyWithImpl<$Res>
           ? _value._connectionStates
           : connectionStates // ignore: cast_nullable_to_non_nullable
               as Map<String, ImState>,
+      currentOrg: null == currentOrg
+          ? _value.currentOrg
+          : currentOrg // ignore: cast_nullable_to_non_nullable
+              as String,
+      channelId: null == channelId
+          ? _value.channelId
+          : channelId // ignore: cast_nullable_to_non_nullable
+              as String,
+      channels: null == channels
+          ? _value._channels
+          : channels // ignore: cast_nullable_to_non_nullable
+              as List<Room>,
+      directChats: null == directChats
+          ? _value._directChats
+          : directChats // ignore: cast_nullable_to_non_nullable
+              as List<Room>,
     ));
   }
 }
@@ -172,19 +211,21 @@ class __$$_AppStateCopyWithImpl<$Res>
 
 class _$_AppState implements _AppState {
   const _$_AppState(
-      {this.currentId = "",
-      this.password = "",
+      {this.password = "",
       this.signCtx = "",
       this.sign = "",
       this.me,
       final Map<String, Client> connections = const {},
-      final Map<String, ImState> connectionStates = const {}})
+      final Map<String, ImState> connectionStates = const {},
+      this.currentOrg = "",
+      this.channelId = "",
+      final List<Room> channels = const [],
+      final List<Room> directChats = const []})
       : _connections = connections,
-        _connectionStates = connectionStates;
+        _connectionStates = connectionStates,
+        _channels = channels,
+        _directChats = directChats;
 
-  @override
-  @JsonKey()
-  final String currentId;
   @override
   @JsonKey()
   final String password;
@@ -215,8 +256,32 @@ class _$_AppState implements _AppState {
   }
 
   @override
+  @JsonKey()
+  final String currentOrg;
+  @override
+  @JsonKey()
+  final String channelId;
+  final List<Room> _channels;
+  @override
+  @JsonKey()
+  List<Room> get channels {
+    if (_channels is EqualUnmodifiableListView) return _channels;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_channels);
+  }
+
+  final List<Room> _directChats;
+  @override
+  @JsonKey()
+  List<Room> get directChats {
+    if (_directChats is EqualUnmodifiableListView) return _directChats;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_directChats);
+  }
+
+  @override
   String toString() {
-    return 'AppState(currentId: $currentId, password: $password, signCtx: $signCtx, sign: $sign, me: $me, connections: $connections, connectionStates: $connectionStates)';
+    return 'AppState(password: $password, signCtx: $signCtx, sign: $sign, me: $me, connections: $connections, connectionStates: $connectionStates, currentOrg: $currentOrg, channelId: $channelId, channels: $channels, directChats: $directChats)';
   }
 
   @override
@@ -224,8 +289,6 @@ class _$_AppState implements _AppState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AppState &&
-            (identical(other.currentId, currentId) ||
-                other.currentId == currentId) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.signCtx, signCtx) || other.signCtx == signCtx) &&
@@ -234,19 +297,29 @@ class _$_AppState implements _AppState {
             const DeepCollectionEquality()
                 .equals(other._connections, _connections) &&
             const DeepCollectionEquality()
-                .equals(other._connectionStates, _connectionStates));
+                .equals(other._connectionStates, _connectionStates) &&
+            (identical(other.currentOrg, currentOrg) ||
+                other.currentOrg == currentOrg) &&
+            (identical(other.channelId, channelId) ||
+                other.channelId == channelId) &&
+            const DeepCollectionEquality().equals(other._channels, _channels) &&
+            const DeepCollectionEquality()
+                .equals(other._directChats, _directChats));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      currentId,
       password,
       signCtx,
       sign,
       me,
       const DeepCollectionEquality().hash(_connections),
-      const DeepCollectionEquality().hash(_connectionStates));
+      const DeepCollectionEquality().hash(_connectionStates),
+      currentOrg,
+      channelId,
+      const DeepCollectionEquality().hash(_channels),
+      const DeepCollectionEquality().hash(_directChats));
 
   @JsonKey(ignore: true)
   @override
@@ -257,16 +330,17 @@ class _$_AppState implements _AppState {
 
 abstract class _AppState implements AppState {
   const factory _AppState(
-      {final String currentId,
-      final String password,
+      {final String password,
       final String signCtx,
       final String sign,
       final Account? me,
       final Map<String, Client> connections,
-      final Map<String, ImState> connectionStates}) = _$_AppState;
+      final Map<String, ImState> connectionStates,
+      final String currentOrg,
+      final String channelId,
+      final List<Room> channels,
+      final List<Room> directChats}) = _$_AppState;
 
-  @override
-  String get currentId;
   @override
   String get password;
   @override
@@ -279,6 +353,14 @@ abstract class _AppState implements AppState {
   Map<String, Client> get connections;
   @override
   Map<String, ImState> get connectionStates;
+  @override
+  String get currentOrg;
+  @override
+  String get channelId;
+  @override
+  List<Room> get channels;
+  @override
+  List<Room> get directChats;
   @override
   @JsonKey(ignore: true)
   _$$_AppStateCopyWith<_$_AppState> get copyWith =>

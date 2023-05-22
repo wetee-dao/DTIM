@@ -1,20 +1,18 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../router.dart';
+import '../store/app/app.dart';
 import '../store/theme.dart';
 import '../utils/screen/screen.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 
 class ChannelList extends StatefulWidget {
-  final List<link.Room> channelsList;
-  final String currentId;
-  final Function onSelect;
-
-  const ChannelList(this.channelsList, this.currentId, this.onSelect, {Key? key}) : super(key: key);
+  const ChannelList({Key? key}) : super(key: key);
 
   @override
   State<ChannelList> createState() => _ChannelListState();
@@ -26,9 +24,9 @@ class _ChannelListState extends State<ChannelList> {
 
   @override
   Widget build(BuildContext context) {
-    final channelsList = widget.channelsList;
-    final currentId = widget.currentId;
-    final onSelect = widget.onSelect;
+    final org = context.watch<AppCubit>();
+    final channelsList = org.state.channels;
+    final currentId = org.state.channelId;
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return ListView.builder(
       shrinkWrap: true,
@@ -44,7 +42,7 @@ class _ChannelListState extends State<ChannelList> {
           color: currentId == chat.id ? constTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
           hoverColor: constTheme.sidebarText.withOpacity(0.08),
           onPressed: () async {
-            onSelect(chat.id);
+            org.setChannelId(chat.id);
           },
           trailing: GestureDetector(
             onTapDown: (e) async {

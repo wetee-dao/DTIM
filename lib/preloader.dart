@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'components/avatar.dart';
 import 'components/components.dart';
 import 'store/theme.dart';
 import 'utils/screen/screen.dart';
@@ -43,7 +42,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   void initState() {
     super.initState();
     im = context.read();
-    getList((){
+    getList(() {
       if (accounts.isNotEmpty && !runInTest) {
         autoLogin();
       }

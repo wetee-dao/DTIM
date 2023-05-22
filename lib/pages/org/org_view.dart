@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
 import 'package:expandable/expandable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:matrix/matrix.dart' as link;
 
-import './org_menu.dart';
 import '../../router.dart';
 import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
@@ -14,11 +11,11 @@ import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
+import './org_menu.dart';
 
 class OrgViewPage extends StatefulWidget {
-  final Function(String) onChannel;
   final double width;
-  const OrgViewPage({Key? key, required this.onChannel, required this.width}) : super(key: key);
+  const OrgViewPage({Key? key, required this.width}) : super(key: key);
 
   @override
   State<OrgViewPage> createState() => _OrgViewPageState();
@@ -28,17 +25,12 @@ class _OrgViewPageState extends State<OrgViewPage> {
   late ExpandableController _controllerChannels;
   late ExpandableController _controllerStarred;
   late ExpandableController _controllerUsers;
-  late link.Client client;
-  StreamSubscription? _onRoom;
 
   final BasePopupMenuController menuController = BasePopupMenuController();
   final StreamController<bool> menuStreamController = StreamController<bool>();
-  IMProvider? im;
-  AccountOrg? org;
-  String channelId = "";
+  late IMProvider im;
+  late AccountOrg org;
   String directId = "";
-  List<link.Room> channels = [];
-  List<link.Room> directChats = [];
 
   @override
   void initState() {
@@ -50,10 +42,8 @@ class _OrgViewPageState extends State<OrgViewPage> {
       menuStreamController.add(menuController.menuIsShowing);
     });
 
-    Timer(const Duration(milliseconds: 300), () {
-      im = context.read<IMProvider>();
-      onImInit();
-    });
+    im = context.read<IMProvider>();
+    org = im.currentState!.org;
   }
 
   @override
@@ -62,48 +52,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
     _controllerChannels.dispose();
     _controllerStarred.dispose();
     _controllerUsers.dispose();
-    _onRoom?.cancel();
-  }
-
-  onImInit() {
-    if (im!.current == null || im!.currentState == null) {
-      return;
-    }
-    client = im!.currentState!.client;
-    _onRoom = client.onRoomState.stream.listen((event) {
-      if (["m.room.history_visibility", "m.room.join_rules", "m.room.power_levels"].contains(event.body)) {
-        return;
-      }
-      // print("client.onRoomState.stream ===>> ${event.type}");
-      getRoom();
-    });
-    getRoom();
-  }
-
-  getRoom() {
-    final clist = client.rooms.toList();
-
-    setState(() {
-      channels = clist.where((c) => !c.isDirectChat).toList();
-      directChats = clist.where((c) => c.isDirectChat).toList();
-    });
-
-    org = im!.currentState!.org;
-    if (channelId.isEmpty && channels.isNotEmpty) {
-      setChannelId(channels[0].id);
-    }
-  }
-
-  void setChannelId(String id) {
-    if (id == channelId) {
-      return;
-    }
-    if (mounted) {
-      setState(() => channelId = id);
-      if (channelId.isNotEmpty) {
-        widget.onChannel(channelId);
-      }
-    }
   }
 
   @override
@@ -140,7 +88,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              org != null && org!.orgName != null ? org!.orgName! : '',
+                              org.orgName ?? "",
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -249,14 +197,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   key: const Key("room"),
                   controller: _controllerChannels,
                   collapsed: const SizedBox(),
-                  expanded: ChannelList(
-                    key: const Key("ChannelList"),
-                    channels,
-                    channelId,
-                    (id) {
-                      setChannelId(id);
-                    },
-                  ),
+                  expanded: const ChannelList(key: Key("ChannelList")),
                 ),
                 SizedBox(height: 5.w),
                 Divider(
@@ -320,14 +261,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   key: const Key("droom"),
                   controller: _controllerUsers,
                   collapsed: const SizedBox(),
-                  expanded: DirectChats(
-                    key: const Key("DirectChats"),
-                    directChats,
-                    channelId,
-                    (id) {
-                      setChannelId(id);
-                    },
-                  ),
+                  expanded: const DirectChats(key: Key("DirectChats")),
                 ),
                 SizedBox(height: 5.w),
                 Divider(

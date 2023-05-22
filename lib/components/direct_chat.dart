@@ -1,11 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:badges/badges.dart' as badges;
 
 import '../components/name_with_emoji.dart';
 import '../router.dart';
+import '../store/app/app.dart';
 import '../store/theme.dart';
 import '../utils/functions.dart';
 import '../utils/screen/screen.dart';
@@ -14,11 +16,7 @@ import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 
 class DirectChats extends StatefulWidget {
-  final List<link.Room> channelsList;
-  final String currentId;
-  final Function onSelect;
-
-  const DirectChats(this.channelsList, this.currentId, this.onSelect, {Key? key}) : super(key: key);
+  const DirectChats({Key? key}) : super(key: key);
 
   @override
   State<DirectChats> createState() => _DirectChatsState();
@@ -35,10 +33,10 @@ class _DirectChatsState extends State<DirectChats> {
 
   @override
   Widget build(BuildContext context) {
+    final org = context.watch<AppCubit>();
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final channelsList = widget.channelsList;
-    final currentId = widget.currentId;
-    final onSelect = widget.onSelect;
+    final channelsList = org.state.directChats;
+    final currentId = org.state.channelId;
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -54,7 +52,7 @@ class _DirectChatsState extends State<DirectChats> {
           color: currentId == channelsList[index].id ? constTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
           hoverColor: constTheme.sidebarText.withOpacity(0.08),
           onPressed: () async {
-            onSelect(channelsList[index].id);
+            org.setChannelId(channelsList[index].id);
           },
           trailing: GestureDetector(
             onTapDown: (e) async {
@@ -192,7 +190,7 @@ class _DirectChatsState extends State<DirectChats> {
   }
 
   PopupMenuItem<String> renderItem(value, icon, name, {hideBorder = false}) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     return PopupMenuItem<String>(
       padding: EdgeInsets.zero,
       height: 25.w,

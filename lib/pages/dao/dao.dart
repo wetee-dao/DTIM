@@ -58,9 +58,11 @@ class _DaoPageState extends State<DaoPage> {
 
   getData() async {
     daoCtx.getVoteData();
-    setState(() {
-      title = daoCtx.dao.name;
-    });
+    if (mounted) {
+      setState(() {
+        title = daoCtx.dao.name;
+      });
+    }
   }
 
   @override

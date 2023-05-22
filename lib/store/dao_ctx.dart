@@ -51,13 +51,13 @@ class DAOCTX with ChangeNotifier {
 
         Future.delayed(const Duration(seconds: 1), () async {
           for (var i = 0; i < 20; i++) {
-            try{
-              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
+            try {
               chainClient = v;
               await getData();
+              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
               // 成功后结束循环
               i = 20;
-            }catch(e){
+            } catch (e) {
               printError("尝试获取区块连失败 ==> ${e.toString()}");
             }
             sleep(const Duration(seconds: 1));
