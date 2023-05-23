@@ -105,6 +105,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     showModalBottomSheet(
       context: context,
+      constraints: BoxConstraints(maxWidth: 100.sw, minWidth: 100.sw),
       backgroundColor: constTheme.centerChannelBg,
       builder: (context) {
         return Column(
@@ -242,6 +243,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 children: [
                                                   SizedBox(width: 10.w),
                                                   Avatar(
+                                                    key: Key(accounts[i].address),
                                                     id: accounts[i].address,
                                                     name: accounts[i].address,
                                                     size: 50.w,

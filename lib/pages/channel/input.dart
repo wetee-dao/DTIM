@@ -397,6 +397,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 setState(() {
                   msg = "";
                 });
+                FocusScope.of(context).requestFocus(_msgNode);
               },
               cursorColor: constTheme.centerChannelColor,
               focusNode: _msgNode,

@@ -9,7 +9,7 @@ import '../../utils/time.dart';
 import 'content/content.dart';
 import 'content/verification_request_content.dart';
 
-class Msg extends StatelessWidget {
+class Msg extends StatefulWidget {
   final link.Event event;
   final link.Event? preEvent;
   final link.Client client;
@@ -19,7 +19,22 @@ class Msg extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<Msg> createState() => _MsgState();
+}
+
+class _MsgState extends State<Msg> {
+  @override
+  void didUpdateWidget(covariant Msg oldWidget) {
+    if (oldWidget.event.eventId != widget.event.eventId) {
+      // ctx = null;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final event = widget.event;
+    final preEvent = widget.preEvent;
     final showAvatar = isShowAvatar(event, preEvent);
     var showDate = false;
     // if (event.type == link.EventTypes.RoomMember ||
@@ -32,7 +47,7 @@ class Msg extends StatelessWidget {
 
     if (preEvent != null) {
       if ("${event.originServerTs.year}-${event.originServerTs.month}-${event.originServerTs.day}" !=
-          "${preEvent!.originServerTs.year}-${preEvent!.originServerTs.month}-${preEvent!.originServerTs.day}") {
+          "${preEvent.originServerTs.year}-${preEvent.originServerTs.month}-${preEvent.originServerTs.day}") {
         showDate = true;
       }
     }
@@ -91,7 +106,7 @@ class Msg extends StatelessWidget {
                   if (showAvatar)
                     RichText(
                       text: TextSpan(
-                        text: event.senderId == client.userID ? "我" : user.displayName,
+                        text: event.senderId == widget.client.userID ? "我" : user.displayName,
                         style: TextStyle(
                           color: constTheme.centerChannelColor,
                           fontWeight: FontWeight.bold,
@@ -145,7 +160,7 @@ class Msg extends StatelessWidget {
       );
     }
     if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {
-      return VerificationRequestContent(event: event, timeline: timeline);
+      return VerificationRequestContent(event: event, timeline: widget.timeline);
     }
     return MessageContent(event, textColor: constTheme.centerChannelColor);
   }

@@ -17,6 +17,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../store/theme.dart';
 import '../../../utils/localized_extension.dart';
 import '../../../utils/matrix_sdk_extensions/event_extension.dart';
 
@@ -187,12 +188,17 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     final statusText = this.statusText ??= _durationString ?? '00:00';
-    return Padding(
-      padding: EdgeInsets.all(16.w),
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.w),
+      width: 400.w,
+      decoration: BoxDecoration(
+        color: constTheme.centerChannelColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(5.w),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const SizedBox(width: 4),
           SizedBox(
             width: buttonSize,
             height: buttonSize,

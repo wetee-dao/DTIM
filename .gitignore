@@ -51,6 +51,7 @@ app.*.map.json
 
 exts
 libolm.3.dylib
+libcrypto.1.1.dylib
 rust_wraper/Cargo.lock
 linux/shared/librust_wraper.so
 xxx.zip
