@@ -8,6 +8,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:asyou_app/utils/functions.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
@@ -45,21 +46,29 @@ class RecordingDialogState extends State<RecordingDialog> {
   Future<void> startRecording() async {
     try {
       final tempDir = await getTemporaryDirectory();
-      _recordedPath = '${tempDir.path}/recording${DateTime.now().microsecondsSinceEpoch}.${RecordingDialog.recordingFileType}';
+      _recordedPath =
+          '${tempDir.path}/recording${DateTime.now().microsecondsSinceEpoch}.${RecordingDialog.recordingFileType}';
+      // mac特别处理
+      if (Platform.isMacOS) {
+        _recordedPath = "file://$_recordedPath";
+      }
 
+      // 判断权限
       final result = await _audioRecorder.hasPermission();
       if (result != true) {
         setState(() => error = true);
         return;
       }
 
-      await _audioRecorder.start(
-        path: _recordedPath,
-        bitRate: bitRate,
-        samplingRate: samplingRate,
+      // 开始录音
+      final isSupported = await _audioRecorder.isEncoderSupported(
+        AudioEncoder.aacLc,
       );
+      printDebug('${AudioEncoder.aacLc.name} supported: $isSupported');
+      await _audioRecorder.start(path: _recordedPath);
+
       setState(() => _duration = Duration.zero);
-      
+
       _recorderSubscription?.cancel();
       _recorderSubscription = Timer.periodic(const Duration(milliseconds: 100), (_) async {
         final amplitude = await _audioRecorder.getAmplitude();
@@ -91,8 +100,8 @@ class RecordingDialogState extends State<RecordingDialog> {
 
   void _stopAndSend() async {
     _recorderSubscription?.cancel();
-    final path = await _audioRecorder.stop();
-    if (path == null){
+    var path = await _audioRecorder.stop();
+    if (path == null) {
       BotToast.showText(
         text: 'Recording failed',
         duration: const Duration(seconds: 2),
@@ -100,11 +109,15 @@ class RecordingDialogState extends State<RecordingDialog> {
       Navigator.of(globalCtx(), rootNavigator: false).pop();
       return;
     }
+    // mac特别处理
+    if (Platform.isMacOS) {
+      path = path.replaceAll("file://", "");
+    }
 
     final audioFile = File(path);
-    if(!(await audioFile.exists())){
+    if (!(await audioFile.exists())) {
       BotToast.showText(
-        text: 'Recording failed',
+        text: 'Recording failed file not exist',
         duration: const Duration(seconds: 2),
       );
       Navigator.of(globalCtx(), rootNavigator: false).pop();
@@ -134,45 +147,46 @@ class RecordingDialogState extends State<RecordingDialog> {
         '${_duration.inMinutes.toString().padLeft(2, '0')}:${(_duration.inSeconds % 60).toString().padLeft(2, '0')}';
     final content = error
         ? Text(L10n.of(context)!.oopsSomethingWentWrong)
-        :Padding(padding: EdgeInsets.only(top:22.w),
-          child: Row(
-            children: [
-              Icon(
-                Icons.graphic_eq_rounded,
-                size: 20.w,
-                color: constTheme.buttonBg,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: amplitudeTimeline.reversed
-                      .take(26)
-                      .toList()
-                      .reversed
-                      .map(
-                        (amplitude) => Container(
-                          margin: const EdgeInsets.only(left: 2),
-                          width: 4,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          height: maxDecibalWidth * (amplitude / 100),
-                        ),
-                      )
-                      .toList(),
+        : Padding(
+            padding: EdgeInsets.only(top: 22.w),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.graphic_eq_rounded,
+                  size: 20.w,
+                  color: constTheme.buttonBg,
                 ),
-              ),
-              const SizedBox(width: 8),
-              SizedBox(
-                width: 48,
-                child: Text(time),
-              ),
-            ],
-          ),
-        );
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: amplitudeTimeline.reversed
+                        .take(26)
+                        .toList()
+                        .reversed
+                        .map(
+                          (amplitude) => Container(
+                            margin: const EdgeInsets.only(left: 2),
+                            width: 4,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            height: maxDecibalWidth * (amplitude / 100),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 48,
+                  child: Text(time),
+                ),
+              ],
+            ),
+          );
     return AlertDialog(
       content: content,
       actions: [
@@ -214,14 +228,14 @@ class RecordingResult {
   });
 
   factory RecordingResult.fromJson(Map<String, dynamic> json) => RecordingResult(
-    path: json['path'],
-    duration: json['duration'],
-    waveform: List<int>.from(json['waveform']),
-  );
+        path: json['path'],
+        duration: json['duration'],
+        waveform: List<int>.from(json['waveform']),
+      );
 
   Map<String, dynamic> toJson() => {
-    'path': path,
-    'duration': duration,
-    'waveform': waveform,
-  };
+        'path': path,
+        'duration': duration,
+        'waveform': waveform,
+      };
 }

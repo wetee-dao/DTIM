@@ -334,7 +334,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   List<link.Event> events = timeline != null ? timeline!.events : [];
                   return ListView.builder(
-                    cacheExtent: 100,
+                    cacheExtent: 800,
                     key: Key("chat_list_${widget.channerlID}"),
                     itemCount: events.length + 2,
                     shrinkWrap: true,
