@@ -32,6 +32,7 @@ This repository is for the submission of milestone 3 of the Web 3 Foundation Gra
     # for linux
     $ apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
     $ apt install libsecret-1-dev libjsoncpp-dev  libolm3 libclang-dev  libayatana-appindicator3-dev
+    $ apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
     ```
 - run in macos/linux
     ```

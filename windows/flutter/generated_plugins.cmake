@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  audioplayers_windows
   desktop_lifecycle
   dynamic_color
   emoji_picker_flutter

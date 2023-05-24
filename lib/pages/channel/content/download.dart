@@ -51,10 +51,11 @@ class MessageDownloadContent extends StatelessWidget {
                     size: 28.w,
                   ),
                   SizedBox(width: 5.w),
-                  Text(
-                    filename,
-                    maxLines: 1,
-                    style: TextStyle(color: textColor,fontSize: 16.w),
+                  Expanded(
+                    child:  Text(
+                      filename,
+                      style: TextStyle(color: textColor,fontSize: 16.w),
+                    ),
                   ),
                 ],
               ),

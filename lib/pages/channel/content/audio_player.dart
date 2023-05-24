@@ -13,7 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -57,7 +57,7 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
 
   @override
   void dispose() {
-    if (audioPlayer?.playerState.playing == true) {
+    if (audioPlayer?.state == PlayerState.playing) {
       audioPlayer?.stop();
     }
     onAudioPositionChanged?.cancel();
@@ -75,14 +75,14 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
       final matrixFile = await widget.event.downloadAndDecryptAttachment();
       File? file;
 
-      if (!kIsWeb) {
+      // if (!kIsWeb) {
         final tempDir = await getTemporaryDirectory();
         final fileName = Uri.encodeComponent(
           widget.event.attachmentOrThumbnailMxcUrl()!.pathSegments.last,
         );
         file = File('${tempDir.path}/${fileName}_${matrixFile.name}');
         await file.writeAsBytes(matrixFile.bytes);
-      }
+      // }
 
       setState(() {
         audioFile = file;
@@ -104,22 +104,23 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
     final audioPlayer = this.audioPlayer ??= AudioPlayer();
     if (AudioPlayerWidget.currentId != widget.event.eventId) {
       if (AudioPlayerWidget.currentId != null) {
-        if (audioPlayer.playerState.playing) {
+        if (audioPlayer.state == PlayerState.playing) {
           await audioPlayer.stop();
           setState(() {});
         }
       }
       AudioPlayerWidget.currentId = widget.event.eventId;
     }
-    if (audioPlayer.playerState.playing) {
+    if (audioPlayer.state == PlayerState.playing) {
       await audioPlayer.pause();
       return;
-    } else if (audioPlayer.position != Duration.zero) {
-      await audioPlayer.play();
+    } else if (await audioPlayer.getCurrentPosition() != Duration.zero) {
+      // await audioPlayer.play();
+      await audioPlayer.resume();
       return;
     }
 
-    onAudioPositionChanged ??= audioPlayer.positionStream.listen((state) {
+    onAudioPositionChanged ??= audioPlayer.onPositionChanged.listen((state) {
       if (maxPosition <= 0) return;
       setState(() {
         statusText =
@@ -127,18 +128,18 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
         currentPosition = ((state.inMilliseconds.toDouble() / maxPosition) * AudioPlayerWidget.wavesCount).round();
       });
     });
-    onDurationChanged ??= audioPlayer.durationStream.listen((max) {
-      if (max == null || max == Duration.zero) return;
+    onDurationChanged ??= audioPlayer.onDurationChanged.listen((max) {
+      if (max == Duration.zero) return;
       setState(() => maxPosition = max.inMilliseconds.toDouble());
     });
-    onPlayerStateChanged ??= audioPlayer.playingStream.listen((_) => setState(() {}));
+    onPlayerStateChanged ??= audioPlayer.onPlayerStateChanged.listen((_) => setState(() {}));
     final audioFile = this.audioFile;
-    if (audioFile != null) {
-      audioPlayer.setFilePath(audioFile.path);
-    } else {
-      await audioPlayer.setAudioSource(MatrixFileAudioSource(matrixFile!));
-    }
-    audioPlayer.play().catchError((e, s) {
+    // if (audioFile != null) {
+    //   audioPlayer.setFilePath(audioFile.path);
+    // } else {
+    //   await audioPlayer.setAudioSource(MatrixFileAudioSource(matrixFile!));
+    // }
+    audioPlayer.play(DeviceFileSource(audioFile!.path)).catchError((e, s) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(L10n.of(context)!.oopsSomethingWentWrong),
@@ -210,7 +211,7 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
                       color: widget.color.withAlpha(64),
                       borderRadius: BorderRadius.circular(64),
                       child: Icon(
-                        audioPlayer?.playerState.playing == true ? Icons.pause_outlined : Icons.play_arrow_outlined,
+                        audioPlayer?.state == PlayerState.playing ? Icons.pause_outlined : Icons.play_arrow_outlined,
                         color: widget.color,
                       ),
                     ),
@@ -274,20 +275,20 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
 }
 
 /// To use a MatrixFile as an AudioSource for the just_audio package
-class MatrixFileAudioSource extends StreamAudioSource {
-  final MatrixFile file;
-  MatrixFileAudioSource(this.file);
+// class MatrixFileAudioSource extends StreamAudioSource {
+//   final MatrixFile file;
+//   MatrixFileAudioSource(this.file);
 
-  @override
-  Future<StreamAudioResponse> request([int? start, int? end]) async {
-    start ??= 0;
-    end ??= file.bytes.length;
-    return StreamAudioResponse(
-      sourceLength: file.bytes.length,
-      contentLength: end - start,
-      offset: start,
-      stream: Stream.value(file.bytes.sublist(start, end)),
-      contentType: file.mimeType,
-    );
-  }
-}
+//   @override
+//   Future<StreamAudioResponse> request([int? start, int? end]) async {
+//     start ??= 0;
+//     end ??= file.bytes.length;
+//     return StreamAudioResponse(
+//       sourceLength: file.bytes.length,
+//       contentLength: end - start,
+//       offset: start,
+//       stream: Stream.value(file.bytes.sublist(start, end)),
+//       contentType: file.mimeType,
+//     );
+//   }
+// }

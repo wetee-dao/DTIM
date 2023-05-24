@@ -7,7 +7,7 @@ import '../../utils/screen/screen.dart';
 import '../../store/theme.dart';
 import '../../utils/time.dart';
 import 'content/content.dart';
-import 'content/verification_request_content.dart';
+import 'content/verification_request.dart';
 
 class Msg extends StatefulWidget {
   final link.Event event;

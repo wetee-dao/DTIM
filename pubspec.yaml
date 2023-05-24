@@ -56,7 +56,7 @@ dependencies:
   # easy_localization: ^3.0.1
   path_provider: ^2.0.14
   # 音频
-  just_audio: ^0.9.31
+  audioplayers: ^4.0.1
   # 弹窗
   adaptive_dialog: ^1.9.0-no-macos.2
   # 缩略图

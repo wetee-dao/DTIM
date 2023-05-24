@@ -23,10 +23,10 @@ import '../../../components/avatar.dart';
 import '../../../utils/platform_infos.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
-import 'html_message.dart';
+import 'html.dart';
 import 'image_bubble.dart';
 import 'map_bubble.dart';
-import 'message_download_content.dart';
+import 'download.dart';
 import 'sticker.dart';
 import 'video_player.dart';
 
@@ -132,7 +132,7 @@ class MessageContent extends StatelessWidget {
           case CuteEventContent.eventType:
             return CuteContent(event);
           case MessageTypes.Audio:
-            if (PlatformInfos.isMobile || PlatformInfos.isMacOS || PlatformInfos.isWeb) {
+            if (PlatformInfos.isMobile || PlatformInfos.isMacOS || PlatformInfos.isWeb || PlatformInfos.isLinux) {
               return AudioPlayerWidget(
                 event,
                 color: textColor,
@@ -155,7 +155,7 @@ class MessageContent extends StatelessWidget {
               if (event.messageType == MessageTypes.Emote) {
                 html = '* $html';
               }
-              final bigEmotes = event.onlyEmotes && event.numberEmotes > 0 && event.numberEmotes <= 10;
+              // final bigEmotes = event.onlyEmotes && event.numberEmotes > 0 && event.numberEmotes <= 10;
               return HtmlMessage(
                 html: html,
                 defaultTextStyle: TextStyle(
@@ -226,7 +226,7 @@ class MessageContent extends StatelessWidget {
                 },
               );
             }
-            final bigEmotes = event.onlyEmotes && event.numberEmotes > 0 && event.numberEmotes <= 10;
+            // final bigEmotes = event.onlyEmotes && event.numberEmotes > 0 && event.numberEmotes <= 10;
             return FutureBuilder<String>(
               future: event.calcLocalizedBody(
                 MatrixLocals(L10n.of(context)!),
