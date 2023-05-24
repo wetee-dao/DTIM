@@ -74,7 +74,7 @@ pub fn start_client(client: u32) -> anyhow::Result<()> {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
         let mut c = Client::from_index(client)?;
-        c.start().await;
+        let _ = c.start().await;
         Ok(())
     })
 }
@@ -132,10 +132,9 @@ pub fn create_asset(
 pub fn get_block_number(client: u32) -> anyhow::Result<u64> {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
-        // let mut c = Client::from_index(client)?;
-        // let block_number = c.get_block_number().await.unwrap();
-        // Ok(block_number.0)
-        Ok(1)
+        let c = Client::from_index(client)?;
+        let block_number = c.get_block_number().await.unwrap();
+        Ok(block_number)
     })
 }
 

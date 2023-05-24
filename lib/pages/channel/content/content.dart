@@ -263,7 +263,7 @@ class MessageContent extends StatelessWidget {
               label: L10n.of(context)!.startedACall(
                 snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
               ),
-              icon: const Icon(Icons.phone_outlined),
+              icon: Icon(Icons.call_rounded,size: 17.w),
               textColor: buttonTextColor,
               onPressed: () => onInfoTab!(event),
             );

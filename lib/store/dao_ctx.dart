@@ -52,9 +52,9 @@ class DAOCTX with ChangeNotifier {
         Future.delayed(const Duration(seconds: 1), () async {
           for (var i = 0; i < 20; i++) {
             try{
-              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
               chainClient = v;
               await getData();
+              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v 区块 ===> $blockNumber");
               // 成功后结束循环
               i = 20;
             }catch(e){
@@ -72,6 +72,9 @@ class DAOCTX with ChangeNotifier {
   }
 
   getData({notify = true}) async {
+    // 区块链代码
+    blockNumber = await rustApi.getBlockNumber(client: chainClient);
+
     // DAO信息
     dao = await rustApi.daoInfo(client: chainClient, daoId: org.daoId);
     daoAmount = await rustApi.nativeBalance(client: chainClient, address: dao.daoAccountId);
@@ -91,8 +94,6 @@ class DAOCTX with ChangeNotifier {
     members = await rustApi.daoMemebers(client: chainClient, daoId: org.daoId);
     votes = await rustApi.daoGovVotesOfUser(client: chainClient, daoId: org.daoId, from: user.address);
 
-    // 区块链代码
-    blockNumber = await rustApi.getBlockNumber(client: chainClient);
 
     if (notify) notifyListeners();
   }

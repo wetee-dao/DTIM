@@ -193,7 +193,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 5.w),
+                  padding: EdgeInsets.only(left: 15.w, right: 8.w, top: 10.w, bottom: 5.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -264,7 +264,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   color: constTheme.sidebarText.withOpacity(0.05),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 5.w),
+                  padding: EdgeInsets.only(left: 15.w, right: 8.w, top: 10.w, bottom: 5.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
