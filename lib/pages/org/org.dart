@@ -1,4 +1,6 @@
+import 'package:asyou_app/store/im.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
@@ -14,17 +16,7 @@ class OrgPage extends StatefulWidget {
 }
 
 class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
-  String channelId = "";
   double leftWidth = 200.w;
-
-  setChannelId(id) {
-    if (id == channelId) {
-      return;
-    }
-    setState(() {
-      channelId = id;
-    });
-  }
 
   @override
   void dispose() {
@@ -44,7 +36,7 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
             height: double.maxFinite,
             width: leftWidth,
             color: constTheme.sidebarBg,
-            child: OrgViewPage(key: const Key("OrgViewPage"), width: leftWidth, onChannel: setChannelId),
+            child: OrgViewPage(key: const Key("OrgViewPage"), width: leftWidth),
           ),
           GestureDetector(
             child: MouseRegion(
@@ -70,22 +62,26 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
             },
           ),
           Flexible(
-            child: channelId != ""
-                ? ChannelDetailPage(
-                    key: Key("channel_$channelId"),
-                    channerlID: channelId,
-                  )
-                : moveWindow(
-                    Container(
-                      color: constTheme.centerChannelBg,
-                      child: Center(
-                        child: Text(
-                          "Join DAO and run any app in web3",
-                          style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
+            child: BlocBuilder<AppCubit, AppState>(
+              builder: (context, state) {
+                return state.channelId != ""
+                    ? ChannelDetailPage(
+                        key: Key("channel_$state.channelId"),
+                        channerlID: state.channelId,
+                      )
+                    : moveWindow(
+                        Container(
+                          color: constTheme.centerChannelBg,
+                          child: Center(
+                            child: Text(
+                              "Join DAO and run any app in web3",
+                              style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+              },
+            ),
           )
         ],
       ),

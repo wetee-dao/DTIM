@@ -1,6 +1,8 @@
 import 'package:asyou_app/components/components.dart';
 import 'package:asyou_app/router.dart';
+import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:asyou_app/utils/string.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -42,21 +44,15 @@ class SendFileDialogState extends State<SendFileDialog> {
           },
         );
       }
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
       widget.room
-          .sendFileEvent(
-        file,
-        thumbnail: thumbnail,
-        shrinkImageMaxDimension: origImage ? null : 1600,
-      )
-          .catchError(
-        (e) {
-          scaffoldMessenger.showSnackBar(
-            SnackBar(content: Text((e as Object).toLocalizedString(context))),
-          );
-          return null;
-        },
-      );
+          .sendFileEvent(file, thumbnail: thumbnail, shrinkImageMaxDimension: origImage ? null : 1600)
+          .catchError((e) {
+        BotToast.showText(
+          text: (e as Object).toLocalizedString(context),
+          duration: const Duration(seconds: 2),
+        );
+        return null;
+      });
     }
     globalCtx().router.pop();
 
@@ -109,6 +105,9 @@ class SendFileDialogState extends State<SendFileDialog> {
     }
     return AlertDialog(
       title: Text(sendStr),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.w),
+      ),
       content: contentWidget,
       actions: <Widget>[
         TextButton(

@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'components/avatar.dart';
 import 'components/components.dart';
 import 'store/theme.dart';
 import 'utils/screen/screen.dart';
@@ -43,7 +42,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   void initState() {
     super.initState();
     im = context.read();
-    getList((){
+    getList(() {
       if (accounts.isNotEmpty && !runInTest) {
         autoLogin();
       }
@@ -106,6 +105,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     showModalBottomSheet(
       context: context,
+      constraints: BoxConstraints(maxWidth: 100.sw, minWidth: 100.sw),
       backgroundColor: constTheme.centerChannelBg,
       builder: (context) {
         return Column(
@@ -243,6 +243,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                 children: [
                                                   SizedBox(width: 10.w),
                                                   Avatar(
+                                                    key: Key(accounts[i].address),
                                                     id: accounts[i].address,
                                                     name: accounts[i].address,
                                                     size: 50.w,

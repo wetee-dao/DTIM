@@ -163,7 +163,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
             children: [
               Container(
                 height: 23.w,
-                width: 65.w,
+                width: 68.w,
                 decoration: BoxDecoration(
                   color: constTheme.mentionBg,
                   borderRadius: BorderRadius.circular(5.w),

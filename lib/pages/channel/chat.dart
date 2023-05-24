@@ -251,9 +251,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               ),
               SizedBox(width: 5.w),
               IconButton(
-                onPressed: () async {
-
-                },
+                onPressed: () async {},
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
                 style: IconButton.styleFrom(
@@ -336,6 +334,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   List<link.Event> events = timeline != null ? timeline!.events : [];
                   return ListView.builder(
+                    cacheExtent: 800,
                     key: Key("chat_list_${widget.channerlID}"),
                     itemCount: events.length + 2,
                     shrinkWrap: true,
@@ -366,7 +365,13 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       if (event.type == link.EventTypes.RoomCreate) {
                         return renderCreate(event);
                       }
-                      return Msg(event: event, preEvent: preEvent, client: client!, timeline: timeline!);
+                      return Msg(
+                        key: GlobalObjectKey(event.eventId),
+                        event: event,
+                        preEvent: preEvent,
+                        client: client!,
+                        timeline: timeline!,
+                      );
                     },
                   );
                 },
