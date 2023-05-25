@@ -208,11 +208,11 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
                 : InkWell(
                     borderRadius: BorderRadius.circular(64),
                     child: Material(
-                      color: widget.color.withAlpha(64),
+                      color: constTheme.buttonBg.withAlpha(180),
                       borderRadius: BorderRadius.circular(64),
                       child: Icon(
-                        audioPlayer?.state == PlayerState.playing ? Icons.pause_outlined : Icons.play_arrow_outlined,
-                        color: widget.color,
+                        audioPlayer?.state == PlayerState.playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                        color: constTheme.buttonColor,
                       ),
                     ),
                     onLongPress: () => widget.event.saveFile(context),

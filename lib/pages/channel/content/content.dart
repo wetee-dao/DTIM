@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
-import 'package:matrix_link_text/link_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../store/im.dart';
@@ -233,24 +232,24 @@ class MessageContent extends StatelessWidget {
                 hideReply: true,
               ),
               builder: (context, snapshot) {
-                return LinkText(
-                  text: snapshot.data ??
+                return SelectableText(
+                   snapshot.data ??
                       event.calcLocalizedBodyFallback(
                         MatrixLocals(L10n.of(context)!),
                         hideReply: true,
                       ),
-                  textStyle: TextStyle(
+                  style: TextStyle(
                     color: textColor,
                     fontSize: 15.w,
                     decoration: event.redacted ? TextDecoration.lineThrough : null,
                   ),
-                  linkStyle: TextStyle(
-                    color: textColor.withAlpha(150),
-                    fontSize: 15.w,
-                    decoration: TextDecoration.underline,
-                    decorationColor: textColor.withAlpha(150),
-                  ),
-                  onLinkTap: (url) => {},
+                  // linkStyle: TextStyle(
+                  //   color: textColor.withAlpha(150),
+                  //   fontSize: 15.w,
+                  //   decoration: TextDecoration.underline,
+                  //   decorationColor: textColor.withAlpha(150),
+                  // ),
+                  // onLinkTap: (url) => {},
                 );
               },
             );
@@ -270,7 +269,7 @@ class MessageContent extends StatelessWidget {
           },
         );
       case EventTypes.RoomMember:
-        return  Text("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
+        return  SelectableText("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),
