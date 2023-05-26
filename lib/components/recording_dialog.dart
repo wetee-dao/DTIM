@@ -109,6 +109,7 @@ class RecordingDialogState extends State<RecordingDialog> {
       Navigator.of(globalCtx(), rootNavigator: false).pop();
       return;
     }
+    print(path);
     // mac特别处理
     if (Platform.isMacOS) {
       path = path.replaceAll("file://", "");

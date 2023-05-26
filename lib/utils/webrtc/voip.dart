@@ -131,9 +131,9 @@ class WebrtcVoIP extends link.VoIP {
       await delegate.playRingtone();
     }
 
-    // await newCall.initWithInvite(
-    //     callType, offer, sdpStreamMetadata, lifetime, confId != null
-    // );
+    await newCall.initWithInvite(
+        callType, offer, sdpStreamMetadata, lifetime, confId != null
+    );
 
     currentCID = callId;
 

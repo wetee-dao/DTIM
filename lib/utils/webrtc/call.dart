@@ -262,7 +262,6 @@ class WebrtcCallSession extends CallSession {
     //     audioTrack.enableSpeakerphone(speakerOn);
     //   }
     // }
-    print("addLocalStream5");
     fireCallEvent(CallEvent.kFeedsChanged);
   }
 }

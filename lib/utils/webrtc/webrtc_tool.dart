@@ -51,27 +51,58 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
 
   @override
   Future<void> handleNewCall(CallSession session) async {
+    if (callingPopup != null) {
+      /// 已经有通话了
+      session.reject();
+      return;
+    }
     print("handleNewCall");
     // session.onCallStateChanged.stream.listen(_handleCallState);
-
-    await showDialog<bool?>(
-      context: globalCtx(),
-      builder: (context) {
-        return AlertDialog(
-          title: Text("title"),
-          content: Text("waiting"),
-          actions: <Widget>[
-            TextButton(
-              child: Text("cancel"),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-                
-              },
-            ),
-          ],
-        );
-      },
-    );
+    if (session.direction == CallDirection.kIncoming){
+      await showDialog<bool?>(
+        context: globalCtx(),
+        builder: (context) {
+          return AlertDialog(
+            title: Text("邀请参与xxxx"),
+            content: Text("waiting"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("ok"),
+                onPressed: () {
+                  session.answer();
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              TextButton(
+                child: Text("false"),
+                onPressed: () {
+                  session.reject();
+                  Navigator.of(context).pop(false);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }else{
+      await showDialog<bool?>(
+        context: globalCtx(),
+        builder: (context) {
+          return AlertDialog(
+            title: Text("等待对方回应"),
+            content: Text("waiting"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
     // addCallingPopup(session.callId, session);
   }
 
