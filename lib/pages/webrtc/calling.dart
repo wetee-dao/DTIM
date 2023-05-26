@@ -107,6 +107,7 @@ class _Calling  extends State<WebRTCCalling> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.8),
       body: Container(
         child: Text("Calling"),
       ),
