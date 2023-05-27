@@ -15,11 +15,8 @@ import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../store/im.dart';
-import '../../../utils/adaptive_bottom_sheet.dart';
-import '../../../utils/date_time_extension.dart';
 import '../../../utils/matrix_sdk_extensions/matrix_locals.dart';
 import '../../../utils/screen/screen.dart';
-import '../../../components/avatar.dart';
 import '../../../utils/platform_infos.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
@@ -43,6 +40,7 @@ class MessageContent extends StatelessWidget {
   }) : super(key: key);
 
   void _verifyOrRequestKey(BuildContext context) async {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     printError("_verifyOrRequestKey_verifyOrRequestKey_verifyOrRequestKey");
     final l10n = L10n.of(context)!;
     if (event.content['can_request_session'] != true) {
@@ -62,58 +60,36 @@ class MessageContent extends StatelessWidget {
     final im = context.read<IMProvider>();
     final client = im.currentState!.client;
     if (client.isUnknownSession && client.encryption!.crossSigning.enabled) {
+      printError("client.isUnknownSession && client.encryption!.crossSigning.enabled");
       // final success = await BootstrapDialog(
       //   client: client,
       // ).show(context);
       // if (success != true) return;
     }
     event.requestKey();
-    final sender = event.senderFromMemoryOrFallback;
-    await showAdaptiveBottomSheet(
+    await showDialog(
       context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          leading: CloseButton(onPressed: Navigator.of(context).pop),
-          title: Text(
-            l10n.whyIsThisMessageEncrypted,
-            style: const TextStyle(fontSize: 16),
-          ),
+      builder: (context) => AlertDialog(
+        title: Text(
+          l10n.whyIsThisMessageEncrypted,
+          style: TextStyle(fontSize: 18.w),
         ),
-        body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Avatar(
-                  id: sender.id,
-                  mxContent: sender.avatarUrl,
-                  name: sender.calcDisplayname(),
-                ),
-                title: Text(sender.calcDisplayname()),
-                subtitle: Text(event.originServerTs.localizedTime(context)),
-                trailing: const Icon(Icons.lock_outlined),
-              ),
-              const Divider(),
-              Text(
-                event.calcLocalizedBodyFallback(
-                  MatrixLocals(l10n),
-                ),
-              )
-            ],
-          ),
+        content: Text(
+          event.calcLocalizedBodyFallback(MatrixLocals(l10n)),
+          style: TextStyle(color: constTheme.centerChannelColor),
         ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("确定"),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // final im = context.read<IMProvider>();
-    // final client = im.currentState!.client;
-    // final buttonTextColor = event.senderId == client.userID ? textColor : null;
-    // print(event.body);
-    // print(event.type);
     final buttonTextColor = textColor;
     switch (event.type) {
       case EventTypes.Message:

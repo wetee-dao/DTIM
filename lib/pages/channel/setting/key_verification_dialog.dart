@@ -20,14 +20,13 @@ import 'package:matrix/encryption.dart';
 import 'package:matrix/matrix.dart';
 
 import '../../../components/components.dart';
-import '../../../utils/adaptive_bottom_sheet.dart';
 import '../../../components/avatar.dart';
 
 class KeyVerificationDialog extends StatefulWidget {
-  Future<void> show(BuildContext context) => showAdaptiveBottomSheet(
+  Future<void> show(BuildContext context) => showDialog(
         context: context,
         builder: (context) => this,
-        isDismissible: false,
+        barrierDismissible: false,
       );
 
   final KeyVerification request;
