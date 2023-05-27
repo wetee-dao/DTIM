@@ -79,6 +79,18 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
             },
           );
         }
+      } else {
+        await waitFutureLoading(
+          context: globalCtx(),
+          future: () async {
+            await im.login(accounts[0], "Jx201501");
+            // ignore: use_build_context_synchronously
+            Timer(const Duration(milliseconds: 1000), () {
+              if (!mounted) return;
+              globalCtx().router.pushNamed("/select_org?auto=t");
+            });
+          },
+        );
       }
     });
   }

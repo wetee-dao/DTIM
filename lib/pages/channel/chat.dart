@@ -75,7 +75,18 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
 
   void scrollListener() {
     if (_listController.position.pixels + 30 >= _listController.position.maxScrollExtent) {
-      if (timeline!.canRequestHistory && !timeline!.isRequestingHistory) requestHistory();
+      if (timeline!.canRequestHistory && !timeline!.isRequestingHistory) {
+        EasyDebounce.debounce(
+          'updateView',
+          const Duration(milliseconds: 200),
+          () => requestHistory(),
+        );
+      }
+    }
+    if (_listController.position.pixels == 0) {
+      if (timeline!.events.isNotEmpty && room!.isUnread) {
+        setReadMarker();
+      }
     }
   }
 
@@ -88,7 +99,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
 
   Future<void>? _setReadMarkerFuture;
   void setReadMarker([_]) {
-    print("setReadMarker");
     room!.markUnread(false);
     if (_setReadMarkerFuture == null &&
         (room!.hasNewMessages || room!.notificationCount > 0) &&
@@ -113,11 +123,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     if (!mounted) return;
     print("updateView ===> ${timeline!.events.length}");
     _msgController.add(timeline!.events.reversed.last.eventId);
-    // Timer(const Duration(milliseconds: 20), () {
-    //   try {
-    //     _listController.jumpTo(_listController.position.maxScrollExtent);
-    //   } catch (e) {}
-    // });
   }
 
   Future<bool> getTimeline() async {
@@ -131,9 +136,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
           () => updateView(),
         ),
       );
-      if (timeline!.events.isNotEmpty) {
-        if (room!.isUnread) setReadMarker();
-      }
       updateView();
     }
     timeline!.requestKeys(onlineKeyBackupOnly: false);
@@ -143,6 +145,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   void requestHistory() async {
     if (canLoadMore) {
       try {
+        _msgController.add("loading");
         await timeline!.requestHistory(historyCount: _loadHistoryCount);
       } catch (err) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -346,11 +349,14 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         return SizedBox(height: 10.w);
                       }
                       if (index == events.length + 1) {
-                        if (timeline != null && timeline!.isRequestingHistory) {
+                        if (timeline != null && timeline!.canRequestHistory) {
                           return Center(
                             child: Padding(
                               padding: EdgeInsets.all(10.w),
-                              child: CircularProgressIndicator.adaptive(strokeWidth: 4.w),
+                              child: CircularProgressIndicator.adaptive(
+                                strokeWidth: 4.w,
+                                valueColor: AlwaysStoppedAnimation(constTheme.centerChannelColor),
+                              ),
                             ),
                           );
                         }

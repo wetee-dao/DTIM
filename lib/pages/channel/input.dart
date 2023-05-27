@@ -372,7 +372,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 fontSize: 15.w,
               ),
               autofocus: false,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: '发送消息至 ${widget.room.name}',
                 hintStyle: TextStyle(

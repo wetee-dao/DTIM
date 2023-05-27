@@ -126,13 +126,8 @@ class _DaoPageState extends State<DaoPage> {
                     value: daoCtx,
                     child: SideMenu(id.data ?? pageStr, (id) {
                       final index = getPageIndex(id);
-
                       pageController
-                          .animateToPage(
-                        index,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.easeInOut,
-                      )
+                          .animateToPage(index, duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
                           .then((v) {
                         pageHook();
                       });

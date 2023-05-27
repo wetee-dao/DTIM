@@ -12,14 +12,14 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? tools;
   final Function? onBack;
   ModelBar({Key? key, this.onBack, this.tools, String? title, double? height})
-      : _height = (height ?? 55.w).toInt().toDouble(),
+      : _height = (height ?? 50.w).toInt().toDouble(),
         _title = title ?? "",
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final size = _height;
+    final size = 30.w;
     return moveWindow(
       Container(
         height: _height,
@@ -31,7 +31,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(width: 15.w),
             Text(
               _title,
-              style: TextStyle(color: constTheme.sidebarHeaderTextColor, fontSize: 14.w),
+              style: TextStyle(color: constTheme.sidebarHeaderTextColor, fontSize: 16.w),
             ),
             Expanded(child: Container()),
             tools != null
@@ -53,13 +53,13 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
               padding: EdgeInsets.zero,
               tooltip: L10n.of(context)!.close,
               style: IconButton.styleFrom(
-                shape: const RoundedRectangleBorder(
-                  // borderRadius: BorderRadius.circular(20),
-                  borderRadius: BorderRadius.zero, //Rectangular border
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.w),
                 ),
                 hoverColor: constTheme.errorTextColor.withOpacity(0.2),
               ),
             ),
+            SizedBox(width: 10.w)
           ],
         ),
       ),

@@ -7,6 +7,7 @@
 //
 
 import 'package:asyou_app/store/theme.dart';
+import 'package:asyou_app/utils/functions.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -42,6 +43,7 @@ class MessageContent extends StatelessWidget {
   }) : super(key: key);
 
   void _verifyOrRequestKey(BuildContext context) async {
+    printError("_verifyOrRequestKey_verifyOrRequestKey_verifyOrRequestKey");
     final l10n = L10n.of(context)!;
     if (event.content['can_request_session'] != true) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -233,7 +235,7 @@ class MessageContent extends StatelessWidget {
               ),
               builder: (context, snapshot) {
                 return SelectableText(
-                   snapshot.data ??
+                  snapshot.data ??
                       event.calcLocalizedBodyFallback(
                         MatrixLocals(L10n.of(context)!),
                         hideReply: true,
@@ -262,14 +264,15 @@ class MessageContent extends StatelessWidget {
               label: L10n.of(context)!.startedACall(
                 snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
               ),
-              icon: Icon(Icons.call_rounded,size: 17.w),
+              icon: Icon(Icons.call_rounded, size: 17.w),
               textColor: buttonTextColor,
               onPressed: () => onInfoTab!(event),
             );
           },
         );
       case EventTypes.RoomMember:
-        return  SelectableText("已加入频道 ${event.room.name}",style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
+        return SelectableText("已加入频道 ${event.room.name}",
+            style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),

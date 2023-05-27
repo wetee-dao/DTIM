@@ -90,15 +90,17 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
           ),
           width: width.w,
           height: height.w,
-          decoration: BoxDecoration(
-            color: constTheme.centerChannelBg,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: constTheme.centerChannelBg.withOpacity(0.4),
-                blurRadius: 8.w,
-              ),
-            ],
-          ),
+          // decoration: BoxDecoration(
+          //   // color: constTheme.centerChannelBg,
+          //   color: Colors.red,
+          //   borderRadius: BorderRadius.all(Radius.circular(4.w)),
+          //   boxShadow: <BoxShadow>[
+          //     BoxShadow(
+          //       color: constTheme.centerChannelBg.withOpacity(0.4),
+          //       blurRadius: 8.w,
+          //     ),
+          //   ],
+          // ),
           child: getPage(url, () {
             Navigator.pop(context);
           }),

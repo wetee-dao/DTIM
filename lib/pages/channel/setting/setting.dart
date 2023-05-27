@@ -79,14 +79,12 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
-              height: 40.w,
               onBack: () {
                 context.router.pop();
               },
             ) as PreferredSizeWidget
           : ModelBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
-              height: 40.w,
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -105,8 +103,8 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
               controller: _tabController,
               labelColor: constTheme.sidebarHeaderTextColor,
               unselectedLabelColor: constTheme.sidebarHeaderTextColor.withOpacity(0.6),
-              labelStyle: TextStyle(fontSize: 13.w),
-              unselectedLabelStyle: TextStyle(fontSize: 13.w),
+              labelStyle: TextStyle(fontSize: 14.w),
+              unselectedLabelStyle: TextStyle(fontSize: 14.w),
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               labelPadding: EdgeInsets.only(left: 12.w, right: 12.w),
               tabs: titleList.map((e) => Tab(text: e)).toList(),
