@@ -30,7 +30,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   final StreamController<bool> menuStreamController = StreamController<bool>();
   late IMProvider im;
   late AccountOrg org;
-  String directId = "";
 
   @override
   void initState() {
@@ -276,7 +275,3 @@ class _OrgViewPageState extends State<OrgViewPage> {
     );
   }
 }
-
-// Future<String> rustChainCall(int clientId,String model,String func,String params) async {
-//   return "";
-// }

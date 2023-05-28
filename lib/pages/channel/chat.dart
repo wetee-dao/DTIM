@@ -69,7 +69,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       getTimeline();
     }
     _listController.addListener(scrollListener);
-
+    setReadMarker();
     // im.currentState!.webrtcTool!.voip.initRenderers();
   }
 
@@ -83,7 +83,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
         );
       }
     }
-    if (_listController.position.pixels == 0) {
+    if (_listController.position.pixels <= 100) {
       if (timeline!.events.isNotEmpty && room!.isUnread) {
         setReadMarker();
       }
@@ -123,6 +123,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     if (!mounted) return;
     print("updateView ===> ${timeline!.events.length}");
     _msgController.add(timeline!.events.reversed.last.eventId);
+    setReadMarker();
   }
 
   Future<bool> getTimeline() async {

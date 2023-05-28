@@ -8,6 +8,7 @@ import 'package:badges/badges.dart' as badges;
 import '../components/name_with_emoji.dart';
 import '../router.dart';
 import '../store/app/app.dart';
+import '../store/app/org.dart';
 import '../store/theme.dart';
 import '../utils/functions.dart';
 import '../utils/screen/screen.dart';
@@ -25,18 +26,22 @@ class DirectChats extends StatefulWidget {
 class _DirectChatsState extends State<DirectChats> {
   // 当前激活
   int hover = -1;
+  late IMProvider im;
 
   @override
   void initState() {
+    im = context.read<IMProvider>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final org = context.watch<AppCubit>();
+    final org = context.watch<OrgCubit>();
+    final app = context.watch<AppCubit>();
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final channelsList = org.state.directChats;
+    final channelsList = im.current!.rooms.where((e) => e.isDirectChat).toList();
     final currentId = org.state.channelId;
+    printDebug(app.state.lastSyncTime.toString());
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

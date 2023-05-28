@@ -12,6 +12,7 @@ import 'package:asyou_app/utils/tray.dart';
 import 'apis/apis.dart';
 import 'router.dart';
 import 'router/router.dart';
+import 'store/app/org.dart';
 import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
@@ -87,6 +88,7 @@ class App extends StatelessWidget {
       builder: (light, dark) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AppCubit()),
+          BlocProvider(create: (_) => OrgCubit()),
         ],
         child: MaterialApp.router(
           title: 'DAO',

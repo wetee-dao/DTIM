@@ -1,7 +1,7 @@
-import 'package:asyou_app/store/im.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../store/app/org.dart';
 import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
 import '../../store/theme.dart';
@@ -62,7 +62,7 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
             },
           ),
           Flexible(
-            child: BlocBuilder<AppCubit, AppState>(
+            child: BlocBuilder<OrgCubit, OrgState>(
               builder: (context, state) {
                 return state.channelId != ""
                     ? ChannelDetailPage(

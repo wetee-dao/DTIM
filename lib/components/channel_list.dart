@@ -1,4 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:asyou_app/components/components.dart';
+import 'package:asyou_app/store/app/org.dart';
+import 'package:asyou_app/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -21,13 +24,22 @@ class ChannelList extends StatefulWidget {
 class _ChannelListState extends State<ChannelList> {
   // 当前激活
   int hover = -1;
+  late IMProvider im;
+
+  @override
+  void initState() {
+    im = context.read<IMProvider>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final org = context.watch<AppCubit>();
-    final channelsList = org.state.channels;
+    final org = context.watch<OrgCubit>();
+    final app = context.watch<AppCubit>();
+    final channelsList = im.current!.rooms.where((e) => !e.isDirectChat).toList();
     final currentId = org.state.channelId;
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    printDebug(app.state.lastSyncTime.toString());
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

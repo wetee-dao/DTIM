@@ -3,7 +3,7 @@ import 'package:asyou_app/store/im_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:matrix/matrix.dart' show AuthenticationUserIdentifier, Client, HiveCollectionsDatabase, LoginType, Room;
+import 'package:matrix/matrix.dart' show AuthenticationUserIdentifier, Client, HiveCollectionsDatabase, LoginType;
 import 'package:path_provider/path_provider.dart';
 
 import '../../models/models.dart';
@@ -23,9 +23,7 @@ class AppState with _$AppState {
     @Default({}) Map<String, Client> connections,
     @Default({}) Map<String, ImState> connectionStates,
     @Default("") String currentOrg,
-    @Default("") String channelId,
-    @Default([]) List<Room> channels,
-    @Default([]) List<Room> directChats,
+    @Default(0) int lastSyncTime,
   }) = _AppState;
 }
 
@@ -209,22 +207,9 @@ class AppCubit extends Cubit<AppState> {
   }
 
   // 设置当前账户
-  setChannelId(String id) {
-    emit(state.copyWith(channelId: id));
-  }
-
-  // 设置当前账户
-  setChannels(List<Room> list, List<Room> dlist) {
-    if (state.channelId == "" && list.isNotEmpty) {
-      emit(state.copyWith(channels: list, directChats: dlist, channelId: list[0].id));
-      return;
-    }
-    emit(state.copyWith(channels: list, directChats: dlist));
-  }
-
-  // 设置当前账户
-  setDirectChats(AccountOrg org) {
-    final id = '${me!.address}@${org.domain}/${platformGet()}';
-    emit(state.copyWith(currentOrg: id));
+  setChannels() {
+    printError("setChannelssetChannels");
+    // 没有当前频道情况下
+    emit(state.copyWith(lastSyncTime: DateTime.now().millisecondsSinceEpoch));
   }
 }

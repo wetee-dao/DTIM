@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:asyou_app/utils/functions.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart';
@@ -16,7 +17,7 @@ import '../utils/local_notifications_extension.dart';
 import '../utils/webrtc/webrtc_tool.dart';
 import 'app/app.dart';
 
-// class ImState
+// 组织的聊天状态树
 class ImState {
   // 用户
   late String id;
@@ -64,24 +65,24 @@ class ImState {
   String? get cachedPassword => _cachedPassword;
 
   set cachedPassword(String? p) {
-    print('Password cached');
+    printDebug('Password cached');
     _cachedPasswordClearTimer?.cancel();
     _cachedPassword = p;
     _cachedPasswordClearTimer = Timer(const Duration(minutes: 10), () {
       _cachedPassword = null;
-      print('Cached Password cleared');
+      printDebug('Cached Password cleared');
     });
   }
 
   void _registerSub() {
     //获取密钥
     onRoomKeyRequestSub = client.onRoomKeyRequest.stream.listen((RoomKeyRequest request) async {
-      print("===========================================onRoomKeyRequest");
+      printDebug("===========================================onRoomKeyRequest");
     });
 
     // 交换密钥
     onKeyVerificationRequestSub = client.onKeyVerificationRequest.stream.listen((KeyVerification request) async {
-      print("===========================================onKeyVerificationRequeston");
+      printDebug("===========================================onKeyVerificationRequeston");
       var hidPopup = false;
       request.onUpdate = () {
         if (!hidPopup && {KeyVerificationState.done, KeyVerificationState.error}.contains(request.state)) {
@@ -107,7 +108,11 @@ class ImState {
       if (["m.room.history_visibility", "m.room.join_rules", "m.room.power_levels"].contains(event.body)) {
         return;
       }
-      syncChannel();
+      EasyDebounce.debounce(
+        'syncChannel',
+        const Duration(milliseconds: 800),
+        () => syncChannel(),
+      );
     });
 
     // 消息通知
@@ -129,13 +134,9 @@ class ImState {
   }
 
   syncChannel() {
-    final clist = client.rooms.toList();
-    var channels = clist.where((c) => !c.isDirectChat).toList();
-    var directChats = clist.where((c) => c.isDirectChat).toList();
-
     final app = globalCtx().read<AppCubit>();
     if (id == app.currentId) {
-      app.setChannels(channels, directChats);
+      app.setChannels();
     }
   }
 
