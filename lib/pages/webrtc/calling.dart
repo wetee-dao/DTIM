@@ -4,13 +4,11 @@ import 'package:asyou_app/utils/functions.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
-import '../../store/app/app.dart';
 import '../../store/theme.dart';
 import '../../utils/platform_infos.dart';
 import 'img_painter.dart';
@@ -38,7 +36,6 @@ class WebRTCCalling extends StatefulWidget {
 class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
   link.CallState? _state;
   late AnimationController _controller;
-  late AppCubit im;
 
   bool get speakerOn => widget.call.speakerOn;
   bool get isMicrophoneMuted => widget.call.isMicrophoneMuted;
@@ -49,17 +46,6 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
   bool get connecting => widget.call.state == link.CallState.kConnecting;
   bool get connected => widget.call.state == link.CallState.kConnected;
 
-  void _playCallSound() async {
-    // const path = 'assets/sounds/call.ogg';
-    // if (kIsWeb || PlatformInfos.isMobile || PlatformInfos.isMacOS) {
-    //   final player = AudioPlayer();
-    //   await player.setAsset(path);
-    //   player.play();
-    // } else {
-    //   Logs().w('Playing sound not implemented for this platform!');
-    // }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -68,8 +54,12 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
       vsync: this,
     )..repeat();
     initialize();
-    im = context.read<AppCubit>();
-    _playCallSound();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void initialize() async {
@@ -161,14 +151,29 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                         width: 90.w,
                         height: 90.w,
                         padding: EdgeInsets.all(15.w),
-                        child: UserAvatar(
-                          key: Key(im.currentState!.user.id.toString()),
-                          im.me!.address,
-                          true,
-                          60.w,
-                          bg: Colors.transparent,
-                          color: constTheme.sidebarText,
-                        ),
+                        child: widget.call.room.isDirectChat
+                            ? UserAvatar(
+                                key: Key(widget.call.room.directChatMatrixID ?? "-"),
+                                widget.call.room.directChatMatrixID ?? "-",
+                                true,
+                                60.w,
+                                bg: Colors.transparent,
+                                color: constTheme.sidebarText,
+                              )
+                            : Container(
+                                width: 60.w,
+                                height: 60.w,
+                                padding: EdgeInsets.only(top: 2.w),
+                                child: Center(
+                                  child: Icon(
+                                    widget.call.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                                    size: 45.w,
+                                    color: widget.call.room.isUnreadOrInvited
+                                        ? constTheme.sidebarUnreadText
+                                        : constTheme.sidebarText,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -187,7 +192,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 ),
               ),
               Text(
-                widget.call.room.getLocalizedDisplayname(),
+                (widget.call.room.isDirectChat?"":"channel:  ")+ widget.call.room.getLocalizedDisplayname(),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15.w,
@@ -275,7 +280,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
         widget.call.setRemoteOnHold(!widget.call.remoteOnHold);
       }),
       backgroundColor: isRemoteOnHold ? Colors.blueGrey : Colors.black45,
-      child: const Icon(Icons.pause),
+      child: Icon(isRemoteOnHold ? Icons.stop_circle_rounded : Icons.pause),
     );
 
     final muteCameraButton = Action(
