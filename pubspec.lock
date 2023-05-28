@@ -651,6 +651,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.0"
+  flutter_foreground_task:
+    dependency: "direct main"
+    description:
+      name: flutter_foreground_task
+      sha256: "4766e7f35cebe589c02d104ef6f80f25be4f1dcd6a69d69b42c29bd177298581"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.2.0"
   flutter_lints:
     dependency: "direct dev"
     description:

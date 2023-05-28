@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:asyou_app/utils/functions.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import '../../components/components.dart';
 import '../../store/app/app.dart';
 import '../../store/theme.dart';
+import '../../utils/platform_infos.dart';
 import 'img_painter.dart';
 
 class WebRTCCalling extends StatefulWidget {
@@ -36,6 +39,15 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
   link.CallState? _state;
   late AnimationController _controller;
   late AppCubit im;
+
+  bool get speakerOn => widget.call.speakerOn;
+  bool get isMicrophoneMuted => widget.call.isMicrophoneMuted;
+  bool get isLocalVideoMuted => widget.call.isLocalVideoMuted;
+  bool get isScreensharingEnabled => widget.call.screensharingEnabled;
+  bool get isRemoteOnHold => widget.call.remoteOnHold;
+  bool get voiceonly => widget.call.type == link.CallType.kVoice;
+  bool get connecting => widget.call.state == link.CallState.kConnecting;
+  bool get connected => widget.call.state == link.CallState.kConnected;
 
   void _playCallSound() async {
     // const path = 'assets/sounds/call.ogg';
@@ -118,6 +130,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final actions = buildActionButtons(_state);
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.8),
       body: Center(
@@ -165,7 +178,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 height: 70.w,
               ),
               Text(
-                "Incoming...",
+                widget.call.direction == link.CallDirection.kIncoming ? "Incoming" : "Outgoing",
                 style: TextStyle(
                   fontSize: 20.w,
                   color: constTheme.centerChannelColor,
@@ -173,9 +186,8 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              SizedBox(height: 15.w),
               Text(
-                "XXXXXXX",
+                widget.call.room.getLocalizedDisplayname(),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15.w,
@@ -186,36 +198,20 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(12.w),
-                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.redAccent),
-                    // color: Colors.redAccent,
-                    child: IconButton(
-                      iconSize: 30.w,
-                      icon: const Icon(Icons.call_end),
-                      color: Colors.white,
-                      onPressed: () async {
-                        if (widget.call.isRinging) {
-                          await widget.call.reject();
-                        } else {
-                          await widget.call.hangup();
-                        }
-                      },
+                  for (var i = 0; i < actions.length; i++)
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: actions[i].backgroundColor),
+                      margin: EdgeInsets.only(right: i != actions.length - 1 ? 15.w : 0),
+                      child: IconButton(
+                        iconSize: 30.w,
+                        icon: actions[i].child,
+                        color: Colors.white,
+                        onPressed: () async {
+                          actions[i].onPressed();
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 50.w),
-                  Container(
-                    padding: EdgeInsets.all(12.w),
-                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-                    child: IconButton(
-                      iconSize: 30.0,
-                      icon: const Icon(Icons.call),
-                      color: Colors.white,
-                      onPressed: () async {
-                        await widget.call.answer();
-                      },
-                    ),
-                  ),
                 ],
               ),
             ],
@@ -224,4 +220,148 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
       ),
     );
   }
+
+  List<Action> buildActionButtons(state) {
+    final switchCameraButton = Action(
+      tooltip: 'switchCamera',
+      onPressed: _switchCamera,
+      backgroundColor: Colors.black45,
+      child: const Icon(Icons.switch_camera),
+    );
+
+    final hangupButton = Action(
+      onPressed: () {
+        setState(() {
+          if (widget.call.isRinging) {
+            widget.call.reject();
+          } else {
+            widget.call.hangup();
+          }
+        });
+      },
+      tooltip: 'Hangup',
+      backgroundColor: _state == link.CallState.kEnded ? Colors.black45 : Colors.red,
+      child: const Icon(Icons.call_end),
+    );
+
+    final answerButton = Action(
+      onPressed: () => setState(() {
+        widget.call.answer();
+      }),
+      tooltip: 'Answer',
+      backgroundColor: Colors.green,
+      child: const Icon(Icons.phone),
+    );
+
+    final muteMicButton = Action(
+      tooltip: 'muteMic',
+      onPressed: () => setState(() {
+        widget.call.setMicrophoneMuted(!widget.call.isMicrophoneMuted);
+      }),
+      backgroundColor: isMicrophoneMuted ? Colors.blueGrey : Colors.black45,
+      child: Icon(isMicrophoneMuted ? Icons.mic_off : Icons.mic),
+    );
+
+    final screenSharingButton = Action(
+      tooltip: 'screenSharing',
+      onPressed: _screenSharing,
+      backgroundColor: isScreensharingEnabled ? Colors.blueGrey : Colors.black45,
+      child: const Icon(Icons.desktop_mac),
+    );
+
+    final holdButton = Action(
+      tooltip: 'hold',
+      onPressed: () => setState(() {
+        widget.call.setRemoteOnHold(!widget.call.remoteOnHold);
+      }),
+      backgroundColor: isRemoteOnHold ? Colors.blueGrey : Colors.black45,
+      child: const Icon(Icons.pause),
+    );
+
+    final muteCameraButton = Action(
+      tooltip: 'muteCam',
+      onPressed: () => setState(() {
+        widget.call.setLocalVideoMuted(!widget.call.isLocalVideoMuted);
+      }),
+      backgroundColor: isLocalVideoMuted ? Colors.yellow : Colors.black45,
+      child: Icon(isLocalVideoMuted ? Icons.videocam_off : Icons.videocam),
+    );
+
+    switch (_state) {
+      case link.CallState.kRinging:
+      case link.CallState.kInviteSent:
+      case link.CallState.kCreateAnswer:
+      case link.CallState.kConnecting:
+        return widget.call.isOutgoing ? [hangupButton] : [answerButton, hangupButton];
+      case link.CallState.kConnected:
+        return [
+          muteMicButton,
+          //switchSpeakerButton,
+          if (!voiceonly && !kIsWeb) switchCameraButton,
+          if (!voiceonly) muteCameraButton,
+          if (PlatformInfos.isMobile || PlatformInfos.isWeb) screenSharingButton,
+          holdButton,
+          hangupButton,
+        ];
+      case link.CallState.kEnded:
+        return [
+          hangupButton,
+        ];
+      case link.CallState.kFledgling:
+        break;
+      case link.CallState.kWaitLocalMedia:
+        break;
+      case link.CallState.kCreateOffer:
+        break;
+      case null:
+        break;
+    }
+    return [];
+  }
+
+  void _switchCamera() async {
+    if (widget.call.localUserMediaStream != null) {
+      await Helper.switchCamera(
+        widget.call.localUserMediaStream!.stream!.getVideoTracks()[0],
+      );
+      if (PlatformInfos.isMobile) {
+        widget.call.facingMode == 'user' ? widget.call.facingMode = 'environment' : widget.call.facingMode = 'user';
+      }
+    }
+    setState(() {});
+  }
+
+  void _screenSharing() async {
+    if (PlatformInfos.isAndroid) {
+      if (!widget.call.screensharingEnabled) {
+        FlutterForegroundTask.init(
+          androidNotificationOptions: AndroidNotificationOptions(
+            channelId: 'notification_channel_id',
+            channelName: 'Foreground Notification',
+            channelDescription: 'Foreground Notification',
+          ),
+          iosNotificationOptions: const IOSNotificationOptions(),
+          foregroundTaskOptions: const ForegroundTaskOptions(),
+        );
+        FlutterForegroundTask.startService(
+          notificationTitle: "screen sharing",
+          notificationText: "screen sharing",
+        );
+      } else {
+        FlutterForegroundTask.stopService();
+      }
+    }
+
+    setState(() {
+      widget.call.setScreensharingEnabled(!widget.call.screensharingEnabled);
+    });
+  }
+}
+
+class Action {
+  final String tooltip;
+  final Color backgroundColor;
+  final Widget child;
+  final Function onPressed;
+  Action({required this.backgroundColor, required this.child, required this.onPressed, required this.tooltip});
 }
