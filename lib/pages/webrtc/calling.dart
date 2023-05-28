@@ -158,7 +158,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                                 true,
                                 60.w,
                                 bg: Colors.transparent,
-                                color: constTheme.sidebarText,
+                                color: constTheme.centerChannelColor,
                               )
                             : Container(
                                 width: 60.w,
@@ -168,9 +168,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                                   child: Icon(
                                     widget.call.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
                                     size: 45.w,
-                                    color: widget.call.room.isUnreadOrInvited
-                                        ? constTheme.sidebarUnreadText
-                                        : constTheme.sidebarText,
+                                    color: constTheme.centerChannelColor
                                   ),
                                 ),
                               ),
