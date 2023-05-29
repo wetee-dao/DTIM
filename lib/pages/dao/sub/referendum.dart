@@ -130,7 +130,7 @@ class Referendums extends StatelessWidget {
                 width: 250.w,
                 child: Row(
                   children: [
-                    Icon(Appicon.youxianji, color: constTheme.buttonBg, size: 20.w),
+                    Icon(AppIcons.youxianji, color: constTheme.buttonBg, size: 20.w),
                     SizedBox(width: 10.w),
                     Expanded(
                       child: PrimaryText(

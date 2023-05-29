@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../store/theme.dart';
 import '../utils/screen/screen.dart';
-import 'appicon.dart';
+import 'iconfont.dart';
 import 'move_window.dart';
 
 class ModelBar extends StatelessWidget implements PreferredSizeWidget {
@@ -47,7 +47,7 @@ class ModelBar extends StatelessWidget implements PreferredSizeWidget {
                   return;
                 }
               },
-              icon: Icon(Appicon.tuopanhua, color: constTheme.sidebarHeaderTextColor, size: 17.w),
+              icon: Icon(AppIcons.tuopanhua, color: constTheme.sidebarHeaderTextColor, size: 17.w),
               iconSize: 17.w,
               constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
               padding: EdgeInsets.zero,

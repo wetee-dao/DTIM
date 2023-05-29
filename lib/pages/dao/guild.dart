@@ -75,7 +75,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
-                      Appicon.zuzhiDataOrganization6,
+                      AppIcons.zuzhi_data_organization_6,
                       size: 30.w,
                       color: constTheme.centerChannelColor,
                     ),

@@ -1,6 +1,6 @@
 import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
-import '../../components/appicon.dart';
+import '../../components/components.dart';
 import '../../components/dao/text.dart';
 import '../../store/theme.dart';
 
@@ -91,10 +91,10 @@ class _CombindBoardPageState extends State<CombindBoardPage> {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 SizedBox(width: 20.w),
-                _createListView("To Do", Appicon.samlogoFCM, constTheme.centerChannelColor.withOpacity(0.5), list1),
-                _createListView("In Progress", Appicon.iconjinxingzhong, Colors.yellow.withOpacity(0.5), list2),
-                _createListView("In Review", Appicon.view, Colors.blueGrey.withOpacity(0.5), list3),
-                _createListView("Done", Appicon.done, Colors.green.withOpacity(0.5), list4),
+                _createListView("To Do", AppIcons.a_samlogo_fcm, constTheme.centerChannelColor.withOpacity(0.5), list1),
+                _createListView("In Progress", AppIcons.icon_jinhangzhong, Colors.yellow.withOpacity(0.5), list2),
+                _createListView("In Review", AppIcons.view, Colors.blueGrey.withOpacity(0.5), list3),
+                _createListView("Done", AppIcons.done, Colors.green.withOpacity(0.5), list4),
               ],
             ),
           ),

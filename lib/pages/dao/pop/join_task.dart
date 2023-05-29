@@ -111,7 +111,7 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
                     setState(() {});
                   },
                   child: renderType(
-                    Appicon.zuzhiDataOrganization6,
+                    AppIcons.zuzhi_data_organization_6,
                     "Assignee",
                     "Join the project and enjoy your work .",
                     _data.type == 0,
@@ -124,7 +124,7 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
                     setState(() {});
                   },
                   child: renderType(
-                    Appicon.xiangmu,
+                    AppIcons.xiangmu,
                     "Reviewer",
                     "Join the project, review the project progress.",
                     _data.type == 1,

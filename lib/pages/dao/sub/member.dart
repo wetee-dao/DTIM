@@ -18,7 +18,7 @@ class Members extends StatelessWidget {
         children: [
           for (var member in members)
             MemberCard(
-              // icon: Appicon.zuzhiDataOrganization6,
+              // icon: AppIcons.zuzhiDataOrganization6,
               label: member,
               // amount: '\$1200',
             ),

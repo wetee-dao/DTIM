@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../components/components.dart';
+import './components.dart';
 import '../utils/screen/screen.dart';
 import '../store/theme.dart';
 
@@ -85,7 +85,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
       children: [
         IconButton(
           onPressed: () => windowManager.minimize(),
-          icon: Icon(Appicon.zuixiaohua, color: iconColor, size: 17.w),
+          icon: Icon(AppIcons.zuixiaohua, color: iconColor, size: 17.w),
           iconSize: 17.w,
           constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
           padding: EdgeInsets.zero,
@@ -100,7 +100,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
         if (_isMaximized)
           IconButton(
             onPressed: () => windowManager.unmaximize(),
-            icon: Icon(Appicon.chuangkouhua, color: iconColor, size: 12.w),
+            icon: Icon(AppIcons.chuangkouhua, color: iconColor, size: 12.w),
             iconSize: 17.w,
             constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
             padding: EdgeInsets.zero,
@@ -136,7 +136,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
           ),
         IconButton(
           onPressed: () => windowManager.hide(),
-          icon: Icon(Appicon.tuopanhua, color: iconColor, size: 17.w),
+          icon: Icon(AppIcons.tuopanhua, color: iconColor, size: 17.w),
           iconSize: 17.w,
           constraints: BoxConstraints(minWidth: size, maxWidth: size, minHeight: size, maxHeight: size),
           padding: EdgeInsets.zero,

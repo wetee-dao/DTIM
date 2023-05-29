@@ -1,8 +1,9 @@
-import 'package:asyou_app/components/appicon.dart';
+
 import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/components.dart';
 import '../../components/dao/dao_is_joined.dart';
 import '../../components/dao/info_card.dart';
 import '../../components/dao/payments_detail_list.dart';
@@ -56,22 +57,22 @@ class Overviewpage extends StatelessWidget {
                           alignment: WrapAlignment.start,
                           children: [
                             InfoCard(
-                              icon: Appicon.zichan,
+                              icon: AppIcons.zichan,
                               label: "Treasury",
                               amount: 'WTE ${dao.daoAmount.free.toString()}',
                             ),
                             InfoCard(
-                              icon: Appicon.fenxiangshare,
+                              icon: AppIcons.share,
                               label: "Issued SHARE",
                               amount: dao.totalIssuance.toString(),
                             ),
                             InfoCard(
-                              icon: Appicon.zuzhiDataOrganization6,
+                              icon: AppIcons.zuzhi_data_organization_6,
                               label: "Skilled Guild",
                               amount: '${dao.guilds.length}',
                             ),
                             InfoCard(
-                              icon: Appicon.xiangmu,
+                              icon: AppIcons.xiangmu,
                               label: "Project",
                               amount: '${dao.projects.length}',
                             ),

@@ -1,9 +1,10 @@
-import 'package:asyou_app/components/appicon.dart';
 import 'package:asyou_app/router.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../bridge_struct.dart';
+import '../../components/components.dart';
 import '../../components/dao/priority_icon.dart';
 import '../../components/dao/text.dart';
 import '../../models/tag.dart';
@@ -210,7 +211,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 3.w),
-                            child: Icon(Appicon.qubiezhen, color: constTheme.centerChannelColor, size: 16.w),
+                            child: Icon(AppIcons.ziyuan, color: constTheme.centerChannelColor, size: 16.w),
                           ),
                           SizedBox(width: 7.w),
                           Expanded(

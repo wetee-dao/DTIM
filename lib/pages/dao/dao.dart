@@ -5,8 +5,7 @@ import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/app_bar.dart';
-import '../../components/appicon.dart';
+import '../../components/components.dart';
 import '../../components/close_bar.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/im.dart';
@@ -104,7 +103,7 @@ class _DaoPageState extends State<DaoPage> {
                     drawerKey.currentState!.openDrawer();
                   },
                   icon: Icon(
-                    Appicon.organcode,
+                    AppIcons.organcode,
                     color: constTheme.sidebarHeaderTextColor,
                     size: 16.w,
                   ),

@@ -167,7 +167,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                     setState(() {});
                   },
                   child: renderType(
-                    Appicon.zuzhiDataOrganization6,
+                    AppIcons.zuzhi_data_organization_6,
                     "Guild",
                     "Everything is for interest, exploration and growth .",
                     _data.type == 0,
@@ -181,7 +181,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                     setState(() {});
                   },
                   child: renderType(
-                    Appicon.xiangmu,
+                    AppIcons.xiangmu,
                     "Project",
                     "Use Projects to manage tasks that .",
                     _data.type == 1,

@@ -6,4 +6,4 @@ export 'avatar.dart';
 export 'org_card.dart';
 export 'model_bar.dart';
 export 'loading_dialog.dart';
-export 'appicon.dart';
+export 'iconfont.dart';

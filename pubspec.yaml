@@ -114,6 +114,7 @@ dev_dependencies:
   ffigen: ^8.0.2
   json_serializable: ^6.5.4
   dart_code_metrics: ^5.7.3
+  iconfont_convert: ^1.0.0
 
 dependency_overrides:
   # c库调用
@@ -127,6 +128,9 @@ flutter:
     - assets/l10n/
     - assets/images/
   fonts:
+    - family: iconfont
+      fonts:
+        - asset: assets/fonts/iconfont.ttf
     - family: Iconfont
       fonts:
         - asset: assets/fonts/iconfont.ttf

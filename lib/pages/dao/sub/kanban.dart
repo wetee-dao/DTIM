@@ -4,9 +4,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import '../../../bridge_struct.dart';
-import '../../../components/appicon.dart';
+import '../../../components/components.dart';
 import '../../../components/dao/priority_icon.dart';
-import '../../../components/loading_dialog.dart';
 import '../../../models/tag.dart';
 import '../../../router.dart';
 import '../../../native_wraper.dart';
@@ -35,10 +34,10 @@ class Kanban extends StatelessWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           SizedBox(width: 20.w),
-          _createListView("To Do", 0, Appicon.samlogoFCM, constTheme.centerChannelColor.withOpacity(0.5), todo),
-          _createListView("In Progress", 1, Appicon.iconjinxingzhong, Colors.yellow.withOpacity(0.5), inProgress),
-          _createListView("In Review", 2, Appicon.view, Colors.blueGrey.withOpacity(0.5), inReview),
-          _createListView("Done", 3, Appicon.done, Colors.green.withOpacity(0.5), done),
+          _createListView("To Do", 0, AppIcons.a_samlogo_fcm, constTheme.centerChannelColor.withOpacity(0.5), todo),
+          _createListView("In Progress", 1, AppIcons.icon_jinhangzhong, Colors.yellow.withOpacity(0.5), inProgress),
+          _createListView("In Review", 2, AppIcons.view, Colors.blueGrey.withOpacity(0.5), inReview),
+          _createListView("Done", 3, AppIcons.done, Colors.green.withOpacity(0.5), done),
         ],
       ),
     );

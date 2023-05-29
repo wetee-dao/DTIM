@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../../components/components.dart';
 import '../../store/theme.dart';
@@ -133,8 +134,29 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(20.w),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.w),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
+                      constraints: BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),
+                      padding: EdgeInsets.zero,
+                      tooltip: L10n.of(context)!.close,
+                      style: IconButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.w),
+                        ),
+                        hoverColor: constTheme.errorTextColor.withOpacity(0.2),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
               CustomPaint(
                 painter: ImgPainter(
                   _controller,
@@ -166,10 +188,11 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                                 padding: EdgeInsets.only(top: 2.w),
                                 child: Center(
                                   child: Icon(
-                                    widget.call.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                                    size: 45.w,
-                                    color: constTheme.centerChannelColor
-                                  ),
+                                      widget.call.room.encrypted
+                                          ? Icons.private_connectivity
+                                          : Icons.all_inclusive_sharp,
+                                      size: 45.w,
+                                      color: constTheme.centerChannelColor),
                                 ),
                               ),
                       ),
@@ -190,7 +213,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 ),
               ),
               Text(
-                (widget.call.room.isDirectChat?"":"channel:  ")+ widget.call.room.getLocalizedDisplayname(),
+                (widget.call.room.isDirectChat ? "" : "channel:  ") + widget.call.room.getLocalizedDisplayname(),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15.w,
@@ -205,7 +228,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                     Container(
                       padding: EdgeInsets.all(12.w),
                       decoration: BoxDecoration(shape: BoxShape.circle, color: actions[i].backgroundColor),
-                      margin: EdgeInsets.only(right: i != actions.length - 1 ? 15.w : 0),
+                      margin: EdgeInsets.only(right: i != actions.length - 1 ? 20.w : 0),
                       child: IconButton(
                         iconSize: 30.w,
                         icon: actions[i].child,
@@ -217,6 +240,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                     ),
                 ],
               ),
+              const Spacer(),
             ],
           ),
         ),

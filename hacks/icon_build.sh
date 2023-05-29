@@ -8,5 +8,4 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
 cd "$DIR/../"
 
-rm ./lib/components/appicon.dart
-iconfont_builder --from ./assets/fonts --to ./lib/components/appicon.dart  --class Appicon
+flutter packages pub run iconfont_convert -c iconfont.yaml

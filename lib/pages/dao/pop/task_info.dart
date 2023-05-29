@@ -189,7 +189,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
           filled: true,
           fillColor: constTheme.centerChannelColor.withOpacity(0.1),
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
-          prefixIcon: Icon(Appicon.youxianji, color: constTheme.centerChannelColor, size: 18.w),
+          prefixIcon: Icon(AppIcons.youxianji, color: constTheme.centerChannelColor, size: 18.w),
         ),
         onSaved: (v) {
           _data.priority = v ?? 0;
@@ -220,7 +220,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
             return null;
           },
         ),
-        prefixIcon: Icon(Appicon.tag, color: constTheme.centerChannelColor, size: 18.w),
+        prefixIcon: Icon(AppIcons.tag, color: constTheme.centerChannelColor, size: 18.w),
         decoration: InputDecoration(
           hintText: 'Tags',
           hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),

@@ -2,7 +2,7 @@ import 'package:asyou_app/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/appicon.dart';
+import '../../components/components.dart';
 import '../../router.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/theme.dart';
@@ -74,7 +74,7 @@ class SideMenu extends StatelessWidget {
                 children: [
                   ...dao.guilds.map((e) => iconBuilder(
                         key: Key("Guilds ${e.id.toString()}"),
-                        assetName: Appicon.zuzhiDataOrganization6,
+                        assetName: AppIcons.zuzhi_data_organization_6,
                         name: e.name,
                         color: constTheme,
                         selected: id == "Guilds ${e.id.toString()}",
@@ -82,7 +82,7 @@ class SideMenu extends StatelessWidget {
                       )),
                   ...dao.projects.map((e) => iconBuilder(
                         key: Key("Projects ${e.id.toString()}"),
-                        assetName: Appicon.xiangmu,
+                        assetName: AppIcons.xiangmu,
                         name: e.name,
                         color: constTheme,
                         selected: id == "Projects ${e.id.toString()}",

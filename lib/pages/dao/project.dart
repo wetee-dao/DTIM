@@ -5,9 +5,8 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:asyou_app/utils/screen/screen.dart';
 
-import '../../components/appicon.dart';
+import '../../components/components.dart';
 import '../../components/dao/text.dart';
-import '../../components/loading_dialog.dart';
 import '../../router.dart';
 import '../../native_wraper.dart';
 import '../../store/dao_ctx.dart';
@@ -91,7 +90,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
-                    Appicon.xiangmu,
+                    AppIcons.xiangmu,
                     size: 25.w,
                     color: constTheme.centerChannelColor,
                   ),
