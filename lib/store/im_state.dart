@@ -56,7 +56,6 @@ class ImState {
     webrtcTool = WebrtcTool(client);
   }
 
-  bool webHasFocus = true;
   String? activeRoomId = "";
   String? _cachedPassword;
   Timer? _cachedPasswordClearTimer;
@@ -134,10 +133,16 @@ class ImState {
   }
 
   syncChannel() {
+    printWarning("syncChannel");
     final app = globalCtx().read<AppCubit>();
     if (id == app.currentId) {
       app.setChannels();
     }
+    Timer(const Duration(milliseconds: 2000), () {
+      if (id == app.currentId) {
+        app.setChannels();
+      }
+    });
   }
 
   _cancelSub() async {

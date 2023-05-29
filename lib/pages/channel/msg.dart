@@ -51,6 +51,7 @@ class _MsgState extends State<Msg> {
         showDate = true;
       }
     }
+    
     if (showDate == true) {
       return Column(children: [
         buildDayTag(event),

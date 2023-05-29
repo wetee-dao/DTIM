@@ -69,11 +69,12 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       getTimeline();
     }
     _listController.addListener(scrollListener);
-    setReadMarker();
-    // im.currentState!.webrtcTool!.voip.initRenderers();
   }
 
   void scrollListener() {
+    if (!mounted) {
+      return;
+    }
     if (_listController.position.pixels + 30 >= _listController.position.maxScrollExtent) {
       if (timeline!.canRequestHistory && !timeline!.isRequestingHistory) {
         EasyDebounce.debounce(
@@ -82,11 +83,8 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
           () => requestHistory(),
         );
       }
-    }
-    if (_listController.position.pixels <= 100) {
-      if (timeline!.events.isNotEmpty && room!.isUnread) {
-        setReadMarker();
-      }
+    } else if (_listController.position.pixels == 0) {
+      setReadMarker();
     }
   }
 
@@ -98,16 +96,17 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   }
 
   Future<void>? _setReadMarkerFuture;
+
   void setReadMarker([_]) {
     room!.markUnread(false);
     if (_setReadMarkerFuture == null &&
         (room!.hasNewMessages || room!.notificationCount > 0) &&
         timeline != null &&
-        timeline!.events.isNotEmpty &&
-        im.currentState!.webHasFocus) {
+        timeline!.events.isNotEmpty) {
       _setReadMarkerFuture = timeline!.setReadMarker().then((_) {
         _setReadMarkerFuture = null;
       });
+      printInfo("setReadMarker");
       // client!.updateIosBadge();
     }
   }

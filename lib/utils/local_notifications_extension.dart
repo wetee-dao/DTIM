@@ -26,7 +26,7 @@ extension LocalNotificationsExtension on ImState {
   void showLocalNotification(EventUpdate eventUpdate) async {
     final roomId = eventUpdate.roomID;
     if (activeRoomId == roomId) {
-      if (kIsWeb && webHasFocus) return;
+      if (kIsWeb) return;
       if (PlatformInfos.isLinux && DesktopLifecycle.instance.isActive.value) {
         return;
       }

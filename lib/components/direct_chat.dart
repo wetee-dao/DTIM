@@ -41,7 +41,7 @@ class _DirectChatsState extends State<DirectChats> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final channelsList = im.current!.rooms.where((e) => e.isDirectChat).toList();
     final currentId = org.state.channelId;
-    printDebug(app.state.lastSyncTime.toString());
+    printDebug("DM频道数据更新 => ${app.state.lastSyncTime}");
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -143,10 +143,6 @@ class _DirectChatsState extends State<DirectChats> {
               child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(180)),
             ),
           ),
-          // child: Container(
-          //   margin: EdgeInsets.only(right: 12.w),
-          //   child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(155)),
-          // ),),
           child: Container(
             decoration: BoxDecoration(
               border: Border(

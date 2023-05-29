@@ -208,7 +208,6 @@ class AppCubit extends Cubit<AppState> {
 
   // 设置当前账户
   setChannels() {
-    printError("setChannelssetChannels");
     // 没有当前频道情况下
     emit(state.copyWith(lastSyncTime: DateTime.now().millisecondsSinceEpoch));
   }

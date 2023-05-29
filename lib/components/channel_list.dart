@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:badges/badges.dart' as badges;
 
 import '../router.dart';
 import '../store/app/app.dart';
@@ -39,7 +40,7 @@ class _ChannelListState extends State<ChannelList> {
     final channelsList = im.current!.rooms.where((e) => !e.isDirectChat).toList();
     final currentId = org.state.channelId;
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    printDebug(app.state.lastSyncTime.toString());
+    printDebug("频道数据更新 => ${app.state.lastSyncTime}");
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -164,11 +165,24 @@ class _ChannelListState extends State<ChannelList> {
                   width: 25.w,
                   height: 35.w,
                   padding: EdgeInsets.only(top: 2.w),
-                  child: Center(
-                    child: Icon(
-                      chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                      size: chat.encrypted ? 24.w : 19.w,
-                      color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText,
+                  child: badges.Badge(
+                    showBadge: chat.isUnread,
+                    badgeStyle: badges.BadgeStyle(badgeColor: constTheme.sidebarUnreadText),
+                    position: badges.BadgePosition.custom(top: -2.w, end: -5.w),
+                    badgeContent: Text(
+                      chat.notificationCount.toString(),
+                      style: TextStyle(
+                        fontSize: 6.w,
+                        fontWeight: FontWeight.bold,
+                        color: constTheme.centerChannelBg,
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                        size: chat.encrypted ? 24.w : 19.w,
+                        color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText,
+                      ),
                     ),
                   ),
                 ),
