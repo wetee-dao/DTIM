@@ -8,6 +8,12 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData meetingover = IconData(0xe6eb, fontFamily: _family); // meeting over
+  static const IconData icon_meeting_manage = IconData(0xe627, fontFamily: _family); // icon_meeting_manage
+  static const IconData icon_meeting = IconData(0xe637, fontFamily: _family); // icon_meeting
+  static const IconData icon_meeting_manage_1 = IconData(0xe661, fontFamily: _family); // icon_meeting_manage
+  static const IconData meetvideo_endmeet = IconData(0xe63a, fontFamily: _family); // Meetvideo_endmeet
+  static const IconData meeting_2 = IconData(0xe669, fontFamily: _family); // meeting
   static const IconData fangda = IconData(0xe614, fontFamily: _family); // 放大
   static const IconData suoxiao = IconData(0xe613, fontFamily: _family); // 缩小
   static const IconData share = IconData(0xe60e, fontFamily: _family); // 分享/share
@@ -51,6 +57,12 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.meetingover, "meetingover", "meeting over"),
+    _PreviewIcon(AppIcons.icon_meeting_manage, "icon_meeting_manage", "icon_meeting_manage"),
+    _PreviewIcon(AppIcons.icon_meeting, "icon_meeting", "icon_meeting"),
+    _PreviewIcon(AppIcons.icon_meeting_manage_1, "icon_meeting_manage_1", "icon_meeting_manage"),
+    _PreviewIcon(AppIcons.meetvideo_endmeet, "meetvideo_endmeet", "Meetvideo_endmeet"),
+    _PreviewIcon(AppIcons.meeting_2, "meeting_2", "meeting"),
     _PreviewIcon(AppIcons.fangda, "fangda", "放大"),
     _PreviewIcon(AppIcons.suoxiao, "suoxiao", "缩小"),
     _PreviewIcon(AppIcons.share, "share", "分享/share"),

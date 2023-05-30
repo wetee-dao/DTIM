@@ -220,39 +220,75 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
               //   color: constTheme.centerChannelColor.withAlpha(150),
               //   size: 19.w,
               // ),
-              SizedBox(width: 9.w),
-              IconButton(
-                onPressed: () async {
-                  final voip = im.currentState!.webrtcTool!.voip;
-                  final success = await waitFutureLoading(
-                    context: context,
-                    future: () => voip.requestTurnServerCredentials(),
-                  );
-                  if (success.result != null) {
-                    try {
-                      await voip.inviteToCall(room!.id, link.CallType.kVoice);
-                    } catch (e) {
-                      BotToast.showText(text: e.toLocalizedString(globalCtx()));
+              if(!room!.isDirectChat)
+                IconButton(
+                  onPressed: () async {
+                    final voip = im.currentState!.webrtcTool!.voip;
+                    final success = await waitFutureLoading(
+                      context: context,
+                      future: () => voip.requestTurnServerCredentials(),
+                    );
+                    if (success.result != null) {
+                      try {
+                        // link.GroupCallType.Voice
+                        await voip.fetchOrCreateGroupCall(room!.id);
+                      } catch (e) {
+                        BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                      }
+                    } else {
+                      BotToast.showText(text: "获取 turn 服务器失败");
                     }
-                  } else {
-                    BotToast.showText(text: "获取 turn 服务器失败");
-                  }
-                },
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
-                style: IconButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.w),
+                  },
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                  style: IconButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.w),
+                    ),
+                  ),
+                  tooltip: "meeting",
+                  icon: Icon(
+                    AppIcons.icon_meeting,
+                    color: constTheme.centerChannelColor,
+                    size: 22.w,
                   ),
                 ),
-                tooltip: "call",
-                icon: Icon(
-                  Icons.call_rounded,
-                  color: constTheme.centerChannelColor,
-                  size: 21.w,
+              if(!room!.isDirectChat)
+                SizedBox(width: 5.w),
+              if(room!.isDirectChat)
+                IconButton(
+                  onPressed: () async {
+                    final voip = im.currentState!.webrtcTool!.voip;
+                    final success = await waitFutureLoading(
+                      context: context,
+                      future: () => voip.requestTurnServerCredentials(),
+                    );
+                    if (success.result != null) {
+                      try {
+                        await voip.inviteToCall(room!.id, link.CallType.kVoice);
+                      } catch (e) {
+                        BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                      }
+                    } else {
+                      BotToast.showText(text: "获取 turn 服务器失败");
+                    }
+                  },
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                  style: IconButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.w),
+                    ),
+                  ),
+                  tooltip: "voice call",
+                  icon: Icon(
+                    Icons.call_rounded,
+                    color: constTheme.centerChannelColor,
+                    size: 21.w,
+                  ),
                 ),
-              ),
-              SizedBox(width: 5.w),
+              if(room!.isDirectChat)
+                SizedBox(width: 5.w),
               // IconButton(
               //   onPressed: () async {
               //     final voip = im.currentState!.webrtcTool!.voip;

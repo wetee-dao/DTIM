@@ -12,14 +12,14 @@ Widget moveWindow(Widget wigdet) {
     onPanStart: (details) {
       windowManager.startDragging();
     },
-    onDoubleTap: () async {
-      bool isMaximized = await windowManager.isMaximized();
-      if (!isMaximized) {
-        windowManager.maximize();
-      } else {
-        windowManager.unmaximize();
-      }
-    },
+    // onDoubleTap: () async {
+    //   bool isMaximized = await windowManager.isMaximized();
+    //   if (!isMaximized) {
+    //     windowManager.maximize();
+    //   } else {
+    //     windowManager.unmaximize();
+    //   }
+    // },
     child: wigdet,
   );
 }
