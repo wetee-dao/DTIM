@@ -8,6 +8,7 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData fangda = IconData(0xe614, fontFamily: _family); // 放大
   static const IconData suoxiao = IconData(0xe613, fontFamily: _family); // 缩小
   static const IconData share = IconData(0xe60e, fontFamily: _family); // 分享/share
   static const IconData zichan = IconData(0xe611, fontFamily: _family); // 资产
@@ -27,7 +28,6 @@ class AppIcons {
   static const IconData yuanquan = IconData(0xe63e, fontFamily: _family); // 圆圈
   static const IconData chart_18 = IconData(0xe677, fontFamily: _family); // 进度1
   static const IconData chart_34 = IconData(0xe678, fontFamily: _family); // 进度6
-  static const IconData gf_paperclip_circle = IconData(0xe965, fontFamily: _family); // 24gf-paperclipCircle
   static const IconData ziyuan = IconData(0xe648, fontFamily: _family); // 曲别针
   static const IconData organcode = IconData(0xe60c, fontFamily: _family); // organcode
   static const IconData zuzhi_data_organization_6 = IconData(0xe671, fontFamily: _family); // 组织Data Organization (6)
@@ -51,6 +51,7 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.fangda, "fangda", "放大"),
     _PreviewIcon(AppIcons.suoxiao, "suoxiao", "缩小"),
     _PreviewIcon(AppIcons.share, "share", "分享/share"),
     _PreviewIcon(AppIcons.zichan, "zichan", "资产"),
@@ -70,7 +71,6 @@ class AppIconsPreview extends StatelessWidget {
     _PreviewIcon(AppIcons.yuanquan, "yuanquan", "圆圈"),
     _PreviewIcon(AppIcons.chart_18, "chart_18", "进度1"),
     _PreviewIcon(AppIcons.chart_34, "chart_34", "进度6"),
-    _PreviewIcon(AppIcons.gf_paperclip_circle, "24_gf_paperclip_circle", "24gf-paperclipCircle"),
     _PreviewIcon(AppIcons.ziyuan, "ziyuan", "曲别针"),
     _PreviewIcon(AppIcons.organcode, "organcode", "organcode"),
     _PreviewIcon(AppIcons.zuzhi_data_organization_6, "zuzhi_data_organization_6", "组织Data Organization (6)"),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:asyou_app/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import '../../components/popup.dart';
 import '../../models/models.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
+import '../../utils/webrtc/action.dart';
 import './org_menu.dart';
 
 class OrgViewPage extends StatefulWidget {
@@ -56,6 +58,13 @@ class _OrgViewPageState extends State<OrgViewPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    var actions = [];
+    if (im.currentState!.webrtcTool!.csession != null) {
+      final callActions = CallAction(im.currentState!.webrtcTool!.csession!);
+      actions = callActions.buildActionButtons();
+    }
+    printError(actions.toString());
+
     return Column(
       children: [
         moveWindow(
@@ -271,6 +280,105 @@ class _OrgViewPageState extends State<OrgViewPage> {
             ),
           ),
         ),
+        if (actions.isNotEmpty)
+          Divider(
+            height: 1,
+            color: constTheme.sidebarText.withOpacity(0.08),
+          ),
+        if (actions.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 15.w),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "# calling",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 14.w,
+                          color: constTheme.sidebarText,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _controllerStarred.toggle();
+                            });
+                          },
+                          child: Icon(
+                            AppIcons.fangda,
+                            size: 15.w,
+                            color: constTheme.sidebarText,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.w),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    UserAvatar(
+                      key: Key(im.currentState!.user.id.toString()),
+                      im.me!.address,
+                      true,
+                      40.w,
+                      bg: constTheme.sidebarText.withOpacity(0.1),
+                      color: constTheme.sidebarText,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.w),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < actions.length; i++)
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8.w)), color: actions[i].backgroundColor),
+                        margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
+                        child: IconButton(
+                          iconSize: 18.w,
+                          constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                          style: IconButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.w),
+                            ),
+                          ),
+                          padding: EdgeInsets.zero,
+                          icon: actions[i].child,
+                          color: Colors.white,
+                          onPressed: () async {
+                            actions[i].onPressed();
+                          },
+                        ),
+                      ),
+                    const Spacer(),
+                    IconButton(
+                      iconSize: 18.w,
+                      constraints: BoxConstraints(minHeight: 35.w, maxHeight: 35.w),
+                      style: IconButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.w),
+                        ),
+                      ),
+                      padding: EdgeInsets.zero,
+                      icon: Text("挂断", style: TextStyle(fontSize: 14.w, color: constTheme.errorTextColor)),
+                      color: Colors.white,
+                      onPressed: () async {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }
