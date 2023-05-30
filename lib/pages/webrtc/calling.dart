@@ -140,7 +140,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                     padding: EdgeInsets.all(10.w),
                     child: IconButton(
                       onPressed: () {
-                        cleanUp();
+                        widget.onClear?.call();
                       },
                       icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
                       constraints: BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),

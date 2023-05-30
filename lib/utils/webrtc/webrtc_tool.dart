@@ -1,6 +1,7 @@
 import 'package:asyou_app/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as webrtc;
 import 'package:matrix/matrix.dart';
 
@@ -10,6 +11,7 @@ import 'package:webrtc_interface/src/mediadevices.dart';
 
 import '../../pages/webrtc/calling.dart';
 import '../../router.dart';
+import '../../store/app/webrtc.dart';
 import 'voip.dart';
 
 class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
@@ -17,7 +19,6 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   late WebrtcVoIP voip;
   
   OverlayEntry? callingPopup;
-  CallSession? csession;
 
   WebrtcTool(this.client){
     voip = WebrtcVoIP(client, this);
@@ -39,7 +40,8 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     printError("handleCallEnded");
     callingPopup?.remove();
     callingPopup = null;
-    csession = null;
+    final g = globalCtx().read<WebRTCCubit>();
+    g.sync(null);
   }
 
   @override
@@ -47,7 +49,8 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     printError("handleGroupCallEnded");
     callingPopup?.remove();
     callingPopup = null;
-    csession = null;
+    final g = globalCtx().read<WebRTCCubit>();
+    g.sync(null);
   }
 
   @override
@@ -55,17 +58,22 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     printError("handleMissedCall");
     callingPopup?.remove();
     callingPopup = null;
-    csession = null;
+    final g = globalCtx().read<WebRTCCubit>();
+    g.sync(null);
   }
 
   @override
   Future<void> handleNewCall(CallSession session) async {
-    /// 已经有通话了
-    if (csession != null) {
+    final g = globalCtx().read<WebRTCCubit>();
+    g.sync(null);
+    if (g.state.call != null) {
       session.reject();
       return;
     }
-    csession = session;
+    g.sync(session);
+    session.onCallStateChanged.stream.listen((e){
+      g.update();
+    });
     addCallingPopup(session.callId, session);
   }
 

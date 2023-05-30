@@ -13,6 +13,7 @@ import 'apis/apis.dart';
 import 'router.dart';
 import 'router/router.dart';
 import 'store/app/org.dart';
+import 'store/app/webrtc.dart';
 import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
@@ -89,6 +90,7 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => AppCubit()),
           BlocProvider(create: (_) => OrgCubit()),
+          BlocProvider(create: (_) => WebRTCCubit()),
         ],
         child: MaterialApp.router(
           title: 'DAO',

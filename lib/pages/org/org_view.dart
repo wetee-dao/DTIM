@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../../router.dart';
+import '../../store/app/webrtc.dart';
 import '../../utils/screen/screen.dart';
 import '../../components/components.dart';
 import '../../components/popup.dart';
@@ -58,12 +59,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    var actions = [];
-    if (im.currentState!.webrtcTool!.csession != null) {
-      final callActions = CallAction(im.currentState!.webrtcTool!.csession!);
-      actions = callActions.buildActionButtons();
-    }
-    printError(actions.toString());
 
     return Column(
       children: [
@@ -280,14 +275,19 @@ class _OrgViewPageState extends State<OrgViewPage> {
             ),
           ),
         ),
-        if (actions.isNotEmpty)
-          Divider(
-            height: 1,
-            color: constTheme.sidebarText.withOpacity(0.08),
-          ),
-        if (actions.isNotEmpty)
-          Padding(
-            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.w, bottom: 15.w),
+        BlocBuilder<WebRTCCubit, WebRTCState>(builder: (context, state) {
+          var actions = [];
+          if (state.call != null) {
+            final callActions = CallAction(state.call!);
+            actions = callActions.buildActionButtons();
+          }
+          printError(actions.toString());
+          if (actions.isEmpty) {
+            return const SizedBox();
+          }
+          return Container(
+            decoration: BoxDecoration(border: Border(top: BorderSide(color: constTheme.sidebarText.withOpacity(0.1)))),
+            padding: EdgeInsets.only(left: 15.w, right: 10.w, top: 10.w, bottom: 10.w),
             child: Column(
               children: [
                 Row(
@@ -295,7 +295,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        "# calling",
+                        "${state.call!.room.isDirectChat ? "" : "channel:  "}${state.call!.room.getLocalizedDisplayname()} calling",
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 14.w,
@@ -303,25 +303,20 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _controllerStarred.toggle();
-                            });
-                          },
-                          child: Icon(
-                            AppIcons.fangda,
-                            size: 15.w,
-                            color: constTheme.sidebarText,
-                          ),
-                        ),
-                      ],
+                    IconButton(
+                      onPressed: () {
+                        im.currentState!.webrtcTool!.addCallingPopup(state.call!.callId, state.call!);
+                      },
+                      icon: Icon(
+                        AppIcons.fangda,
+                        size: 16.w,
+                        color: constTheme.sidebarText,
+                      ),
                     ),
+                    // SizedBox(width: 10.w),
                   ],
                 ),
-                SizedBox(height: 10.w),
+                SizedBox(height: 5.w),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -360,25 +355,26 @@ class _OrgViewPageState extends State<OrgViewPage> {
                           },
                         ),
                       ),
-                    const Spacer(),
-                    IconButton(
-                      iconSize: 18.w,
-                      constraints: BoxConstraints(minHeight: 35.w, maxHeight: 35.w),
-                      style: IconButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.w),
-                        ),
-                      ),
-                      padding: EdgeInsets.zero,
-                      icon: Text("挂断", style: TextStyle(fontSize: 14.w, color: constTheme.errorTextColor)),
-                      color: Colors.white,
-                      onPressed: () async {},
-                    ),
+                    // const Spacer(),
+                    // IconButton(
+                    //   iconSize: 18.w,
+                    //   constraints: BoxConstraints(minHeight: 35.w, maxHeight: 35.w),
+                    //   style: IconButton.styleFrom(
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(8.w),
+                    //     ),
+                    //   ),
+                    //   padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    //   icon: Text("挂断", style: TextStyle(fontSize: 14.w, color: constTheme.errorTextColor)),
+                    //   color: Colors.white,
+                    //   onPressed: () async {},
+                    // ),
                   ],
                 ),
               ],
             ),
-          ),
+          );
+        })
       ],
     );
   }
