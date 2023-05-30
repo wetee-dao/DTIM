@@ -35,7 +35,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   bool _loading = true;
   List<Account> accounts = [];
-  late IMProvider im;
+  late AppCubit im;
   late AccountApi accountStore;
 
   @override

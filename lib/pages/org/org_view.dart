@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:asyou_app/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +30,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
   final BasePopupMenuController menuController = BasePopupMenuController();
   final StreamController<bool> menuStreamController = StreamController<bool>();
-  late IMProvider im;
+  late AppCubit im;
   late AccountOrg org;
 
   @override
@@ -44,7 +43,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
       menuStreamController.add(menuController.menuIsShowing);
     });
 
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     org = im.currentState!.org;
   }
 
@@ -281,13 +280,12 @@ class _OrgViewPageState extends State<OrgViewPage> {
             final callActions = CallAction(state.call!);
             actions = callActions.buildActionButtons();
           }
-          printError(actions.toString());
           if (actions.isEmpty) {
             return const SizedBox();
           }
           return Container(
             decoration: BoxDecoration(border: Border(top: BorderSide(color: constTheme.sidebarText.withOpacity(0.1)))),
-            padding: EdgeInsets.only(left: 15.w, right: 10.w, top: 10.w, bottom: 10.w),
+            padding: EdgeInsets.only(left: 12.w, right: 10.w, top: 5.w, bottom: 10.w),
             child: Column(
               children: [
                 Row(
@@ -295,7 +293,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        "${state.call!.room.isDirectChat ? "" : "channel:  "}${state.call!.room.getLocalizedDisplayname()} calling",
+                        "${state.call!.room.isDirectChat ? "" : "Channel: "}${state.call!.room.getLocalizedDisplayname()}",
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 14.w,
@@ -307,6 +305,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                       onPressed: () {
                         im.currentState!.webrtcTool!.addCallingPopup(state.call!.callId, state.call!);
                       },
+                      tooltip: 'open window',
                       icon: Icon(
                         AppIcons.fangda,
                         size: 16.w,
@@ -317,20 +316,22 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   ],
                 ),
                 SizedBox(height: 5.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    UserAvatar(
-                      key: Key(im.currentState!.user.id.toString()),
-                      im.me!.address,
-                      true,
-                      40.w,
-                      bg: constTheme.sidebarText.withOpacity(0.1),
-                      color: constTheme.sidebarText,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.w),
+                if (!state.call!.room.isDirectChat)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // state.call!.usermediaSenders
+                      UserAvatar(
+                        key: Key(im.currentState!.user.id.toString()),
+                        im.me!.address,
+                        true,
+                        40.w,
+                        bg: constTheme.sidebarText.withOpacity(0.1),
+                        color: constTheme.sidebarText,
+                      ),
+                    ],
+                  ),
+                if (!state.call!.room.isDirectChat) SizedBox(height: 10.w),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

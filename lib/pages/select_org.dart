@@ -26,12 +26,12 @@ class SelectOrgPage extends StatefulWidget {
 class _SelectOrgPageState extends State<SelectOrgPage> {
   List<String> selected = [];
   List<Account?> accounts = [];
-  late IMProvider im;
+  late AppCubit im;
   late AccountOrgApi accountOrgApi;
 
   @override
   void initState() {
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     final query = context.routeData.queryParams;
     AccountApi.create().then((v) async {
       accounts = await v.getUsers();

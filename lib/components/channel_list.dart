@@ -25,11 +25,11 @@ class ChannelList extends StatefulWidget {
 class _ChannelListState extends State<ChannelList> {
   // 当前激活
   int hover = -1;
-  late IMProvider im;
+  late AppCubit im;
 
   @override
   void initState() {
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     super.initState();
   }
 

@@ -22,14 +22,14 @@ class CreatePrivatePage extends StatefulWidget {
 
 class _CreatePrivatePageState extends State<CreatePrivatePage> {
   String search = "";
-  late IMProvider im;
+  late AppCubit im;
   List<link.Profile> userList = [];
   TextEditingController id = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     id.text = "";
     getList();
   }

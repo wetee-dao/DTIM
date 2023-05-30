@@ -41,7 +41,7 @@ class ChatDetailsController extends State<ChatDetails> {
   @override
   void initState() {
     super.initState();
-    final im = context.read<IMProvider>();
+    final im = context.read<AppCubit>();
     client = im.currentState!.client;
   }
 

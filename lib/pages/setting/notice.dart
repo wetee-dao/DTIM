@@ -28,7 +28,7 @@ class _NoticePageState extends State<NoticePage> {
   @override
   void initState() {
     super.initState();
-    final im = context.read<IMProvider>();
+    final im = context.read<AppCubit>();
     client = im.currentState!.client;
 
     Timer(const Duration(milliseconds: 100), () {

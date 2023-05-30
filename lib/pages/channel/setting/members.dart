@@ -30,14 +30,14 @@ class ChannelMemberPage extends StatefulWidget {
 }
 
 class _ChannelMemberPageState extends State<ChannelMemberPage> {
-  late IMProvider im;
+  late AppCubit im;
   late link.Room? room;
   List<link.User> userList = [];
 
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     room = im.currentState!.client.getRoomById(widget.id);
     getList();
   }

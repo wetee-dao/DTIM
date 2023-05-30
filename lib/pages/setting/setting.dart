@@ -27,7 +27,7 @@ final settingPages = [
 class _SettingPageState extends State<SettingPage> {
   // int _page = 0;
   bool publicGroup = false;
-  late final IMProvider im;
+  late final AppCubit im;
   late link.Client? client;
   late PageController pageController;
   int currentId = 0;
@@ -44,7 +44,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     // me = im.me!;
     if (im.currentState != null) {
       client = im.currentState!.client;

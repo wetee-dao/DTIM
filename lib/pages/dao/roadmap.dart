@@ -21,7 +21,7 @@ class RoadMapPage extends StatefulWidget {
 }
 
 class _RoadMapPageState extends State<RoadMapPage> {
-  late final IMProvider im;
+  late final AppCubit im;
   late final DAOCTX dao;
   bool _loading = true;
   List<Quarter> quarters = [];
@@ -29,7 +29,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     dao = context.read<DAOCTX>();
     getData();
     dao.addListener(getData);

@@ -27,8 +27,6 @@ class AppState with _$AppState {
   }) = _AppState;
 }
 
-@Deprecated('AppCubit')
-typedef IMProvider = AppCubit;
 
 class AppCubit extends Cubit<AppState> {
   AppCubit({state = const AppState()}) : super(state);

@@ -32,7 +32,7 @@ class HtmlMessage extends StatelessWidget {
     //   '',
     // );
 
-    // final im = context.read<IMProvider>();
+    // final im = context.read<AppCubit>();
     // final client = im.currentState!.client;
 
     // final themeData = Theme.of(context);

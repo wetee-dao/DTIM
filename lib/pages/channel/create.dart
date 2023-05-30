@@ -21,7 +21,7 @@ class CreateChannelPage extends StatefulWidget {
 
 class _CreateChannelPageState extends State<CreateChannelPage> {
   bool publicGroup = false;
-  late final IMProvider im;
+  late final AppCubit im;
   late link.Client? client;
   final SubmitData _data = SubmitData(groupName: "", preset: link.CreateRoomPreset.publicChat);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -29,7 +29,7 @@ class _CreateChannelPageState extends State<CreateChannelPage> {
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     // me = im.me!;
     if (im.currentState != null) {
       client = im.currentState!.client;

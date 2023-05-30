@@ -65,9 +65,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
     call.onCallStateChanged.stream.listen(_handleCallState);
     call.onCallEventChanged.stream.listen((event) {
       if (event == link.CallEvent.kFeedsChanged) {
-        setState(() {
-          call.tryRemoveStopedStreams();
-        });
+        call.tryRemoveStopedStreams();
       } else if (event == link.CallEvent.kLocalHoldUnhold || event == link.CallEvent.kRemoteHoldUnhold) {
         setState(() {});
         printDebug(

@@ -57,7 +57,7 @@ class MessageContent extends StatelessWidget {
       );
       return;
     }
-    final im = context.read<IMProvider>();
+    final im = context.read<AppCubit>();
     final client = im.currentState!.client;
     if (client.isUnknownSession && client.encryption!.crossSigning.enabled) {
       printError("client.isUnknownSession && client.encryption!.crossSigning.enabled");

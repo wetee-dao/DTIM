@@ -34,7 +34,7 @@ class _DaoPageState extends State<DaoPage> {
     ProjectPage(key: projectKey)
   ];
   late PageController pageController = PageController();
-  late final IMProvider im;
+  late final AppCubit im;
   final StreamController<String> currentId = StreamController<String>.broadcast();
   String pageStr = "Overview";
   String title = "";
@@ -45,7 +45,7 @@ class _DaoPageState extends State<DaoPage> {
   void initState() {
     super.initState();
     currentId.add(pageStr);
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     daoCtx.connectChain(im.currentState!.org, im.me!, () {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {

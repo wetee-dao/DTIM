@@ -19,14 +19,14 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late IMProvider im;
+  late AppCubit im;
   List<link.PublicRoomsChunk> rooms = [];
   List userList = [];
 
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     getList();
   }
 

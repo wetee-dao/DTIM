@@ -37,7 +37,7 @@ class ChatEncryptionSettingsController extends State<ChatEncryptionSettings> {
   @override
   void initState() {
     super.initState();
-    final im = context.read<IMProvider>();
+    final im = context.read<AppCubit>();
     if (im.currentState != null) {
       client = im.currentState!.client;
       room = im.currentState!.client.getRoomById(widget.roomId)!;

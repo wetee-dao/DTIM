@@ -69,7 +69,7 @@ class _MxcImageState extends State<MxcImage> {
   bool? _isCached;
 
   Future<void> _load() async {
-    final im = context.read<IMProvider>();
+    final im = context.read<AppCubit>();
     final client = im.currentState!.client;
     final uri = widget.uri;
     final event = widget.event;

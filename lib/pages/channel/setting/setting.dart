@@ -39,7 +39,7 @@ class ChannelSettingPage extends StatefulWidget {
 }
 
 class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProviderStateMixin {
-  late IMProvider im;
+  late AppCubit im;
   late link.Room? room;
   late TabController _tabController;
   late PageController _pageController;
@@ -48,7 +48,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
   @override
   void initState() {
     super.initState();
-    im = context.read<IMProvider>();
+    im = context.read<AppCubit>();
     room = im.currentState!.client.getRoomById(widget.id);
 
     pageItems = [
