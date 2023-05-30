@@ -66,8 +66,8 @@ class CallAction {
       tooltip: 'hold',
       onPressed: () => call.setRemoteOnHold(!call.remoteOnHold),
       backgroundColor: isRemoteOnHold ? Colors.blueGrey : Colors.black45,
-      child: Icon(isRemoteOnHold ? Icons.stop_circle_rounded : Icons.pause),
-    );
+      child: Icon(isRemoteOnHold ? Icons.pause : Icons.pause),
+    ); 
 
     final muteCameraButton = Action(
       tooltip: 'muteCam',

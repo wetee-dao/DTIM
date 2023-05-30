@@ -11,14 +11,14 @@ import '../../store/theme.dart';
 import '../../utils/webrtc/action.dart';
 import 'img_painter.dart';
 
-class WebRTCCalling extends StatefulWidget {
+class GroupWebRTCalling extends StatefulWidget {
   final VoidCallback? onClear;
   final BuildContext context;
   final String callId;
-  final link.CallSession call;
+  final link.GroupCall call;
   final link.Client client;
 
-  const WebRTCCalling({
+  const GroupWebRTCalling({
     required this.context,
     required this.call,
     required this.client,
@@ -28,21 +28,21 @@ class WebRTCCalling extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<WebRTCCalling> createState() => _Calling();
+  State<GroupWebRTCalling> createState() => _Calling();
 }
 
-class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
-  link.CallState? _state;
+class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
+  String? _state;
   late AnimationController _controller;
 
-  bool get speakerOn => widget.call.speakerOn;
+  // bool get speakerOn => widget.call.speakerOn;
   bool get isMicrophoneMuted => widget.call.isMicrophoneMuted;
   bool get isLocalVideoMuted => widget.call.isLocalVideoMuted;
   bool get isScreensharingEnabled => widget.call.screensharingEnabled;
-  bool get isRemoteOnHold => widget.call.remoteOnHold;
-  bool get voiceonly => widget.call.type == link.CallType.kVoice;
-  bool get connecting => widget.call.state == link.CallState.kConnecting;
-  bool get connected => widget.call.state == link.CallState.kConnected;
+  // bool get isRemoteOnHold => widget.call.remoteOnHold;
+  bool get voiceonly => widget.call.type == link.GroupCallType.Voice;
+  bool get connecting => widget.call.state == link.GroupCallState.Entering;
+  bool get connected => widget.call.state == link.GroupCallState.Entered;
 
   @override
   void initState() {
@@ -62,30 +62,14 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
 
   void initialize() async {
     final call = widget.call;
-    call.onCallStateChanged.stream.listen(_handleCallState);
-    call.onCallEventChanged.stream.listen((event) {
-      if (event == link.CallEvent.kFeedsChanged) {
-        call.tryRemoveStopedStreams();
-      } else if (event == link.CallEvent.kLocalHoldUnhold || event == link.CallEvent.kRemoteHoldUnhold) {
-        setState(() {});
-        printDebug(
-          'Call hold event: local ${call.localHold}, remote ${call.remoteOnHold}',
-        );
-      }
-    });
+    call.onGroupCallFeedsChanged.stream.listen(_handleCallState);
+    call.onGroupCallEvent.stream.listen((event) {});
     _state = call.state;
-
-    if (call.type == link.CallType.kVideo) {
-      try {
-        // Enable wakelock (keep screen on)
-        // unawaited(Wakelock.enable());
-      } catch (_) {}
-    }
   }
 
-  void _handleCallState(link.CallState state) {
-    printDebug('CallingPage::handleCallState: ${state.toString()}');
-    if ({link.CallState.kConnected, link.CallState.kEnded}.contains(state)) {
+  void _handleCallState(link.GroupCall session) {
+    printDebug('CallingPage::handleCallState: ${session.state}');
+    if ({link.GroupCallState.Entered, link.GroupCallState.Ended}.contains(session.state)) {
       try {
         // Vibration.vibrate(duration: 200);
       } catch (e) {
@@ -95,8 +79,8 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
 
     if (mounted) {
       setState(() {
-        _state = state;
-        if (_state == link.CallState.kEnded) cleanUp();
+        _state = session.state;
+        if (_state == link.GroupCallState.Ended) cleanUp();
       });
     }
   }
@@ -116,8 +100,9 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final callActions = CallAction(widget.call);
-    final actions = callActions.buildActionButtons();
+    // final callActions = CallAction(widget.call);
+    // final actions = callActions.buildActionButtons();
+    final actions = [];
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.8),
       body: Center(
@@ -202,7 +187,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 height: 70.w,
               ),
               Text(
-                widget.call.direction == link.CallDirection.kIncoming ? "Incoming" : "Outgoing",
+                "Channel",
                 style: TextStyle(
                   fontSize: 20.w,
                   color: constTheme.centerChannelColor,
@@ -211,7 +196,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 ),
               ),
               Text(
-               widget.call.room.getLocalizedDisplayname(),
+                widget.call.room.getLocalizedDisplayname(),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15.w,

@@ -10,6 +10,7 @@ import 'package:webrtc_interface/src/rtc_peerconnection.dart';
 import 'package:webrtc_interface/src/mediadevices.dart';
 
 import '../../pages/webrtc/calling.dart';
+import '../../pages/webrtc/group_calling.dart';
 import '../../router.dart';
 import '../../store/app/webrtc.dart';
 import 'voip.dart';
@@ -80,6 +81,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   @override
   Future<void> handleNewGroupCall(GroupCall groupCall) async {
     printError("handleNewGroupCall");
+    addGroupCallingPopup(groupCall.groupCallId, groupCall);
   }
 
   @override
@@ -130,6 +132,42 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     }
   }
   
+  void addGroupCallingPopup(String groupCallId, GroupCall groupCall) {
+    final context = globalCtx(); // web is weird
+    if (callingPopup != null) {
+      Logs().e('[VOIP] addCallingOverlay: The call session already exists?');
+      callingPopup!.remove();
+    }
+    // falling back on a dialog
+    if (kIsWeb) {
+      showDialog(
+        context: context,
+        builder: (context) => GroupWebRTCalling(
+          context: context,
+          client: client,
+          callId: groupCallId,
+          call: groupCall,
+          onClear: () => Navigator.of(context).pop(),
+        ),
+      );
+    } else {
+      callingPopup = OverlayEntry(
+        builder: (_) => GroupWebRTCalling(
+          context: context,
+          client: client,
+          callId: groupCallId,
+          call: groupCall,
+          onClear: () {
+            callingPopup?.remove();
+            callingPopup = null;
+          },
+        ),
+      );
+      globalState().overlay!.insert(callingPopup!);
+    }
+  }
+  
+
   @override
   MediaDevices get mediaDevices => webrtc.navigator.mediaDevices;
 }

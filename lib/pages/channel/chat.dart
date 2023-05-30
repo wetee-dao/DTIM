@@ -209,11 +209,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
         tools: CloseBar(
           child: Row(
             children: [
-              // Icon(
-              //   Icons.meeting_room_outlined,
-              //   color: constTheme.centerChannelColor.withAlpha(150),
-              //   size: 19.w,
-              // ),
               // SizedBox(width: 10.w),
               // Icon(
               //   Icons.task_outlined,
@@ -230,8 +225,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                     );
                     if (success.result != null) {
                       try {
-                        // link.GroupCallType.Voice
-                        await voip.fetchOrCreateGroupCall(room!.id);
+                        await voip.createGroupCallForRoom(room!);
                       } catch (e) {
                         BotToast.showText(text: e.toLocalizedString(globalCtx()));
                       }
