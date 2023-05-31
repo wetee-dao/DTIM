@@ -103,7 +103,7 @@ class _DaoPageState extends State<DaoPage> {
                     drawerKey.currentState!.openDrawer();
                   },
                   icon: Icon(
-                    AppIcons.organcode,
+                    AppIcons.blockchain,
                     color: constTheme.sidebarHeaderTextColor,
                     size: 16.w,
                   ),

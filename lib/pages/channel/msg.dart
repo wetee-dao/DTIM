@@ -51,7 +51,7 @@ class _MsgState extends State<Msg> {
         showDate = true;
       }
     }
-    
+
     if (showDate == true) {
       return Column(children: [
         buildDayTag(event),
@@ -163,7 +163,27 @@ class _MsgState extends State<Msg> {
     if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {
       return VerificationRequestContent(event: event, timeline: widget.timeline);
     }
-    return MessageContent(event, textColor: constTheme.centerChannelColor);
+    return MessageContent(event, textColor: constTheme.centerChannelColor, onInfoTab: (e) async {
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            "消息内容",
+            style: TextStyle(fontSize: 18.w),
+          ),
+          content: Text(
+            event.toJson().toString(),
+            style: TextStyle(color: constTheme.centerChannelColor),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("确定"),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   buildDayTag(event) {

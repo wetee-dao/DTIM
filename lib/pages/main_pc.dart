@@ -109,12 +109,12 @@ class _PCPageState extends State<PCPage> {
                       builder: (BuildContext context, AsyncSnapshot<int> id) {
                         return Column(
                           children: [
-                            SiderBarItem(AppIcons.wode_4, "MES", key: const Key("MES"), selected: id.data == 0,
+                            SiderBarItem(AppIcons.we_chat, "chat", key: const Key("MES"), selected: id.data == 0,
                                 onTap: () {
                               onSelect(0);
                             }),
                             // DAO管理
-                            SiderBarItem(AppIcons.organcode, "DAO", key: const Key("DAO"), selected: id.data == 1,
+                            SiderBarItem(AppIcons.chain, "DAO", key: const Key("DAO"), selected: id.data == 1,
                                 onTap: () {
                               onSelect(1);
                             }),

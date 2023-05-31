@@ -80,7 +80,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
 
   @override
   Future<void> handleNewGroupCall(GroupCall groupCall) async {
-    printError("handleNewGroupCall");
+    printError("handleNewGroupCall => ${groupCall.groupCallId}");
     addGroupCallingPopup(groupCall.groupCallId, groupCall);
   }
 

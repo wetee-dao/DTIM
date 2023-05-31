@@ -20,6 +20,7 @@ import '../../../utils/screen/screen.dart';
 import '../../../utils/platform_infos.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
+import 'groupcall.dart';
 import 'html.dart';
 import 'image_bubble.dart';
 import 'map_bubble.dart';
@@ -249,6 +250,22 @@ class MessageContent extends StatelessWidget {
       case EventTypes.RoomMember:
         return SelectableText("已加入频道 ${event.room.name}",
             style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
+      case EventTypes.GroupCallPrefix:
+        return GroupCallContent(event, textColor);
+        // return FutureBuilder<User?>(
+        //   future: event.fetchSenderUser(),
+        //   builder: (context, snapshot) {
+        //     return _ButtonContent(
+        //       label: L10n.of(context)!.userSentUnknownEvent(
+        //         snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+        //         event.type,
+        //       ),
+        //       icon: const Icon(Icons.info_outlined),
+        //       textColor: buttonTextColor,
+        //       onPressed: () => onInfoTab!(event),
+        //     );
+        //   },
+        // );
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),

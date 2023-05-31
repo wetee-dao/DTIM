@@ -8,6 +8,7 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData we_chat = IconData(0xe641, fontFamily: _family); // WeChat
   static const IconData blockchain = IconData(0xe837, fontFamily: _family); // blockchain
   static const IconData cloud_communication_meeting = IconData(0xe751, fontFamily: _family); // Cloud Communication-Meeting
   static const IconData chain = IconData(0xe615, fontFamily: _family); // chain
@@ -41,7 +42,6 @@ class AppIcons {
   static const IconData zuzhi_data_organization_6 = IconData(0xe671, fontFamily: _family); // 组织Data Organization (6)
   static const IconData zuzhi_data_organization_7 = IconData(0xe672, fontFamily: _family); // 组织Data Organization (7)
   static const IconData organization = IconData(0xe97b, fontFamily: _family); // organization
-  static const IconData pinglun = IconData(0xe6bf, fontFamily: _family); // 评论
   static const IconData wangye = IconData(0xe706, fontFamily: _family); // 网页
   static const IconData shebei = IconData(0xe720, fontFamily: _family); // 设备
   static const IconData wode_4 = IconData(0xe772, fontFamily: _family); // 我的_4
@@ -59,6 +59,7 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.we_chat, "we_chat", "WeChat"),
     _PreviewIcon(AppIcons.blockchain, "blockchain", "blockchain"),
     _PreviewIcon(AppIcons.cloud_communication_meeting, "cloud_communication_meeting", "Cloud Communication-Meeting"),
     _PreviewIcon(AppIcons.chain, "chain", "chain"),
@@ -92,7 +93,6 @@ class AppIconsPreview extends StatelessWidget {
     _PreviewIcon(AppIcons.zuzhi_data_organization_6, "zuzhi_data_organization_6", "组织Data Organization (6)"),
     _PreviewIcon(AppIcons.zuzhi_data_organization_7, "zuzhi_data_organization_7", "组织Data Organization (7)"),
     _PreviewIcon(AppIcons.organization, "organization", "organization"),
-    _PreviewIcon(AppIcons.pinglun, "pinglun", "评论"),
     _PreviewIcon(AppIcons.wangye, "wangye", "网页"),
     _PreviewIcon(AppIcons.shebei, "shebei", "设备"),
     _PreviewIcon(AppIcons.wode_4, "wode_4", "我的_4"),

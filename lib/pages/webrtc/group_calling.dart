@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../../components/components.dart';
 import '../../store/theme.dart';
-import '../../utils/webrtc/action.dart';
 import 'img_painter.dart';
 
 class GroupWebRTCalling extends StatefulWidget {
@@ -187,40 +186,77 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                 height: 70.w,
               ),
               Text(
-                "Channel",
+                "会议号",
                 style: TextStyle(
                   fontSize: 20.w,
                   color: constTheme.centerChannelColor,
-                  fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              Text(
-                widget.call.room.getLocalizedDisplayname(),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15.w,
-                  color: constTheme.centerChannelColor,
+              SizedBox(height: 10.w),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 70.w),
+                child: Text(
+                  widget.call.groupCallId,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15.w,
+                    color: constTheme.centerChannelColor,
+                  ),
                 ),
               ),
               SizedBox(height: 75.w),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (var i = 0; i < actions.length; i++)
-                    Container(
-                      padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: actions[i].backgroundColor),
-                      margin: EdgeInsets.only(right: i != actions.length - 1 ? 20.w : 0),
-                      child: IconButton(
-                        iconSize: 30.w,
-                        icon: actions[i].child,
-                        color: Colors.white,
-                        onPressed: () async {
-                          actions[i].onPressed();
-                        },
+                  Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12.w),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+                        margin: EdgeInsets.only(bottom: 15.w),
+                        child: IconButton(
+                          iconSize: 30.w,
+                          icon: const Icon(Icons.add),
+                          color: Colors.white,
+                          onPressed: () async {},
+                        ),
                       ),
-                    ),
+                      Text(
+                        "加入",
+                        style: TextStyle(
+                          fontSize: 15.w,
+                          color: constTheme.centerChannelColor,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 20.w),
+                  Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12.w),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.yellow),
+                        margin: EdgeInsets.only(bottom: 15.w),
+                        child: IconButton(
+                          iconSize: 30.w,
+                          icon: const Icon(Icons.remove),
+                          color: Colors.black,
+                          onPressed: () async {},
+                        ),
+                      ),
+                      Text(
+                        "忽略",
+                        style: TextStyle(
+                          fontSize: 15.w,
+                          color: constTheme.centerChannelColor,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               const Spacer(),
