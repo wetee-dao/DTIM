@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$WebRTCState {
-  CallSession? get call => throw _privateConstructorUsedError;
   int get lastSyncTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +29,7 @@ abstract class $WebRTCStateCopyWith<$Res> {
           WebRTCState value, $Res Function(WebRTCState) then) =
       _$WebRTCStateCopyWithImpl<$Res, WebRTCState>;
   @useResult
-  $Res call({CallSession? call, int lastSyncTime});
+  $Res call({int lastSyncTime});
 }
 
 /// @nodoc
@@ -46,14 +45,9 @@ class _$WebRTCStateCopyWithImpl<$Res, $Val extends WebRTCState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? call = freezed,
     Object? lastSyncTime = null,
   }) {
     return _then(_value.copyWith(
-      call: freezed == call
-          ? _value.call
-          : call // ignore: cast_nullable_to_non_nullable
-              as CallSession?,
       lastSyncTime: null == lastSyncTime
           ? _value.lastSyncTime
           : lastSyncTime // ignore: cast_nullable_to_non_nullable
@@ -70,7 +64,7 @@ abstract class _$$_WebRTCStateCopyWith<$Res>
       __$$_WebRTCStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({CallSession? call, int lastSyncTime});
+  $Res call({int lastSyncTime});
 }
 
 /// @nodoc
@@ -84,14 +78,9 @@ class __$$_WebRTCStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? call = freezed,
     Object? lastSyncTime = null,
   }) {
     return _then(_$_WebRTCState(
-      call: freezed == call
-          ? _value.call
-          : call // ignore: cast_nullable_to_non_nullable
-              as CallSession?,
       lastSyncTime: null == lastSyncTime
           ? _value.lastSyncTime
           : lastSyncTime // ignore: cast_nullable_to_non_nullable
@@ -103,18 +92,15 @@ class __$$_WebRTCStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_WebRTCState implements _WebRTCState {
-  const _$_WebRTCState({this.call = null, this.lastSyncTime = 0});
+  const _$_WebRTCState({this.lastSyncTime = 0});
 
-  @override
-  @JsonKey()
-  final CallSession? call;
   @override
   @JsonKey()
   final int lastSyncTime;
 
   @override
   String toString() {
-    return 'WebRTCState(call: $call, lastSyncTime: $lastSyncTime)';
+    return 'WebRTCState(lastSyncTime: $lastSyncTime)';
   }
 
   @override
@@ -122,13 +108,12 @@ class _$_WebRTCState implements _WebRTCState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_WebRTCState &&
-            (identical(other.call, call) || other.call == call) &&
             (identical(other.lastSyncTime, lastSyncTime) ||
                 other.lastSyncTime == lastSyncTime));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, call, lastSyncTime);
+  int get hashCode => Object.hash(runtimeType, lastSyncTime);
 
   @JsonKey(ignore: true)
   @override
@@ -138,11 +123,8 @@ class _$_WebRTCState implements _WebRTCState {
 }
 
 abstract class _WebRTCState implements WebRTCState {
-  const factory _WebRTCState(
-      {final CallSession? call, final int lastSyncTime}) = _$_WebRTCState;
+  const factory _WebRTCState({final int lastSyncTime}) = _$_WebRTCState;
 
-  @override
-  CallSession? get call;
   @override
   int get lastSyncTime;
   @override

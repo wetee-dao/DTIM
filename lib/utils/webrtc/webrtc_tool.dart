@@ -42,7 +42,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     callingPopup?.remove();
     callingPopup = null;
     final g = globalCtx().read<WebRTCCubit>();
-    g.sync(null);
+    g.update();
   }
 
   @override
@@ -51,7 +51,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     callingPopup?.remove();
     callingPopup = null;
     final g = globalCtx().read<WebRTCCubit>();
-    g.sync(null);
+    g.update();
   }
 
   @override
@@ -60,18 +60,19 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     callingPopup?.remove();
     callingPopup = null;
     final g = globalCtx().read<WebRTCCubit>();
-    g.sync(null);
+    g.update();
   }
 
   @override
   Future<void> handleNewCall(CallSession session) async {
     final g = globalCtx().read<WebRTCCubit>();
-    g.sync(null);
-    if (g.state.call != null) {
+    printError(voip.calls.keys.toString());
+    if (voip.calls.keys.length > 1) {
+      g.update();
       session.reject();
       return;
     }
-    g.sync(session);
+    g.update();
     session.onCallStateChanged.stream.listen((e){
       g.update();
     });

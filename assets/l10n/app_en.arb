@@ -107,7 +107,7 @@
       "username": {}
     }
   },
-  "startedACall": "{senderName} started a call",
+  "startedACall": "{senderName} make a call",
   "@startedACall": {
     "type": "text",
     "placeholders": {

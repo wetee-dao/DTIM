@@ -244,7 +244,9 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                           iconSize: 30.w,
                           icon: const Icon(Icons.remove),
                           color: Colors.black,
-                          onPressed: () async {},
+                          onPressed: () async {
+                            widget.onClear?.call();
+                          },
                         ),
                       ),
                       Text(

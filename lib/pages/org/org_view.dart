@@ -275,106 +275,82 @@ class _OrgViewPageState extends State<OrgViewPage> {
           ),
         ),
         BlocBuilder<WebRTCCubit, WebRTCState>(builder: (context, state) {
-          var actions = [];
-          if (state.call != null) {
-            final callActions = CallAction(state.call!);
-            actions = callActions.buildActionButtons();
-          }
-          if (actions.isEmpty) {
-            return const SizedBox();
-          }
-          return Container(
-            decoration: BoxDecoration(border: Border(top: BorderSide(color: constTheme.sidebarText.withOpacity(0.1)))),
-            padding: EdgeInsets.only(left: 12.w, right: 10.w, top: 5.w, bottom: 10.w),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          final voip = im.currentState!.webrtcTool!.voip;
+
+          List<Widget> calls = [];
+
+          for (var k in voip.calls.keys) {
+            final call = voip.calls[k]!;
+            final callActions = CallAction(call);
+            final actions = callActions.buildActionButtons();
+
+            calls.add(
+              Container(
+                decoration:
+                    BoxDecoration(border: Border(top: BorderSide(color: constTheme.sidebarText.withOpacity(0.1)))),
+                padding: EdgeInsets.only(left: 12.w, right: 10.w, top: 5.w, bottom: 10.w),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Text(
-                        "${state.call!.room.isDirectChat ? "" : "Channel: "}${state.call!.room.getLocalizedDisplayname()}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14.w,
-                          color: constTheme.sidebarText,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        im.currentState!.webrtcTool!.addCallingPopup(state.call!.callId, state.call!);
-                      },
-                      tooltip: 'open window',
-                      icon: Icon(
-                        AppIcons.fangda,
-                        size: 16.w,
-                        color: constTheme.sidebarText,
-                      ),
-                    ),
-                    // SizedBox(width: 10.w),
-                  ],
-                ),
-                SizedBox(height: 5.w),
-                if (!state.call!.room.isDirectChat)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // state.call!.usermediaSenders
-                      UserAvatar(
-                        key: Key(im.currentState!.user.id.toString()),
-                        im.me!.address,
-                        true,
-                        40.w,
-                        bg: constTheme.sidebarText.withOpacity(0.1),
-                        color: constTheme.sidebarText,
-                      ),
-                    ],
-                  ),
-                if (!state.call!.room.isDirectChat) SizedBox(height: 10.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    for (var i = 0; i < actions.length; i++)
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8.w)), color: actions[i].backgroundColor),
-                        margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
-                        child: IconButton(
-                          iconSize: 18.w,
-                          constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
-                          style: IconButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.w),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${call.room.isDirectChat ? "" : "Channel: "}${call.room.getLocalizedDisplayname()}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 14.w,
+                              color: constTheme.sidebarText,
                             ),
                           ),
-                          padding: EdgeInsets.zero,
-                          icon: actions[i].child,
-                          color: Colors.white,
-                          onPressed: () async {
-                            actions[i].onPressed();
-                          },
                         ),
-                      ),
-                    // const Spacer(),
-                    // IconButton(
-                    //   iconSize: 18.w,
-                    //   constraints: BoxConstraints(minHeight: 35.w, maxHeight: 35.w),
-                    //   style: IconButton.styleFrom(
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(8.w),
-                    //     ),
-                    //   ),
-                    //   padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    //   icon: Text("挂断", style: TextStyle(fontSize: 14.w, color: constTheme.errorTextColor)),
-                    //   color: Colors.white,
-                    //   onPressed: () async {},
-                    // ),
+                        IconButton(
+                          onPressed: () => im.currentState!.webrtcTool!.addCallingPopup(call.callId, call),
+                          tooltip: 'open window',
+                          icon: Icon(
+                            AppIcons.fangda,
+                            size: 16.w,
+                            color: constTheme.sidebarText,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5.w),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        for (var i = 0; i < actions.length; i++)
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                                color: actions[i].backgroundColor),
+                            margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
+                            child: IconButton(
+                              iconSize: 18.w,
+                              constraints:
+                                  BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                              style: IconButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.w),
+                                ),
+                              ),
+                              padding: EdgeInsets.zero,
+                              icon: actions[i].child,
+                              color: Colors.white,
+                              onPressed: () async {
+                                actions[i].onPressed();
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          );
+              ),
+            );
+          }
+
+          return Column(children: calls);
         })
       ],
     );
