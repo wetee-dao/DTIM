@@ -97,23 +97,19 @@ class ThemeSettingsTile extends AbstractSettingsTile {
                         ),
                       ),
                     SizedBox(height: 10.w),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: themesCurr.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 20,
-                        crossAxisSpacing: 20,
-                        childAspectRatio: 1.35,
-                      ),
-                      itemBuilder: (_, index) => ThemePrew(
-                        theme: themesCurr[index],
-                        selected: initialValue ?? "",
-                        onTap: (name) {
-                          onToggle(name);
-                        },
-                      ),
+                    Wrap(
+                      spacing: 20.w,
+                      runSpacing: 20.w,
+                      children: [
+                        for (var i = 0; i < themesCurr.length; i++)
+                          ThemePrew(
+                            theme: themesCurr[i],
+                            selected: initialValue ?? "",
+                            onTap: (name) {
+                              onToggle(name);
+                            },
+                          )
+                      ],
                     )
                   ],
                 ),

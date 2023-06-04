@@ -18,6 +18,7 @@ import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
 import 'utils/screen/screen.dart';
+import 'utils/screen/screen_util.dart';
 
 final botToastBuilder = BotToastInit();
 
@@ -103,6 +104,7 @@ class App extends StatelessWidget {
           builder: (context, child) {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);
+            ScreenUtil.setConText(context);
             return MediaQuery(
               data: data.copyWith(textScaleFactor: 1),
               child: child,
@@ -112,10 +114,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-
-  // final GoRouter _router = GoRouter(
-  //   navigatorKey: rootNavigatorKey,
-  //   routes: routers(),
-  //   observers: [BotToastNavigatorObserver()],
-  // );
 }

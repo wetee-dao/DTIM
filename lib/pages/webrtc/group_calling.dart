@@ -107,8 +107,8 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
       body: Center(
         child: Container(
           alignment: Alignment.center,
-          width: actions.length > 3 ? 550.w : 350.w,
-          height: 600.w,
+          width: 0.9.sw,
+          height: 0.8.sh,
           decoration: BoxDecoration(
             color: constTheme.centerChannelBg.withOpacity(0.9),
             borderRadius: BorderRadius.circular(20.w),
@@ -219,7 +219,10 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                           padding: EdgeInsets.all(18.w),
                           icon: Icon(AppIcons.jinrudaobo,size: 30.w),
                           color: Colors.white,
-                          onPressed: () async {},
+                          onPressed: () async {
+                            final stream = await widget.call.initLocalStream();
+                            widget.call.enter(stream: stream);
+                          },
                         ),
                       ),
                       Text(
