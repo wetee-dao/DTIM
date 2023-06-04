@@ -8,6 +8,7 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData jinrudaobo = IconData(0xe616, fontFamily: _family); // 进入导播
   static const IconData we_chat = IconData(0xe641, fontFamily: _family); // WeChat
   static const IconData blockchain = IconData(0xe837, fontFamily: _family); // blockchain
   static const IconData cloud_communication_meeting = IconData(0xe751, fontFamily: _family); // Cloud Communication-Meeting
@@ -59,6 +60,7 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.jinrudaobo, "jinrudaobo", "进入导播"),
     _PreviewIcon(AppIcons.we_chat, "we_chat", "WeChat"),
     _PreviewIcon(AppIcons.blockchain, "blockchain", "blockchain"),
     _PreviewIcon(AppIcons.cloud_communication_meeting, "cloud_communication_meeting", "Cloud Communication-Meeting"),

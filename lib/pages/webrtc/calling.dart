@@ -211,7 +211,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 ),
               ),
               Text(
-               widget.call.room.getLocalizedDisplayname(),
+                widget.call.room.getLocalizedDisplayname(),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15.w,
@@ -224,10 +224,10 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                 children: [
                   for (var i = 0; i < actions.length; i++)
                     Container(
-                      padding: EdgeInsets.all(12.w),
                       decoration: BoxDecoration(shape: BoxShape.circle, color: actions[i].backgroundColor),
-                      margin: EdgeInsets.only(right: i != actions.length - 1 ? 20.w : 0),
+                      margin: EdgeInsets.only(right: i != actions.length - 1 ? 25.w : 0),
                       child: IconButton(
+                        padding: EdgeInsets.all(18.w),
                         iconSize: 30.w,
                         icon: actions[i].child,
                         color: Colors.white,

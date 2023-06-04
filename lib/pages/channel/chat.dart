@@ -198,6 +198,31 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     // VRouter.of(context).to('/rooms');
   }
 
+  joinMeet(call) async {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Notice",
+          style: TextStyle(fontSize: 18.w),
+        ),
+        content: Text(
+          "There's an in-progress meeting in the channel at the moment, incapable of organizing another meeting. ",
+          style: TextStyle(color: constTheme.centerChannelColor),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("ok"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (room == null) return Container();
@@ -233,15 +258,19 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         if (!room!.groupCallsEnabled) {
                           await room!.enableGroupCalls();
                         }
-                        if (room!.canCreateGroupCall) {
-                          await voip.newGroupCall(
-                            room!.id,
-                            link.GroupCallType.Voice,
-                            link.GroupCallIntent.Prompt,
-                          );
-                        } else {
+                        if (!room!.canCreateGroupCall) {
                           BotToast.showText(text: "无法创建会议,请检查是否有权限");
+                          return;
                         }
+                        if (voip.groupCalls[room!.id] != null) {
+                          joinMeet(voip.groupCalls[room!.id]);
+                          return;
+                        }
+                        await voip.newGroupCall(
+                          room!.id,
+                          link.GroupCallType.Voice,
+                          link.GroupCallIntent.Prompt,
+                        );
                       } catch (e) {
                         BotToast.showText(text: e.toLocalizedString(globalCtx()));
                       }

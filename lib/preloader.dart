@@ -84,7 +84,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       //   await waitFutureLoading(
       //     context: globalCtx(),
       //     future: () async {
-      //       await im.login(accounts[0], "Jx201501");
+      //       await im.login(accounts[0], "");
       //       // ignore: use_build_context_synchronously
       //       Timer(const Duration(milliseconds: 1000), () {
       //         if (!mounted) return;
@@ -195,7 +195,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                     ),
                   ),
                   Text(
-                    "DAO entrance",
+                    "DTIM",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20.w, color: constTheme.centerChannelColor.withOpacity(0.2)),
                   ),

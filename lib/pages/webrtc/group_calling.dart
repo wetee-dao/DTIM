@@ -213,18 +213,17 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                   Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(12.w),
                         decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.green),
                         margin: EdgeInsets.only(bottom: 15.w),
                         child: IconButton(
-                          iconSize: 30.w,
-                          icon: const Icon(Icons.add),
+                          padding: EdgeInsets.all(18.w),
+                          icon: Icon(AppIcons.jinrudaobo,size: 30.w),
                           color: Colors.white,
                           onPressed: () async {},
                         ),
                       ),
                       Text(
-                        "加入",
+                        "join",
                         style: TextStyle(
                           fontSize: 15.w,
                           color: constTheme.centerChannelColor,
@@ -233,16 +232,15 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  SizedBox(width: 20.w),
+                  SizedBox(width: 30.w),
                   Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(12.w),
                         decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.yellow),
                         margin: EdgeInsets.only(bottom: 15.w),
                         child: IconButton(
-                          iconSize: 30.w,
-                          icon: const Icon(Icons.remove),
+                          padding: EdgeInsets.all(18.w),
+                          icon: Icon(Icons.remove,size: 30.w),
                           color: Colors.black,
                           onPressed: () async {
                             widget.onClear?.call();
@@ -250,7 +248,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                         ),
                       ),
                       Text(
-                        "忽略",
+                        "ignore",
                         style: TextStyle(
                           fontSize: 15.w,
                           color: constTheme.centerChannelColor,

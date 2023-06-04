@@ -66,7 +66,6 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   @override
   Future<void> handleNewCall(CallSession session) async {
     final g = globalCtx().read<WebRTCCubit>();
-    printError(voip.calls.keys.toString());
     if (voip.calls.keys.length > 1) {
       g.update();
       session.reject();

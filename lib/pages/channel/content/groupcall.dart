@@ -96,7 +96,7 @@ class GroupCallContent extends StatelessWidget {
                           BotToast.showText(text: e.toLocalizedString(globalCtx()));
                         }
                       },
-                      icon: Icon(Icons.add_circle_rounded, color: textColor, size: 16.w),
+                      icon: Icon(AppIcons.jinrudaobo, color: textColor, size: 16.w),
                       label: Text("Join", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.w)),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: textColor,
