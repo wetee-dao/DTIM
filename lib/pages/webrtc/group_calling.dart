@@ -113,7 +113,37 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
             color: constTheme.centerChannelBg.withOpacity(0.9),
             borderRadius: BorderRadius.circular(20.w),
           ),
-          child: _state==link.GroupCallState.Entered?Container():renderLoading(),
+          child: _state == link.GroupCallState.Entered
+              ? Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.w),
+                          child: IconButton(
+                            onPressed: () {
+                              widget.onClear?.call();
+                            },
+                            icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
+                            constraints:
+                                BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),
+                            padding: EdgeInsets.zero,
+                            tooltip: L10n.of(context)!.close,
+                            style: IconButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.w),
+                              ),
+                              hoverColor: constTheme.errorTextColor.withOpacity(0.2),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                  ],
+                )
+              : renderLoading(),
         ),
       ),
     );
@@ -298,6 +328,5 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
       ],
     );
   }
-
   // render
 }
