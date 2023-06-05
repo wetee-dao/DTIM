@@ -20,7 +20,7 @@ import '../../../utils/screen/screen.dart';
 import '../../../utils/platform_infos.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
-import 'groupcall.dart';
+import 'group_call.dart';
 import 'html.dart';
 import 'image_bubble.dart';
 import 'map_bubble.dart';

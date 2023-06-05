@@ -1064,10 +1064,10 @@ packages:
     dependency: "direct main"
     description:
       name: matrix
-      sha256: "5f80eec8cc6ff9b5e7da3c30f30d413c1a5be1dce58765a9a4d20065488d7ff4"
+      sha256: ecee8d687224f0fe668a5b9a034e8c2a7b241f578c93a236e0e93a8c2382a458
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.20.2"
+    version: "0.20.5"
   matrix_api_lite:
     dependency: transitive
     description:

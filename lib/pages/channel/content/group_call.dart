@@ -24,6 +24,12 @@ class GroupCallContent extends StatelessWidget {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final im = context.read<AppCubit>();
     final voip = im.currentState!.webrtcTool!.voip;
+    var state = "started";
+    if (event.content["m.terminated"] != null) {
+      if (event.content["m.terminated"] == "call_ended") {
+        state = "ended";
+      }
+    }
     return InkWell(
       // onTap: () => event.saveFile(context),
       onTap: () async {
@@ -62,12 +68,12 @@ class GroupCallContent extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10.w),
               child: Row(
                 children: [
-                  Icon(AppIcons.icon_meeting, color: textColor, size: 28.w),
+                  Icon(AppIcons.icon_meeting, color: textColor.withOpacity(0.6), size: 35.w),
                   SizedBox(width: 5.w),
                   Expanded(
                     child: Text(
-                      "Create a new meeting",
-                      style: TextStyle(color: textColor, fontSize: 16.w),
+                      "Meeting ${event.stateKey} is $state",
+                      style: TextStyle(color: textColor, fontSize: 13.w),
                     ),
                   ),
                 ],
@@ -79,6 +85,11 @@ class GroupCallContent extends StatelessWidget {
               child: Row(
                 children: [
                   const Spacer(),
+                  Text(
+                    "Meeting is $state",
+                    style: TextStyle(color: textColor, fontSize: 13.w),
+                  ),
+                  SizedBox(width: 10.w),
                   if (voip.groupCalls[event.stateKey] != null)
                     ElevatedButton.icon(
                       onPressed: () async {
@@ -110,11 +121,6 @@ class GroupCallContent extends StatelessWidget {
                         ),
                         elevation: 0,
                       ),
-                    ),
-                  if (voip.groupCalls[event.stateKey] == null)
-                    Text(
-                      "Meeting is end",
-                      style: TextStyle(color: textColor, fontSize: 14.w),
                     ),
                 ],
               ),
