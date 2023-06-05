@@ -56,3 +56,4 @@ rust_wraper/Cargo.lock
 linux/shared/librust_wraper.so
 xxx.zip
 xxx
+/.fvm/flutter_sdk/
