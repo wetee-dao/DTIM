@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA606AD45E29BE13D6A35245 /* Cargo.toml in Sources */ = {isa = PBXBuildFile; fileRef = CA6068B8838A3EF4668187A5 /* Cargo.toml */; settings = {COMPILER_FLAGS = "--lib"; }; };
-		CA606AD45E29FC781E054E37 /* Cargo.toml in Sources */ = {isa = PBXBuildFile; fileRef = CA6068B8838A3EF4668187A5 /* Cargo.toml */; settings = {COMPILER_FLAGS = "--lib"; }; };
+		CA60895031C8B801892A6678 /* Cargo.toml in Sources */ = {isa = PBXBuildFile; fileRef = CA6093B9CBAB3EF4668187A5 /* Cargo.toml */; settings = {COMPILER_FLAGS = "--lib"; }; };
+		CA60895031C8D4A9675DF4B6 /* Cargo.toml in Sources */ = {isa = PBXBuildFile; fileRef = CA6093B9CBAB3EF4668187A5 /* Cargo.toml */; settings = {COMPILER_FLAGS = "--lib"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
-		CA6068B8838AAC6C1400ACA8 /* PBXBuildRule */ = {
+		CA6093B9CBABAC6C1400ACA8 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
 			dependencyFile = "$(DERIVED_FILE_DIR)/$(CARGO_XCODE_TARGET_ARCH)-$(EXECUTABLE_NAME).d";
@@ -25,15 +25,15 @@
 			outputFiles = (
 				"$(OBJECT_FILE_DIR)/$(CARGO_XCODE_TARGET_ARCH)-$(EXECUTABLE_NAME)",
 			);
-			script = "# generated with cargo-xcode 1.4.3\n\nset -eu; export PATH=$PATH:~/.cargo/bin:/usr/local/bin;\nif [ \"${IS_MACCATALYST-NO}\" = YES ]; then\n    CARGO_XCODE_TARGET_TRIPLE=\"${CARGO_XCODE_TARGET_ARCH}-apple-ios-macabi\"\nelse\n    CARGO_XCODE_TARGET_TRIPLE=\"${CARGO_XCODE_TARGET_ARCH}-apple-${CARGO_XCODE_TARGET_OS}\"\nfi\nif [ \"$CARGO_XCODE_TARGET_OS\" != \"darwin\" ]; then\n    PATH=\"${PATH/\\/Contents\\/Developer\\/Toolchains\\/XcodeDefault.xctoolchain\\/usr\\/bin:/xcode-provided-ld-cant-link-lSystem-for-the-host-build-script:}\"\nfi\nPATH=\"$PATH:/opt/homebrew/bin\" # Rust projects often depend on extra tools like nasm, which Xcode lacks\nif [ \"$CARGO_XCODE_BUILD_MODE\" == release ]; then\n    OTHER_INPUT_FILE_FLAGS=\"${OTHER_INPUT_FILE_FLAGS} --release\"\nfi\nif command -v rustup &> /dev/null; then\n    if ! rustup target list --installed | egrep -q \"${CARGO_XCODE_TARGET_TRIPLE}\"; then\n        echo \"warning: this build requires rustup toolchain for $CARGO_XCODE_TARGET_TRIPLE, but it isn't installed\"\n        rustup target add \"${CARGO_XCODE_TARGET_TRIPLE}\" || echo >&2 \"warning: can't install $CARGO_XCODE_TARGET_TRIPLE\"\n    fi\nfi\nif [ \"$ACTION\" = clean ]; then\n( set -x; cargo clean --manifest-path=\"$SCRIPT_INPUT_FILE\" ${OTHER_INPUT_FILE_FLAGS} --target=\"${CARGO_XCODE_TARGET_TRIPLE}\"; );\nelse\n( set -x; cargo build --manifest-path=\"$SCRIPT_INPUT_FILE\" --features=\"${CARGO_XCODE_FEATURES:-}\" ${OTHER_INPUT_FILE_FLAGS} --target=\"${CARGO_XCODE_TARGET_TRIPLE}\"; );\nfi\n# it's too hard to explain Cargo's actual exe path to Xcode build graph, so hardlink to a known-good path instead\nBUILT_SRC=\"${CARGO_TARGET_DIR}/${CARGO_XCODE_TARGET_TRIPLE}/${CARGO_XCODE_BUILD_MODE}/${CARGO_XCODE_CARGO_FILE_NAME}\"\nln -f -- \"$BUILT_SRC\" \"$SCRIPT_OUTPUT_FILE_0\"\n\n# xcode generates dep file, but for its own path, so append our rename to it\nDEP_FILE_SRC=\"${CARGO_TARGET_DIR}/${CARGO_XCODE_TARGET_TRIPLE}/${CARGO_XCODE_BUILD_MODE}/${CARGO_XCODE_CARGO_DEP_FILE_NAME}\"\nif [ -f \"$DEP_FILE_SRC\" ]; then\n   DEP_FILE_DST=\"${DERIVED_FILE_DIR}/${CARGO_XCODE_TARGET_ARCH}-${EXECUTABLE_NAME}.d\"\n   cp -f \"$DEP_FILE_SRC\" \"$DEP_FILE_DST\"\n   echo >> \"$DEP_FILE_DST\" \"$SCRIPT_OUTPUT_FILE_0: $BUILT_SRC\"\nfi\n\n# lipo script needs to know all the platform-specific files that have been built\n# archs is in the file name, so that paths don't stay around after archs change\n# must match input for LipoScript\nFILE_LIST=\"${DERIVED_FILE_DIR}/${ARCHS}-${EXECUTABLE_NAME}.xcfilelist\"\ntouch \"$FILE_LIST\"\nif ! egrep -q \"$SCRIPT_OUTPUT_FILE_0\" \"$FILE_LIST\" ; then\n   echo >> \"$FILE_LIST\" \"$SCRIPT_OUTPUT_FILE_0\"\nfi\n\n";
+			script = "# generated with cargo-xcode 1.5.0\n\nset -eu; export PATH=\"$PATH:$HOME/.cargo/bin:/usr/local/bin\";\nif [ \"${IS_MACCATALYST-NO}\" = YES ]; then\n    CARGO_XCODE_TARGET_TRIPLE=\"${CARGO_XCODE_TARGET_ARCH}-apple-ios-macabi\"\nelse\n    CARGO_XCODE_TARGET_TRIPLE=\"${CARGO_XCODE_TARGET_ARCH}-apple-${CARGO_XCODE_TARGET_OS}\"\nfi\nif [ \"$CARGO_XCODE_TARGET_OS\" != \"darwin\" ]; then\n    PATH=\"${PATH/\\/Contents\\/Developer\\/Toolchains\\/XcodeDefault.xctoolchain\\/usr\\/bin:/xcode-provided-ld-cant-link-lSystem-for-the-host-build-script:}\"\nfi\nPATH=\"$PATH:/opt/homebrew/bin\" # Rust projects often depend on extra tools like nasm, which Xcode lacks\nif [ \"$CARGO_XCODE_BUILD_MODE\" == release ]; then\n    OTHER_INPUT_FILE_FLAGS=\"${OTHER_INPUT_FILE_FLAGS} --release\"\nfi\nif command -v rustup &> /dev/null; then\n    if ! rustup target list --installed | egrep -q \"${CARGO_XCODE_TARGET_TRIPLE}\"; then\n        echo \"warning: this build requires rustup toolchain for $CARGO_XCODE_TARGET_TRIPLE, but it isn't installed\"\n        rustup target add \"${CARGO_XCODE_TARGET_TRIPLE}\" || echo >&2 \"warning: can't install $CARGO_XCODE_TARGET_TRIPLE\"\n    fi\nfi\nif [ \"$ACTION\" = clean ]; then\n ( set -x; cargo clean --manifest-path=\"$SCRIPT_INPUT_FILE\" ${OTHER_INPUT_FILE_FLAGS} --target=\"${CARGO_XCODE_TARGET_TRIPLE}\"; );\nelse\n ( set -x; cargo build --manifest-path=\"$SCRIPT_INPUT_FILE\" --features=\"${CARGO_XCODE_FEATURES:-}\" ${OTHER_INPUT_FILE_FLAGS} --target=\"${CARGO_XCODE_TARGET_TRIPLE}\"; );\nfi\n# it's too hard to explain Cargo's actual exe path to Xcode build graph, so hardlink to a known-good path instead\nBUILT_SRC=\"${CARGO_TARGET_DIR}/${CARGO_XCODE_TARGET_TRIPLE}/${CARGO_XCODE_BUILD_MODE}/${CARGO_XCODE_CARGO_FILE_NAME}\"\nln -f -- \"$BUILT_SRC\" \"$SCRIPT_OUTPUT_FILE_0\"\n\n# xcode generates dep file, but for its own path, so append our rename to it\nDEP_FILE_SRC=\"${CARGO_TARGET_DIR}/${CARGO_XCODE_TARGET_TRIPLE}/${CARGO_XCODE_BUILD_MODE}/${CARGO_XCODE_CARGO_DEP_FILE_NAME}\"\nif [ -f \"$DEP_FILE_SRC\" ]; then\n    DEP_FILE_DST=\"${DERIVED_FILE_DIR}/${CARGO_XCODE_TARGET_ARCH}-${EXECUTABLE_NAME}.d\"\n    cp -f \"$DEP_FILE_SRC\" \"$DEP_FILE_DST\"\n    echo >> \"$DEP_FILE_DST\" \"$SCRIPT_OUTPUT_FILE_0: $BUILT_SRC\"\nfi\n\n# lipo script needs to know all the platform-specific files that have been built\n# archs is in the file name, so that paths don't stay around after archs change\n# must match input for LipoScript\nFILE_LIST=\"${DERIVED_FILE_DIR}/${ARCHS}-${EXECUTABLE_NAME}.xcfilelist\"\ntouch \"$FILE_LIST\"\nif ! egrep -q \"$SCRIPT_OUTPUT_FILE_0\" \"$FILE_LIST\" ; then\n    echo >> \"$FILE_LIST\" \"$SCRIPT_OUTPUT_FILE_0\"\nfi\n";
 		};
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
 		ADDEDBA66A6E1 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		CA6055C3ECB0537EB31ECD0E /* librust_wraper_static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librust_wraper_static.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA6068B8838A3EF4668187A5 /* Cargo.toml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cargo.toml; sourceTree = "<group>"; };
-		CA60CE47FC4A36FDA8E35F60 /* rust_wraper.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = rust_wraper.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA600DEE3E9C36FDA8E35F60 /* rust_wraper.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = rust_wraper.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA6093B9CBAB3EF4668187A5 /* Cargo.toml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cargo.toml; sourceTree = "<group>"; };
+		CA60DA641997537EB31ECD0E /* librust_wraper_static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librust_wraper_static.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -45,16 +45,16 @@
 			name = "Required for static linking";
 			sourceTree = "<group>";
 		};
-		CA6068B8838A22869D176AE5 /* Products */ = {
+		CA6093B9CBAB22869D176AE5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CA6055C3ECB0537EB31ECD0E /* librust_wraper_static.a */,
-				CA60CE47FC4A36FDA8E35F60 /* rust_wraper.dylib */,
+				CA60DA641997537EB31ECD0E /* librust_wraper_static.a */,
+				CA600DEE3E9C36FDA8E35F60 /* rust_wraper.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CA6068B8838A98AF0B5890DB /* Frameworks */ = {
+		CA6093B9CBAB98AF0B5890DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ADDEDBA66A6E2 /* Required for static linking */,
@@ -62,71 +62,71 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CA6068B8838AD65BC3C892A8 = {
+		CA6093B9CBABD65BC3C892A8 = {
 			isa = PBXGroup;
 			children = (
-				CA6068B8838A3EF4668187A5 /* Cargo.toml */,
-				CA6068B8838A22869D176AE5 /* Products */,
-				CA6068B8838A98AF0B5890DB /* Frameworks */,
+				CA6093B9CBAB3EF4668187A5 /* Cargo.toml */,
+				CA6093B9CBAB22869D176AE5 /* Products */,
+				CA6093B9CBAB98AF0B5890DB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CA6055C3ECB0FC781E054E37 /* rust_wraper-staticlib */ = {
+		CA600DEE3E9CD4A9675DF4B6 /* rust_wraper-cdylib */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA60414DB821FC781E054E37 /* Build configuration list for PBXNativeTarget "rust_wraper-staticlib" */;
+			buildConfigurationList = CA60E35E82F2D4A9675DF4B6 /* Build configuration list for PBXNativeTarget "rust_wraper-cdylib" */;
 			buildPhases = (
-				CA60E61BECD9FC781E054E37 /* Sources */,
-				CA6068B8838AAF6EBB7F357C /* Universal Binary lipo */,
+				CA60F5ED7DDAD4A9675DF4B6 /* Sources */,
+				CA6093B9CBABAF6EBB7F357C /* Universal Binary lipo */,
 			);
 			buildRules = (
-				CA6068B8838AAC6C1400ACA8 /* PBXBuildRule */,
-			);
-			dependencies = (
-			);
-			name = "rust_wraper-staticlib";
-			productName = librust_wraper_static.a;
-			productReference = CA6055C3ECB0537EB31ECD0E /* librust_wraper_static.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		CA60CE47FC4ABE13D6A35245 /* rust_wraper-cdylib */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CA60414DB821BE13D6A35245 /* Build configuration list for PBXNativeTarget "rust_wraper-cdylib" */;
-			buildPhases = (
-				CA60E61BECD9BE13D6A35245 /* Sources */,
-				CA6068B8838AAF6EBB7F357C /* Universal Binary lipo */,
-			);
-			buildRules = (
-				CA6068B8838AAC6C1400ACA8 /* PBXBuildRule */,
+				CA6093B9CBABAC6C1400ACA8 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
 			name = "rust_wraper-cdylib";
 			productName = rust_wraper.dylib;
-			productReference = CA60CE47FC4A36FDA8E35F60 /* rust_wraper.dylib */;
+			productReference = CA600DEE3E9C36FDA8E35F60 /* rust_wraper.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
+		};
+		CA60DA641997B801892A6678 /* rust_wraper-staticlib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA60E35E82F2B801892A6678 /* Build configuration list for PBXNativeTarget "rust_wraper-staticlib" */;
+			buildPhases = (
+				CA60F5ED7DDAB801892A6678 /* Sources */,
+				CA6093B9CBABAF6EBB7F357C /* Universal Binary lipo */,
+			);
+			buildRules = (
+				CA6093B9CBABAC6C1400ACA8 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "rust_wraper-staticlib";
+			productName = librust_wraper_static.a;
+			productReference = CA60DA641997537EB31ECD0E /* librust_wraper_static.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		CA6068B8838AE04653AD465F /* Project object */ = {
+		CA6093B9CBABE04653AD465F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
-					CA6055C3ECB0FC781E054E37 = {
+					CA600DEE3E9CD4A9675DF4B6 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
-					CA60CE47FC4ABE13D6A35245 = {
+					CA60DA641997B801892A6678 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = CA6068B8838A80E02D6C7F57 /* Build configuration list for PBXProject "rust_wraper" */;
+			buildConfigurationList = CA6093B9CBAB80E02D6C7F57 /* Build configuration list for PBXProject "rust_wraper" */;
 			compatibilityVersion = "Xcode 11.4";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -134,19 +134,19 @@
 				en,
 				Base,
 			);
-			mainGroup = CA6068B8838AD65BC3C892A8;
-			productRefGroup = CA6068B8838A22869D176AE5 /* Products */;
+			mainGroup = CA6093B9CBABD65BC3C892A8;
+			productRefGroup = CA6093B9CBAB22869D176AE5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CA6055C3ECB0FC781E054E37 /* rust_wraper-staticlib */,
-				CA60CE47FC4ABE13D6A35245 /* rust_wraper-cdylib */,
+				CA60DA641997B801892A6678 /* rust_wraper-staticlib */,
+				CA600DEE3E9CD4A9675DF4B6 /* rust_wraper-cdylib */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CA6068B8838AAF6EBB7F357C /* Universal Binary lipo */ = {
+		CA6093B9CBABAF6EBB7F357C /* Universal Binary lipo */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -164,41 +164,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# generated with cargo-xcode 1.4.3\nset -eux; cat \"$DERIVED_FILE_DIR/$ARCHS-$EXECUTABLE_NAME.xcfilelist\" | tr '\\n' '\\0' | xargs -0 lipo -create -output \"$TARGET_BUILD_DIR/$EXECUTABLE_PATH\"\n";
+			shellScript = "# generated with cargo-xcode 1.5.0\n\n            set -eux; cat \"$DERIVED_FILE_DIR/$ARCHS-$EXECUTABLE_NAME.xcfilelist\" | tr '\\n' '\\0' | xargs -0 lipo -create -output \"$TARGET_BUILD_DIR/$EXECUTABLE_PATH\"\n            if [ ${LD_DYLIB_INSTALL_NAME:+1} ]; then\n                install_name_tool -id \"$LD_DYLIB_INSTALL_NAME\" \"$TARGET_BUILD_DIR/$EXECUTABLE_PATH\"\n            fi\n        ";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CA60E61BECD9BE13D6A35245 /* Sources */ = {
+		CA60F5ED7DDAB801892A6678 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA606AD45E29BE13D6A35245 /* Cargo.toml in Sources */,
+				CA60895031C8B801892A6678 /* Cargo.toml in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CA60E61BECD9FC781E054E37 /* Sources */ = {
+		CA60F5ED7DDAD4A9675DF4B6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA606AD45E29FC781E054E37 /* Cargo.toml in Sources */,
+				CA60895031C8D4A9675DF4B6 /* Cargo.toml in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		CA60CD4A4E95BE13D6A35245 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
-				CARGO_XCODE_CARGO_FILE_NAME = librust_wraper.dylib;
-				PRODUCT_NAME = rust_wraper;
-				SUPPORTED_PLATFORMS = macosx;
-			};
-			name = Release;
-		};
-		CA60CD4A4E95FC781E054E37 /* Release */ = {
+		CA6002D6ADFEB801892A6678 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
@@ -210,9 +200,20 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos appletvsimulator appletvos";
 			};
-			name = Release;
+			name = Debug;
 		};
-		CA60E6CB94C4228BE02872F8 /* Debug */ = {
+		CA6002D6ADFED4A9675DF4B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
+				CARGO_XCODE_CARGO_FILE_NAME = librust_wraper.dylib;
+				DYLIB_COMPATIBILITY_VERSION = 0;
+				PRODUCT_NAME = rust_wraper;
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Debug;
+		};
+		CA6044D8AE17228BE02872F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -228,6 +229,9 @@
 				"CARGO_XCODE_TARGET_OS[sdk=iphonesimulator*]" = "ios-sim";
 				"CARGO_XCODE_TARGET_OS[sdk=iphonesimulator*][arch=x86_64*]" = ios;
 				"CARGO_XCODE_TARGET_OS[sdk=macosx*]" = darwin;
+				CURRENT_PROJECT_VERSION = 0.1;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path/../Frameworks/";
+				MARKETING_VERSION = 0.1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = rust_wraper;
 				SDKROOT = macosx;
@@ -235,7 +239,7 @@
 			};
 			name = Debug;
 		};
-		CA60E6CB94C43CC16B37690B /* Release */ = {
+		CA6044D8AE173CC16B37690B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -251,23 +255,16 @@
 				"CARGO_XCODE_TARGET_OS[sdk=iphonesimulator*]" = "ios-sim";
 				"CARGO_XCODE_TARGET_OS[sdk=iphonesimulator*][arch=x86_64*]" = ios;
 				"CARGO_XCODE_TARGET_OS[sdk=macosx*]" = darwin;
+				CURRENT_PROJECT_VERSION = 0.1;
+				DYLIB_INSTALL_NAME_BASE = "@executable_path/../Frameworks/";
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_NAME = rust_wraper;
 				SDKROOT = macosx;
 				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Release;
 		};
-		CA60F18FD212BE13D6A35245 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
-				CARGO_XCODE_CARGO_FILE_NAME = librust_wraper.dylib;
-				PRODUCT_NAME = rust_wraper;
-				SUPPORTED_PLATFORMS = macosx;
-			};
-			name = Debug;
-		};
-		CA60F18FD212FC781E054E37 /* Debug */ = {
+		CA609C105D6FB801892A6678 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
@@ -279,39 +276,50 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos appletvsimulator appletvos";
 			};
-			name = Debug;
+			name = Release;
+		};
+		CA609C105D6FD4A9675DF4B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CARGO_XCODE_CARGO_DEP_FILE_NAME = librust_wraper.d;
+				CARGO_XCODE_CARGO_FILE_NAME = librust_wraper.dylib;
+				DYLIB_COMPATIBILITY_VERSION = 0;
+				PRODUCT_NAME = rust_wraper;
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CA60414DB821BE13D6A35245 /* Build configuration list for PBXNativeTarget "rust_wraper-cdylib" */ = {
+		CA6093B9CBAB80E02D6C7F57 /* Build configuration list for PBXProject "rust_wraper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CA60CD4A4E95BE13D6A35245 /* Release */,
-				CA60F18FD212BE13D6A35245 /* Debug */,
+				CA6044D8AE173CC16B37690B /* Release */,
+				CA6044D8AE17228BE02872F8 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA60414DB821FC781E054E37 /* Build configuration list for PBXNativeTarget "rust_wraper-staticlib" */ = {
+		CA60E35E82F2B801892A6678 /* Build configuration list for PBXNativeTarget "rust_wraper-staticlib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CA60CD4A4E95FC781E054E37 /* Release */,
-				CA60F18FD212FC781E054E37 /* Debug */,
+				CA609C105D6FB801892A6678 /* Release */,
+				CA6002D6ADFEB801892A6678 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA6068B8838A80E02D6C7F57 /* Build configuration list for PBXProject "rust_wraper" */ = {
+		CA60E35E82F2D4A9675DF4B6 /* Build configuration list for PBXNativeTarget "rust_wraper-cdylib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CA60E6CB94C43CC16B37690B /* Release */,
-				CA60E6CB94C4228BE02872F8 /* Debug */,
+				CA609C105D6FD4A9675DF4B6 /* Release */,
+				CA6002D6ADFED4A9675DF4B6 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = CA6068B8838AE04653AD465F /* Project object */;
+	rootObject = CA6093B9CBABE04653AD465F /* Project object */;
 }
