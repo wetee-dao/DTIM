@@ -782,10 +782,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_webrtc
-      sha256: "54d31a29e45ebae28860f2400a9d8353cbff95dffe631c58436661a3e6456324"
+      sha256: c2d244e422687a84d88af4ed2dcacc21cf76f156b4f2e9443123e42f1cceadc0
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.9.30+hotfix.2"
+    version: "0.9.32"
   freezed:
     dependency: "direct dev"
     description:
