@@ -24,8 +24,10 @@ final botToastBuilder = BotToastInit();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
-  await windowManager.hide();
+  if (isPc()) {
+    await windowManager.ensureInitialized();
+    await windowManager.hide();
+  }
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
 
   // 数据库初始化

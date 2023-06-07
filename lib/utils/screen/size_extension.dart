@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import 'screen_util.dart';
@@ -91,6 +92,9 @@ extension BoxConstraintsExtension on BoxConstraints {
 }
 
 bool isPc() {
+  if (kIsWeb) {
+    return false;
+  }
   return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 }
 

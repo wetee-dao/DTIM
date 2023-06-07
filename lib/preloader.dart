@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/router.dart';
+import 'package:asyou_app/utils/platform_infos.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:collection/collection.dart';
@@ -79,7 +81,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
             },
           );
         }
-      } 
+      }
       // else {
       //   await waitFutureLoading(
       //     context: globalCtx(),
@@ -178,6 +180,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       body: Center(
@@ -391,68 +394,98 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 30.w),
-                          child: InkWell(
-                            key: const Key("selectAccountType"),
-                            onTap: () => selectAccountType(),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
-                              width: double.maxFinite,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: constTheme.centerChannelColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                L10n.of(context)!.generate,
-                                style: TextStyle(
-                                  color: constTheme.centerChannelBg,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19.w,
+                        if (!PlatformInfos.isWeb)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            margin: EdgeInsets.only(bottom: 5.w),
+                            child: InkWell(
+                              key: const Key("selectAccountType"),
+                              onTap: () => selectAccountType(),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                                width: double.maxFinite,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: constTheme.centerChannelColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  L10n.of(context)!.generate,
+                                  style: TextStyle(
+                                    color: constTheme.centerChannelBg,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19.w,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 5.w),
-                        InkWell(
-                          onTap: () async {
-                            if (accounts.length >= 3) {
-                              BotToast.showText(
-                                text: L10n.of(context)!.tooManyUsers,
-                                duration: const Duration(seconds: 2),
-                              );
-                              return;
-                            }
-                            await context.router.pushNamed("/importSr25519key");
-                            getList(null);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              L10n.of(context)!.importAccount,
-                              style: TextStyle(
-                                color: constTheme.centerChannelColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.w,
+                        if (!PlatformInfos.isWeb)
+                          InkWell(
+                            onTap: () async {
+                              if (accounts.length >= 3) {
+                                BotToast.showText(
+                                  text: L10n.of(context)!.tooManyUsers,
+                                  duration: const Duration(seconds: 2),
+                                );
+                                return;
+                              }
+                              await context.router.pushNamed("/importSr25519key");
+                              getList(null);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                L10n.of(context)!.importAccount,
+                                style: TextStyle(
+                                  color: constTheme.centerChannelColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.w,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        if (PlatformInfos.isWeb)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            margin: EdgeInsets.only(bottom: 5.w),
+                            child: InkWell(
+                              key: const Key("connectWallet"),
+                              onTap: () {
+                                // rustApi.connectWallet();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                                width: double.maxFinite,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: constTheme.centerChannelColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Connect wallet",
+                                  style: TextStyle(
+                                    color: constTheme.centerChannelBg,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19.w,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         SizedBox(
                           height: 0.02.sh,
                         ),
                       ],
                     ),
                   ),
-                  if (isPc())
+                  if (width > 800.w)
                     Expanded(
                       child: moveWindow(Container(
                         color: constTheme.sidebarBg,
@@ -515,4 +548,6 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       ),
     );
   }
+
+  
 }
