@@ -26,6 +26,8 @@ class Account extends HiveObject  {
 
   @HiveField(5)
   late List<AccountOrg> orgs;
+
+  Account({required this.address, required this.chainData, required this.orgs});
 }
 
 @HiveType(typeId: 2)

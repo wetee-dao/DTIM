@@ -353,12 +353,13 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   );
 
                   // 创建账户
-                  final initUser = Account();
+                  final initUser = Account(
+                    address: chainData.address,
+                    chainData: accountStr,
+                    orgs: [],
+                  );
                   initUser.name = chainData.meta["name"];
-                  initUser.address = chainData.address;
                   initUser.domain = "";
-                  initUser.chainData = accountStr;
-                  initUser.orgs = [];
 
                   //保存在本地
                   await (await AccountApi.create()).addUser(initUser);

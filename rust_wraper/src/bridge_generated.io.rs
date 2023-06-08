@@ -2,6 +2,11 @@ use super::*;
 // Section: wire functions
 
 #[no_mangle]
+pub extern "C" fn wire_connect_wallet(port_: i64) {
+    wire_connect_wallet_impl(port_)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_connect(port_: i64, url: *mut wire_uint_8_list) {
     wire_connect_impl(port_, url)
 }

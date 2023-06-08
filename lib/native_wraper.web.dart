@@ -1,23 +1,22 @@
 
 import 'dart:typed_data';
-import 'dart:js' as js;
-// ignore: depend_on_referenced_packages
-import 'package:js/js_util.dart';
+import 'package:js/js.dart';
+import 'dart:js_util';
+
 import 'bridge_struct.dart';
 
+@JS("queryAccounts")
+external String queryAccounts();
 
 // ignore: camel_case_types
 class rustApi{
   static Future<String> connectWallet() async {
-    //调用Js的方法
     try{
-      var result =  await js.context.callMethod('queryAccounts');
-      print(result);
+      var result =  await promiseToFuture(queryAccounts());
+      return result;
     }catch(e){
-      print(e);
+      rethrow;
     }
-  
-    return "";
   }
 
   static Future<int> connect({required String url, dynamic hint}) {

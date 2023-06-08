@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert' as convert;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/router.dart';
@@ -43,6 +44,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   @override
   void initState() {
     super.initState();
+
     im = context.read();
     getList(() {
       if (accounts.isNotEmpty && !runInTest) {
@@ -271,7 +273,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text(
-                                                          accounts[i].name!,
+                                                          accounts[i].name??"-",
                                                           style: TextStyle(
                                                             color: constTheme.centerChannelColor,
                                                             fontSize: 16.w,
@@ -457,8 +459,29 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             margin: EdgeInsets.only(bottom: 5.w),
                             child: InkWell(
                               key: const Key("connectWallet"),
-                              onTap: () {
-                                // rustApi.connectWallet();
+                              onTap: () async {
+                                var acount = await rustApi.connectWallet();
+                                List<dynamic> accountJ = convert.jsonDecode(acount);
+                                List<Account> accounts = [];
+                                for (var i = 0; i < accountJ.length; i++) {
+                                  final chainData = accountJ[i] as Map<String, dynamic>;
+                                  final chainStr = convert.jsonEncode(accountJ[i]);
+                                  final initUser = Account(
+                                    address: chainData["address"] as String,
+                                    chainData: chainStr,
+                                    orgs: [],
+                                  );
+                                  initUser.domain = "";
+                                  initUser.chainData = chainStr;
+                                  initUser.name = (chainData["meta"] as Map<String, dynamic>)["name"] as String;
+
+                                  accounts.add(initUser);
+                                }
+                                await accountStore.syncUsers(accounts);
+                                BotToast.showText(
+                                  text: '账户创建成功，稍后您需要选择您的组织连接web3网络',
+                                  duration: const Duration(seconds: 2),
+                                );
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
@@ -492,22 +515,23 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                  onTap: () => pop(),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20.w),
-                                    child: Icon(
-                                      Icons.close,
-                                      size: 25.w,
-                                      color: constTheme.sidebarText,
+                            if (PlatformInfos.isLinux || PlatformInfos.isWindows)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () => pop(),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(20.w),
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 25.w,
+                                        color: constTheme.sidebarText,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                             Expanded(
                               child: Opacity(
                                 opacity: 0.3,
@@ -548,6 +572,4 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       ),
     );
   }
-
-  
 }

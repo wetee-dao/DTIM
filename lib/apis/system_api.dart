@@ -1,22 +1,21 @@
 import 'package:hive/hive.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../store/db.dart';
 import '../models/system.dart';
 
 class SystemApi {
-  late final CollectionBox<System> storeBox;
+  late final Box<System> storeBox;
 
-  SystemApi._create(CollectionBox<System> store) {
+  SystemApi._create(Box<System> store) {
     storeBox = store;
   }
 
   static Future<SystemApi> create() async {
-    var storeBox = await DB!.openBox<System>('System');
+    var storeBox = await Hive.openBox<System>('System');
     return SystemApi._create(storeBox);
   }
 
-  CollectionBox<System> store() {
+  Box<System> store() {
     return storeBox;
   }
 

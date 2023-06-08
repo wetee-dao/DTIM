@@ -1,21 +1,20 @@
 import 'package:hive/hive.dart';
 
 import '../models/account.dart';
-import '../../store/db.dart';
 
 class AccountApi {
-  late final CollectionBox<Account> storeBox;
+  late final Box<Account> storeBox;
 
-  AccountApi._create(CollectionBox<Account> store) {
+  AccountApi._create(Box<Account> store) {
     storeBox = store;
   }
 
   static Future<AccountApi> create() async {
-    var storeBox = await DB!.openBox<Account>('Account');
+    var storeBox = await Hive.openBox<Account>('Account');
     return AccountApi._create(storeBox);
   }
 
-  CollectionBox<Account> store() {
+  Box<Account> store() {
     return storeBox;
   }
 
@@ -29,8 +28,44 @@ class AccountApi {
   }
 
   Future<List<Account>> getUsers() async {
-    final keys = await storeBox.getAllKeys();
-    final query = await storeBox.getAll(keys);
-    return query.map((v)=>v!).toList();
+    return storeBox.values.toList();
+  }
+
+  syncUsers(List<Account> users) async {
+    var oldUsers = await getUsers();
+
+    // 添加新的数据 更新新的数据
+    for (var i = 0; i < users.length; i++) {
+      var storeIndex = -1;
+      for (var j = 0; j < oldUsers.length; j++) {
+        if (users[i].address == oldUsers[j].address) {
+          storeIndex = j;
+        }
+      }
+      
+      if (storeIndex == -1) {
+        // 添加
+        // await addUser(users[i]);
+        await storeBox.put(users[i].address,users[i]);
+      } else {
+        // 更新
+        oldUsers[storeIndex].name = users[i].name;
+        await oldUsers[storeIndex].save();
+      }
+    }
+
+    // 删除不需要的数据
+    for (var j = 0; j < oldUsers.length; j++) {
+      var storeIndex = -1;
+      for (var i = 0; i < users.length; i++) {
+        if (oldUsers[j].address == oldUsers[i].address) {
+          storeIndex = i;
+        }
+      }
+      // 删除
+      if (storeIndex == -1) {
+        await remove(oldUsers[storeIndex].address);
+      }
+    }
   }
 }

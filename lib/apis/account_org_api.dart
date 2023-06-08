@@ -1,33 +1,30 @@
 import 'package:hive/hive.dart';
 
-import '../store/db.dart';
 import '../models/models.dart';
 
 class AccountOrgApi {
-  late final CollectionBox<AccountOrg> storeBox;
+  late final Box<AccountOrg> storeBox;
 
-  AccountOrgApi._create(CollectionBox<AccountOrg> store) {
+  AccountOrgApi._create(Box<AccountOrg> store) {
     storeBox = store;
   }
 
   static Future<AccountOrgApi> create() async {
-    var storeBox = await DB!.openBox<AccountOrg>('AccountOrg');
+    var storeBox = await Hive.openBox<AccountOrg>('AccountOrg');
     return AccountOrgApi._create(storeBox);
   }
 
-  CollectionBox<AccountOrg> store() {
+  Box<AccountOrg> store() {
     return storeBox;
   }
 
   Future<List<AccountOrg?>> listAll() async {
-    final keys = await storeBox.getAllKeys();
-    return await storeBox.getAll(keys);
+    return  storeBox.values.toList();
   }
 
   Future<List<AccountOrg>> listByAccount(String userId) async {
-    final keys = await storeBox.getAllKeys();
-    final values =  await storeBox.getAll(keys);
-    return values.where((a) => a!.account.address == userId).map((v) => v!).toList();
+    final values = storeBox.values.toList();
+    return values.where((a) => a.account.address == userId).map((v) => v).toList();
   }
 
   Future<List<AccountOrg>> accountSyncOrgs(
@@ -39,8 +36,8 @@ class AccountOrgApi {
     // final aquery = accountStoreBox.query(Account_.address.equals(userId)).build();
     // final account = aquery.findUnique();
     // aquery.close();
-    final accountStoreBox = await DB!.openBox<Account>('Account');
-    final account = await accountStoreBox.get(userId);
+    final accountStoreBox = await Hive.openBox<Account>('Account');
+    final account = accountStoreBox.get(userId);
 
     // 查询当前的团队
     final storeOrgs = await listByAccount(userId);

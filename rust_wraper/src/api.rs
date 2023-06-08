@@ -26,6 +26,10 @@ use tokio::runtime::Runtime;
 //     MacOs(String),
 // }
 
+pub fn connect_wallet() -> anyhow::Result<String> {
+    Ok("".to_string())
+}
+
 pub fn connect(url: String) -> anyhow::Result<usize> {
     // 创建连接
     let client: Client = Client::new(url.to_string())?;

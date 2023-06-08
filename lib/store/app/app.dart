@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../models/models.dart';
 import '../../native_wraper.dart';
 import '../../utils/functions.dart';
+import '../../utils/platform_infos.dart';
 import '../../utils/screen/screen.dart';
 
 part 'app.freezed.dart';
@@ -26,7 +27,6 @@ class AppState with _$AppState {
     @Default(0) int lastSyncTime,
   }) = _AppState;
 }
-
 
 class AppCubit extends Cubit<AppState> {
   AppCubit({state = const AppState()}) : super(state);
@@ -54,22 +54,30 @@ class AppCubit extends Cubit<AppState> {
     final pwd = password;
     final me = user;
     final signCtx = "${"{\"t\":\"${DateTime.now().millisecondsSinceEpoch}"}\"}";
-    try {
+    if (!PlatformInfos.isWeb) {
+      try {
+        await rustApi.addKeyring(keyringStr: user.chainData, password: password);
+        final sign = await rustApi.signFromAddress(
+          address: user.address,
+          ctx: signCtx,
+        );
+        emit(state.copyWith(
+          password: pwd,
+          me: me,
+          signCtx: signCtx,
+          sign: sign,
+          // currentId: '${me.address}@${me.org.domain}/${platformGet()}',
+        ));
+      } catch (e) {
+        print(e);
+        throw "密码错误";
+      }
+    } else {
       await rustApi.addKeyring(keyringStr: user.chainData, password: password);
       final sign = await rustApi.signFromAddress(
         address: user.address,
         ctx: signCtx,
       );
-      emit(state.copyWith(
-        password: pwd,
-        me: me,
-        signCtx: signCtx,
-        sign: sign,
-        // currentId: '${me.address}@${me.org.domain}/${platformGet()}',
-      ));
-    } catch (e) {
-      print(e);
-      throw "密码错误";
     }
 
     // notifyListeners();
