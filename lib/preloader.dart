@@ -68,35 +68,21 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     const storage = FlutterSecureStorage();
     storage.read(key: "login_state").then((value) async {
       if (value != null) {
-        final v = value.split(",");
-        final account = accounts.firstWhereOrNull((a) => a.address == v[0]);
+        final account = accounts.firstWhereOrNull((a) => a.address == value);
         if (account != null) {
-          // await waitFutureLoading(
-          //   context: globalCtx(),
-          //   future: () async {
-          //     await im.login(account, v[1]);
-          //     // ignore: use_build_context_synchronously
-          //     Timer(const Duration(milliseconds: 1000), () {
-          //       if (!mounted) return;
-          //       globalCtx().router.pushNamed("/select_org?auto=t");
-          //     });
-          //   },
-          // );
+          await waitFutureLoading(
+            context: globalCtx(),
+            future: () async {
+              await im.loginWithCache(account);
+              // ignore: use_build_context_synchronously
+              Timer(const Duration(milliseconds: 1000), () {
+                if (!mounted) return;
+                globalCtx().router.pushNamed("/select_org?auto=t");
+              });
+            },
+          );
         }
       }
-      // else {
-      //   await waitFutureLoading(
-      //     context: globalCtx(),
-      //     future: () async {
-      //       await im.login(accounts[0], "");
-      //       // ignore: use_build_context_synchronously
-      //       Timer(const Duration(milliseconds: 1000), () {
-      //         if (!mounted) return;
-      //         globalCtx().router.pushNamed("/select_org?auto=t");
-      //       });
-      //     },
-      //   );
-      // }
     });
   }
 

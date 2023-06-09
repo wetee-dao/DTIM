@@ -11,7 +11,7 @@ import '../../components/components.dart';
 import '../../components/setting/settings_ui.dart';
 import '../../router.dart';
 import '../../store/im.dart';
-import '../../utils/screen/screen.dart';
+// import '../../utils/screen/screen.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);
@@ -116,11 +116,11 @@ class _NoticePageState extends State<NoticePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: !isPc()
-          ? AppBar(
-              title: const Text('Notifications'),
-            )
-          : null,
+      // appBar: !isPc()
+      //     ? AppBar(
+      //         title: const Text('Notifications'),
+      //       )
+      //     : null,
       body: SettingsList(
         contentPadding: EdgeInsets.zero,
         sections: [

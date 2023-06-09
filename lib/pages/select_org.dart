@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import '../router.dart';
+import '../utils/platform_infos.dart';
 import '../utils/screen/screen.dart';
 import '../apis/apis.dart';
 import '../components/components.dart';
@@ -74,9 +75,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
             globalCtx().router.root.back();
             printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
             globalCtx().router.root.replaceNamed("/pc/im");
-          } else {
-            globalCtx().router.root.back();
-            globalCtx().router.root.replaceNamed("/mobile");
+          } else if(PlatformInfos.isWeb) {
+            globalCtx().router.root.replaceNamed("/pc/im");
+            // globalCtx().router.root.replaceNamed("/mobile");
           }
         },
       );

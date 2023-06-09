@@ -3,6 +3,7 @@ import 'package:asyou_app/router.dart';
 import 'package:asyou_app/store/im_state.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -51,9 +52,18 @@ class AppCubit extends Cubit<AppState> {
   // 连接状态
   Map<String, ImState> get connectionStates => state.connectionStates;
 
+  loginWithCache(Account user) {
+    emit(state.copyWith(
+      me: user,
+      signCtx: "",
+      sign: "",
+    ));
+  }
+
   // 登陆账户
   login(Account user) async {
     final ctx = globalCtx();
+    final signCtx = "${"{\"t\":\"${DateTime.now().millisecondsSinceEpoch}"}\"}";
     String sign = "";
     if (!PlatformInfos.isWeb) {
       final input = await showTextInputDialog(
@@ -71,17 +81,10 @@ class AppCubit extends Cubit<AppState> {
         ],
       );
       if (input == null) return false;
-      // const storage = FlutterSecureStorage();
-      // await storage.write(
-      //   key: "login_state",
-      //   value: "${user.address},${input[0]}",
-      // );
       final res = await waitFutureLoading<String>(
         context: globalCtx(),
         future: () async {
           final pwd = input[0];
-          final signCtx = "${"{\"t\":\"${DateTime.now().millisecondsSinceEpoch}"}\"}";
-
           try {
             await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
             sign = await rustApi.signFromAddress(
@@ -101,6 +104,11 @@ class AppCubit extends Cubit<AppState> {
         },
       );
       if (res.result == "ok") {
+        const storage = FlutterSecureStorage();
+        await storage.write(
+          key: "login_state",
+          value: user.address,
+        );
         return true;
       }
       BotToast.showText(
@@ -118,13 +126,18 @@ class AppCubit extends Cubit<AppState> {
         signCtx: signCtx,
         sign: sign,
       ));
+      const storage = FlutterSecureStorage();
+      await storage.write(
+        key: "login_state",
+        value: user.address,
+      );
       return true;
     }
-
     return false;
   }
 
-  logout() {
+  // 登出账户
+  logout() async {
     connections.forEach((key, value) async {
       await value.logout();
       await value.dispose();
@@ -132,6 +145,8 @@ class AppCubit extends Cubit<AppState> {
     connectionStates.forEach((key, value) async {
       await value.dispose();
     });
+    const storage = FlutterSecureStorage();
+    await storage.delete(key: "login_state");
     emit(const AppState());
     globalCtx().router.back();
   }
@@ -167,6 +182,14 @@ class AppCubit extends Cubit<AppState> {
     final client = Client(
       userName,
       databaseBuilder: (_) async {
+        if (PlatformInfos.isWeb) {
+          final db = HiveCollectionsDatabase(
+            org.domain!.replaceAll(".", "_"),
+            me!.address,
+          );
+          await db.open();
+          return db;
+        }
         final dir = await getApplicationSupportDirectory();
         printDebug("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
         final db = HiveCollectionsDatabase(

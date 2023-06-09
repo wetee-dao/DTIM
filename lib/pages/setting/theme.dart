@@ -45,11 +45,11 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: !isPc()
-          ? AppBar(
-              title: const Text('theme'),
-            )
-          : null,
+      // appBar: !isPc()
+      //     ? AppBar(
+      //         title: const Text('theme'),
+      //       )
+      //     : null,
       body: SettingsList(
         contentPadding: EdgeInsets.zero,
         platform: DevicePlatform.android,

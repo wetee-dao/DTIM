@@ -99,6 +99,9 @@ bool isPc() {
 }
 
 String platformGet() {
+  if(PlatformInfos.isWeb){
+    return "web";
+  }
   if (PlatformInfos.isLinux || PlatformInfos.isMacOS || PlatformInfos.isWindows) {
     return "desktop";
   }
