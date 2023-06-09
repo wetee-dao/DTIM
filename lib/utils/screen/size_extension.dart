@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
+import '../platform_infos.dart';
 import 'screen_util.dart';
 
 extension SizeExtension on num {
@@ -95,16 +95,16 @@ bool isPc() {
   if (kIsWeb) {
     return false;
   }
-  return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+  return PlatformInfos.isLinux || PlatformInfos.isMacOS || PlatformInfos.isWindows;
 }
 
 String platformGet() {
-  if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+  if (PlatformInfos.isLinux || PlatformInfos.isMacOS || PlatformInfos.isWindows) {
     return "desktop";
   }
-  if (Platform.isIOS || Platform.isAndroid) {
+  if (PlatformInfos.isIOS || PlatformInfos.isAndroid) {
     return "mobile";
   }
   return "NULL";
-  // return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+  // return PlatformInfos.isLinux || PlatformInfos.isMacOS || PlatformInfos.isWindows;
 }

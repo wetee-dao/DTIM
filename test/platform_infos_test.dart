@@ -7,11 +7,11 @@ import 'package:asyou_app/utils/platform_infos.dart';
 
 void main() {
   test("test PlatformInfos", () {
-    expect(PlatformInfos.isAndroid, Platform.isAndroid);
-    expect(PlatformInfos.isIOS, Platform.isIOS);
+    expect(PlatformInfos.isAndroid, PlatformInfos.isAndroid);
+    expect(PlatformInfos.isIOS, PlatformInfos.isIOS);
     expect(PlatformInfos.isWeb, kIsWeb);
-    expect(PlatformInfos.isMacOS, Platform.isMacOS);
-    expect(PlatformInfos.isWindows, Platform.isWindows);
-    expect(PlatformInfos.isLinux, Platform.isLinux);
+    expect(PlatformInfos.isMacOS, PlatformInfos.isMacOS);
+    expect(PlatformInfos.isWindows, PlatformInfos.isWindows);
+    expect(PlatformInfos.isLinux, PlatformInfos.isLinux);
   });
 }

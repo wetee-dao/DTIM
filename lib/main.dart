@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
@@ -17,6 +15,7 @@ import 'store/app/webrtc.dart';
 import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
+import 'utils/platform_infos.dart';
 import 'utils/screen/screen.dart';
 import 'utils/screen/screen_util.dart';
 
@@ -63,7 +62,7 @@ Future<void> main() async {
     );
 
     windowManager.waitUntilReadyToShow(windowOptions, () async {
-      if (Platform.isMacOS || Platform.isWindows) {
+      if (PlatformInfos.isMacOS || PlatformInfos.isWindows) {
         await windowManager.setHasShadow(true);
       }
       await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);

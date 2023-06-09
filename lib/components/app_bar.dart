@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:asyou_app/utils/platform_infos.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -14,7 +13,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? tools;
   final Function? onBack;
   final bool _showMacosTop;
-  final double macosTop = Platform.isMacOS ? 20.w : 0;
+  final double macosTop = PlatformInfos.isMacOS ? 20.w : 0;
   final Color? backgroundColor;
   LocalAppBar({
     Key? key,
@@ -95,7 +94,7 @@ class SideBarAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? tools;
   final Function? onBack;
   final bool _showMacosTop;
-  final double macosTop = Platform.isMacOS ? 18.w : 0;
+  final double macosTop = PlatformInfos.isMacOS ? 18.w : 0;
   SideBarAppBar({Key? key, this.onBack, this.tools, String? title, double? height, bool? showMacosTop, this.leading})
       : _height = height ?? 60.w,
         _title = title ?? "",

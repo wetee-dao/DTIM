@@ -71,17 +71,17 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         final v = value.split(",");
         final account = accounts.firstWhereOrNull((a) => a.address == v[0]);
         if (account != null) {
-          await waitFutureLoading(
-            context: globalCtx(),
-            future: () async {
-              await im.login(account, v[1]);
-              // ignore: use_build_context_synchronously
-              Timer(const Duration(milliseconds: 1000), () {
-                if (!mounted) return;
-                globalCtx().router.pushNamed("/select_org?auto=t");
-              });
-            },
-          );
+          // await waitFutureLoading(
+          //   context: globalCtx(),
+          //   future: () async {
+          //     await im.login(account, v[1]);
+          //     // ignore: use_build_context_synchronously
+          //     Timer(const Duration(milliseconds: 1000), () {
+          //       if (!mounted) return;
+          //       globalCtx().router.pushNamed("/select_org?auto=t");
+          //     });
+          //   },
+          // );
         }
       }
       // else {
@@ -273,7 +273,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text(
-                                                          accounts[i].name??"-",
+                                                          accounts[i].name ?? "-",
                                                           style: TextStyle(
                                                             color: constTheme.centerChannelColor,
                                                             fontSize: 16.w,
@@ -328,34 +328,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                     child: InkWell(
                                                       key: Key(accounts[i].name ?? "acount_$i"),
                                                       onTap: () async {
-                                                        final input = await showTextInputDialog(
-                                                          useRootNavigator: false,
-                                                          context: context,
-                                                          title: L10n.of(context)!.password,
-                                                          okLabel: L10n.of(context)!.ok,
-                                                          cancelLabel: L10n.of(context)!.cancel,
-                                                          textFields: [
-                                                            DialogTextField(
-                                                              obscureText: true,
-                                                              hintText: L10n.of(context)!.pleaseEnterYourPassword,
-                                                              initialText: "",
-                                                            )
-                                                          ],
-                                                        );
-                                                        if (input == null) return;
-                                                        await waitFutureLoading(
-                                                          context: globalCtx(),
-                                                          future: () async {
-                                                            await im.login(accounts[i], input[0]);
-                                                            const storage = FlutterSecureStorage();
-                                                            await storage.write(
-                                                              key: "login_state",
-                                                              value: "${accounts[i].address},${input[0]}",
-                                                            );
-                                                            // ignore: use_build_context_synchronously
-                                                            globalCtx().router.pushNamed("/select_org?auto=t");
-                                                          },
-                                                        );
+                                                        final islogin = await im.login(accounts[i]);
+                                                        if (islogin) {
+                                                          globalCtx().router.pushNamed("/select_org?auto=t");
+                                                        }
                                                       },
                                                       child: Row(
                                                         crossAxisAlignment: CrossAxisAlignment.center,

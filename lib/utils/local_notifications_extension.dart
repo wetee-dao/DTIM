@@ -69,7 +69,7 @@ extension LocalNotificationsExtension on ImState {
         body: body,
         icon: icon.toString(),
       );
-    } else if (Platform.isLinux) {
+    } else if (PlatformInfos.isLinux) {
       final appIconUrl = room.avatar?.getThumbnail(
         room.client,
         width: 56,

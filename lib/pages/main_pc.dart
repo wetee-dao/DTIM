@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:asyou_app/utils/platform_infos.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -82,7 +82,7 @@ class _PCPageState extends State<PCPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  if (Platform.isMacOS) SizedBox(height: 20.w),
+                  if (PlatformInfos.isMacOS) SizedBox(height: 20.w),
                   SizedBox(height: 12.w),
                   // 用户
                   SizedBox(

@@ -19,6 +19,7 @@ import 'package:record/record.dart';
 import '../pages/channel/content/audio_player.dart';
 import '../router.dart';
 import '../store/theme.dart';
+import '../utils/platform_infos.dart';
 import '../utils/screen/screen.dart';
 
 class RecordingDialog extends StatefulWidget {
@@ -49,7 +50,7 @@ class RecordingDialogState extends State<RecordingDialog> {
       _recordedPath =
           '${tempDir.path}/recording${DateTime.now().microsecondsSinceEpoch}.${RecordingDialog.recordingFileType}';
       // mac特别处理
-      if (Platform.isMacOS) {
+      if (PlatformInfos.isMacOS) {
         _recordedPath = "file://$_recordedPath";
       }
 
@@ -111,7 +112,7 @@ class RecordingDialogState extends State<RecordingDialog> {
     }
     print(path);
     // mac特别处理
-    if (Platform.isMacOS) {
+    if (PlatformInfos.isMacOS) {
       path = path.replaceAll("file://", "");
     }
 

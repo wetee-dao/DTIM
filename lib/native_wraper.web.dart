@@ -1,56 +1,59 @@
-
 import 'dart:typed_data';
+// ignore: depend_on_referenced_packages
 import 'package:js/js.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 
 import 'bridge_struct.dart';
 
 @JS("queryAccounts")
 external String queryAccounts();
+@JS("signFromAddressFunc")
+external String signFromAddressFunc(String address, String ctx);
 
 // ignore: camel_case_types
-class rustApi{
+class rustApi {
   static Future<String> connectWallet() async {
-    try{
-      var result =  await promiseToFuture(queryAccounts());
+    try {
+      var result = await promiseToFuture(queryAccounts());
       return result;
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
   }
 
   static Future<int> connect({required String url, dynamic hint}) {
-    return  Future(() => 0);
+    return Future(() => 0);
   }
 
   static Future<List<String>> seedGenerate({dynamic hint}) {
-    return  Future(() => []);
+    return Future(() => []);
   }
 
   static Future<String> getSeedPhrase(
-      {required String seedStr,
-      required String name,
-      required String password,
-      dynamic hint}) {
-    return  Future(() => "");
+      {required String seedStr, required String name, required String password, dynamic hint}) {
+    return Future(() => "");
   }
 
-  static Future<bool> addKeyring(
-      {required String keyringStr, required String password, dynamic hint}) {
-    return  Future(() => true);
+  static Future<bool> addKeyring({required String keyringStr, required String password, dynamic hint}) {
+    return Future(() => true);
   }
 
   static Future<String> addSeed({required String seed, dynamic hint}) {
-    return  Future(() => "");
+    return Future(() => "");
   }
 
-  static Future<String> signFromAddress(
-      {required String address, required String ctx, dynamic hint}) {
-    return  Future(() => "");
+  static Future<String> signFromAddress({required String address, required String ctx, dynamic hint}) async {
+    try {
+      var result = await promiseToFuture(signFromAddressFunc(address, ctx));
+      return result;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<void> startClient({required int client, dynamic hint}) {
-    return  Future((){});
+    return Future(() {});
   }
 
   static Future<void> createDao(
@@ -60,7 +63,7 @@ class rustApi{
       required String purpose,
       required String metaData,
       dynamic hint}) {
-    return  Future((){});
+    return Future(() {});
   }
 
   static Future<void> createAsset(
@@ -72,47 +75,37 @@ class rustApi{
       required int totalSupply,
       required int decimals,
       dynamic hint}) {
-    return  Future((){});
+    return Future(() {});
   }
 
   static Future<int> getBlockNumber({required int client, dynamic hint}) {
-    return  Future(() => 0);
+    return Future(() => 0);
   }
 
-  static Future<AssetAccountData> nativeBalance(
-      {required int client, required String address, dynamic hint}) {
-    return  Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
+  static Future<AssetAccountData> nativeBalance({required int client, required String address, dynamic hint}) {
+    return Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
   }
 
-  static Future<void> daoInitFromPair(
-      {required int client, required String address, dynamic hint}) {
-    return  Future((){});
+  static Future<void> daoInitFromPair({required int client, required String address, dynamic hint}) {
+    return Future(() {});
   }
 
   static Future<AssetAccountData> daoBalance(
-      {required int client,
-      required int daoId,
-      required String address,
-      dynamic hint}) {
-    return  Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
+      {required int client, required int daoId, required String address, dynamic hint}) {
+    return Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
   }
 
-  static Future<DaoInfo> daoInfo(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => DaoInfo(id: 0, name: "", purpose: "", metaData: "", chainUnit: 0, creator: '', daoAccountId: '', startBlock: 0));
+  static Future<DaoInfo> daoInfo({required int client, required int daoId, dynamic hint}) {
+    return Future(() => DaoInfo(
+        id: 0, name: "", purpose: "", metaData: "", chainUnit: 0, creator: '', daoAccountId: '', startBlock: 0));
   }
 
-  static Future<int> daoTotalIssuance(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => 0);
+  static Future<int> daoTotalIssuance({required int client, required int daoId, dynamic hint}) {
+    return Future(() => 0);
   }
 
-  static Future<List<Quarter>> daoRoadmap(
-      {required int client,
-      required int daoId,
-      required int year,
-      dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<Quarter>> daoRoadmap({required int client, required int daoId, required int year, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<bool> daoCreateRoadmapTask(
@@ -124,7 +117,7 @@ class rustApi{
       required int priority,
       required Uint8List tags,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> joinDao(
@@ -134,26 +127,23 @@ class rustApi{
       required int shareExpect,
       required int value,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
-  static Future<List<String>> daoMemebers(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<String>> daoMemebers({required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
-  static Future<List<ProjectInfo>> daoProjects(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<ProjectInfo>> daoProjects({required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
-  static Future<List<GuildInfo>> daoGuilds(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<GuildInfo>> daoGuilds({required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<String> ss58({required String address, int? prefix, dynamic hint}) {
-    return  Future(() => "");
+    return Future(() => "");
   }
 
   static Future<bool> createProject(
@@ -164,7 +154,7 @@ class rustApi{
       required String desc,
       WithGovPs? ext,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> createGuild(
@@ -175,26 +165,20 @@ class rustApi{
       required String desc,
       WithGovPs? ext,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
-  static Future<List<GovProps>> daoGovPendingReferendumList(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<GovProps>> daoGovPendingReferendumList({required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
-  static Future<List<GovReferendum>> daoGovReferendumList(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<GovReferendum>> daoGovReferendumList({required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<bool> daoGovStartReferendum(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int index,
-      dynamic hint}) {
-    return  Future(() => true);
+      {required String from, required int client, required int daoId, required int index, dynamic hint}) {
+    return Future(() => true);
   }
 
   static Future<bool> daoGovVoteForReferendum(
@@ -205,66 +189,44 @@ class rustApi{
       required int vote,
       required bool approve,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<List<GovVote>> daoGovVotesOfUser(
-      {required String from,
-      required int client,
-      required int daoId,
-      dynamic hint}) {
-    return  Future(() => []);
+      {required String from, required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<bool> daoGovRunProposal(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int index,
-      dynamic hint}) {
-    return  Future(() => true);
+      {required String from, required int client, required int daoId, required int index, dynamic hint}) {
+    return Future(() => true);
   }
 
-  static Future<bool> daoGovUnlock(
-      {required String from,
-      required int client,
-      required int daoId,
-      dynamic hint}) {
-    return  Future(() => true);
+  static Future<bool> daoGovUnlock({required String from, required int client, required int daoId, dynamic hint}) {
+    return Future(() => true);
   }
 
-  static Future<List<String>> daoMemeberList(
-      {required int client, required int daoId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<String>> daoMemeberList({required int client, required int daoId, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<List<String>> daoGuildMemeberList(
-      {required int client,
-      required int daoId,
-      required int guildId,
-      dynamic hint}) {
-    return  Future(() => []);
+      {required int client, required int daoId, required int guildId, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<List<String>> daoProjectMemberList(
-      {required int client,
-      required int daoId,
-      required int projectId,
-      dynamic hint}) {
-    return  Future(() => []);
+      {required int client, required int daoId, required int projectId, dynamic hint}) {
+    return Future(() => []);
   }
 
-  static Future<List<TaskInfo>> daoProjectTaskList(
-      {required int client, required int projectId, dynamic hint}) {
-    return  Future(() => []);
+  static Future<List<TaskInfo>> daoProjectTaskList({required int client, required int projectId, dynamic hint}) {
+    return Future(() => []);
   }
 
   static Future<TaskInfo> daoProjectTaskInfo(
-      {required int client,
-      required int projectId,
-      required int taskId,
-      dynamic hint}) {
-    return  Future(() => TaskInfo(
+      {required int client, required int projectId, required int taskId, dynamic hint}) {
+    return Future(() => TaskInfo(
         id: 0,
         name: "",
         priority: 0,
@@ -274,7 +236,10 @@ class rustApi{
         reviewers: [],
         skills: Uint8List(0),
         maxAssignee: 0,
-        projectId: 0, creator: '', description: '', rewards: []));
+        projectId: 0,
+        creator: '',
+        description: '',
+        rewards: []));
   }
 
   static Future<bool> daoProjectCreateTask(
@@ -292,7 +257,7 @@ class rustApi{
       int? maxAssignee,
       required int amount,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectStartTask(
@@ -302,9 +267,8 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
-
 
   static Future<bool> daoProjectRequestReview(
       {required String from,
@@ -313,7 +277,7 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectTaskDone(
@@ -323,7 +287,7 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectJoinTask(
@@ -333,7 +297,7 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectLeaveTask(
@@ -343,7 +307,7 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectJoinTaskReview(
@@ -353,7 +317,7 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectLeaveTaskReview(
@@ -363,7 +327,7 @@ class rustApi{
       required int projectId,
       required int taskId,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectMakeReview(
@@ -375,7 +339,7 @@ class rustApi{
       required bool approve,
       required String meta,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectJoinRequest(
@@ -385,7 +349,7 @@ class rustApi{
       required int projectId,
       WithGovPs? ext,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoProjectJoinRequestWithRoot(
@@ -395,7 +359,7 @@ class rustApi{
       required int projectId,
       required String user,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
   static Future<bool> daoGuildJoinRequest(
@@ -405,15 +369,11 @@ class rustApi{
       required int guildId,
       WithGovPs? ext,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 
-  static Future<int> daoMemberPoint(
-      {required int client,
-      required int daoId,
-      required String member,
-      dynamic hint}) {
-    return  Future(() => 0);
+  static Future<int> daoMemberPoint({required int client, required int daoId, required String member, dynamic hint}) {
+    return Future(() => 0);
   }
 
   static Future<bool> daoApplyProjectFunds(
@@ -424,7 +384,7 @@ class rustApi{
       required int amount,
       WithGovPs? ext,
       dynamic hint}) {
-    return  Future(() => true);
+    return Future(() => true);
   }
 }
 
