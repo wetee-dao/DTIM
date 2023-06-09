@@ -42,11 +42,25 @@ class SystemApi {
     final sys = await get();
     if (sys == null) {
       var value = await windowManager.getSize();
-      final s = System(width: value.width, height: value.height, theme: "");
+      final s = System(width: value.width, height: value.height, theme: theme);
       await storeBox.put("1", s);
       return s;
     }
     sys.theme = theme;
+    await storeBox.put("1", sys);
+    return sys;
+  }
+
+  Future<System> saveLogin(String accout) async {
+    final sys = await get();
+    if (sys == null) {
+      var value = await windowManager.getSize();
+      final s = System(width: value.width, height: value.height, theme: "");
+      s.loginAccount = accout;
+      await storeBox.put("1", s);
+      return s;
+    }
+    sys.loginAccount = accout;
     await storeBox.put("1", sys);
     return sys;
   }

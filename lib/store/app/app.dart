@@ -11,6 +11,7 @@ import 'package:matrix/matrix.dart' show AuthenticationUserIdentifier, Client, H
 import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../apis/system_api.dart';
 import '../../components/loading_dialog.dart';
 import '../../models/models.dart';
 import '../../native_wraper.dart';
@@ -104,11 +105,8 @@ class AppCubit extends Cubit<AppState> {
         },
       );
       if (res.result == "ok") {
-        const storage = FlutterSecureStorage();
-        await storage.write(
-          key: "login_state",
-          value: user.address,
-        );
+        final systemStore = await SystemApi.create();
+        systemStore.saveLogin(user.address);
         return true;
       }
       BotToast.showText(
@@ -126,11 +124,8 @@ class AppCubit extends Cubit<AppState> {
         signCtx: signCtx,
         sign: sign,
       ));
-      const storage = FlutterSecureStorage();
-      await storage.write(
-        key: "login_state",
-        value: user.address,
-      );
+      final systemStore = await SystemApi.create();
+      systemStore.saveLogin(user.address);
       return true;
     }
     return false;

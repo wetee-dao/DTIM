@@ -20,19 +20,21 @@ class SystemAdapter extends TypeAdapter<System> {
       width: fields[1] as double,
       height: fields[2] as double,
       theme: fields[3] as String,
-    );
+    )..loginAccount = fields[4] as String?;
   }
 
   @override
   void write(BinaryWriter writer, System obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.width)
       ..writeByte(2)
       ..write(obj.height)
       ..writeByte(3)
-      ..write(obj.theme);
+      ..write(obj.theme)
+      ..writeByte(4)
+      ..write(obj.loginAccount);
   }
 
   @override

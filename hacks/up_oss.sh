@@ -18,4 +18,4 @@ if [ $# -gt 0 ]; then
   TAG="$1.$current"
 fi
 
-ossutil64 -c ./hacks/.config -f --recursive cp build/web/ oss://wetee
+ossutil64 -c ./hacks/.config -f --recursive cp build/web/ oss://wetee-dtim

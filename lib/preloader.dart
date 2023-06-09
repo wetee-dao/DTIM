@@ -65,25 +65,26 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   autoLogin() async {
-    const storage = FlutterSecureStorage();
-    storage.read(key: "login_state").then((value) async {
-      if (value != null) {
-        final account = accounts.firstWhereOrNull((a) => a.address == value);
-        if (account != null) {
-          await waitFutureLoading(
-            context: globalCtx(),
-            future: () async {
-              await im.loginWithCache(account);
-              // ignore: use_build_context_synchronously
-              Timer(const Duration(milliseconds: 1000), () {
-                if (!mounted) return;
-                globalCtx().router.pushNamed("/select_org?auto=t");
-              });
-            },
-          );
-        }
+    final systemStore = await SystemApi.create();
+    final winsystem = await systemStore.get();
+    if (winsystem != null && winsystem.loginAccount != null && winsystem.loginAccount != "") {
+      print(winsystem!.loginAccount!.toString());
+      final account = accounts.firstWhereOrNull((a) => a.address == winsystem.loginAccount);
+      if (account == null) {
+        return;
       }
-    });
+      await waitFutureLoading(
+        context: globalCtx(),
+        future: () async {
+          await im.loginWithCache(account);
+          // ignore: use_build_context_synchronously
+          Timer(const Duration(milliseconds: 1000), () {
+            if (!mounted) return;
+            globalCtx().router.pushNamed("/select_org?auto=t");
+          });
+        },
+      );
+    }
   }
 
   getList(Function? callback) async {
@@ -440,6 +441,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   accounts.add(initUser);
                                 }
                                 await accountStore.syncUsers(accounts);
+                                getList(null);
                                 BotToast.showText(
                                   text: '账户创建成功，稍后您需要选择您的组织连接web3网络',
                                   duration: const Duration(seconds: 2),

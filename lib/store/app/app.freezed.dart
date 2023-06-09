@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AppState {
-  String get password => throw _privateConstructorUsedError;
   String get signCtx => throw _privateConstructorUsedError;
   String get sign => throw _privateConstructorUsedError;
   Account? get me => throw _privateConstructorUsedError;
@@ -37,8 +36,7 @@ abstract class $AppStateCopyWith<$Res> {
       _$AppStateCopyWithImpl<$Res, AppState>;
   @useResult
   $Res call(
-      {String password,
-      String signCtx,
+      {String signCtx,
       String sign,
       Account? me,
       Map<String, Client> connections,
@@ -60,7 +58,6 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? password = null,
     Object? signCtx = null,
     Object? sign = null,
     Object? me = freezed,
@@ -70,10 +67,6 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
     Object? lastSyncTime = null,
   }) {
     return _then(_value.copyWith(
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
       signCtx: null == signCtx
           ? _value.signCtx
           : signCtx // ignore: cast_nullable_to_non_nullable
@@ -114,8 +107,7 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String password,
-      String signCtx,
+      {String signCtx,
       String sign,
       Account? me,
       Map<String, Client> connections,
@@ -135,7 +127,6 @@ class __$$_AppStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? password = null,
     Object? signCtx = null,
     Object? sign = null,
     Object? me = freezed,
@@ -145,10 +136,6 @@ class __$$_AppStateCopyWithImpl<$Res>
     Object? lastSyncTime = null,
   }) {
     return _then(_$_AppState(
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
       signCtx: null == signCtx
           ? _value.signCtx
           : signCtx // ignore: cast_nullable_to_non_nullable
@@ -185,8 +172,7 @@ class __$$_AppStateCopyWithImpl<$Res>
 
 class _$_AppState implements _AppState {
   const _$_AppState(
-      {this.password = "",
-      this.signCtx = "",
+      {this.signCtx = "",
       this.sign = "",
       this.me,
       final Map<String, Client> connections = const {},
@@ -196,9 +182,6 @@ class _$_AppState implements _AppState {
       : _connections = connections,
         _connectionStates = connectionStates;
 
-  @override
-  @JsonKey()
-  final String password;
   @override
   @JsonKey()
   final String signCtx;
@@ -234,7 +217,7 @@ class _$_AppState implements _AppState {
 
   @override
   String toString() {
-    return 'AppState(password: $password, signCtx: $signCtx, sign: $sign, me: $me, connections: $connections, connectionStates: $connectionStates, currentOrg: $currentOrg, lastSyncTime: $lastSyncTime)';
+    return 'AppState(signCtx: $signCtx, sign: $sign, me: $me, connections: $connections, connectionStates: $connectionStates, currentOrg: $currentOrg, lastSyncTime: $lastSyncTime)';
   }
 
   @override
@@ -242,8 +225,6 @@ class _$_AppState implements _AppState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AppState &&
-            (identical(other.password, password) ||
-                other.password == password) &&
             (identical(other.signCtx, signCtx) || other.signCtx == signCtx) &&
             (identical(other.sign, sign) || other.sign == sign) &&
             (identical(other.me, me) || other.me == me) &&
@@ -260,7 +241,6 @@ class _$_AppState implements _AppState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      password,
       signCtx,
       sign,
       me,
@@ -278,8 +258,7 @@ class _$_AppState implements _AppState {
 
 abstract class _AppState implements AppState {
   const factory _AppState(
-      {final String password,
-      final String signCtx,
+      {final String signCtx,
       final String sign,
       final Account? me,
       final Map<String, Client> connections,
@@ -287,8 +266,6 @@ abstract class _AppState implements AppState {
       final String currentOrg,
       final int lastSyncTime}) = _$_AppState;
 
-  @override
-  String get password;
   @override
   String get signCtx;
   @override
