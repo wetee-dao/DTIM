@@ -33,7 +33,6 @@ migrate_working_dir/
 /build/
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
@@ -57,3 +56,4 @@ linux/shared/librust_wraper.so
 xxx.zip
 xxx
 /.fvm/flutter_sdk/
+hacks/.config
