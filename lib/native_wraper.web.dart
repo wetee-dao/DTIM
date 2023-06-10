@@ -10,6 +10,10 @@ import 'bridge_struct.dart';
 external String queryAccounts();
 @JS("signFromAddressFunc")
 external String signFromAddressFunc(String address, String ctx);
+@JS("connectFunc")
+external String connectFunc(String url);
+@JS("startClientFunc")
+external String startClientFunc(int client);
 
 // ignore: camel_case_types
 class rustApi {
@@ -22,8 +26,22 @@ class rustApi {
     }
   }
 
-  static Future<int> connect({required String url, dynamic hint}) {
-    return Future(() => 0);
+  static Future<int> connect({required String url, dynamic hint}) async {
+    try {
+      var result = await promiseToFuture(connectFunc(url));
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> startClient({required int client, dynamic hint}) async {
+    try {
+      var result = await promiseToFuture(startClientFunc(client));
+      return result;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<List<String>> seedGenerate({dynamic hint}) {
@@ -50,10 +68,6 @@ class rustApi {
     } catch (e) {
       rethrow;
     }
-  }
-
-  static Future<void> startClient({required int client, dynamic hint}) {
-    return Future(() {});
   }
 
   static Future<void> createDao(

@@ -74,11 +74,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         context: globalCtx(),
         future: () async {
           await im.loginWithCache(account);
-
-          // ignore: use_build_context_synchronously
           Timer(const Duration(milliseconds: 1000), () {
             if (!mounted) return;
-            globalCtx().router.pushNamed("/select_org?auto=t");
+            onLogined();
           });
         },
       );
@@ -92,6 +90,35 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       accounts = as;
     });
     callback?.call();
+  }
+
+  onLogined() async {
+    if (widget.onResult != null) {
+      final accountOrgApi = await AccountOrgApi.create();
+      final orgs = await accountOrgApi.listByAccount(im.me!.address);
+      // 登录账户
+      if (orgs.isNotEmpty) {
+        await waitFutureLoading(
+          title: "连接中...",
+          context: globalCtx(),
+          future: () async {
+            await im.connect(orgs[0]);
+            im.setCurrent(orgs[0]);
+            BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
+            if (isPc()) {
+              globalCtx().router.root.back();
+              globalCtx().router.root.replaceNamed("/pc/im");
+            } else if (PlatformInfos.isWeb) {
+              globalCtx().router.root.replaceNamed("/pc/im");
+              // globalCtx().router.root.replaceNamed("/mobile");
+            }
+          },
+        );
+        widget.onResult!.call(true);
+      }
+    } else {
+      globalCtx().router.pushNamed("/select_org?auto=t");
+    }
   }
 
   @override
@@ -315,11 +342,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                       onTap: () async {
                                                         final islogin = await im.login(accounts[i]);
                                                         if (islogin) {
-                                                          if (widget.onResult != null) {
-                                                            widget.onResult!.call(true);
-                                                          } else {
-                                                            globalCtx().router.pushNamed("/select_org?auto=t");
-                                                          }
+                                                          onLogined();
                                                         }
                                                       },
                                                       child: Row(

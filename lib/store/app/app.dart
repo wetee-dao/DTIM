@@ -246,7 +246,7 @@ class AppCubit extends Cubit<AppState> {
       },
       connectionStates: {
         ...connectionStates,
-        userName: ImState(userName, client, org, me!, stateChange),
+        userName: ImState(userName, client, org, me!),
       },
     ));
     return true;

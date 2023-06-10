@@ -45,7 +45,6 @@ class ImState {
     Client pconnection,
     AccountOrg porg,
     Account puser,
-    Function() stateChange,
   ) {
     id = pid;
     user = puser;
