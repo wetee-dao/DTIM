@@ -75,15 +75,16 @@ Future<void> main() async {
     initScreen(400);
   }
 
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-  final rootRouter = AppRouter();
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService();
+    final rootRouter = AppRouter(authService);
     setGlobalKey(rootRouter.navigatorKey);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,

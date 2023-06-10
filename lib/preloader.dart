@@ -11,23 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'components/components.dart';
 import 'store/theme.dart';
 import 'utils/screen/screen.dart';
 import 'package:lottie/lottie.dart';
 
-import 'package:window_manager/window_manager.dart';
-
-import 'apis/account_api.dart';
 import 'apis/apis.dart';
 import 'models/account.dart';
 import 'store/im.dart';
 
 @RoutePage(name: "preloader")
 class PreloaderPage extends StatefulWidget {
-  const PreloaderPage({Key? key}) : super(key: key);
+  final ValueChanged<bool>? onResult;
+  const PreloaderPage({Key? key, this.onResult}) : super(key: key);
 
   @override
   State<PreloaderPage> createState() => _PreloaderPageState();
@@ -68,7 +66,6 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     final systemStore = await SystemApi.create();
     final winsystem = await systemStore.get();
     if (winsystem != null && winsystem.loginAccount != null && winsystem.loginAccount != "") {
-      print(winsystem!.loginAccount!.toString());
       final account = accounts.firstWhereOrNull((a) => a.address == winsystem.loginAccount);
       if (account == null) {
         return;
@@ -77,6 +74,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         context: globalCtx(),
         future: () async {
           await im.loginWithCache(account);
+
           // ignore: use_build_context_synchronously
           Timer(const Duration(milliseconds: 1000), () {
             if (!mounted) return;
@@ -317,7 +315,11 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                       onTap: () async {
                                                         final islogin = await im.login(accounts[i]);
                                                         if (islogin) {
-                                                          globalCtx().router.pushNamed("/select_org?auto=t");
+                                                          if (widget.onResult != null) {
+                                                            widget.onResult!.call(true);
+                                                          } else {
+                                                            globalCtx().router.pushNamed("/select_org?auto=t");
+                                                          }
                                                         }
                                                       },
                                                       child: Row(

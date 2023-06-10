@@ -40,9 +40,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     Preloader.name: (routeData) {
+      final args =
+          routeData.argsAs<PreloaderArgs>(orElse: () => const PreloaderArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const PreloaderPage(),
+        child: PreloaderPage(
+          key: args.key,
+          onResult: args.onResult,
+        ),
       );
     },
   };
@@ -106,14 +111,37 @@ class Pc extends PageRouteInfo<void> {
 
 /// generated route for
 /// [PreloaderPage]
-class Preloader extends PageRouteInfo<void> {
-  const Preloader({List<PageRouteInfo>? children})
-      : super(
+class Preloader extends PageRouteInfo<PreloaderArgs> {
+  Preloader({
+    Key? key,
+    void Function(bool)? onResult,
+    List<PageRouteInfo>? children,
+  }) : super(
           Preloader.name,
+          args: PreloaderArgs(
+            key: key,
+            onResult: onResult,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'Preloader';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<PreloaderArgs> page = PageInfo<PreloaderArgs>(name);
+}
+
+class PreloaderArgs {
+  const PreloaderArgs({
+    this.key,
+    this.onResult,
+  });
+
+  final Key? key;
+
+  final void Function(bool)? onResult;
+
+  @override
+  String toString() {
+    return 'PreloaderArgs{key: $key, onResult: $onResult}';
+  }
 }

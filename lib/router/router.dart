@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 
 import '../pages/chain/import_sr25519_key.dart';
 import '../pages/chain/sr25519_key.dart';
@@ -9,7 +10,25 @@ import '../preloader.dart';
 part 'router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
-class AppRouter extends _$AppRouter {
+class AppRouter extends _$AppRouter  implements AutoRouteGuard {
+
+  AuthService authService;
+
+  AppRouter(this.authService);
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    if (authService.isAuthenticated || resolver.routeName == Preloader.name) {
+      resolver.next();
+    } else {
+      resolver.redirect(
+        Preloader(onResult: (didLogin) {
+          resolver.resolveNext(didLogin, reevaluateNext: false);
+        }),
+      );
+    }
+  }
+
   @override
   List<AutoRoute> get routes {
     return [
@@ -157,3 +176,31 @@ class AppRouter extends _$AppRouter {
 //   ];
 // }
 
+class AuthService extends ChangeNotifier {
+  bool _isAuthenticated = false;
+
+  bool get isAuthenticated => _isAuthenticated;
+
+  bool _isVerified = false;
+
+  bool get isVerified => _isVerified;
+
+  set isVerified(bool value) {
+    _isVerified = value;
+    notifyListeners();
+  }
+
+  set isAuthenticated(bool value) {
+    _isAuthenticated = value;
+    if (!_isAuthenticated) {
+      _isVerified = false;
+    }
+    notifyListeners();
+  }
+
+  void loginAndVerify() {
+    _isAuthenticated = true;
+    _isVerified = true;
+    notifyListeners();
+  }
+}

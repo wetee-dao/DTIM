@@ -29,7 +29,7 @@ dependencies:
   # 语法扩展
   expandable: ^5.0.1
   # 路由
-  auto_route: ^7.1.0
+  auto_route: ^7.4.0
   # 主题
   adaptive_theme: ^3.2.0
   # 桌面客户端样式
