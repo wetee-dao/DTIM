@@ -425,8 +425,30 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             child: InkWell(
                               key: const Key("connectWallet"),
                               onTap: () async {
-                                var acount = await rustApi.connectWallet();
+                                String acount;
+                                try {
+                                  acount = await rustApi.connectWallet();
+                                } catch (e) {
+                                  await showOkAlertDialog(
+                                    title: "Notice",
+                                    context: globalCtx(),
+                                    message:
+                                        "The browser is missing the polkadot.{js} extension or plugin. Please install the plugin to continue.",
+                                    okLabel: L10n.of(globalCtx())!.ok,
+                                  );
+                                  return;
+                                }
                                 List<dynamic> accountJ = convert.jsonDecode(acount);
+                                if (accountJ.isEmpty) {
+                                  await showOkAlertDialog(
+                                    title: "Notice",
+                                    context: globalCtx(),
+                                    message:
+                                        "You have not created an account yet. Please create an account in the polkadot.js extension.",
+                                    okLabel: L10n.of(globalCtx())!.ok,
+                                  );
+                                  return;
+                                }
                                 List<Account> accounts = [];
                                 for (var i = 0; i < accountJ.length; i++) {
                                   final chainData = accountJ[i] as Map<String, dynamic>;
@@ -458,7 +480,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
-                                  "Connect wallet",
+                                  "Connect polkadot.{js} wallet",
                                   style: TextStyle(
                                     color: constTheme.centerChannelBg,
                                     fontWeight: FontWeight.bold,

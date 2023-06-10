@@ -6,19 +6,20 @@ import '../pages/chain/sr25519_key.dart';
 import '../pages/main_pc.dart';
 import '../pages/select_org.dart';
 import '../preloader.dart';
+import '../store/app/app.dart';
 
 part 'router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
-class AppRouter extends _$AppRouter  implements AutoRouteGuard {
-
-  AuthService authService;
+class AppRouter extends _$AppRouter implements AutoRouteGuard {
+  AppCubit authService;
 
   AppRouter(this.authService);
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    if (authService.isAuthenticated || resolver.routeName == Preloader.name) {
+    print(authService.state.me);
+    if (authService.state.me != null || resolver.routeName == Preloader.name) {
       resolver.next();
     } else {
       resolver.redirect(
@@ -175,32 +176,3 @@ class AppRouter extends _$AppRouter  implements AutoRouteGuard {
 //     ),
 //   ];
 // }
-
-class AuthService extends ChangeNotifier {
-  bool _isAuthenticated = false;
-
-  bool get isAuthenticated => _isAuthenticated;
-
-  bool _isVerified = false;
-
-  bool get isVerified => _isVerified;
-
-  set isVerified(bool value) {
-    _isVerified = value;
-    notifyListeners();
-  }
-
-  set isAuthenticated(bool value) {
-    _isAuthenticated = value;
-    if (!_isAuthenticated) {
-      _isVerified = false;
-    }
-    notifyListeners();
-  }
-
-  void loginAndVerify() {
-    _isAuthenticated = true;
-    _isVerified = true;
-    notifyListeners();
-  }
-}

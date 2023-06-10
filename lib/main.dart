@@ -83,15 +83,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-    final rootRouter = AppRouter(authService);
+    final app = AppCubit();
+    final rootRouter = AppRouter(app);
     setGlobalKey(rootRouter.navigatorKey);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,
       light: theme(),
       builder: (light, dark) => MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => AppCubit()),
+          BlocProvider(create: (_) => app),
           BlocProvider(create: (_) => OrgCubit()),
           BlocProvider(create: (_) => WebRTCCubit()),
         ],

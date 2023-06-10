@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:hive/hive.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -41,7 +44,7 @@ class SystemApi {
   Future<System> saveTheme(String theme) async {
     final sys = await get();
     if (sys == null) {
-      var value = await windowManager.getSize();
+      var value = isPc() ? await windowManager.getSize() : Size.zero;
       final s = System(width: value.width, height: value.height, theme: theme);
       await storeBox.put("1", s);
       return s;
@@ -54,7 +57,7 @@ class SystemApi {
   Future<System> saveLogin(String accout) async {
     final sys = await get();
     if (sys == null) {
-      var value = await windowManager.getSize();
+      var value = isPc() ? await windowManager.getSize() : Size.zero;
       final s = System(width: value.width, height: value.height, theme: "");
       s.loginAccount = accout;
       await storeBox.put("1", s);

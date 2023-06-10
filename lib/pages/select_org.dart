@@ -75,7 +75,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
             globalCtx().router.root.back();
             printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
             globalCtx().router.root.replaceNamed("/pc/im");
-          } else if(PlatformInfos.isWeb) {
+          } else if (PlatformInfos.isWeb) {
             globalCtx().router.root.replaceNamed("/pc/im");
             // globalCtx().router.root.replaceNamed("/mobile");
           }
@@ -285,8 +285,7 @@ List<Org> orgs = [
     metaData: OrgMetaData(
       domain: "im.tc.asyou.me",
       color: "#000000",
-      avater:
-          "https://storage.googleapis.com/assets.dework.xyz/uploads/6b8d19b4-cdfc-4251-ba82-de47f7875936/apple-touch-icon-152x152.png",
+      avater: "https://wetee.app/images/icon.png",
       img: "https://wetee.app/static/web3/img/logo.png",
       homeUrl: "www.asyou.me/",
     ),
