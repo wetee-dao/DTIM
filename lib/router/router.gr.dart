@@ -15,30 +15,6 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    Sr25519key.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const Sr25519KeyPage(),
-      );
-    },
-    ImportSr25519key.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ImportSr25519KeyPage(),
-      );
-    },
-    SelectOrg.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SelectOrgPage(),
-      );
-    },
-    Pc.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const PCPage(),
-      );
-    },
     Preloader.name: (routeData) {
       final args =
           routeData.argsAs<PreloaderArgs>(orElse: () => const PreloaderArgs());
@@ -50,63 +26,31 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    ImportSr25519key.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ImportSr25519KeyPage(),
+      );
+    },
+    Sr25519key.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const Sr25519KeyPage(),
+      );
+    },
+    Pc.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PCPage(),
+      );
+    },
+    SelectOrg.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SelectOrgPage(),
+      );
+    },
   };
-}
-
-/// generated route for
-/// [Sr25519KeyPage]
-class Sr25519key extends PageRouteInfo<void> {
-  const Sr25519key({List<PageRouteInfo>? children})
-      : super(
-          Sr25519key.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'Sr25519key';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ImportSr25519KeyPage]
-class ImportSr25519key extends PageRouteInfo<void> {
-  const ImportSr25519key({List<PageRouteInfo>? children})
-      : super(
-          ImportSr25519key.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ImportSr25519key';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [SelectOrgPage]
-class SelectOrg extends PageRouteInfo<void> {
-  const SelectOrg({List<PageRouteInfo>? children})
-      : super(
-          SelectOrg.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SelectOrg';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [PCPage]
-class Pc extends PageRouteInfo<void> {
-  const Pc({List<PageRouteInfo>? children})
-      : super(
-          Pc.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'Pc';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -144,4 +88,60 @@ class PreloaderArgs {
   String toString() {
     return 'PreloaderArgs{key: $key, onResult: $onResult}';
   }
+}
+
+/// generated route for
+/// [ImportSr25519KeyPage]
+class ImportSr25519key extends PageRouteInfo<void> {
+  const ImportSr25519key({List<PageRouteInfo>? children})
+      : super(
+          ImportSr25519key.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ImportSr25519key';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [Sr25519KeyPage]
+class Sr25519key extends PageRouteInfo<void> {
+  const Sr25519key({List<PageRouteInfo>? children})
+      : super(
+          Sr25519key.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'Sr25519key';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PCPage]
+class Pc extends PageRouteInfo<void> {
+  const Pc({List<PageRouteInfo>? children})
+      : super(
+          Pc.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'Pc';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SelectOrgPage]
+class SelectOrg extends PageRouteInfo<void> {
+  const SelectOrg({List<PageRouteInfo>? children})
+      : super(
+          SelectOrg.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SelectOrg';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

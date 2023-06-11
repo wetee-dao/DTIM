@@ -11,9 +11,11 @@ external String queryAccounts();
 @JS("signFromAddressFunc")
 external String signFromAddressFunc(String address, String ctx);
 @JS("connectFunc")
-external String connectFunc(String url);
+external int connectFunc(String url);
 @JS("startClientFunc")
 external String startClientFunc(int client);
+@JS("pingClientFunc")
+external String pingClientFunc(int client);
 
 // ignore: camel_case_types
 class rustApi {
@@ -38,6 +40,15 @@ class rustApi {
   static Future<void> startClient({required int client, dynamic hint}) async {
     try {
       var result = await promiseToFuture(startClientFunc(client));
+      var isStart = true;
+      do {
+        try {
+          await Future.delayed(const Duration(seconds: 2));
+          pingClientFunc(client);
+        } catch (e) {
+          isStart = false;
+        }
+      } while (isStart);
       return result;
     } catch (e) {
       rethrow;

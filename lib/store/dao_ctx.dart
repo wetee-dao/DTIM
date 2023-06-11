@@ -1,4 +1,4 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -60,13 +60,12 @@ class DAOCTX with ChangeNotifier {
             } catch (e) {
               printError("尝试获取区块连失败 ==> ${e.toString()}");
             }
-            sleep(const Duration(seconds: 1));
+            await Future.delayed(const Duration(seconds: 1));
           }
-
           callback();
         });
       }).catchError((e) {
-        printError("连接到区块链 ==> ${org.chainUrl!} ===> 失败 ===> ${e.toString()}");
+        printError("连接到区块链 ==> ${porg.chainUrl!} ===> 失败 ===> ${e.toString()}");
       });
     }
   }
@@ -93,7 +92,6 @@ class DAOCTX with ChangeNotifier {
     // DAO 成员
     members = await rustApi.daoMemebers(client: chainClient, daoId: org.daoId);
     votes = await rustApi.daoGovVotesOfUser(client: chainClient, daoId: org.daoId, from: user.address);
-
 
     if (notify) notifyListeners();
   }
