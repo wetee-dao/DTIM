@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
@@ -17,14 +15,18 @@ import 'store/app/webrtc.dart';
 import 'store/im.dart';
 import 'store/db.dart';
 import 'store/theme.dart';
+import 'utils/platform_infos.dart';
 import 'utils/screen/screen.dart';
+import 'utils/screen/screen_util.dart';
 
 final botToastBuilder = BotToastInit();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
-  await windowManager.hide();
+  if (isPc()) {
+    await windowManager.ensureInitialized();
+    await windowManager.hide();
+  }
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
 
   // 数据库初始化
@@ -60,7 +62,7 @@ Future<void> main() async {
     );
 
     windowManager.waitUntilReadyToShow(windowOptions, () async {
-      if (Platform.isMacOS || Platform.isWindows) {
+      if (PlatformInfos.isMacOS || PlatformInfos.isWindows) {
         await windowManager.setHasShadow(true);
       }
       await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
@@ -73,22 +75,23 @@ Future<void> main() async {
     initScreen(400);
   }
 
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-  final rootRouter = AppRouter();
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final app = AppCubit();
+    final rootRouter = AppRouter(app);
     setGlobalKey(rootRouter.navigatorKey);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,
       light: theme(),
       builder: (light, dark) => MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => AppCubit()),
+          BlocProvider(create: (_) => app),
           BlocProvider(create: (_) => OrgCubit()),
           BlocProvider(create: (_) => WebRTCCubit()),
         ],
@@ -103,6 +106,7 @@ class App extends StatelessWidget {
           builder: (context, child) {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);
+            ScreenUtil.setConText(context);
             return MediaQuery(
               data: data.copyWith(textScaleFactor: 1),
               child: child,
@@ -112,10 +116,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-
-  // final GoRouter _router = GoRouter(
-  //   navigatorKey: rootNavigatorKey,
-  //   routes: routers(),
-  //   observers: [BotToastNavigatorObserver()],
-  // );
 }

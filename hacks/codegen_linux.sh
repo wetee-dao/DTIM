@@ -15,7 +15,7 @@ cd "$DIR/../"
 flutter_rust_bridge_codegen \
     -r $CRATE/src/api.rs \
     -d lib/bridge_generated.dart \
-    --dart-decl-output lib/bridge_struct.dart \
+    --dart-decl-output lib/bridge_struct.dart
 
 cd "$DIR/../rust_wraper"
 

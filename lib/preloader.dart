@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert' as convert;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/router.dart';
+import 'package:asyou_app/utils/platform_infos.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:collection/collection.dart';
@@ -8,23 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'components/components.dart';
 import 'store/theme.dart';
 import 'utils/screen/screen.dart';
 import 'package:lottie/lottie.dart';
 
-import 'package:window_manager/window_manager.dart';
-
-import 'apis/account_api.dart';
 import 'apis/apis.dart';
 import 'models/account.dart';
 import 'store/im.dart';
 
 @RoutePage(name: "preloader")
 class PreloaderPage extends StatefulWidget {
-  const PreloaderPage({Key? key}) : super(key: key);
+  final ValueChanged<bool>? onResult;
+  const PreloaderPage({Key? key, this.onResult}) : super(key: key);
 
   @override
   State<PreloaderPage> createState() => _PreloaderPageState();
@@ -41,6 +42,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   @override
   void initState() {
     super.initState();
+
     im = context.read();
     getList(() {
       if (accounts.isNotEmpty && !runInTest) {
@@ -61,39 +63,24 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   autoLogin() async {
-    const storage = FlutterSecureStorage();
-    storage.read(key: "login_state").then((value) async {
-      if (value != null) {
-        final v = value.split(",");
-        final account = accounts.firstWhereOrNull((a) => a.address == v[0]);
-        if (account != null) {
-          await waitFutureLoading(
-            context: globalCtx(),
-            future: () async {
-              await im.login(account, v[1]);
-              // ignore: use_build_context_synchronously
-              Timer(const Duration(milliseconds: 1000), () {
-                if (!mounted) return;
-                globalCtx().router.pushNamed("/select_org?auto=t");
-              });
-            },
-          );
-        }
-      } 
-      // else {
-      //   await waitFutureLoading(
-      //     context: globalCtx(),
-      //     future: () async {
-      //       await im.login(accounts[0], "");
-      //       // ignore: use_build_context_synchronously
-      //       Timer(const Duration(milliseconds: 1000), () {
-      //         if (!mounted) return;
-      //         globalCtx().router.pushNamed("/select_org?auto=t");
-      //       });
-      //     },
-      //   );
-      // }
-    });
+    final systemStore = await SystemApi.create();
+    final winsystem = await systemStore.get();
+    if (winsystem != null && winsystem.loginAccount != null && winsystem.loginAccount != "") {
+      final account = accounts.firstWhereOrNull((a) => a.address == winsystem.loginAccount);
+      if (account == null) {
+        return;
+      }
+      await waitFutureLoading(
+        context: globalCtx(),
+        future: () async {
+          await im.loginWithCache(account);
+          Timer(const Duration(milliseconds: 1000), () {
+            if (!mounted) return;
+            onLogined();
+          });
+        },
+      );
+    }
   }
 
   getList(Function? callback) async {
@@ -103,6 +90,35 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       accounts = as;
     });
     callback?.call();
+  }
+
+  onLogined() async {
+    if (widget.onResult != null) {
+      final accountOrgApi = await AccountOrgApi.create();
+      final orgs = await accountOrgApi.listByAccount(im.me!.address);
+      // 登录账户
+      if (orgs.isNotEmpty) {
+        await waitFutureLoading(
+          title: "连接中...",
+          context: globalCtx(),
+          future: () async {
+            await im.connect(orgs[0]);
+            im.setCurrent(orgs[0]);
+            BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
+            if (isPc()) {
+              globalCtx().router.root.back();
+              globalCtx().router.root.replaceNamed("/pc/im");
+            } else if (PlatformInfos.isWeb) {
+              globalCtx().router.root.replaceNamed("/pc/im");
+              // globalCtx().router.root.replaceNamed("/mobile");
+            }
+          },
+        );
+        widget.onResult!.call(true);
+      }
+    } else {
+      globalCtx().router.pushNamed("/select_org?auto=t");
+    }
   }
 
   @override
@@ -178,6 +194,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       body: Center(
@@ -268,7 +285,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text(
-                                                          accounts[i].name!,
+                                                          accounts[i].name ?? "-",
                                                           style: TextStyle(
                                                             color: constTheme.centerChannelColor,
                                                             fontSize: 16.w,
@@ -323,34 +340,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                     child: InkWell(
                                                       key: Key(accounts[i].name ?? "acount_$i"),
                                                       onTap: () async {
-                                                        final input = await showTextInputDialog(
-                                                          useRootNavigator: false,
-                                                          context: context,
-                                                          title: L10n.of(context)!.password,
-                                                          okLabel: L10n.of(context)!.ok,
-                                                          cancelLabel: L10n.of(context)!.cancel,
-                                                          textFields: [
-                                                            DialogTextField(
-                                                              obscureText: true,
-                                                              hintText: L10n.of(context)!.pleaseEnterYourPassword,
-                                                              initialText: "",
-                                                            )
-                                                          ],
-                                                        );
-                                                        if (input == null) return;
-                                                        await waitFutureLoading(
-                                                          context: globalCtx(),
-                                                          future: () async {
-                                                            await im.login(accounts[i], input[0]);
-                                                            const storage = FlutterSecureStorage();
-                                                            await storage.write(
-                                                              key: "login_state",
-                                                              value: "${accounts[i].address},${input[0]}",
-                                                            );
-                                                            // ignore: use_build_context_synchronously
-                                                            globalCtx().router.pushNamed("/select_org?auto=t");
-                                                          },
-                                                        );
+                                                        final islogin = await im.login(accounts[i]);
+                                                        if (islogin) {
+                                                          onLogined();
+                                                        }
                                                       },
                                                       child: Row(
                                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -391,90 +384,165 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 30.w),
-                          child: InkWell(
-                            key: const Key("selectAccountType"),
-                            onTap: () => selectAccountType(),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
-                              width: double.maxFinite,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: constTheme.centerChannelColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                L10n.of(context)!.generate,
-                                style: TextStyle(
-                                  color: constTheme.centerChannelBg,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19.w,
+                        if (!PlatformInfos.isWeb)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            margin: EdgeInsets.only(bottom: 5.w),
+                            child: InkWell(
+                              key: const Key("selectAccountType"),
+                              onTap: () => selectAccountType(),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                                width: double.maxFinite,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: constTheme.centerChannelColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  L10n.of(context)!.generate,
+                                  style: TextStyle(
+                                    color: constTheme.centerChannelBg,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19.w,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 5.w),
-                        InkWell(
-                          onTap: () async {
-                            if (accounts.length >= 3) {
-                              BotToast.showText(
-                                text: L10n.of(context)!.tooManyUsers,
-                                duration: const Duration(seconds: 2),
-                              );
-                              return;
-                            }
-                            await context.router.pushNamed("/importSr25519key");
-                            getList(null);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              L10n.of(context)!.importAccount,
-                              style: TextStyle(
-                                color: constTheme.centerChannelColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.w,
+                        if (!PlatformInfos.isWeb)
+                          InkWell(
+                            onTap: () async {
+                              if (accounts.length >= 3) {
+                                BotToast.showText(
+                                  text: L10n.of(context)!.tooManyUsers,
+                                  duration: const Duration(seconds: 2),
+                                );
+                                return;
+                              }
+                              await context.router.pushNamed("/importSr25519key");
+                              getList(null);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                L10n.of(context)!.importAccount,
+                                style: TextStyle(
+                                  color: constTheme.centerChannelColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.w,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        if (PlatformInfos.isWeb)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            margin: EdgeInsets.only(bottom: 5.w),
+                            child: InkWell(
+                              key: const Key("connectWallet"),
+                              onTap: () async {
+                                String acount;
+                                try {
+                                  acount = await rustApi.connectWallet();
+                                } catch (e) {
+                                  await showOkAlertDialog(
+                                    title: "Notice",
+                                    context: globalCtx(),
+                                    message:
+                                        "The browser is missing the polkadot.{js} extension or plugin. Please install the plugin to continue.",
+                                    okLabel: L10n.of(globalCtx())!.ok,
+                                  );
+                                  return;
+                                }
+                                List<dynamic> accountJ = convert.jsonDecode(acount);
+                                if (accountJ.isEmpty) {
+                                  await showOkAlertDialog(
+                                    title: "Notice",
+                                    context: globalCtx(),
+                                    message:
+                                        "You have not created an account yet. Please create an account in the polkadot.js extension.",
+                                    okLabel: L10n.of(globalCtx())!.ok,
+                                  );
+                                  return;
+                                }
+                                List<Account> accounts = [];
+                                for (var i = 0; i < accountJ.length; i++) {
+                                  final chainData = accountJ[i] as Map<String, dynamic>;
+                                  final chainStr = convert.jsonEncode(accountJ[i]);
+                                  final initUser = Account(
+                                    address: chainData["address"] as String,
+                                    chainData: chainStr,
+                                    orgs: [],
+                                  );
+                                  initUser.domain = "";
+                                  initUser.chainData = chainStr;
+                                  initUser.name = (chainData["meta"] as Map<String, dynamic>)["name"] as String;
+
+                                  accounts.add(initUser);
+                                }
+                                await accountStore.syncUsers(accounts);
+                                getList(null);
+                                BotToast.showText(
+                                  text: '账户创建成功，稍后您需要选择您的组织连接web3网络',
+                                  duration: const Duration(seconds: 2),
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                                width: double.maxFinite,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: constTheme.centerChannelColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Connect polkadot.{js} wallet",
+                                  style: TextStyle(
+                                    color: constTheme.centerChannelBg,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19.w,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         SizedBox(
                           height: 0.02.sh,
                         ),
                       ],
                     ),
                   ),
-                  if (isPc())
+                  if (width > 800.w)
                     Expanded(
                       child: moveWindow(Container(
                         color: constTheme.sidebarBg,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                  onTap: () => pop(),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20.w),
-                                    child: Icon(
-                                      Icons.close,
-                                      size: 25.w,
-                                      color: constTheme.sidebarText,
+                            if (PlatformInfos.isLinux || PlatformInfos.isWindows)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () => pop(),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(20.w),
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 25.w,
+                                        color: constTheme.sidebarText,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                             Expanded(
                               child: Opacity(
                                 opacity: 0.3,

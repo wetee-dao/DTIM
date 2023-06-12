@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'dart:ui';
 
+import 'package:asyou_app/utils/platform_infos.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -9,7 +9,7 @@ import '../apis/system_api.dart';
 showtray() async {
   // print("window.platformBrightness => " + window.platformBrightness.toString());
   await trayManager.setIcon(
-    'assets/images/top_bar${(window.platformBrightness != Brightness.dark && Platform.isWindows) ? "" : "_dark"}${Platform.isWindows ? '.ico' : '.png'}',
+    'assets/images/top_bar${(window.platformBrightness != Brightness.dark && PlatformInfos.isWindows) ? "" : "_dark"}${PlatformInfos.isWindows ? '.ico' : '.png'}',
   );
 
   List<MenuItem> items = [

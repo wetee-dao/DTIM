@@ -14,6 +14,7 @@ import '../pages/setting/setting.dart';
 import '../pages/dao/pop/join_task.dart';
 import '../pages/channel/create.dart';
 import '../pages/search.dart';
+import '../utils/platform_infos.dart';
 import '../utils/screen/screen.dart';
 import '../store/theme.dart';
 
@@ -73,7 +74,7 @@ getPage(String url, Function closeModel) {
 
 showModelOrPage(context, url, {double width = 520, double height = 550}) {
   final constTheme = Theme.of(context).extension<ExtColors>()!;
-  if (isPc()) {
+  if (isPc()||PlatformInfos.isWeb) {
     showDialog(
       context: context,
       useSafeArea: true,

@@ -1,15 +1,38 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 
 import '../pages/chain/import_sr25519_key.dart';
 import '../pages/chain/sr25519_key.dart';
 import '../pages/main_pc.dart';
 import '../pages/select_org.dart';
 import '../preloader.dart';
+import '../store/app/app.dart';
 
 part 'router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
-class AppRouter extends _$AppRouter {
+class AppRouter extends _$AppRouter implements AutoRouteGuard {
+  AppCubit authService;
+
+  AppRouter(this.authService);
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    print(authService.state.me);
+    if (authService.state.me != null ||
+        resolver.routeName == Preloader.name ||
+        resolver.routeName == Sr25519key.name ||
+        resolver.routeName == ImportSr25519key.name) {
+      resolver.next();
+    } else {
+      resolver.redirect(
+        Preloader(onResult: (didLogin) {
+          resolver.resolveNext(didLogin, reevaluateNext: false);
+        }),
+      );
+    }
+  }
+
   @override
   List<AutoRoute> get routes {
     return [
@@ -156,4 +179,3 @@ class AppRouter extends _$AppRouter {
 //     ),
 //   ];
 // }
-

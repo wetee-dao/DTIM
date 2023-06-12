@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../utils/platform_infos.dart';
 import './components.dart';
 import '../utils/screen/screen.dart';
 import '../store/theme.dart';
@@ -62,7 +62,7 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    if (!isPc() || Platform.isMacOS) {
+    if (!isPc() || PlatformInfos.isMacOS) {
       return widget.child ?? Container();
     }
     if (widget.child == null) return renderIcons(constTheme);

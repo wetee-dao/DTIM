@@ -17,5 +17,9 @@ class System {
   @HiveField(3)
   late String theme;
 
+  // 登录账号
+  @HiveField(4)
+  String? loginAccount = '';
+
   System({ required this.width, required this.height, required this.theme});
 }

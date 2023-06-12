@@ -16,13 +16,14 @@ class AccountAdapter extends TypeAdapter<Account> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Account()
+    return Account(
+      address: fields[3] as String,
+      chainData: fields[4] as String,
+      orgs: (fields[5] as List).cast<AccountOrg>(),
+    )
       ..id = fields[0] as int
       ..name = fields[1] as String?
-      ..domain = fields[2] as String
-      ..address = fields[3] as String
-      ..chainData = fields[4] as String
-      ..orgs = (fields[5] as List).cast<AccountOrg>();
+      ..domain = fields[2] as String;
   }
 
   @override

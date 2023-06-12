@@ -26,9 +26,9 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
-		643FC8182A064251005433ED /* rust_wraper.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; };
 		643FC81B2A064353005433ED /* bridge_generated.h in Resources */ = {isa = PBXBuildFile; fileRef = 643FC8192A0642F9005433ED /* bridge_generated.h */; };
-		643FC82E2A065BAA005433ED /* rust_wraper.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		64D97BB42A2F4FBB00AC47C9 /* rust_wraper.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; };
+		64D97BB92A2F587200AC47C9 /* rust_wraper.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		76E1FB9537C897D97B7AB838 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B244347CC18FEF5A32D113 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -80,7 +80,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				643FC82E2A065BAA005433ED /* rust_wraper.dylib in CopyFiles */,
+				64D97BB92A2F587200AC47C9 /* rust_wraper.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				643FC8182A064251005433ED /* rust_wraper.dylib in Frameworks */,
+				64D97BB42A2F4FBB00AC47C9 /* rust_wraper.dylib in Frameworks */,
 				76E1FB9537C897D97B7AB838 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

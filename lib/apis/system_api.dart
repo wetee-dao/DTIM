@@ -1,22 +1,24 @@
+import 'dart:ui';
+
+import 'package:asyou_app/utils/screen/size_extension.dart';
 import 'package:hive/hive.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../store/db.dart';
 import '../models/system.dart';
 
 class SystemApi {
-  late final CollectionBox<System> storeBox;
+  late final Box<System> storeBox;
 
-  SystemApi._create(CollectionBox<System> store) {
+  SystemApi._create(Box<System> store) {
     storeBox = store;
   }
 
   static Future<SystemApi> create() async {
-    var storeBox = await DB!.openBox<System>('System');
+    var storeBox = await Hive.openBox<System>('System');
     return SystemApi._create(storeBox);
   }
 
-  CollectionBox<System> store() {
+  Box<System> store() {
     return storeBox;
   }
 
@@ -42,12 +44,26 @@ class SystemApi {
   Future<System> saveTheme(String theme) async {
     final sys = await get();
     if (sys == null) {
-      var value = await windowManager.getSize();
-      final s = System(width: value.width, height: value.height, theme: "");
+      var value = isPc() ? await windowManager.getSize() : Size.zero;
+      final s = System(width: value.width, height: value.height, theme: theme);
       await storeBox.put("1", s);
       return s;
     }
     sys.theme = theme;
+    await storeBox.put("1", sys);
+    return sys;
+  }
+
+  Future<System> saveLogin(String accout) async {
+    final sys = await get();
+    if (sys == null) {
+      var value = isPc() ? await windowManager.getSize() : Size.zero;
+      final s = System(width: value.width, height: value.height, theme: "");
+      s.loginAccount = accout;
+      await storeBox.put("1", s);
+      return s;
+    }
+    sys.loginAccount = accout;
     await storeBox.put("1", sys);
     return sys;
   }

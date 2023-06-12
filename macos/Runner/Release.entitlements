@@ -3,11 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>com.apple.security.app-sandbox</key>
-	<false/>
-	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>me.asyou.asyou_app</string>
-	</array>
+	<true/>
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
 	<key>com.apple.security.network.client</key>

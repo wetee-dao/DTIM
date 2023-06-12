@@ -11,9 +11,9 @@ PODS:
     - FlutterMacOS
   - flutter_secure_storage_macos (6.1.1):
     - FlutterMacOS
-  - flutter_webrtc (0.9.25):
+  - flutter_webrtc (0.9.31):
     - FlutterMacOS
-    - WebRTC-SDK (= 104.5112.16)
+    - WebRTC-SDK (= 104.5112.17)
   - FlutterMacOS (1.0.0)
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -33,7 +33,7 @@ PODS:
     - FlutterMacOS
   - wakelock_macos (0.0.1):
     - FlutterMacOS
-  - WebRTC-SDK (104.5112.16)
+  - WebRTC-SDK (104.5112.17)
   - window_manager (0.2.0):
     - FlutterMacOS
 
@@ -103,7 +103,7 @@ SPEC CHECKSUMS:
   dynamic_color: 2eaa27267de1ca20d879fbd6e01259773fb1670f
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
   flutter_secure_storage_macos: d56e2d218c1130b262bef8b4a7d64f88d7f9c9ea
-  flutter_webrtc: b84df13e005a497c20fa4d8d597f318584f0faa5
+  flutter_webrtc: 9903b25f3648e335a40952058b14225e7b0df88d
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   record_macos: 937889e0f2a7a12b6fc14e97a3678e5a18943de6
@@ -113,7 +113,7 @@ SPEC CHECKSUMS:
   url_launcher_macos: 5335912b679c073563f29d89d33d10d459f95451
   video_compress: c896234f100791b5fef7f049afa38f6d2ef7b42f
   wakelock_macos: bc3f2a9bd8d2e6c89fee1e1822e7ddac3bd004a9
-  WebRTC-SDK: 566e58d2916cb79d770350169a449ea523f5db7c
+  WebRTC-SDK: 082ae4893212534a779ca233f19a9df8efd5f3bd
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
 
 PODFILE CHECKSUM: dac0ddf03d136db544afc27b87cc6c08492e67b9

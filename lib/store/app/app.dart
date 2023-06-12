@@ -1,14 +1,22 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:asyou_app/router.dart';
 import 'package:asyou_app/store/im_state.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' show AuthenticationUserIdentifier, Client, HiveCollectionsDatabase, LoginType;
 import 'package:path_provider/path_provider.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../apis/system_api.dart';
+import '../../components/loading_dialog.dart';
 import '../../models/models.dart';
 import '../../native_wraper.dart';
 import '../../utils/functions.dart';
+import '../../utils/platform_infos.dart';
 import '../../utils/screen/screen.dart';
 
 part 'app.freezed.dart';
@@ -16,7 +24,6 @@ part 'app.freezed.dart';
 @freezed
 class AppState with _$AppState {
   const factory AppState({
-    @Default("") String password,
     @Default("") String signCtx,
     @Default("") String sign,
     Account? me,
@@ -27,14 +34,11 @@ class AppState with _$AppState {
   }) = _AppState;
 }
 
-
 class AppCubit extends Cubit<AppState> {
   AppCubit({state = const AppState()}) : super(state);
 
   // 当前账户
   String get currentId => state.currentOrg;
-
-  String get password => state.password;
 
   String get signCtx => state.signCtx;
 
@@ -49,34 +53,86 @@ class AppCubit extends Cubit<AppState> {
   // 连接状态
   Map<String, ImState> get connectionStates => state.connectionStates;
 
+  loginWithCache(Account user) {
+    emit(state.copyWith(
+      me: user,
+      signCtx: "",
+      sign: "",
+    ));
+  }
+
   // 登陆账户
-  Future<bool> login(Account user, String password) async {
-    final pwd = password;
-    final me = user;
+  login(Account user) async {
+    final ctx = globalCtx();
     final signCtx = "${"{\"t\":\"${DateTime.now().millisecondsSinceEpoch}"}\"}";
-    try {
-      await rustApi.addKeyring(keyringStr: user.chainData, password: password);
-      final sign = await rustApi.signFromAddress(
+    String sign = "";
+    if (!PlatformInfos.isWeb) {
+      final input = await showTextInputDialog(
+        useRootNavigator: false,
+        context: ctx,
+        title: L10n.of(ctx)!.password,
+        okLabel: L10n.of(ctx)!.ok,
+        cancelLabel: L10n.of(ctx)!.cancel,
+        textFields: [
+          DialogTextField(
+            obscureText: true,
+            hintText: L10n.of(ctx)!.pleaseEnterYourPassword,
+            initialText: "",
+          )
+        ],
+      );
+      if (input == null) return false;
+      final res = await waitFutureLoading<String>(
+        context: globalCtx(),
+        future: () async {
+          final pwd = input[0];
+          try {
+            await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
+            sign = await rustApi.signFromAddress(
+              address: user.address,
+              ctx: signCtx,
+            );
+          } catch (e) {
+            return "密码错误";
+          }
+
+          emit(state.copyWith(
+            me: user,
+            signCtx: signCtx,
+            sign: sign,
+          ));
+          return "ok";
+        },
+      );
+      if (res.result == "ok") {
+        final systemStore = await SystemApi.create();
+        systemStore.saveLogin(user.address);
+        return true;
+      }
+      BotToast.showText(
+        text: res.result ?? "未知错误",
+        duration: const Duration(seconds: 2),
+      );
+    } else {
+      await rustApi.addKeyring(keyringStr: user.chainData, password: "");
+      sign = await rustApi.signFromAddress(
         address: user.address,
         ctx: signCtx,
       );
       emit(state.copyWith(
-        password: pwd,
-        me: me,
+        me: user,
         signCtx: signCtx,
         sign: sign,
-        // currentId: '${me.address}@${me.org.domain}/${platformGet()}',
       ));
-    } catch (e) {
-      print(e);
-      throw "密码错误";
+      final systemStore = await SystemApi.create();
+      systemStore.saveLogin(user.address);
+      return true;
     }
-
-    // notifyListeners();
-    return true;
+    return false;
   }
 
-  logout() {
+  // 登出账户
+  logout() async {
     connections.forEach((key, value) async {
       await value.logout();
       await value.dispose();
@@ -84,6 +140,8 @@ class AppCubit extends Cubit<AppState> {
     connectionStates.forEach((key, value) async {
       await value.dispose();
     });
+    const storage = FlutterSecureStorage();
+    await storage.delete(key: "login_state");
     emit(const AppState());
     globalCtx().router.back();
   }
@@ -119,6 +177,14 @@ class AppCubit extends Cubit<AppState> {
     final client = Client(
       userName,
       databaseBuilder: (_) async {
+        if (PlatformInfos.isWeb) {
+          final db = HiveCollectionsDatabase(
+            org.domain!.replaceAll(".", "_"),
+            me!.address,
+          );
+          await db.open();
+          return db;
+        }
         final dir = await getApplicationSupportDirectory();
         printDebug("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
         final db = HiveCollectionsDatabase(
@@ -180,7 +246,7 @@ class AppCubit extends Cubit<AppState> {
       },
       connectionStates: {
         ...connectionStates,
-        userName: ImState(userName, client, org, me!, stateChange),
+        userName: ImState(userName, client, org, me!),
       },
     ));
     return true;
