@@ -36,10 +36,10 @@ class DAOCTX with ChangeNotifier {
       return;
     }
     if (porg.chainUrl != null) {
-      rustApi.connect(url: porg.chainUrl!).then((v) async {
-        user = puser;
-        org = porg;
-        rustApi.startClient(client: v).then((e) {
+      user = puser;
+      org = porg;
+      rustApi.connect(url: porg.chainUrl!).then((_clientIndex) async {
+        rustApi.startClient(client: _clientIndex).then((e) {
           chainClient = -1;
           printSuccess("连接断开");
           notifyListeners();
@@ -52,16 +52,18 @@ class DAOCTX with ChangeNotifier {
         Future.delayed(const Duration(seconds: 1), () async {
           for (var i = 0; i < 20; i++) {
             try {
-              chainClient = v;
-              await getData();
-              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $v");
+              await rustApi.getBlockNumber(client: _clientIndex);
+              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $_clientIndex");
+              chainClient = _clientIndex;
               // 成功后结束循环
               i = 20;
+              notifyListeners();
             } catch (e) {
               printError("尝试获取区块连失败 ==> ${e.toString()}");
             }
             await Future.delayed(const Duration(seconds: 1));
           }
+          await getData();
           callback();
         });
       }).catchError((e) {
@@ -111,6 +113,11 @@ class DAOCTX with ChangeNotifier {
         daoRefreshChannel--;
         await getData();
         await getVoteData();
+      } else {
+        if (user.address != '') {
+          nativeAmount = await rustApi.nativeBalance(client: chainClient, address: user.address);
+          share = await rustApi.daoBalance(client: chainClient, daoId: org.daoId, address: user.address);
+        }
       }
       notifyListeners();
     }

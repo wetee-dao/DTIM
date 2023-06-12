@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 // ignore: depend_on_referenced_packages
+import 'package:asyou_app/utils/functions.dart';
 import 'package:js/js.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
+import 'dart:convert' as convert;
 
 import 'bridge_struct.dart';
+import 'bridge_struct_json.dart';
 
 @JS("queryAccounts")
 external String queryAccounts();
@@ -16,6 +19,14 @@ external int connectFunc(String url);
 external String startClientFunc(int client);
 @JS("pingClientFunc")
 external String pingClientFunc(int client);
+@JS("getBlockNumberFunc")
+external String getBlockNumberFunc(int client);
+@JS("nativeBalanceFunc")
+external String nativeBalanceFunc(int client, String address);
+@JS("daoInfoFunc")
+external String daoInfoFunc(int client, int daoId);
+@JS("ss58Func")
+external String ss58Func(String address, int prefix);
 
 // ignore: camel_case_types
 class rustApi {
@@ -103,12 +114,24 @@ class rustApi {
     return Future(() {});
   }
 
-  static Future<int> getBlockNumber({required int client, dynamic hint}) {
-    return Future(() => 0);
+  static Future<int> getBlockNumber({required int client, dynamic hint}) async {
+    try {
+      var result = await promiseToFuture(getBlockNumberFunc(client));
+      return int.parse(result);
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  static Future<AssetAccountData> nativeBalance({required int client, required String address, dynamic hint}) {
-    return Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
+  static Future<AssetAccountData> nativeBalance({required int client, required String address, dynamic hint}) async {
+    try {
+      final result = await promiseToFuture(nativeBalanceFunc(client, address));
+      final data = convert.jsonDecode(result);
+
+      return AssetAccountDataJ.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<void> daoInitFromPair({required int client, required String address, dynamic hint}) {
@@ -120,9 +143,14 @@ class rustApi {
     return Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
   }
 
-  static Future<DaoInfo> daoInfo({required int client, required int daoId, dynamic hint}) {
-    return Future(() => DaoInfo(
-        id: 0, name: "", purpose: "", metaData: "", chainUnit: 0, creator: '', daoAccountId: '', startBlock: 0));
+  static Future<DaoInfo> daoInfo({required int client, required int daoId, dynamic hint}) async {
+    try {
+      final result = await promiseToFuture(daoInfoFunc(client, daoId));
+      var data = convert.jsonDecode(result);
+      return DaoInfoJ.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<int> daoTotalIssuance({required int client, required int daoId, dynamic hint}) {
@@ -167,8 +195,13 @@ class rustApi {
     return Future(() => []);
   }
 
-  static Future<String> ss58({required String address, int? prefix, dynamic hint}) {
-    return Future(() => "");
+  static Future<String> ss58({required String address, int? prefix, dynamic hint}) async {
+    try {
+      var result = ss58Func(address, prefix ?? 42);
+      return result;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<bool> createProject(
