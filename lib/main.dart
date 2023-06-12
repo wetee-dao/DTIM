@@ -1,3 +1,8 @@
+import 'package:asyou_app/application/store/app/app.dart';
+import 'package:asyou_app/application/store/app/org.dart';
+import 'package:asyou_app/application/store/db.dart';
+import 'package:asyou_app/application/store/theme.dart';
+import 'package:asyou_app/infra/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
@@ -5,19 +10,14 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:asyou_app/utils/tray.dart';
+import 'package:asyou_app/domain/utils/tray.dart';
 
-import 'apis/apis.dart';
+import 'package:asyou_app/application/service/apis/apis.dart';
+import 'application/store/app/webrtc.dart';
 import 'router.dart';
-import 'router/router.dart';
-import 'store/app/org.dart';
-import 'store/app/webrtc.dart';
-import 'store/im.dart';
-import 'store/db.dart';
-import 'store/theme.dart';
-import 'utils/platform_infos.dart';
-import 'utils/screen/screen.dart';
-import 'utils/screen/screen_util.dart';
+import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:asyou_app/domain/utils/screen/screen_util.dart';
 
 final botToastBuilder = BotToastInit();
 

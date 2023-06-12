@@ -1,9 +1,9 @@
-import 'package:asyou_app/store/theme.dart';
-import 'package:asyou_app/utils/screen/screen.dart';
+import 'package:asyou_app/application/store/theme.dart';
+import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/components/close_bar.dart';
+import 'package:asyou_app/infra/components/close_bar.dart';
 
 void main() {
   testWidgets("test CloseBar", (WidgetTester tester) async {
