@@ -1,4 +1,4 @@
-import 'package:asyou_app/preloader.dart';
+import 'package:asyou_app/infra/pages/preloader.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
