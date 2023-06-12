@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:asyou_app/domain/utils/platform_infos.dart';
 import 'package:asyou_app/infra/pages/dao/referendum.dart';
 import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
