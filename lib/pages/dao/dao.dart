@@ -10,6 +10,7 @@ import '../../components/close_bar.dart';
 import '../../store/dao_ctx.dart';
 import '../../store/im.dart';
 import '../../store/theme.dart';
+import '../../utils/platform_infos.dart';
 import 'guild.dart';
 import 'overview.dart';
 import 'project.dart';
@@ -103,7 +104,7 @@ class _DaoPageState extends State<DaoPage> {
                     drawerKey.currentState!.openDrawer();
                   },
                   icon: Icon(
-                    AppIcons.blockchain,
+                    AppIcons.chain,
                     color: constTheme.sidebarHeaderTextColor,
                     size: 16.w,
                   ),
@@ -115,7 +116,7 @@ class _DaoPageState extends State<DaoPage> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isPc())
+          if (isPc() || PlatformInfos.isWeb)
             SizedBox(
               width: 170.w,
               child: StreamBuilder(

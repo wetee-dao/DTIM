@@ -29,14 +29,10 @@ class SideMenu extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            isPc()
-                ? Container(
-                    height: 20.w,
-                    alignment: Alignment.topCenter,
-                  )
-                : const SizedBox(
-                    height: 50,
-                  ),
+            Container(
+              height: 20.w,
+              alignment: Alignment.topCenter,
+            ),
             iconBuilder(
               key: const Key("Overview"),
               assetName: Icons.apps_rounded,
