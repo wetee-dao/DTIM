@@ -36,7 +36,7 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
     }
     _formKey.currentState!.save();
 
-    if (!daoCtx.checkAfterTx()) return;
+    if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {

@@ -83,8 +83,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                   ),
                   Expanded(child: Container()),
                   InkWell(
-                    onTap: () {
-                      if (!daoCtx.checkAfterTx()) return;
+                    onTap: () async {
                       showModelOrPage(context, "/create_roadmap");
                     },
                     child: Container(

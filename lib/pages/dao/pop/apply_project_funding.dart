@@ -40,7 +40,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       BotToast.showText(text: 'The application amount is not less than 0.', duration: const Duration(seconds: 2));
       return;
     }
-    if (!daoCtx.checkAfterTx()) return;
+    if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {

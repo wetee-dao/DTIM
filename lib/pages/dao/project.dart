@@ -137,7 +137,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                             okLabel: L10n.of(globalCtx())!.next,
                             cancelLabel: L10n.of(globalCtx())!.cancel,
                           )) {
-                        if (!daoCtx.checkAfterTx()) return;
+                        if (!await daoCtx.checkAfterTx()) return;
                         await waitFutureLoading(
                           context: globalCtx(),
                           future: () async {

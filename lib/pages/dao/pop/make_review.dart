@@ -38,7 +38,7 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
     }
     _formKey.currentState!.save();
 
-    if (!daoCtx.checkAfterTx()) return;
+    if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {

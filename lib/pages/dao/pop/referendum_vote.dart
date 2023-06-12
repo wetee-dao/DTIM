@@ -37,7 +37,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
     }
     _formKey.currentState!.save();
 
-    if (!daoCtx.checkAfterTx()) return;
+    if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {

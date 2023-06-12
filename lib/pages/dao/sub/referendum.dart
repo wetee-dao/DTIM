@@ -94,7 +94,7 @@ class Referendums extends StatelessWidget {
                 InkWell(
                   key: Key("referendumStart${pending[index].index}"),
                   onTap: () async {
-                    if (!daoCtx.checkAfterTx()) return;
+                    if (!await daoCtx.checkAfterTx()) return;
                     await waitFutureLoading(
                       context: globalCtx(),
                       future: () async {
@@ -298,7 +298,7 @@ class Referendums extends StatelessWidget {
         return InkWell(
           key: Key("referendumExecute${going.id}"),
           onTap: () async {
-            if (!daoCtx.checkAfterTx()) return;
+            if (!await daoCtx.checkAfterTx()) return;
             await waitFutureLoading(
               context: globalCtx(),
               future: () async {

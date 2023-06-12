@@ -115,8 +115,7 @@ class SideMenu extends StatelessWidget {
                   ],
                 ),
               ),
-              onTap: () {
-                if (!daoCtx.checkAfterTx()) return;
+              onTap: () async {
                 showModelOrPage(context, "/create_dao_project");
               },
             )

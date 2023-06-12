@@ -63,7 +63,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     if (dao.votes.isNotEmpty)
                       InkWell(
                         onTap: () async {
-                          if (!daoCtx.checkAfterTx()) return;
+                          if (!await daoCtx.checkAfterTx()) return;
                           await waitFutureLoading(
                             context: context,
                             future: () async {

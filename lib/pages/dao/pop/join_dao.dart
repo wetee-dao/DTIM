@@ -46,8 +46,9 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       );
       return;
     }
+    if (!await daoCtx.inputPassword()) return;
     await waitFutureLoading(
-      context: context,
+      context: globalCtx(),
       future: () async {
         await rustApi.joinDao(
           from: daoCtx.user.address,
