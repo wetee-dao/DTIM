@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/utils/platform_infos.dart';
+import 'package:asyou_app/domain/utils/platform_infos.dart';
 
 void main() {
   test("test PlatformInfos", () {

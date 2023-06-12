@@ -1,7 +1,7 @@
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 
 import './bridge_generated.dart';
-import 'utils/platform_infos.dart';
+import 'package:asyou_app/domain/utils/platform_infos.dart';
 
 // rust 桥
 const base = 'rust_wraper';
