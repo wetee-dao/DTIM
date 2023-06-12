@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:asyou_app/infra/components/dao/text.dart';
 import 'package:asyou_app/infra/components/loading_dialog.dart';
-import 'package:asyou_app/native_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/application/store/dao_ctx.dart';
 import 'package:asyou_app/application/store/theme.dart';
 import 'sub/referendum.dart';

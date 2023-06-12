@@ -1,6 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:asyou_app/application/store/im_state.dart';
-import 'package:asyou_app/native_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

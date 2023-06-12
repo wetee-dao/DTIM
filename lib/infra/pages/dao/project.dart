@@ -9,7 +9,7 @@ import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:asyou_app/infra/components/components.dart';
 import 'package:asyou_app/infra/components/dao/text.dart';
 import 'package:asyou_app/router.dart';
-import 'package:asyou_app/native_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/application/store/dao_ctx.dart';
 import 'package:asyou_app/application/store/theme.dart';
 import 'package:asyou_app/bridge_struct.dart';

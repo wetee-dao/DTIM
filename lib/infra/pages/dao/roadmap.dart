@@ -9,7 +9,7 @@ import 'package:asyou_app/infra/components/components.dart';
 import 'package:asyou_app/infra/components/dao/priority_icon.dart';
 import 'package:asyou_app/infra/components/dao/text.dart';
 import 'package:asyou_app/domain/models/tag.dart';
-import 'package:asyou_app/native_wraper.io.dart';
+import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/application/store/dao_ctx.dart';
 import 'package:asyou_app/application/store/im.dart';
 import 'package:asyou_app/application/store/theme.dart';

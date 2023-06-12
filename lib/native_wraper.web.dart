@@ -26,6 +26,8 @@ external String nativeBalanceFunc(int client, String address);
 external String daoInfoFunc(int client, int daoId);
 @JS("ss58Func")
 external String ss58Func(String address, int prefix);
+@JS("daoTotalIssuanceFunc")
+external int daoTotalIssuanceFunc(int client, int daoId);
 
 // ignore: camel_case_types
 class rustApi {
@@ -152,8 +154,13 @@ class rustApi {
     }
   }
 
-  static Future<int> daoTotalIssuance({required int client, required int daoId, dynamic hint}) {
-    return Future(() => 0);
+  static Future<int> daoTotalIssuance({required int client, required int daoId, dynamic hint}) async {
+    try {
+      var result = await promiseToFuture(daoTotalIssuanceFunc(client, daoId));
+      return int.parse(result);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<List<Quarter>> daoRoadmap({required int client, required int daoId, required int year, dynamic hint}) {
