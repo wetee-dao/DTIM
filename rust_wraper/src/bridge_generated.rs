@@ -32,6 +32,7 @@ use crate::model::QuarterTask;
 use crate::model::Reward;
 use crate::model::Tally;
 use crate::model::TaskInfo;
+use crate::model::U8Wrap;
 use crate::model::WithGovPs;
 
 // Section: wire functions
@@ -1480,6 +1481,13 @@ impl support::IntoDart for TaskInfo {
     }
 }
 impl support::IntoDartExceptPrimitive for TaskInfo {}
+
+impl support::IntoDart for U8Wrap {
+    fn into_dart(self) -> support::DartAbi {
+        vec![self.value.into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for U8Wrap {}
 
 // Section: executor
 

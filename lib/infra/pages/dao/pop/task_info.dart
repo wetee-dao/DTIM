@@ -58,7 +58,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
         .then((v) {
       setState(() {
         _data.desc = v.description;
-        _data.tags = v.skills;
+        _data.tags = v.skills.map((s) => s.value).toList();
         _data.priority = v.priority;
         info = v;
       });

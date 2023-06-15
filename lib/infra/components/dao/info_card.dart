@@ -14,7 +14,7 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
-      constraints: BoxConstraints(minWidth: isPc() ? 140.w : 100.w, maxWidth: double.maxFinite),
+      constraints: BoxConstraints(minWidth: 140.w, maxWidth: double.maxFinite),
       padding: EdgeInsets.fromLTRB(20.w, 20.w, 10.w, 20.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.w),

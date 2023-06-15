@@ -231,7 +231,7 @@ class Kanban extends StatelessWidget {
                           ),
                           padding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 8.w),
                           child: Text(
-                            findTag(tag).label,
+                            findTag(tag.value).label,
                             style: TextStyle(color: constTheme.centerChannelColor, fontSize: 10.w),
                           ),
                         ),

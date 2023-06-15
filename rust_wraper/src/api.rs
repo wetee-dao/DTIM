@@ -1,6 +1,6 @@
 use crate::model::{
     member_ps_trans, member_trans, AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote,
-    GuildInfo, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, WithGovPs,
+    GuildInfo, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, WithGovPs, U8Wrap,
 };
 use anyhow::{self, Ok};
 use asyou_rust_sdk::{
@@ -35,6 +35,24 @@ pub fn connect(url: String) -> anyhow::Result<usize> {
     let client: Client = Client::new(url.to_string())?;
 
     Ok(client.index)
+}
+
+pub fn start_client(client: u32) -> anyhow::Result<()> {
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        let mut c = Client::from_index(client)?;
+        let _ = c.start().await;
+        Ok(())
+    })
+}
+
+pub fn stop_client(client: u32) -> anyhow::Result<()> {
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        let mut c = Client::from_index(client)?;
+        let _ = c.start().await;
+        Ok(())
+    })
 }
 
 /// 获取种子
@@ -72,15 +90,6 @@ pub fn add_seed(seed: String) -> anyhow::Result<String> {
 pub fn sign_from_address(address: String, ctx: String) -> anyhow::Result<String> {
     let addr = account::sign_from_address(address, ctx)?;
     return Ok(addr);
-}
-
-pub fn start_client(client: u32) -> anyhow::Result<()> {
-    let rt = Runtime::new().unwrap();
-    rt.block_on(async {
-        let mut c = Client::from_index(client)?;
-        let _ = c.start().await;
-        Ok(())
-    })
 }
 
 pub fn create_dao(
@@ -238,7 +247,7 @@ pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Qu
                         name: String::from_utf8(t.name).unwrap(),
                         priority: t.priority,
                         creator: account::ss58_to_address(t.creator.to_string()).unwrap(),
-                        tags: t.tags,
+                        tags: t.tags.into_iter().map(|t|U8Wrap{value:t}).collect(),
                         status: t.status,
                     })
                     .collect(),
@@ -702,7 +711,7 @@ pub fn dao_project_task_list(client: u32, project_id: u64) -> anyhow::Result<Vec
                             return account::ss58_to_address(account.to_string()).unwrap();
                         })
                         .collect(),
-                    skills: task.skills,
+                    skills: task.skills.into_iter().map(|t|U8Wrap{value:t}).collect(),
                 };
             })
             .collect())
@@ -759,7 +768,7 @@ pub fn dao_project_task_info(
                     return account::ss58_to_address(account.to_string()).unwrap();
                 })
                 .collect(),
-            skills: task.skills,
+            skills: task.skills.into_iter().map(|t|U8Wrap{value:t}).collect(),
         })
     })
 }

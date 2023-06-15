@@ -99,6 +99,7 @@ class MessageContent extends StatelessWidget {
         switch (event.messageType) {
           case MessageTypes.Image:
             return ImageBubble(
+              key: Key("${event.eventId}-img"),
               event,
               width: 400,
               height: 300,
@@ -252,20 +253,20 @@ class MessageContent extends StatelessWidget {
             style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
       case EventTypes.GroupCallPrefix:
         return GroupCallContent(event, textColor);
-        // return FutureBuilder<User?>(
-        //   future: event.fetchSenderUser(),
-        //   builder: (context, snapshot) {
-        //     return _ButtonContent(
-        //       label: L10n.of(context)!.userSentUnknownEvent(
-        //         snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
-        //         event.type,
-        //       ),
-        //       icon: const Icon(Icons.info_outlined),
-        //       textColor: buttonTextColor,
-        //       onPressed: () => onInfoTab!(event),
-        //     );
-        //   },
-        // );
+      // return FutureBuilder<User?>(
+      //   future: event.fetchSenderUser(),
+      //   builder: (context, snapshot) {
+      //     return _ButtonContent(
+      //       label: L10n.of(context)!.userSentUnknownEvent(
+      //         snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+      //         event.type,
+      //       ),
+      //       icon: const Icon(Icons.info_outlined),
+      //       textColor: buttonTextColor,
+      //       onPressed: () => onInfoTab!(event),
+      //     );
+      //   },
+      // );
       default:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),

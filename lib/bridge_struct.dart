@@ -690,7 +690,7 @@ class QuarterTask {
 
   /// tag info
   /// 数据标签
-  final Uint8List tags;
+  final List<U8Wrap> tags;
 
   /// State of the Task
   /// DAO状态
@@ -773,7 +773,7 @@ class TaskInfo {
 
   /// skill info
   /// 技能
-  final Uint8List skills;
+  final List<U8Wrap> skills;
 
   /// State of the WETEE
   /// WETEE状态
@@ -793,6 +793,14 @@ class TaskInfo {
     required this.reviewers,
     required this.skills,
     required this.status,
+  });
+}
+
+class U8Wrap {
+  final int value;
+
+  const U8Wrap({
+    required this.value,
   });
 }
 

@@ -1468,6 +1468,10 @@ class RustWraperImpl implements RustWraper {
     return (raw as List<dynamic>).map(_wire2api_task_info).toList();
   }
 
+  List<U8Wrap> _wire2api_list_u_8_wrap(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_u_8_wrap).toList();
+  }
+
   MemberGroup _wire2api_member_group(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 2)
@@ -1512,7 +1516,7 @@ class RustWraperImpl implements RustWraper {
       name: _wire2api_String(arr[1]),
       priority: _wire2api_u8(arr[2]),
       creator: _wire2api_String(arr[3]),
-      tags: _wire2api_uint_8_list(arr[4]),
+      tags: _wire2api_list_u_8_wrap(arr[4]),
       status: _wire2api_u8(arr[5]),
     );
   }
@@ -1553,7 +1557,7 @@ class RustWraperImpl implements RustWraper {
       maxAssignee: _wire2api_u8(arr[8]),
       assignees: _wire2api_StringList(arr[9]),
       reviewers: _wire2api_StringList(arr[10]),
-      skills: _wire2api_uint_8_list(arr[11]),
+      skills: _wire2api_list_u_8_wrap(arr[11]),
       status: _wire2api_u8(arr[12]),
     );
   }
@@ -1572,6 +1576,15 @@ class RustWraperImpl implements RustWraper {
 
   int _wire2api_u8(dynamic raw) {
     return raw as int;
+  }
+
+  U8Wrap _wire2api_u_8_wrap(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return U8Wrap(
+      value: _wire2api_u8(arr[0]),
+    );
   }
 
   Uint8List _wire2api_uint_8_list(dynamic raw) {

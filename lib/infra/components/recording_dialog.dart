@@ -8,7 +8,7 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:asyou_app/infra/pages/channel/content/audio_player.dart';
+import 'package:asyou_app/infra/components/content/audio_player.dart';
 import 'package:asyou_app/domain/utils/functions.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';

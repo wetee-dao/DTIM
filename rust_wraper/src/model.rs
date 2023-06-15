@@ -26,7 +26,7 @@ pub struct QuarterTask {
     pub creator: String,
     /// tag info
     /// 数据标签
-    pub tags: Vec<u8>,
+    pub tags: Vec<U8Wrap>,
     /// State of the Task
     /// DAO状态
     /// ToDo = 0,
@@ -210,7 +210,7 @@ pub struct TaskInfo {
     pub reviewers: Vec<String>,
     /// skill info
     /// 技能
-    pub skills: Vec<u8>,
+    pub skills: Vec<U8Wrap>,
     /// State of the WETEE
     /// WETEE状态
     pub status: u8,
@@ -278,4 +278,9 @@ pub fn member_ps_trans(member: MemberGroup) -> MemmberData {
         3 => MemmberData::PROJECT(member.id),
         _ => MemmberData::GLOBAL,
     }
+}
+
+#[derive(Clone, PartialEq, Eq, Default, Debug)]
+pub struct U8Wrap{
+   pub value: u8
 }

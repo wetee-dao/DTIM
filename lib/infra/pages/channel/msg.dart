@@ -1,3 +1,4 @@
+import 'package:asyou_app/domain/utils/functions.dart';
 import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -6,8 +7,8 @@ import 'package:asyou_app/infra/components/components.dart';
 import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:asyou_app/application/store/theme.dart';
 import 'package:asyou_app/domain/utils/time.dart';
-import 'content/content.dart';
-import 'content/verification_request.dart';
+import 'package:asyou_app/infra/components/content/content.dart';
+import 'package:asyou_app/infra/components/content/verification_request.dart';
 
 class Msg extends StatefulWidget {
   final link.Event event;
@@ -28,6 +29,7 @@ class _MsgState extends State<Msg> {
     if (oldWidget.event.eventId != widget.event.eventId) {
       // ctx = null;
     }
+    printError("MsgMsgMsg");
     super.didUpdateWidget(oldWidget);
   }
 

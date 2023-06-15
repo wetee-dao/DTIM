@@ -135,7 +135,7 @@ class Referendums extends StatelessWidget {
                     SizedBox(width: 10.w),
                     Expanded(
                       child: PrimaryText(
-                        text: "Going regerendum",
+                        text: "Proposal",
                         size: 14.w,
                         color: constTheme.buttonBg,
                         fontWeight: FontWeight.bold,

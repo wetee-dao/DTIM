@@ -7,6 +7,7 @@ import 'package:date_format/date_format.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -354,9 +355,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       padding: EdgeInsets.zero,
                       constraints: size,
                       style: IconButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.w),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
                       ),
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
@@ -412,7 +411,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   List<link.Event> events = timeline != null ? timeline!.events : [];
                   return ListView.builder(
-                    cacheExtent: 800,
+                    cacheExtent: 100000,
                     key: Key("chat_list_${widget.channerlID}"),
                     itemCount: events.length + 2,
                     shrinkWrap: true,
