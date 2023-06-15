@@ -73,6 +73,13 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     _listController.addListener(scrollListener);
   }
 
+  @override
+  void dispose() {
+    _listController.removeListener(scrollListener);
+    _listController.dispose();
+    super.dispose();
+  }
+
   void scrollListener() {
     if (!mounted) {
       return;
@@ -88,13 +95,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     } else if (_listController.position.pixels == 0) {
       setReadMarker();
     }
-  }
-
-  @override
-  void dispose() {
-    _listController.removeListener(scrollListener);
-    _listController.dispose();
-    super.dispose();
   }
 
   Future<void>? _setReadMarkerFuture;
@@ -446,7 +446,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         return renderCreate(event);
                       }
                       return Msg(
-                        key: GlobalObjectKey(event.eventId),
+                        key: kIsWeb ? Key(event.eventId) : GlobalObjectKey(event.eventId),
                         event: event,
                         preEvent: preEvent,
                         client: client!,

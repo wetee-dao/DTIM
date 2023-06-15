@@ -66,7 +66,6 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
               builder: (context, state) {
                 return state.channelId != ""
                     ? ChannelDetailPage(
-                        key: Key("channel_$state.channelId"),
                         channerlID: state.channelId,
                       )
                     : moveWindow(
