@@ -4,7 +4,6 @@ import 'package:asyou_app/native_wraper.dart';
 import 'package:asyou_app/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -140,8 +139,8 @@ class AppCubit extends Cubit<AppState> {
     connectionStates.forEach((key, value) async {
       await value.dispose();
     });
-    const storage = FlutterSecureStorage();
-    await storage.delete(key: "login_state");
+    // const storage = FlutterSecureStorage();
+    // await storage.delete(key: "login_state");
     emit(const AppState());
     globalCtx().router.back();
   }

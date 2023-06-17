@@ -6,6 +6,7 @@ import 'package:asyou_app/infra/components/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../router/pop_router.dart';
 import 'avatar.dart';
 
 class MePop extends StatefulWidget {
@@ -114,24 +115,41 @@ class _MePopState extends State<MePop> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 15.w),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.05))),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '实名认证',
-                        style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 14.w,
-                        color: constTheme.centerChannelColor,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    menuController.hideMenu();
+                    showModelOrPage(context, "/kyc");
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15.w),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.05))),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          '实名认证',
+                          style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.w),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.5),
+                            borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                          ),
+                          child: Text(
+                            'Not authenticated',
+                            style: TextStyle(fontSize: 10.w, color: Colors.white),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14.w,
+                          color: constTheme.centerChannelColor,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 GestureDetector(
