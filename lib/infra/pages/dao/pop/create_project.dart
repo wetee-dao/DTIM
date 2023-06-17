@@ -39,7 +39,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
     if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
-      context: context,
+      context: globalCtx(),
       future: () async {
         if (_data.type == 0) {
           await rustApi.createGuild(
@@ -68,9 +68,9 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
             ),
           );
         }
+        await daoCtx.daoRefresh();
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;

@@ -40,7 +40,7 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
 
     if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
-      context: context,
+      context: globalCtx(),
       future: () async {
         await rustApi.daoProjectMakeReview(
           from: daoCtx.user.address,
@@ -51,9 +51,9 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
           approve: _data.approve,
           meta: _data.msg,
         );
+        await daoCtx.daoRefresh();
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;

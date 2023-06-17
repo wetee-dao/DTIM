@@ -1,4 +1,5 @@
 import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,13 +66,13 @@ class _ReferendumPageState extends State<ReferendumPage> {
                         onTap: () async {
                           if (!await daoCtx.checkAfterTx()) return;
                           await waitFutureLoading(
-                            context: context,
+                            context: globalCtx(),
                             future: () async {
                               await rustApi.daoGovUnlock(
                                   from: dao.user.address, client: dao.chainClient, daoId: dao.org.daoId);
+                              await daoCtx.daoRefresh();
                             },
                           );
-                          await daoCtx.daoRefresh();
                         },
                         child: Container(
                           height: 30.w,

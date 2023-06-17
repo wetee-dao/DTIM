@@ -3,7 +3,6 @@ import 'package:asyou_app/domain/utils/platform_infos.dart';
 import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:asyou_app/infra/components/components.dart';
@@ -46,8 +45,7 @@ class _PCPageState extends State<PCPage> {
   }
 
   getData() async {
-    final os =
-        await (await AccountOrgApi.create()).listByAccount(im.me!.address);
+    final os = await (await AccountOrgApi.create()).listByAccount(im.me!.address);
     setState(() {
       aorgs = os;
     });
@@ -77,10 +75,7 @@ class _PCPageState extends State<PCPage> {
               height: double.maxFinite,
               decoration: BoxDecoration(
                 color: constTheme.sidebarHeaderBg,
-                border: Border(
-                    right: BorderSide(
-                        color: constTheme.sidebarHeaderBg.lighter(0.08),
-                        width: 1)),
+                border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,22 +87,13 @@ class _PCPageState extends State<PCPage> {
                   SizedBox(
                     width: 40.w,
                     height: 40.w,
-                    child: UserAvatar(
-                      key: Key(im.currentState!.user.id.toString()),
-                      im.me!.address,
-                      true,
-                      40.w,
-                      bg: constTheme.sidebarText.withOpacity(0.1),
-                      color: constTheme.sidebarText,
-                    ),
+                    child: MePop(im.me!.address, im.me!.name ?? "-", true, 40.w),
                   ),
                   Container(
                     width: 6.w,
                     height: 4.w,
                     margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
-                    decoration: BoxDecoration(
-                        color: constTheme.sidebarText,
-                        borderRadius: BorderRadius.circular(2.w)),
+                    decoration: BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
                   ),
                   Flexible(
                     child: StreamBuilder(
@@ -115,15 +101,13 @@ class _PCPageState extends State<PCPage> {
                       builder: (BuildContext context, AsyncSnapshot<int> id) {
                         return Column(
                           children: [
-                            SiderBarItem(AppIcons.we_chat, "Chat",
-                                key: const Key("MES"),
-                                selected: id.data == 0, onTap: () {
+                            SiderBarItem(AppIcons.we_chat, "Chat", key: const Key("Chat"), selected: id.data == 0,
+                                onTap: () {
                               onSelect(0);
                             }),
                             // DAO管理
-                            SiderBarItem(AppIcons.chain, "DAO",
-                                key: const Key("DAO"),
-                                selected: id.data == 1, onTap: () {
+                            SiderBarItem(AppIcons.chain, "DAO", key: const Key("DAO"), selected: id.data == 1,
+                                onTap: () {
                               onSelect(1);
                             }),
                           ],
@@ -131,23 +115,20 @@ class _PCPageState extends State<PCPage> {
                       },
                     ),
                   ),
-                  InkWell(
-                    onTap: () async {
-                      const storage = FlutterSecureStorage();
-                      await storage.delete(key: "login_state");
-                      im.logout();
-                    },
-                    child: SizedBox(
-                      width: 40.w,
-                      height: 40.w,
-                      child: Icon(
-                        Icons.logout_rounded,
-                        size: 22.w,
-                        color:
-                            constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () async {
+                  //     im.logout();
+                  //   },
+                  //   child: SizedBox(
+                  //     width: 40.w,
+                  //     height: 40.w,
+                  //     child: Icon(
+                  //       Icons.logout_rounded,
+                  //       size: 22.w,
+                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                  //     ),
+                  //   ),
+                  // ),
                   // InkWell(
                   //   onTap: () {
                   //     context.go("/select_org");
@@ -171,12 +152,10 @@ class _PCPageState extends State<PCPage> {
                         padding: EdgeInsets.all(2.w),
                         margin: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
                         decoration: BoxDecoration(
-                          color: constTheme.sidebarHeaderTextColor
-                              .withOpacity(0.1),
+                          color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8.w),
                           border: Border.all(
-                            color: constTheme.sidebarTextActiveBorder
-                                .withOpacity(0.7),
+                            color: constTheme.sidebarTextActiveBorder.withOpacity(0.7),
                             width: 2.w,
                           ),
                         ),
@@ -198,9 +177,7 @@ class _PCPageState extends State<PCPage> {
                                         aorgs![i].orgName ?? "",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: constTheme
-                                              .sidebarHeaderTextColor
-                                              .withOpacity(0.8),
+                                          color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
                                           fontSize: 14.w,
                                         ),
                                       ),

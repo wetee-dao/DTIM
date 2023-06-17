@@ -38,7 +38,7 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
 
     if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
-      context: context,
+      context: globalCtx(),
       future: () async {
         if (_data.type == 0) {
           await rustApi.daoProjectJoinTask(
@@ -57,9 +57,9 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
             taskId: int.parse(widget.id),
           );
         }
+        await daoCtx.daoRefresh();
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;

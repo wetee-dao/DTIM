@@ -146,8 +146,7 @@ class DAOCTX with ChangeNotifier {
   Future<void> daoRefresh() async {
     daoRefreshChannel = 3;
     BotToast.showText(
-        text: 'Successfully joined DAO, data will take effect in subsequent blocks ',
-        duration: const Duration(seconds: 2));
+        text: 'Successfully, data will take effect in subsequent blocks ', duration: const Duration(seconds: 2));
     await getData();
     await getVoteData();
     notifyListeners();

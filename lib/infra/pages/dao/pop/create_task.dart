@@ -50,7 +50,7 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
 
     if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
-      context: context,
+      context: globalCtx(),
       future: () async {
         await rustApi.daoProjectCreateTask(
           from: daoCtx.user.address,
@@ -66,9 +66,9 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
           // reviewers: [daoCtx.user.address],
           amount: _data.amount,
         );
+        await daoCtx.daoRefresh();
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;

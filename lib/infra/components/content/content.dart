@@ -101,8 +101,6 @@ class MessageContent extends StatelessWidget {
             return ImageBubble(
               key: Key("${event.eventId}-img"),
               event,
-              width: 400,
-              height: 300,
               fit: BoxFit.cover,
             );
           case MessageTypes.Sticker:

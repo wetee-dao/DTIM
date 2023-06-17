@@ -1,34 +1,37 @@
 import 'package:asyou_app/native_wraper.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+
 import 'package:auto_route/auto_route.dart';
 
-import 'package:asyou_app/bridge_struct.dart';
 import 'package:asyou_app/infra/components/components.dart';
 import 'package:asyou_app/router.dart';
 import 'package:asyou_app/application/store/dao_ctx.dart';
 import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:asyou_app/application/store/theme.dart';
 
-class ApplyProjectFundingPage extends StatefulWidget {
+class KycPage extends StatefulWidget {
   final Function? closeModel;
-  final String projectId;
-  const ApplyProjectFundingPage({Key? key, this.closeModel, required this.projectId}) : super(key: key);
+  const KycPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
-  State<ApplyProjectFundingPage> createState() => _ApplyProjectFundingPageState();
+  State<KycPage> createState() => _KycPageState();
 }
 
-class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
+class _KycPageState extends State<KycPage> {
   bool publicGroup = false;
+  late String ss58Address;
   final SubmitData _data = SubmitData(
-    amount: 0,
+    roadmapId: 202301,
+    share: 10000,
+    value: 10000,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    ss58Address = daoCtx.ss58Address;
   }
 
   void submitAction() async {
@@ -36,25 +39,23 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (_data.amount <= 0) {
-      BotToast.showText(text: 'The application amount is not less than 0.', duration: const Duration(seconds: 2));
+    if (daoCtx.nativeAmount.free < daoCtx.dao.chainUnit) {
+      BotToast.showText(
+        text: "The user's balance is not enough to pay the handling fee",
+        duration: const Duration(seconds: 2),
+      );
       return;
     }
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await daoCtx.inputPassword()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoApplyProjectFunds(
+        await rustApi.joinDao(
           from: daoCtx.user.address,
           client: daoCtx.chainClient,
           daoId: daoCtx.org.daoId,
-          projectId: int.parse(widget.projectId),
-          amount: _data.amount,
-          ext: const WithGovPs(
-            runType: 1,
-            amount: 10,
-            member: MemberGroup(scope: 1, id: 0),
-          ),
+          shareExpect: _data.share,
+          value: _data.value,
         );
         await daoCtx.daoRefresh();
       },
@@ -76,7 +77,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "Apply for funding for task #${widget.projectId}",
+              title: "Join DAO",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -86,7 +87,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "Apply for funding for task #${widget.projectId}",
+              title: "Join DAO",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -100,28 +101,34 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 15.w),
+              Text(
+                "Account：$ss58Address",
+                style: TextStyle(fontSize: 15.w, color: constTheme.centerChannelColor),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15.w),
+              Text(
+                "Expected to get SHARE:",
+                style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+              ),
+              SizedBox(height: 10.w),
               TextFormField(
-                initialValue: _data.amount.toString(),
-                style: TextStyle(color: constTheme.centerChannelColor),
+                initialValue: _data.share.toString(),
                 keyboardType: TextInputType.number,
+                style: TextStyle(color: constTheme.centerChannelColor),
                 decoration: InputDecoration(
-                  hintText: 'Amount',
+                  hintText: 'Share',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
-                  prefixIcon: Icon(Icons.payment_rounded, color: constTheme.centerChannelColor, size: 18.w),
-                  suffixText: "WTE",
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
-                  var i = 0;
-                  if (v != null && v != "") {
-                    i = int.tryParse(v) ?? 0;
-                  }
-                  _data.amount = i;
+                  _data.share = int.parse(v ?? "0");
                 },
                 validator: (value) {
                   final reg = RegExp(r"^[0-9_]+$");
@@ -134,8 +141,42 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
                   return null;
                 },
               ),
+              SizedBox(height: 10.w),
+              Text(
+                "Expected investment:",
+                style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+              ),
+              SizedBox(height: 10.w),
+              TextFormField(
+                initialValue: _data.value.toString(),
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: constTheme.centerChannelColor),
+                decoration: InputDecoration(
+                  hintText: 'Amount',
+                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+                  filled: true,
+                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
+                ),
+                onSaved: (v) {
+                  _data.value = int.parse(v ?? "0");
+                },
+                validator: (value) {
+                  RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
+                  if (!reg.hasMatch(value ?? "")) {
+                    return '请输入中文、英文、数字、下划线组成昵称';
+                  }
+                  if (value == null || value.isEmpty) {
+                    return '名称不能为空';
+                  }
+                  return null;
+                },
+              ),
               Expanded(child: Container()),
+              // SizedBox(height: 50.w),
               InkWell(
+                key: const Key('joinDaoSubmit'),
                 onTap: submitAction,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),
@@ -149,7 +190,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            'Start applying',
+                            'Join',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -173,56 +214,16 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       ),
     );
   }
-
-  renderType(icon, title, desc, select) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final titleStyle = TextStyle(
-      fontSize: 14.w,
-      color: constTheme.centerChannelColor,
-      decorationColor: constTheme.centerChannelColor,
-    );
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 13.w, left: 0.w),
-          child: Icon(
-            select ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-            color: select ? constTheme.buttonBg : constTheme.centerChannelColor,
-            size: 20.w,
-          ),
-        ),
-        Container(
-          width: 220.w,
-          padding: EdgeInsets.all(10.w),
-          // margin: EdgeInsets.only(right: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(icon, color: constTheme.centerChannelColor, size: 17.w),
-                  SizedBox(width: 7.w),
-                  Text(title, style: titleStyle.copyWith(fontSize: 17.w)),
-                ],
-              ),
-              SizedBox(height: 5.w),
-              Text(
-                desc,
-                style: titleStyle,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class SubmitData {
-  int amount;
+  int roadmapId;
+  int share;
+  int value;
 
   SubmitData({
-    required this.amount,
+    required this.roadmapId,
+    required this.share,
+    required this.value,
   });
 }

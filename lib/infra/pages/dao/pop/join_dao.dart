@@ -57,9 +57,9 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
           shareExpect: _data.share,
           value: _data.value,
         );
+        await daoCtx.daoRefresh();
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;

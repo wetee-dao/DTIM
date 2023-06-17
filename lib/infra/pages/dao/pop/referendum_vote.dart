@@ -39,7 +39,7 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
 
     if (!await daoCtx.checkAfterTx()) return;
     await waitFutureLoading(
-      context: context,
+      context: globalCtx(),
       future: () async {
         await rustApi.daoGovVoteForReferendum(
           from: daoCtx.user.address,
@@ -49,9 +49,9 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
           vote: _data.vote,
           approve: _data.approve,
         );
+        await daoCtx.daoRefresh();
       },
     );
-    await daoCtx.daoRefresh();
 
     //跳转到组织列表
     if (!mounted) return;

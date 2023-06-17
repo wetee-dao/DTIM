@@ -1,4 +1,5 @@
 // import 'package:asyou_app/infra/pages/channel/create.dart';
+import 'package:asyou_app/infra/pages/user/kyc.dart';
 import 'package:flutter/material.dart';
 
 import 'package:asyou_app/infra/pages/channel/create_private.dart';
@@ -68,6 +69,8 @@ getPage(String url, Function closeModel) {
   } else if (url.indexOf("/invitation/") == 0) {
     // final pstr = url.replaceAll("/invitation/", "");
     // final ps = pstr.split("/");
+  } else if (url.indexOf("/kyc") == 0) {
+    return KycPage(closeModel: closeModel);
   }
 
   return const Center(child: Text("404"));
@@ -75,7 +78,7 @@ getPage(String url, Function closeModel) {
 
 showModelOrPage(context, url, {double width = 520, double height = 550}) {
   final constTheme = Theme.of(context).extension<ExtColors>()!;
-  if (isPc()||PlatformInfos.isWeb) {
+  if (isPc() || PlatformInfos.isWeb) {
     showDialog(
       context: context,
       useSafeArea: true,

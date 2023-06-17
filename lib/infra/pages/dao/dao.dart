@@ -114,37 +114,35 @@ class _DaoPageState extends State<DaoPage> {
               tools: CloseBar(color: constTheme.sidebarText),
             )
           : null,
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isPc() || PlatformInfos.isWeb)
-            SizedBox(
-              width: 170.w,
-              child: StreamBuilder(
-                stream: currentId.stream,
-                builder: (BuildContext context, AsyncSnapshot<String> id) {
-                  return ChangeNotifierProvider.value(
-                    value: daoCtx,
-                    child: SideMenu(id.data ?? pageStr, (id) {
-                      final index = getPageIndex(id);
-                      pageController
-                          .animateToPage(index, duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
-                          .then((v) {
-                        pageHook();
-                      });
+      body: daoCtx.chainClient > -1
+          ? ChangeNotifierProvider.value(
+              key: const Key("daoView"),
+              value: daoCtx,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (isPc() || PlatformInfos.isWeb)
+                    SizedBox(
+                      width: 170.w,
+                      child: StreamBuilder(
+                        stream: currentId.stream,
+                        builder: (BuildContext context, AsyncSnapshot<String> id) {
+                          return SideMenu(id.data ?? pageStr, (id) {
+                            final index = getPageIndex(id);
+                            pageController
+                                .animateToPage(index,
+                                    duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
+                                .then((v) {
+                              pageHook();
+                            });
 
-                      currentId.add(id);
-                      if (c != null) {}
-                    }),
-                  );
-                },
-              ),
-            ),
-          Expanded(
-            child: daoCtx.chainClient > -1
-                ? ChangeNotifierProvider.value(
-                    key: const Key("daoView"),
-                    value: daoCtx,
+                            currentId.add(id);
+                            if (c != null) {}
+                          });
+                        },
+                      ),
+                    ),
+                  Expanded(
                     child: PageView(
                       physics: const NeverScrollableScrollPhysics(),
                       controller: pageController,
@@ -153,10 +151,10 @@ class _DaoPageState extends State<DaoPage> {
                       children: mainPages,
                     ),
                   )
-                : Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w)),
-          ),
-        ],
-      ),
+                ],
+              ),
+            )
+          : Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w)),
     );
   }
 

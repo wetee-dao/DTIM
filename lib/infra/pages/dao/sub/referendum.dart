@@ -105,9 +105,9 @@ class Referendums extends StatelessWidget {
                           daoId: daoCtx.org.daoId,
                           index: pending[index].index,
                         );
+                        await daoCtx.daoRefresh();
                       },
                     );
-                    await daoCtx.daoRefresh();
                   },
                   child: renderBox(
                     PrimaryText(
@@ -309,9 +309,9 @@ class Referendums extends StatelessWidget {
                   daoId: daoCtx.org.daoId,
                   index: going.id,
                 );
+                await daoCtx.daoRefresh();
               },
             );
-            await daoCtx.daoRefresh();
           },
           child: renderBox(
             PrimaryText(

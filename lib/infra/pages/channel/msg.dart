@@ -1,4 +1,3 @@
-import 'package:asyou_app/domain/utils/functions.dart';
 import 'package:asyou_app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -29,7 +28,6 @@ class _MsgState extends State<Msg> {
     if (oldWidget.event.eventId != widget.event.eventId) {
       // ctx = null;
     }
-    printError("MsgMsgMsg");
     super.didUpdateWidget(oldWidget);
   }
 

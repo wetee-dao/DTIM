@@ -156,10 +156,10 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                                 ),
                               ),
                             );
+                            await daoCtx.daoRefresh();
+                            getData();
                           },
                         );
-                        await daoCtx.daoRefresh();
-                        getData();
                       }
                     },
                     child: Container(

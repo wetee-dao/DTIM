@@ -9,6 +9,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:http/http.dart' as http;
 import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,7 @@ class MxcImage extends StatefulWidget {
     this.placeholder,
     this.isThumbnail = true,
     this.animated = false,
-    this.animationDuration = const Duration(seconds: 2),
+    this.animationDuration = const Duration(milliseconds: 500),
     this.retryDuration = const Duration(seconds: 2),
     this.animationCurve = Curves.easeInOut,
     this.thumbnailMethod = ThumbnailMethod.scale,
@@ -162,28 +163,42 @@ class _MxcImageState extends State<MxcImage> {
   @override
   Widget build(BuildContext context) {
     final data = _imageData;
-
-    return
-        //  AnimatedCrossFade(
-        //   duration: widget.animationDuration,
-        //   crossFadeState: data == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        //   firstChild: placeholder(context),
-        //   secondChild:
-        data == null || data.isEmpty
-            ? Container()
-            : Image.memory(
-                data,
-                width: widget.width,
-                height: widget.height,
-                fit: widget.fit,
-                filterQuality: FilterQuality.medium,
-                errorBuilder: (context, __, ___) {
-                  _isCached = false;
-                  _imageData = null;
-                  WidgetsBinding.instance.addPostFrameCallback(_tryLoad);
-                  return placeholder(context);
-                },
-                // ),
-              );
+    if (kIsWeb) {
+      return data == null || data.isEmpty
+          ? placeholder(context)
+          : Image.memory(
+              data,
+              width: widget.width,
+              height: widget.height,
+              fit: widget.fit,
+              filterQuality: FilterQuality.medium,
+              errorBuilder: (context, __, ___) {
+                _isCached = false;
+                _imageData = null;
+                WidgetsBinding.instance.addPostFrameCallback(_tryLoad);
+                return placeholder(context);
+              },
+            );
+    }
+    return AnimatedCrossFade(
+      duration: widget.animationDuration,
+      crossFadeState: data == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      firstChild: placeholder(context),
+      secondChild: data == null || data.isEmpty
+          ? Container()
+          : Image.memory(
+              data,
+              width: widget.width,
+              height: widget.height,
+              fit: widget.fit,
+              filterQuality: FilterQuality.medium,
+              errorBuilder: (context, __, ___) {
+                _isCached = false;
+                _imageData = null;
+                WidgetsBinding.instance.addPostFrameCallback(_tryLoad);
+                return placeholder(context);
+              },
+            ),
+    );
   }
 }

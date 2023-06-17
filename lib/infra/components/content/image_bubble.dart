@@ -25,8 +25,6 @@ class ImageBubble extends StatefulWidget {
   final Color? backgroundColor;
   final bool thumbnailOnly;
   final bool animated;
-  final double width;
-  final double height;
   final void Function()? onTap;
 
   const ImageBubble(
@@ -36,8 +34,6 @@ class ImageBubble extends StatefulWidget {
     this.backgroundColor,
     this.fit = BoxFit.cover,
     this.thumbnailOnly = true,
-    this.width = 400,
-    this.height = 300,
     this.animated = false,
     this.onTap,
     Key? key,
@@ -56,7 +52,6 @@ class _ImageBubbleState extends State<ImageBubble> {
 
   @override
   void didUpdateWidget(covariant ImageBubble oldWidget) {
-    printError("ImageBubbleImageBubbleImageBubble");
     super.didUpdateWidget(oldWidget);
   }
 
@@ -80,8 +75,8 @@ class _ImageBubbleState extends State<ImageBubble> {
       width = (height * ratio).round();
     }
     return SizedBox(
-      width: widget.width,
-      height: widget.height,
+      width: 400,
+      height: 300,
       child: BlurHash(
         hash: blurHashString,
         decodingWidth: width,
@@ -109,27 +104,24 @@ class _ImageBubbleState extends State<ImageBubble> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return InkWell(
       onTap: () => _onTap(context),
-      child: Hero(
-        tag: widget.event.eventId,
-        child: Container(
-          constraints: widget.maxSize
-              ? BoxConstraints(
-                  maxWidth: widget.width,
-                  maxHeight: widget.height,
-                )
-              : null,
-          decoration: BoxDecoration(
-            border: Border.all(width: 4.w, color: constTheme.centerChannelColor.withOpacity(0.1)),
-          ),
-          child: MxcImage(
-            event: widget.event,
-            width: widget.width,
-            height: widget.height,
-            fit: widget.fit,
-            animated: widget.animated,
-            isThumbnail: widget.thumbnailOnly,
-            placeholder: _buildPlaceholder,
-          ),
+      child: Container(
+        constraints: widget.maxSize
+            ? const BoxConstraints(
+                maxWidth: 200,
+                maxHeight: 150,
+              )
+            : null,
+        decoration: BoxDecoration(
+          border: Border.all(width: 4.w, color: constTheme.centerChannelColor.withOpacity(0.1)),
+        ),
+        child: MxcImage(
+          event: widget.event,
+          width: 200,
+          height: 150,
+          fit: widget.fit,
+          animated: widget.animated,
+          isThumbnail: widget.thumbnailOnly,
+          placeholder: _buildPlaceholder,
         ),
       ),
     );

@@ -121,10 +121,10 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                                   ),
                                 ),
                               );
+                              await daoCtx.daoRefresh();
+                              getData();
                             },
                           );
-                          await daoCtx.daoRefresh();
-                          getData();
                         }
                       },
                       child: Container(

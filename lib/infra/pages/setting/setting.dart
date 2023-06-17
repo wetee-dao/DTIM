@@ -70,7 +70,7 @@ class _SettingPageState extends State<SettingPage> {
       backgroundColor: constTheme.sidebarBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "首选项",
+              title: "组织设置",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -80,7 +80,7 @@ class _SettingPageState extends State<SettingPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "首选项",
+              title: "组织设置",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();

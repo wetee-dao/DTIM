@@ -1,4 +1,3 @@
-
 import 'package:asyou_app/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -131,7 +130,7 @@ class Overviewpage extends StatelessWidget {
               return DaoIsJoined(
                 isJoined: dao.members.contains(dao.user.address),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(30),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.w),
                   child: PaymentsDetailList(
                     dao: dao.dao,
                     address: dao.ss58Address,
