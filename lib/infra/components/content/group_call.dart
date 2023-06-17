@@ -1,17 +1,17 @@
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/localized_extension.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/localized_extension.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/infra/components/iconfont.dart';
-import 'package:asyou_app/infra/components/loading_dialog.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/app/app.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/iconfont.dart';
+import 'package:dtim/infra/components/loading_dialog.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class GroupCallContent extends StatelessWidget {
   final Event event;

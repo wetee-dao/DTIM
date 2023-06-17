@@ -1,12 +1,12 @@
-import 'package:asyou_app/infra/pages/preloader.dart';
+import 'package:dtim/infra/pages/preloader.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/infra/pages/chain/import_sr25519_key.dart';
-import 'package:asyou_app/infra/pages/chain/sr25519_key.dart';
-import 'package:asyou_app/infra/pages/main_pc.dart';
-import 'package:asyou_app/infra/pages/select_org.dart';
-import 'package:asyou_app/application/store/app/app.dart';
+import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
+import 'package:dtim/infra/pages/chain/sr25519_key.dart';
+import 'package:dtim/infra/pages/main_pc.dart';
+import 'package:dtim/infra/pages/select_org.dart';
+import 'package:dtim/application/store/app/app.dart';
 
 part 'router.gr.dart';
 

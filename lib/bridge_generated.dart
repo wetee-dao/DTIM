@@ -59,6 +59,40 @@ class RustWraperImpl implements RustWraper {
         argNames: ["url"],
       );
 
+  Future<void> startClient({required int client, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_start_client(port_, arg0),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kStartClientConstMeta,
+      argValues: [client],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kStartClientConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "start_client",
+        argNames: ["client"],
+      );
+
+  Future<void> stopClient({required int client, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_stop_client(port_, arg0),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kStopClientConstMeta,
+      argValues: [client],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kStopClientConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "stop_client",
+        argNames: ["client"],
+      );
+
   Future<List<String>> seedGenerate({dynamic hint}) {
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_seed_generate(port_),
@@ -153,23 +187,6 @@ class RustWraperImpl implements RustWraper {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "sign_from_address",
         argNames: ["address", "ctx"],
-      );
-
-  Future<void> startClient({required int client, dynamic hint}) {
-    var arg0 = api2wire_u32(client);
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_start_client(port_, arg0),
-      parseSuccessData: _wire2api_unit,
-      constMeta: kStartClientConstMeta,
-      argValues: [client],
-      hint: hint,
-    ));
-  }
-
-  FlutterRustBridgeTaskConstMeta get kStartClientConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "start_client",
-        argNames: ["client"],
       );
 
   Future<void> createDao(
@@ -1853,6 +1870,38 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_connect = _wire_connectPtr
       .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>)>();
 
+  void wire_start_client(
+    int port_,
+    int client,
+  ) {
+    return _wire_start_client(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire_start_clientPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
+          'wire_start_client');
+  late final _wire_start_client =
+      _wire_start_clientPtr.asFunction<void Function(int, int)>();
+
+  void wire_stop_client(
+    int port_,
+    int client,
+  ) {
+    return _wire_stop_client(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire_stop_clientPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
+          'wire_stop_client');
+  late final _wire_stop_client =
+      _wire_stop_clientPtr.asFunction<void Function(int, int)>();
+
   void wire_seed_generate(
     int port_,
   ) {
@@ -1948,22 +1997,6 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
   late final _wire_sign_from_address = _wire_sign_from_addressPtr.asFunction<
       void Function(
           int, ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
-
-  void wire_start_client(
-    int port_,
-    int client,
-  ) {
-    return _wire_start_client(
-      port_,
-      client,
-    );
-  }
-
-  late final _wire_start_clientPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
-          'wire_start_client');
-  late final _wire_start_client =
-      _wire_start_clientPtr.asFunction<void Function(int, int)>();
 
   void wire_create_dao(
     int port_,

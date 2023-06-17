@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:asyou_app/application/service/apis/system_api.dart';
+import 'package:dtim/application/service/apis/system_api.dart';
 
 showtray() async {
   // print("window.platformBrightness => " + window.platformBrightness.toString());

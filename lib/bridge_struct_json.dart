@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:asyou_app/bridge_struct.dart';
+import 'package:dtim/bridge_struct.dart';
 
 part 'bridge_struct_json.g.dart';
 

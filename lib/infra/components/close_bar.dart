@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'components.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class CloseBar extends StatefulWidget {
   /// The [child] contained by the CloseBar.
@@ -49,14 +49,12 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
 
   @override
   void onWindowEnterFullScreen() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
   void onWindowLeaveFullScreen() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override

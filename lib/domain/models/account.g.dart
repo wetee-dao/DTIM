@@ -23,17 +23,20 @@ class AccountAdapter extends TypeAdapter<Account> {
     )
       ..id = fields[0] as int
       ..name = fields[1] as String?
+      ..avatar = fields[6] as Uri?
       ..domain = fields[2] as String;
   }
 
   @override
   void write(BinaryWriter writer, Account obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
+      ..writeByte(6)
+      ..write(obj.avatar)
       ..writeByte(2)
       ..write(obj.domain)
       ..writeByte(3)

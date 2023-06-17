@@ -1,5 +1,5 @@
-import 'package:asyou_app/domain/models/account.dart';
-import 'package:asyou_app/domain/models/org.dart';
+import 'package:dtim/domain/models/account.dart';
+import 'package:dtim/domain/models/org.dart';
 import 'package:hive/hive.dart';
 
 class AccountOrgApi {
@@ -24,10 +24,7 @@ class AccountOrgApi {
 
   Future<List<AccountOrg>> listByAccount(String userId) async {
     final values = storeBox.values.toList();
-    return values
-        .where((a) => a.account.address == userId)
-        .map((v) => v)
-        .toList();
+    return values.where((a) => a.account.address == userId).map((v) => v).toList();
   }
 
   Future<List<AccountOrg>> accountSyncOrgs(

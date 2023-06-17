@@ -1,16 +1,16 @@
-import 'package:asyou_app/infra/router/pop_router.dart';
-import 'package:asyou_app/application/store/dao_ctx.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/router/pop_router.dart';
+import 'package:dtim/application/store/dao_ctx.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/bridge_struct.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/dao/priority_icon.dart';
-import 'package:asyou_app/domain/models/tag.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/native_wraper.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/dao/priority_icon.dart';
+import 'package:dtim/domain/models/tag.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class Kanban extends StatelessWidget {
   final List<TaskInfo> todo;

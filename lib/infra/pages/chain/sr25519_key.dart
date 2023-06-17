@@ -1,4 +1,4 @@
-import 'package:asyou_app/native_wraper.dart';
+import 'package:dtim/native_wraper.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +7,12 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/domain/models/account.dart';
-import 'package:asyou_app/application/service/apis/account_api.dart';
-import 'package:asyou_app/infra/components/app_bar.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/models/account.dart';
+import 'package:dtim/application/service/apis/account_api.dart';
+import 'package:dtim/infra/components/app_bar.dart';
 
 @RoutePage(name: "sr25519key")
 class Sr25519KeyPage extends StatefulWidget {

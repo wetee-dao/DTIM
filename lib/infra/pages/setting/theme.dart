@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:asyou_app/router.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/application/service/apis/system_api.dart';
-import 'package:asyou_app/infra/components/setting/settings_ui.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/models/system.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/service/apis/system_api.dart';
+import 'package:dtim/infra/components/setting/settings_ui.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/models/system.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);

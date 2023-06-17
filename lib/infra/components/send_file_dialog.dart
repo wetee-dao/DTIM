@@ -6,10 +6,10 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/domain/utils/string.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +17,8 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/domain/utils/localized_extension.dart';
-import 'package:asyou_app/domain/utils/resize_image.dart';
+import 'package:dtim/domain/utils/localized_extension.dart';
+import 'package:dtim/domain/utils/resize_image.dart';
 
 class SendFileDialog extends StatefulWidget {
   final Room room;

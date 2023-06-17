@@ -7,8 +7,8 @@
 //
 import 'dart:io';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/im_state.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/im_state.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:desktop_lifecycle/desktop_lifecycle.dart';

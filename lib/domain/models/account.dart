@@ -4,13 +4,17 @@ import 'package:hive/hive.dart';
 part 'account.g.dart';
 
 @HiveType(typeId: 1)
-class Account extends HiveObject  {
+class Account extends HiveObject {
   @HiveField(0)
   int id = 0;
 
   // 用户昵称
   @HiveField(1)
   String? name;
+
+  // 用户昵称
+  @HiveField(6)
+  Uri? avatar;
 
   // 团队授权网址
   @HiveField(2)

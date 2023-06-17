@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 enum PressType { longPress, singleClick, mouseHover }
 

@@ -1,8 +1,8 @@
-import 'package:asyou_app/application/store/app/app.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/infra/components/popup.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +16,18 @@ class MePop extends StatefulWidget {
   final double avatarWidth;
   final Color? bg;
   final Color? color;
+  final Uri? mxContent;
 
-  const MePop(this.id, this.name, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
+  const MePop(
+    this.id,
+    this.name,
+    this.online,
+    this.avatarWidth, {
+    Key? key,
+    this.bg,
+    this.color,
+    this.mxContent,
+  }) : super(key: key);
 
   @override
   State<MePop> createState() => _MePopState();
@@ -60,12 +70,10 @@ class _MePopState extends State<MePop> {
                   onTap: () {},
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
-                    child: UserAvatar(
-                      getUserShortId(widget.id),
-                      true,
-                      80.w,
-                      bg: constTheme.centerChannelColor.withOpacity(0.1),
-                      color: constTheme.centerChannelColor,
+                    child: Avatar(
+                      id: widget.id,
+                      mxContent: widget.mxContent,
+                      size: widget.avatarWidth,
                     ),
                   ),
                 ),

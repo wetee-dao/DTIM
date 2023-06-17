@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 

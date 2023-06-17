@@ -17,6 +17,14 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kConnectConstMeta;
 
+  Future<void> startClient({required int client, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kStartClientConstMeta;
+
+  Future<void> stopClient({required int client, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kStopClientConstMeta;
+
   /// 获取种子
   Future<List<String>> seedGenerate({dynamic hint});
 
@@ -44,10 +52,6 @@ abstract class RustWraper {
       {required String address, required String ctx, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSignFromAddressConstMeta;
-
-  Future<void> startClient({required int client, dynamic hint});
-
-  FlutterRustBridgeTaskConstMeta get kStartClientConstMeta;
 
   Future<void> createDao(
       {required int client,

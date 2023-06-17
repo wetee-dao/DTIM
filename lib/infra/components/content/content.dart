@@ -6,18 +6,18 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/domain/utils/matrix_sdk_extensions/matrix_locals.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_locals.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'audio_player.dart';
 import 'cute_events.dart';
 import 'group_call.dart';

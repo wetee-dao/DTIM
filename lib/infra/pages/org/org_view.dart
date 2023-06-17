@@ -1,18 +1,18 @@
 import 'dart:async';
-import 'package:asyou_app/infra/router/pop_router.dart';
+import 'package:dtim/infra/router/pop_router.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/application/store/app/webrtc.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/popup.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/webrtc/action.dart';
+import 'package:dtim/application/store/app/webrtc.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/popup.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/webrtc/action.dart';
 import 'org_menu.dart';
 
 class OrgViewPage extends StatefulWidget {

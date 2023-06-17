@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
+import 'package:dtim/infra/components/components.dart';
 import 'matrix_file_extension.dart';
 import '../string.dart';
 

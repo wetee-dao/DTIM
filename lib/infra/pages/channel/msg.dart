@@ -1,13 +1,13 @@
-import 'package:asyou_app/router.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/time.dart';
-import 'package:asyou_app/infra/components/content/content.dart';
-import 'package:asyou_app/infra/components/content/verification_request.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/time.dart';
+import 'package:dtim/infra/components/content/content.dart';
+import 'package:dtim/infra/components/content/verification_request.dart';
 
 class Msg extends StatefulWidget {
   final link.Event event;

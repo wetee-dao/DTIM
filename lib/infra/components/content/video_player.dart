@@ -20,8 +20,8 @@ import 'package:universal_html/html.dart' as html;
 import 'package:video_player/video_player.dart';
 
 import 'image_bubble.dart';
-import 'package:asyou_app/domain/utils/localized_extension.dart';
-import 'package:asyou_app/domain/utils/matrix_sdk_extensions/event_extension.dart';
+import 'package:dtim/domain/utils/localized_extension.dart';
+import 'package:dtim/domain/utils/matrix_sdk_extensions/event_extension.dart';
 
 class EventVideoPlayer extends StatefulWidget {
   final Event event;

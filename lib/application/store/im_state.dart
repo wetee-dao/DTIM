@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:async';
-import 'package:asyou_app/infra/pages/channel/setting/key_verification_dialog.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/infra/pages/channel/setting/key_verification_dialog.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +10,11 @@ import 'package:matrix/matrix.dart';
 import 'package:matrix/encryption.dart';
 import 'package:universal_html/html.dart' as html;
 
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/local_notifications_extension.dart';
-import 'package:asyou_app/domain/utils/webrtc/webrtc_tool.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/local_notifications_extension.dart';
+import 'package:dtim/domain/utils/webrtc/webrtc_tool.dart';
 import 'app/app.dart';
 
 // 组织的聊天状态树

@@ -4,12 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/form/switch.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/form/switch.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class CreateChannelPage extends StatefulWidget {
   final Function? closeModel;

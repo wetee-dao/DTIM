@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/service/apis/apis.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
 
 @RoutePage(name: "selectOrg")
 class SelectOrgPage extends StatefulWidget {

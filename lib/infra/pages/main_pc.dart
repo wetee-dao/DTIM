@@ -1,16 +1,16 @@
 import 'dart:async';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/sider_bar.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/service/apis/apis.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/sider_bar.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/theme.dart';
 import './dao/dao.dart';
 import 'org/org.dart';
 
@@ -87,7 +87,12 @@ class _PCPageState extends State<PCPage> {
                   SizedBox(
                     width: 40.w,
                     height: 40.w,
-                    child: MePop(im.me!.address, im.me!.name ?? "-", true, 40.w),
+                    child: MePop(
+                      im.me!.address,
+                      im.me!.name ?? "-",
+                      true,
+                      40.w,
+                    ),
                   ),
                   Container(
                     width: 6.w,

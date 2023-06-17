@@ -1,12 +1,12 @@
-import 'package:asyou_app/infra/components/popup.dart';
+import 'package:dtim/infra/components/popup.dart';
 import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/identicon.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/identicon.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'mxc_image.dart';
 import 'name_with_emoji.dart';
 

@@ -6,13 +6,13 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class VerificationRequestContent extends StatelessWidget {
   final Event event;

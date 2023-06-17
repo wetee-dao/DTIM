@@ -1,18 +1,18 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/infra/router/pop_router.dart';
+import 'package:dtim/infra/router/pop_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:badges/badges.dart' as badges;
 
-import 'package:asyou_app/infra/components/name_with_emoji.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/app/app.dart';
-import 'package:asyou_app/application/store/app/org.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/name_with_emoji.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/app/org.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'avatar.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';

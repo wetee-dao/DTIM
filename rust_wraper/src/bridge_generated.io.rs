@@ -12,6 +12,16 @@ pub extern "C" fn wire_connect(port_: i64, url: *mut wire_uint_8_list) {
 }
 
 #[no_mangle]
+pub extern "C" fn wire_start_client(port_: i64, client: u32) {
+    wire_start_client_impl(port_, client)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_stop_client(port_: i64, client: u32) {
+    wire_stop_client_impl(port_, client)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_seed_generate(port_: i64) {
     wire_seed_generate_impl(port_)
 }
@@ -47,11 +57,6 @@ pub extern "C" fn wire_sign_from_address(
     ctx: *mut wire_uint_8_list,
 ) {
     wire_sign_from_address_impl(port_, address, ctx)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_start_client(port_: i64, client: u32) {
-    wire_start_client_impl(port_, client)
 }
 
 #[no_mangle]

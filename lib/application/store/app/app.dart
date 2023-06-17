@@ -1,7 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/application/store/im_state.dart';
-import 'package:asyou_app/native_wraper.dart';
-import 'package:asyou_app/router.dart';
+import 'package:dtim/application/store/im_state.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,12 +11,12 @@ import 'package:matrix/matrix.dart' show AuthenticationUserIdentifier, Client, H
 import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:asyou_app/application/service/apis/system_api.dart';
-import 'package:asyou_app/infra/components/loading_dialog.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/service/apis/system_api.dart';
+import 'package:dtim/infra/components/loading_dialog.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 part 'app.freezed.dart';
 

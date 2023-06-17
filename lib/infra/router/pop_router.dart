@@ -1,25 +1,25 @@
-// import 'package:asyou_app/infra/pages/channel/create.dart';
-import 'package:asyou_app/infra/pages/user/kyc.dart';
-import 'package:asyou_app/infra/pages/user/setting.dart';
+// import 'package:dtim/infra/pages/channel/create.dart';
+import 'package:dtim/infra/pages/user/kyc.dart';
+import 'package:dtim/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/infra/pages/channel/create_private.dart';
-import 'package:asyou_app/infra/pages/channel/setting/setting.dart';
-import 'package:asyou_app/infra/pages/dao/pop/apply_project_funding.dart';
-import 'package:asyou_app/infra/pages/dao/pop/create_project.dart';
-import 'package:asyou_app/infra/pages/dao/pop/create_roadmap.dart';
-import 'package:asyou_app/infra/pages/dao/pop/create_task.dart';
-import 'package:asyou_app/infra/pages/dao/pop/join_dao.dart';
-import 'package:asyou_app/infra/pages/dao/pop/make_review.dart';
-import 'package:asyou_app/infra/pages/dao/pop/referendum_vote.dart';
-import 'package:asyou_app/infra/pages/dao/pop/task_info.dart';
-import 'package:asyou_app/infra/pages/setting/setting.dart';
-import 'package:asyou_app/infra/pages/dao/pop/join_task.dart';
-import 'package:asyou_app/infra/pages/channel/create.dart';
-import 'package:asyou_app/infra/pages/search.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/pages/channel/create_private.dart';
+import 'package:dtim/infra/pages/channel/setting/setting.dart';
+import 'package:dtim/infra/pages/dao/pop/apply_project_funding.dart';
+import 'package:dtim/infra/pages/dao/pop/create_project.dart';
+import 'package:dtim/infra/pages/dao/pop/create_roadmap.dart';
+import 'package:dtim/infra/pages/dao/pop/create_task.dart';
+import 'package:dtim/infra/pages/dao/pop/join_dao.dart';
+import 'package:dtim/infra/pages/dao/pop/make_review.dart';
+import 'package:dtim/infra/pages/dao/pop/referendum_vote.dart';
+import 'package:dtim/infra/pages/dao/pop/task_info.dart';
+import 'package:dtim/infra/pages/setting/setting.dart';
+import 'package:dtim/infra/pages/dao/pop/join_task.dart';
+import 'package:dtim/infra/pages/channel/create.dart';
+import 'package:dtim/infra/pages/search.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
 
 getPage(String url, Function closeModel) {
   if (url == "/create_channel") {

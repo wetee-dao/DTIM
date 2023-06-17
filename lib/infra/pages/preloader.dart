@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/application/store/app/app.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/native_wraper.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:collection/collection.dart';
@@ -16,11 +16,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:lottie/lottie.dart';
 
-import 'package:asyou_app/application/service/apis/apis.dart';
-import 'package:asyou_app/domain/models/account.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'package:dtim/domain/models/account.dart';
 
 @RoutePage(name: "preloader")
 class PreloaderPage extends StatefulWidget {
@@ -66,11 +66,8 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   autoLogin() async {
     final systemStore = await SystemApi.create();
     final winsystem = await systemStore.get();
-    if (winsystem != null &&
-        winsystem.loginAccount != null &&
-        winsystem.loginAccount != "") {
-      final account =
-          accounts.firstWhereOrNull((a) => a.address == winsystem.loginAccount);
+    if (winsystem != null && winsystem.loginAccount != null && winsystem.loginAccount != "") {
+      final account = accounts.firstWhereOrNull((a) => a.address == winsystem.loginAccount);
       if (account == null) {
         return;
       }
@@ -108,9 +105,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
           future: () async {
             await im.connect(orgs[0]);
             im.setCurrent(orgs[0]);
-            BotToast.showText(
-                text: L10n.of(globalCtx())!.selectOrgOk,
-                duration: const Duration(seconds: 2));
+            BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
             if (isPc()) {
               globalCtx().router.root.back();
               globalCtx().router.root.replaceNamed("/pc/im");
@@ -220,9 +215,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   Text(
                     "DTIM",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 20.w,
-                        color: constTheme.centerChannelColor.withOpacity(0.2)),
+                    style: TextStyle(fontSize: 20.w, color: constTheme.centerChannelColor.withOpacity(0.2)),
                   ),
                   SizedBox(height: 20.w),
                 ],
@@ -257,8 +250,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   L10n.of(context)!.welcome,
                                   style: TextStyle(
                                     fontSize: 14.w,
-                                    color: constTheme.centerChannelColor
-                                        .withOpacity(0.7),
+                                    color: constTheme.centerChannelColor.withOpacity(0.7),
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
@@ -273,21 +265,16 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                           scrollDirection: Axis.vertical,
                                           itemBuilder: (context, i) {
                                             return Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 10.w),
+                                              margin: EdgeInsets.only(bottom: 10.w),
                                               decoration: BoxDecoration(
-                                                color: constTheme
-                                                    .centerChannelColor
-                                                    .withOpacity(0.05),
-                                                borderRadius:
-                                                    BorderRadius.circular(5.w),
+                                                color: constTheme.centerChannelColor.withOpacity(0.05),
+                                                borderRadius: BorderRadius.circular(5.w),
                                               ),
                                               child: Row(
                                                 children: [
                                                   SizedBox(width: 10.w),
                                                   Avatar(
-                                                    key: Key(
-                                                        accounts[i].address),
+                                                    key: Key(accounts[i].address),
                                                     id: accounts[i].address,
                                                     name: accounts[i].address,
                                                     size: 50.w,
@@ -296,71 +283,49 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                   SizedBox(width: 10.w),
                                                   Expanded(
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text(
-                                                          accounts[i].name ??
-                                                              "-",
+                                                          accounts[i].name ?? "-",
                                                           style: TextStyle(
-                                                            color: constTheme
-                                                                .centerChannelColor,
+                                                            color: constTheme.centerChannelColor,
                                                             fontSize: 16.w,
                                                           ),
                                                         ),
                                                         Text(
                                                           accounts[i].address,
                                                           style: TextStyle(
-                                                            color: constTheme
-                                                                .centerChannelColor,
+                                                            color: constTheme.centerChannelColor,
                                                             fontSize: 12.w,
                                                           ),
                                                         )
                                                       ],
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                      width: 15.w,
-                                                      height: 70.w),
+                                                  SizedBox(width: 15.w, height: 70.w),
                                                   IconButton(
-                                                    key: Key(
-                                                        "${accounts[i].name ?? "acount_$i"}_del"),
+                                                    key: Key("${accounts[i].name ?? "acount_$i"}_del"),
                                                     onPressed: () async {
                                                       if (OkCancelResult.ok ==
                                                           await showOkCancelAlertDialog(
-                                                            useRootNavigator:
-                                                                false,
+                                                            useRootNavigator: false,
                                                             title: "提示",
-                                                            message:
-                                                                "确认删除用户，用户为本地账户，删除后无法恢复",
-                                                            context:
-                                                                globalCtx(),
-                                                            okLabel: L10n.of(
-                                                                    globalCtx())!
-                                                                .next,
-                                                            cancelLabel: L10n.of(
-                                                                    globalCtx())!
-                                                                .cancel,
+                                                            message: "确认删除用户，用户为本地账户，删除后无法恢复",
+                                                            context: globalCtx(),
+                                                            okLabel: L10n.of(globalCtx())!.next,
+                                                            cancelLabel: L10n.of(globalCtx())!.cancel,
                                                           )) {
-                                                        await accountStore
-                                                            .remove(accounts[i]
-                                                                .address);
+                                                        await accountStore.remove(accounts[i].address);
                                                         BotToast.showText(
                                                           text: '用户删除成功',
-                                                          duration:
-                                                              const Duration(
-                                                                  seconds: 2),
+                                                          duration: const Duration(seconds: 2),
                                                         );
                                                         getList(null);
                                                       }
                                                     },
                                                     icon: Icon(
-                                                      Icons
-                                                          .delete_outline_rounded,
-                                                      color: constTheme
-                                                          .centerChannelColor
-                                                          .withOpacity(0.3),
+                                                      Icons.delete_outline_rounded,
+                                                      color: constTheme.centerChannelColor.withOpacity(0.3),
                                                       size: 25.w,
                                                     ),
                                                   ),
@@ -368,37 +333,27 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                   Container(
                                                     height: 70.w,
                                                     decoration: BoxDecoration(
-                                                      color: constTheme
-                                                          .linkColor
-                                                          .withOpacity(0.3),
-                                                      borderRadius: BorderRadius
-                                                          .horizontal(
-                                                        right: Radius.circular(
-                                                            5.w),
+                                                      color: constTheme.linkColor.withOpacity(0.3),
+                                                      borderRadius: BorderRadius.horizontal(
+                                                        right: Radius.circular(5.w),
                                                       ),
                                                     ),
                                                     child: InkWell(
-                                                      key: Key(
-                                                          accounts[i].name ??
-                                                              "acount_$i"),
+                                                      key: Key(accounts[i].name ?? "acount_$i"),
                                                       onTap: () async {
-                                                        final islogin = await im
-                                                            .login(accounts[i]);
+                                                        final islogin = await im.login(accounts[i]);
                                                         if (islogin) {
                                                           onLogined();
                                                         }
                                                       },
                                                       child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
                                                           SizedBox(width: 25.w),
                                                           Text(
                                                             "Login",
                                                             style: TextStyle(
-                                                              color: constTheme
-                                                                  .centerChannelColor,
+                                                              color: constTheme.centerChannelColor,
                                                               fontSize: 16.w,
                                                             ),
                                                           ),
@@ -413,14 +368,11 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                           },
                                         )
                                       : Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 10.w),
+                                          padding: EdgeInsets.symmetric(vertical: 10.w),
                                           child: Text(
                                             L10n.of(context)!.noAccount,
                                             style: TextStyle(
-                                              color: constTheme
-                                                  .centerChannelColor
-                                                  .withOpacity(0.3),
+                                              color: constTheme.centerChannelColor.withOpacity(0.3),
                                               fontSize: 20.w,
                                             ),
                                           ),
@@ -441,8 +393,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               key: const Key("selectAccountType"),
                               onTap: () => selectAccountType(),
                               child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 15.w, horizontal: 15.w),
+                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
                                 width: double.maxFinite,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
@@ -470,13 +421,11 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                 );
                                 return;
                               }
-                              await context.router
-                                  .pushNamed("/importSr25519key");
+                              await context.router.pushNamed("/importSr25519key");
                               getList(null);
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15.w, horizontal: 15.w),
+                              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
                               width: MediaQuery.of(context).size.width * 0.4,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
@@ -513,8 +462,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   );
                                   return;
                                 }
-                                List<dynamic> accountJ =
-                                    convert.jsonDecode(acount);
+                                List<dynamic> accountJ = convert.jsonDecode(acount);
                                 if (accountJ.isEmpty) {
                                   await showOkAlertDialog(
                                     title: "Notice",
@@ -527,10 +475,8 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                 }
                                 List<Account> accounts = [];
                                 for (var i = 0; i < accountJ.length; i++) {
-                                  final chainData =
-                                      accountJ[i] as Map<String, dynamic>;
-                                  final chainStr =
-                                      convert.jsonEncode(accountJ[i]);
+                                  final chainData = accountJ[i] as Map<String, dynamic>;
+                                  final chainStr = convert.jsonEncode(accountJ[i]);
                                   final initUser = Account(
                                     address: chainData["address"] as String,
                                     chainData: chainStr,
@@ -538,9 +484,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                   );
                                   initUser.domain = "";
                                   initUser.chainData = chainStr;
-                                  initUser.name = (chainData["meta"]
-                                          as Map<String, dynamic>)["name"]
-                                      as String;
+                                  initUser.name = (chainData["meta"] as Map<String, dynamic>)["name"] as String;
 
                                   accounts.add(initUser);
                                 }
@@ -552,8 +496,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                 );
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 15.w, horizontal: 15.w),
+                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
                                 width: double.maxFinite,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
@@ -584,8 +527,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            if (PlatformInfos.isLinux ||
-                                PlatformInfos.isWindows)
+                            if (PlatformInfos.isLinux || PlatformInfos.isWindows)
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

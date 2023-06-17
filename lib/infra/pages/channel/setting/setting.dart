@@ -13,11 +13,11 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'details.dart';
 import 'encryption.dart';
 import 'members.dart';

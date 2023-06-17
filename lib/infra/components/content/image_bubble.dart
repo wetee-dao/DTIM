@@ -6,16 +6,16 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/infra/pages/utils/image_viewer/image_viewer.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/infra/pages/utils/image_viewer/image_viewer.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/infra/components/mxc_image.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/mxc_image.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class ImageBubble extends StatefulWidget {
   final Event event;

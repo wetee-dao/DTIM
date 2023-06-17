@@ -1,9 +1,9 @@
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/infra/components/app_bar.dart';
+import 'package:dtim/infra/components/app_bar.dart';
 
 void main() {
   testWidgets("test LocalAppBar", (WidgetTester tester) async {

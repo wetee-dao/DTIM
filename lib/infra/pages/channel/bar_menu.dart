@@ -1,13 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/infra/router/pop_router.dart';
+import 'package:dtim/infra/router/pop_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class ItemModel {
   String title;

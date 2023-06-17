@@ -1,17 +1,17 @@
 // import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/native_wraper.dart';
+import 'package:dtim/native_wraper.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/bridge_struct.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 
 class DAOCTX with ChangeNotifier {
   late Account user;

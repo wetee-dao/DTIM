@@ -1,8 +1,8 @@
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/dao/text.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/dao/text.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class CombindBoardPage extends StatefulWidget {
   const CombindBoardPage({super.key});

@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/webrtc/action.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/webrtc/action.dart';
 import 'img_painter.dart';
 
 class WebRTCCalling extends StatefulWidget {

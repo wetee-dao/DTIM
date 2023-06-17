@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/application/store/theme.dart';
 
 Future<LoadingDialogResult<T>> waitFutureLoading<T>({
   required BuildContext context,

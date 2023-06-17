@@ -1,12 +1,12 @@
-import 'package:asyou_app/native_wraper.dart';
+import 'package:dtim/native_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/dao_ctx.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/dao_ctx.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class JoinTaskPage extends StatefulWidget {
   final Function? closeModel;

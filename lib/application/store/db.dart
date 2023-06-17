@@ -1,9 +1,7 @@
-import 'package:asyou_app/domain/models/models.dart';
+import 'package:dtim/domain/models/models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-
- initDB() async {
-  
+initDB() async {
   Hive.registerAdapter(SystemAdapter());
   Hive.registerAdapter(AccountAdapter());
   Hive.registerAdapter(AccountOrgAdapter());

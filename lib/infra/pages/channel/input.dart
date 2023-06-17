@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/localized_extension.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/localized_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
@@ -13,14 +13,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:record/record.dart';
 
-import 'package:asyou_app/infra/components/popup.dart';
-import 'package:asyou_app/infra/components/recording_dialog.dart';
-import 'package:asyou_app/infra/components/send_file_dialog.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/domain/utils/matrix_sdk_extensions/matrix_file_extension.dart';
+import 'package:dtim/infra/components/popup.dart';
+import 'package:dtim/infra/components/recording_dialog.dart';
+import 'package:dtim/infra/components/send_file_dialog.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_file_extension.dart';
 
 // ignore: must_be_immutable
 class ChannelInputPage extends StatefulWidget {

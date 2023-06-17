@@ -60,6 +60,32 @@ fn wire_connect_impl(port_: MessagePort, url: impl Wire2Api<String> + UnwindSafe
         },
     )
 }
+fn wire_start_client_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "start_client",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            move |task_callback| start_client(api_client)
+        },
+    )
+}
+fn wire_stop_client_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "stop_client",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            move |task_callback| stop_client(api_client)
+        },
+    )
+}
 fn wire_seed_generate_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
@@ -136,19 +162,6 @@ fn wire_sign_from_address_impl(
             let api_address = address.wire2api();
             let api_ctx = ctx.wire2api();
             move |task_callback| sign_from_address(api_address, api_ctx)
-        },
-    )
-}
-fn wire_start_client_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
-        WrapInfo {
-            debug_name: "start_client",
-            port: Some(port_),
-            mode: FfiCallMode::Normal,
-        },
-        move || {
-            let api_client = client.wire2api();
-            move |task_callback| start_client(api_client)
         },
     )
 }

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/hover_list_item.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/hover_list_item.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'notice.dart';
 import 'theme.dart';
 

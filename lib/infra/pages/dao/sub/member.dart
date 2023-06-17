@@ -1,7 +1,7 @@
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/infra/components/dao/member_card.dart';
+import 'package:dtim/infra/components/dao/member_card.dart';
 
 class Members extends StatelessWidget {
   final List<String> members;
