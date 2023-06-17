@@ -1,5 +1,6 @@
 // import 'package:asyou_app/infra/pages/channel/create.dart';
 import 'package:asyou_app/infra/pages/user/kyc.dart';
+import 'package:asyou_app/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
 
 import 'package:asyou_app/infra/pages/channel/create_private.dart';
@@ -71,6 +72,8 @@ getPage(String url, Function closeModel) {
     // final ps = pstr.split("/");
   } else if (url.indexOf("/kyc") == 0) {
     return KycPage(closeModel: closeModel);
+  } else if (url.indexOf("/user_setting") == 0) {
+    return UserSettingPage(closeModel: closeModel);
   }
 
   return const Center(child: Text("404"));

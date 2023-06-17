@@ -94,6 +94,7 @@ class _MsgState extends State<Msg> {
                     40.w,
                     color: constTheme.centerChannelColor,
                     bg: constTheme.centerChannelDivider,
+                    mxContent: user.avatarUrl,
                   ),
                 ],
               ),

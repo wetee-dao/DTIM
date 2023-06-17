@@ -95,24 +95,30 @@ class _MePopState extends State<MePop> {
             SizedBox(height: 10.w),
             Column(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 15.w),
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.05))),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '账户设置',
-                        style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 14.w,
-                        color: constTheme.centerChannelColor,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    menuController.hideMenu();
+                    showModelOrPage(context, "/user_setting");
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15.w),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.05))),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          '账户设置',
+                          style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14.w,
+                          color: constTheme.centerChannelColor,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 GestureDetector(

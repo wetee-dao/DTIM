@@ -1,6 +1,7 @@
 import 'package:asyou_app/application/store/app/app.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:auto_route/auto_route.dart';
 
@@ -30,6 +31,7 @@ class _KycPageState extends State<KycPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final url = "https://zkSBT.wetee.app?address=${im.me!.address}";
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
@@ -79,14 +81,14 @@ class _KycPageState extends State<KycPage> {
                 children: [
                   Expanded(
                     child: Text(
-                      "https://zkSBT.wetee.app?address=${im.me!.address}",
+                      url,
                       style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                     ),
                   ),
                   IconButton(
                     onPressed: () {
                       Clipboard.setData(ClipboardData(
-                        text: "https://zkSBT.wetee.app?address=${im.me!.address}",
+                        text: url,
                       )).then((value) {
                         BotToast.showText(text: '验证地址复制成功', duration: const Duration(seconds: 2));
                       });
@@ -104,7 +106,9 @@ class _KycPageState extends State<KycPage> {
             const Spacer(),
             InkWell(
               key: const Key('joinDaoSubmit'),
-              onTap: () {},
+              onTap: () async {
+                await launchUrl(Uri.parse(url));
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),
                 alignment: Alignment.center,
@@ -117,7 +121,7 @@ class _KycPageState extends State<KycPage> {
                     Expanded(
                       child: Center(
                         child: Text(
-                          'Complete authentication',
+                          'Open browser',
                           style: TextStyle(
                             color: constTheme.buttonColor,
                             fontWeight: FontWeight.bold,

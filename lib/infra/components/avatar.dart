@@ -57,29 +57,30 @@ class Avatar extends StatelessWidget {
     Widget container;
 
     if (!noPic) {
-      container = Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.w),
-          color: constTheme.centerChannelColor.withOpacity(0.1),
-        ),
-        padding: EdgeInsets.all(5.w),
-        alignment: Alignment.topLeft,
-        child: MxcImage(
-          key: Key(mxContent.toString()),
-          uri: mxContent,
-          fit: BoxFit.cover,
+      container = ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: Container(
           width: size,
           height: size,
-          placeholder: (_) => textWidget,
-          cacheKey: mxContent.toString(),
+          decoration: BoxDecoration(
+            color: constTheme.centerChannelColor.withOpacity(0.1),
+          ),
+          alignment: Alignment.topLeft,
+          child: MxcImage(
+            key: Key(mxContent.toString()),
+            uri: mxContent,
+            fit: BoxFit.cover,
+            width: size,
+            height: size,
+            placeholder: (_) => textWidget,
+            cacheKey: mxContent.toString(),
+          ),
         ),
       );
     } else {
       container = id == ""
           ? ClipRRect(
-              borderRadius: BorderRadius.circular(5.w),
+              borderRadius: BorderRadius.circular(3),
               child: Container(
                 width: size,
                 height: size,
@@ -167,9 +168,18 @@ class UserAvatarWithPop extends StatefulWidget {
   final double avatarWidth;
   final Color? bg;
   final Color? color;
+  final Uri? mxContent;
 
-  const UserAvatarWithPop(this.id, this.name, this.online, this.avatarWidth, {Key? key, this.bg, this.color})
-      : super(key: key);
+  const UserAvatarWithPop(
+    this.id,
+    this.name,
+    this.online,
+    this.avatarWidth, {
+    Key? key,
+    this.bg,
+    this.color,
+    this.mxContent,
+  }) : super(key: key);
 
   @override
   State<UserAvatarWithPop> createState() => _UserAvatarWithPopState();
@@ -188,12 +198,10 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
       controller: menuController,
       position: PreferredPosition.bottomLeft,
       pressType: PressType.mouseHover,
-      child: UserAvatar(
-        getUserShortId(widget.id),
-        widget.online,
-        widget.avatarWidth,
-        bg: widget.bg,
-        color: widget.color,
+      child: Avatar(
+        id: widget.id,
+        mxContent: widget.mxContent,
+        size: widget.avatarWidth,
       ),
       menuBuilder: () => Container(
         width: 320.w,
@@ -212,12 +220,10 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                   onTap: () {},
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
-                    child: UserAvatar(
-                      getUserShortId(widget.id),
-                      true,
-                      65.w,
-                      bg: constTheme.centerChannelColor.withOpacity(0.1),
-                      color: constTheme.centerChannelColor,
+                    child: Avatar(
+                      id: widget.id,
+                      mxContent: widget.mxContent,
+                      size: widget.avatarWidth,
                     ),
                   ),
                 ),
