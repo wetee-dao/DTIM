@@ -40,7 +40,8 @@ class _DirectChatsState extends State<DirectChats> {
     final org = context.watch<OrgCubit>();
     final app = context.watch<AppCubit>();
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final channelsList = im.current!.rooms.where((e) => e.isDirectChat).toList();
+    final List<link.Room> channelsList =
+        im.current != null ? im.current!.rooms.where((e) => e.isDirectChat).toList() : [];
     final currentId = org.state.channelId;
     printDebug("DM频道数据更新 => ${app.state.lastSyncTime}");
     return ListView.builder(

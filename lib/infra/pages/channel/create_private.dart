@@ -104,7 +104,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                       BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
                     });
                   },
-                  icon: Icon(Icons.copy, size: 20.w, color: constTheme.sidebarHeaderTextColor),
+                  icon: Icon(Icons.copy_rounded, size: 20.w, color: constTheme.sidebarHeaderTextColor),
                 ),
                 SizedBox(width: 15.w),
               ],
@@ -128,10 +128,10 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                     Row(
                       children: [
                         SizedBox(width: 15.w),
-                        UserAvatar(
-                          getUserShortId(userList[index].userId),
-                          true,
-                          40.w,
+                        Avatar(
+                          id: getUserShortId(userList[index].userId),
+                          name: userList[index].displayName ?? "",
+                          mxContent: userList[index].avatarUrl,
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
@@ -164,6 +164,23 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                               ),
                             ],
                           ),
+                        ),
+                        IconButton(
+                          key: Key("copyPrivate$index"),
+                          onPressed: () async {
+                            await waitFutureLoading(
+                              context: globalCtx(),
+                              future: () async {
+                                Clipboard.setData(ClipboardData(
+                                  text: getUserShortId(userList[index].userId),
+                                )).then((value) {
+                                  BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
+                                });
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.copy_rounded, size: 20.w),
+                          color: constTheme.centerChannelColor,
                         ),
                         IconButton(
                           key: Key("createPrivate$index"),

@@ -18,7 +18,6 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    print(authService.state.me);
     if (authService.state.me != null ||
         resolver.routeName == Preloader.name ||
         resolver.routeName == Sr25519key.name ||

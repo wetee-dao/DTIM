@@ -38,7 +38,8 @@ class _ChannelListState extends State<ChannelList> {
   Widget build(BuildContext context) {
     final org = context.watch<OrgCubit>();
     final app = context.watch<AppCubit>();
-    final channelsList = im.current!.rooms.where((e) => !e.isDirectChat).toList();
+    final List<link.Room> channelsList =
+        im.current != null ? im.current!.rooms.where((e) => !e.isDirectChat).toList() : [];
     final currentId = org.state.channelId;
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     printDebug("频道数据更新 => ${app.state.lastSyncTime}");

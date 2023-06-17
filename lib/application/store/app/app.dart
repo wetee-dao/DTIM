@@ -141,6 +141,8 @@ class AppCubit extends Cubit<AppState> {
     });
     // const storage = FlutterSecureStorage();
     // await storage.delete(key: "login_state");
+    final systemStore = await SystemApi.create();
+    systemStore.saveLogin("");
     emit(const AppState());
     globalCtx().router.back();
   }

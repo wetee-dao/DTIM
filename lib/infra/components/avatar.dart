@@ -59,13 +59,9 @@ class Avatar extends StatelessWidget {
     if (!noPic) {
       container = ClipRRect(
         borderRadius: BorderRadius.circular(3),
-        child: Container(
+        child: SizedBox(
           width: size,
           height: size,
-          decoration: BoxDecoration(
-            color: constTheme.centerChannelColor.withOpacity(0.1),
-          ),
-          alignment: Alignment.topLeft,
           child: MxcImage(
             key: Key(mxContent.toString()),
             uri: mxContent,
