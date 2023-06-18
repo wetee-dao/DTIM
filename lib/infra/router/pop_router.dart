@@ -85,7 +85,9 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
     showDialog(
       context: context,
       useSafeArea: true,
-      barrierColor: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
+      barrierColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.white.withOpacity(0.1)
+          : Colors.black.withOpacity(0.7),
       builder: (context) {
         final media = MediaQuery.of(context);
         final bottom = media.size.height - 30.w - height.w;
@@ -102,7 +104,9 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
             borderRadius: BorderRadius.all(Radius.circular(4.w)),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: constTheme.centerChannelBg.withOpacity(0.4),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? constTheme.centerChannelBg.withOpacity(0.4)
+                    : Colors.black.withOpacity(0.2),
                 blurRadius: 8.w,
               ),
             ],
