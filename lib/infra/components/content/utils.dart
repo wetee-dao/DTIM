@@ -14,7 +14,10 @@ class RoomEvent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 19.w),
+        Container(
+          transform: Matrix4.translationValues(-2.w, 0, 0),
+          child: Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 19.w),
+        ),
         SizedBox(width: 2.w),
         SelectableText(
           text,

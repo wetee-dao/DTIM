@@ -192,6 +192,8 @@ class _ChannelListState extends State<ChannelList> {
                 Expanded(
                   child: Text(
                     chat.getLocalizedDisplayname(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 15.w,
                       fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,

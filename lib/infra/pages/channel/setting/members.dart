@@ -117,10 +117,10 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                     Row(
                       children: [
                         SizedBox(width: 15.w),
-                        BaseAvatar(
-                          getUserShortId(userList[index].id),
-                          true,
-                          40.w,
+                        Avatar(
+                          id: getUserShortId(userList[index].id),
+                          mxContent: userList[index].avatarUrl,
+                          size: 50.w,
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
@@ -146,6 +146,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                                   color: constTheme.centerChannelColor,
                                   fontWeight: FontWeight.w600,
                                   overflow: TextOverflow.ellipsis,
+                                  fontSize: 12.w,
                                 ),
                                 textAlign: TextAlign.left,
                               ),

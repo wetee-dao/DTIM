@@ -34,18 +34,16 @@ class MessageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonTextColor = textColor;
-
     switch (event.type) {
       case EventTypes.Encryption:
         return Container(
           padding: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.w),
-            border: Border.all(color: buttonTextColor.withOpacity(0.1)),
+            border: Border.all(color: textColor.withOpacity(0.1)),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: buttonTextColor.withOpacity(0.01),
+                color: textColor.withOpacity(0.01),
                 blurRadius: 8.w,
               ),
             ],
@@ -54,11 +52,11 @@ class MessageContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.task_rounded, color: buttonTextColor, size: 19.w),
+              Icon(Icons.task_rounded, color: textColor, size: 19.w),
               SizedBox(width: 5.w),
               Text(
                 "启用了E2E加密",
-                style: TextStyle(fontSize: 12.w, color: buttonTextColor),
+                style: TextStyle(fontSize: 12.w, color: textColor),
               )
             ],
           ),
@@ -72,7 +70,7 @@ class MessageContent extends StatelessWidget {
         } else if (joinRule == "public") {
           return const RoomEvent(text: "设置频道加入规则为 公开");
         } else {
-          return Container();
+          return Text(event.toJson().toString());
         }
       case EventTypes.HistoryVisibility:
         var historyVisibility = event.content["history_visibility"];
@@ -101,7 +99,7 @@ class MessageContent extends StatelessWidget {
             )}",
           );
         } else {
-          return Container();
+          return Text(event.toJson().toString());
         }
       case EventTypes.GuestAccess:
         var guestAccess = event.content["guest_access"];
@@ -114,7 +112,7 @@ class MessageContent extends StatelessWidget {
             text: "设置频道访客禁止加入",
           );
         } else {
-          return Container();
+          return Text(event.toJson().toString());
         }
       case EventTypes.RoomName:
         return RoomEvent(
@@ -181,7 +179,7 @@ class MessageContent extends StatelessWidget {
           case MessageTypes.BadEncrypted:
           case EventTypes.Encrypted:
             return _ButtonContent(
-              textColor: buttonTextColor,
+              textColor: textColor,
               onPressed: () => verifyOrRequestKey(context, event),
               icon: const Icon(Icons.lock_outline),
               label: L10n.of(context)!.encrypted,
@@ -224,7 +222,7 @@ class MessageContent extends StatelessWidget {
                       snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
                     ),
                     icon: const Icon(Icons.delete_outlined),
-                    textColor: buttonTextColor,
+                    textColor: textColor,
                     onPressed: () => onInfoTab!(event),
                   );
                 },
@@ -268,7 +266,7 @@ class MessageContent extends StatelessWidget {
                 snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
               ),
               icon: Icon(Icons.call_rounded, size: 17.w),
-              textColor: buttonTextColor,
+              textColor: textColor,
               onPressed: () => onInfoTab!(event),
             );
           },
@@ -284,7 +282,7 @@ class MessageContent extends StatelessWidget {
             event.type,
           ),
           icon: const Icon(Icons.info_outlined),
-          textColor: buttonTextColor,
+          textColor: textColor,
           onPressed: () => onInfoTab!(event),
         );
     }
