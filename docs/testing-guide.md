@@ -1,5 +1,5 @@
 
-# Dao-entrance Client Testing Guide
+# DTIM Client Testing Guide
 
 ## create a account
 

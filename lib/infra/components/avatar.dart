@@ -1,4 +1,5 @@
 import 'package:dtim/infra/components/popup.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
@@ -193,7 +194,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
       showArrow: false,
       controller: menuController,
       position: PreferredPosition.bottomLeft,
-      pressType: PressType.mouseHover,
+      pressType: kIsWeb ? PressType.singleClick : PressType.mouseHover,
       child: Avatar(
         id: widget.id,
         mxContent: widget.mxContent,

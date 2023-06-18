@@ -46,12 +46,12 @@ class _MePopState extends State<MePop> {
       controller: menuController,
       position: PreferredPosition.bottomLeft,
       pressType: PressType.singleClick,
-      child: UserAvatar(
-        getUserShortId(widget.id),
-        widget.online,
-        widget.avatarWidth,
-        bg: widget.bg,
-        color: widget.color,
+      child: Avatar(
+        // bg: widget.bg,
+        // color: widget.color,
+        id: widget.id,
+        mxContent: widget.mxContent,
+        size: 80.w,
       ),
       menuBuilder: () => Container(
         width: 270.w,
@@ -73,7 +73,7 @@ class _MePopState extends State<MePop> {
                     child: Avatar(
                       id: widget.id,
                       mxContent: widget.mxContent,
-                      size: widget.avatarWidth,
+                      size: 80.w,
                     ),
                   ),
                 ),
@@ -104,6 +104,7 @@ class _MePopState extends State<MePop> {
             Column(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     menuController.hideMenu();
                     showModelOrPage(context, "/user_setting");
@@ -130,6 +131,7 @@ class _MePopState extends State<MePop> {
                   ),
                 ),
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     menuController.hideMenu();
                     showModelOrPage(context, "/kyc");
@@ -167,6 +169,7 @@ class _MePopState extends State<MePop> {
                   ),
                 ),
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     final im = context.read<AppCubit>();
                     menuController.hideMenu();
