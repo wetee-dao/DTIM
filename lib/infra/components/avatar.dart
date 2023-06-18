@@ -80,8 +80,8 @@ class Avatar extends StatelessWidget {
       );
     } else {
       container = id == ""
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(3),
+          ? CircleAvatar(
+              radius: 3,
               child: Container(
                 width: size,
                 height: size,
@@ -133,7 +133,7 @@ class _BaseAvatarState extends State<BaseAvatar> {
     );
 
     ctx = Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(widget.avatarWidth * 0.1), color: boxBg),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: boxBg),
       padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
       alignment: Alignment.topLeft,
       child: Image.memory(
