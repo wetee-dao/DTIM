@@ -129,7 +129,7 @@ class _PCPageState extends State<PCPage> {
                                   onSelect(0);
                                 }),
                                 // DAO管理
-                                SiderBarItem(AppIcons.chain, "DAO", key: const Key("DAO"), selected: id.data == 1,
+                                SiderBarItem(AppIcons.chain, "Dao", key: const Key("DAO"), selected: id.data == 1,
                                     onTap: () {
                                   pageRouter.setActiveIndex(1);
                                   onSelect(1);
@@ -139,35 +139,6 @@ class _PCPageState extends State<PCPage> {
                           },
                         ),
                       ),
-                      // InkWell(
-                      //   onTap: () async {
-                      //     im.logout();
-                      //   },
-                      //   child: SizedBox(
-                      //     width: 40.w,
-                      //     height: 40.w,
-                      //     child: Icon(
-                      //       Icons.logout_rounded,
-                      //       size: 22.w,
-                      //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                      //     ),
-                      //   ),
-                      // ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     context.go("/select_org");
-                      //   },
-                      //   child: Container(
-                      //     width: 40.w,
-                      //     height: 40.w,
-                      //     margin: EdgeInsets.fromLTRB(0, 6.w, 0, 12.w),
-                      //     child: Icon(
-                      //       Icons.add,
-                      //       size: 22.w,
-                      //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                      //     ),
-                      //   ),
-                      // ),
                       if (aorgs != null)
                         for (var i = 0; i < aorgs!.length; i++)
                           Tooltip(

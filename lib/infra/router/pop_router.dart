@@ -79,7 +79,7 @@ getPage(String url, Function closeModel) {
   return const Center(child: Text("404"));
 }
 
-showModelOrPage(context, url, {double width = 520, double height = 550}) {
+showModelOrPage(context, url, {double width = 520, double height = 550, double top = 30}) {
   final constTheme = Theme.of(context).extension<ExtColors>()!;
   if (isPc() || PlatformInfos.isWeb) {
     showDialog(
@@ -95,7 +95,7 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
           margin: EdgeInsets.only(
             left: (media.size.width - width.w) / 2,
             right: (media.size.width - width.w) / 2,
-            top: 30.w,
+            top: top.w,
             bottom: bottom > 0 ? bottom : 40.w,
           ),
           width: width.w,

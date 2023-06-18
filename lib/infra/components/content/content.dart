@@ -1,23 +1,13 @@
-// Copyright 2023 FluffyChat.
-// This file is part of FluffyChat
-
-// Licensed under the AGPL;
-//
-// https://gitlab.com/famedly/fluffychat
-//
-
-import 'package:dtim/application/store/theme.dart';
-import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:dtim/application/store/im.dart';
 import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_locals.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/encryption.dart';
+
 import 'audio_player.dart';
 import 'cute_events.dart';
 import 'group_call.dart';
@@ -25,7 +15,9 @@ import 'html.dart';
 import 'image_bubble.dart';
 import 'map_bubble.dart';
 import 'download.dart';
+import 'member.dart';
 import 'sticker.dart';
+import 'utils.dart';
 import 'video_player.dart';
 
 class MessageContent extends StatelessWidget {
@@ -40,59 +32,94 @@ class MessageContent extends StatelessWidget {
     required this.textColor,
   }) : super(key: key);
 
-  void _verifyOrRequestKey(BuildContext context) async {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
-    printError("_verifyOrRequestKey_verifyOrRequestKey_verifyOrRequestKey");
-    final l10n = L10n.of(context)!;
-    if (event.content['can_request_session'] != true) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            event.type == EventTypes.Encrypted
-                ? l10n.needPantalaimonWarning
-                : event.calcLocalizedBodyFallback(
-                    MatrixLocals(l10n),
-                  ),
-          ),
-        ),
-      );
-      return;
-    }
-    final im = context.read<AppCubit>();
-    final client = im.currentState!.client;
-    if (client.isUnknownSession && client.encryption!.crossSigning.enabled) {
-      printError("client.isUnknownSession && client.encryption!.crossSigning.enabled");
-      // final success = await BootstrapDialog(
-      //   client: client,
-      // ).show(context);
-      // if (success != true) return;
-    }
-    event.requestKey();
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          l10n.whyIsThisMessageEncrypted,
-          style: TextStyle(fontSize: 18.w),
-        ),
-        content: Text(
-          event.calcLocalizedBodyFallback(MatrixLocals(l10n)),
-          style: TextStyle(color: constTheme.centerChannelColor),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text("确定"),
-            onPressed: () => Navigator.pop(context),
-          )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final buttonTextColor = textColor;
+
     switch (event.type) {
+      case EventTypes.Encryption:
+        return Container(
+          padding: EdgeInsets.all(8.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.w),
+            border: Border.all(color: buttonTextColor.withOpacity(0.1)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: buttonTextColor.withOpacity(0.01),
+                blurRadius: 8.w,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.task_rounded, color: buttonTextColor, size: 19.w),
+              SizedBox(width: 5.w),
+              Text(
+                "启用了E2E加密",
+                style: TextStyle(fontSize: 12.w, color: buttonTextColor),
+              )
+            ],
+          ),
+        );
+      case EventTypes.RoomPowerLevels:
+        return Container();
+      case EventTypes.RoomJoinRules:
+        var joinRule = event.content["join_rule"];
+        if (joinRule == "invite") {
+          return const RoomEvent(text: "设置频道加入规则为 邀请");
+        } else if (joinRule == "public") {
+          return const RoomEvent(text: "设置频道加入规则为 公开");
+        } else {
+          return Container();
+        }
+      case EventTypes.HistoryVisibility:
+        var historyVisibility = event.content["history_visibility"];
+        if (historyVisibility == "invited") {
+          return RoomEvent(
+            text: "设置频道历史消息可见性为 ${HistoryVisibility.invited.getLocalizedString(
+              MatrixLocals(L10n.of(context)!),
+            )}",
+          );
+        } else if (historyVisibility == "joined") {
+          return RoomEvent(
+            text: "设置频道历史消息可见性为 ${HistoryVisibility.joined.getLocalizedString(
+              MatrixLocals(L10n.of(context)!),
+            )}",
+          );
+        } else if (historyVisibility == "shared") {
+          return RoomEvent(
+            text: "设置频道历史消息可见性为 ${HistoryVisibility.shared.getLocalizedString(
+              MatrixLocals(L10n.of(context)!),
+            )}",
+          );
+        } else if (historyVisibility == "world_readable") {
+          return RoomEvent(
+            text: "设置频道历史消息可见性为 ${HistoryVisibility.worldReadable.getLocalizedString(
+              MatrixLocals(L10n.of(context)!),
+            )}",
+          );
+        } else {
+          return Container();
+        }
+      case EventTypes.GuestAccess:
+        var guestAccess = event.content["guest_access"];
+        if (guestAccess == "can_join") {
+          return const RoomEvent(
+            text: "设置频道访客可加入",
+          );
+        } else if (guestAccess == "forbidden") {
+          return const RoomEvent(
+            text: "设置频道访客禁止加入",
+          );
+        } else {
+          return Container();
+        }
+      case EventTypes.RoomName:
+        return RoomEvent(
+          text: "设置频道名称为 ${event.content["name"]}",
+        );
       case EventTypes.Message:
       case EventTypes.Encrypted:
       case EventTypes.Sticker:
@@ -155,7 +182,7 @@ class MessageContent extends StatelessWidget {
           case EventTypes.Encrypted:
             return _ButtonContent(
               textColor: buttonTextColor,
-              onPressed: () => _verifyOrRequestKey(context),
+              onPressed: () => verifyOrRequestKey(context, event),
               icon: const Icon(Icons.lock_outline),
               label: L10n.of(context)!.encrypted,
             );
@@ -247,38 +274,18 @@ class MessageContent extends StatelessWidget {
           },
         );
       case EventTypes.RoomMember:
-        return SelectableText("已加入频道 ${event.room.name}",
-            style: TextStyle(fontSize: 14.w, color: textColor.withAlpha(200)));
+        return RoomMemberContent(event, textColor);
       case EventTypes.GroupCallPrefix:
         return GroupCallContent(event, textColor);
-      // return FutureBuilder<User?>(
-      //   future: event.fetchSenderUser(),
-      //   builder: (context, snapshot) {
-      //     return _ButtonContent(
-      //       label: L10n.of(context)!.userSentUnknownEvent(
-      //         snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
-      //         event.type,
-      //       ),
-      //       icon: const Icon(Icons.info_outlined),
-      //       textColor: buttonTextColor,
-      //       onPressed: () => onInfoTab!(event),
-      //     );
-      //   },
-      // );
       default:
-        return FutureBuilder<User?>(
-          future: event.fetchSenderUser(),
-          builder: (context, snapshot) {
-            return _ButtonContent(
-              label: L10n.of(context)!.userSentUnknownEvent(
-                snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
-                event.type,
-              ),
-              icon: const Icon(Icons.info_outlined),
-              textColor: buttonTextColor,
-              onPressed: () => onInfoTab!(event),
-            );
-          },
+        return _ButtonContent(
+          label: L10n.of(context)!.userSentUnknownEvent(
+            event.senderFromMemoryOrFallback.calcDisplayname(),
+            event.type,
+          ),
+          icon: const Icon(Icons.info_outlined),
+          textColor: buttonTextColor,
+          onPressed: () => onInfoTab!(event),
         );
     }
   }
@@ -301,21 +308,21 @@ class _ButtonContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    return ElevatedButton.icon(
+    return OutlinedButton.icon(
       onPressed: onPressed,
       icon: icon,
       label: Text(label, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.w)),
-      style: ElevatedButton.styleFrom(
+      style: OutlinedButton.styleFrom(
         foregroundColor: textColor,
-        backgroundColor: constTheme.centerChannelColor.withOpacity(0.08),
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
+        backgroundColor: constTheme.centerChannelBg,
+        surfaceTintColor: constTheme.centerChannelBg,
+        shadowColor: constTheme.centerChannelColor.withOpacity(0.01),
         padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 10.w),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.w)),
-          side: BorderSide.none,
+          borderRadius: BorderRadius.circular(5.w),
         ),
-        elevation: 0,
+        side: BorderSide(width: 1, color: constTheme.centerChannelColor.withOpacity(0.1)),
+        elevation: 1,
       ),
     );
   }

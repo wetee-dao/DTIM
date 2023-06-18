@@ -443,7 +443,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         preEvent = events[index];
                       }
                       if (event.type == link.EventTypes.RoomCreate) {
-                        return renderCreate(event);
+                        return renderCreate(event, im.currentState!.client);
                       }
                       return Msg(
                         key: kIsWeb ? Key(event.eventId) : GlobalObjectKey(event.eventId),
@@ -502,7 +502,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     );
   }
 
-  renderCreate(link.Event event) {
+  renderCreate(link.Event event, client) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (event.type == link.EventTypes.RoomCreate) {
       return Container(
@@ -529,7 +529,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             ),
             SizedBox(height: 5.w),
             Text(
-              "你于 ${formatDate(
+              "${event.senderId == client.userID ? "我" : event.senderFromMemoryOrFallback.calcDisplayname()}于 ${formatDate(
                 event.originServerTs,
                 [
                   yyyy,

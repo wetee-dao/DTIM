@@ -33,8 +33,12 @@ class AccountOrgApi {
     await storeBox.put(id, org);
   }
 
+  deleteOrg(String userId, String orgHash) async {
+    await storeBox.delete(userId + orgHash);
+  }
+
   Future<List<AccountOrg>> accountSyncOrgs(
-    String userId,
+    String address,
     List<String> fs,
     List<Org> orgs,
   ) async {
@@ -43,10 +47,10 @@ class AccountOrgApi {
     // final account = aquery.findUnique();
     // aquery.close();
     final accountStoreBox = await Hive.openBox<Account>('Account');
-    final account = accountStoreBox.get(userId);
+    final account = accountStoreBox.get(address);
 
     // 查询当前的团队
-    final storeOrgs = await listByAccount(userId);
+    final storeOrgs = await listByAccount(address);
 
     // 删除不需要的数据
     for (var j = 0; j < storeOrgs.length; j++) {
@@ -58,8 +62,7 @@ class AccountOrgApi {
       }
       // 删除
       if (storeIndex == -1) {
-        storeOrgs[storeIndex].status = 3;
-        storeBox.put(userId + storeOrgs[j].orgHash, storeOrgs[storeIndex]);
+        await storeBox.delete(address + storeOrgs[j].orgHash);
       }
     }
 
@@ -84,10 +87,10 @@ class AccountOrgApi {
           at.domain = org.metaData!.domain;
           at.chainUrl = org.chainUrl;
           at.status = 1;
-          at.withAddr = userId;
+          at.withAddr = address;
           at.account = account!;
           at.daoId = org.daoId;
-          storeBox.put(userId + org.hash, at);
+          await storeBox.put(address + org.hash, at);
         }
       } else {
         // 更新
@@ -99,10 +102,10 @@ class AccountOrgApi {
           storeOrgs[storeIndex].domain = org.metaData!.domain;
           storeOrgs[storeIndex].chainUrl = org.chainUrl;
           storeOrgs[storeIndex].status = 1;
-          storeOrgs[storeIndex].withAddr = userId;
+          storeOrgs[storeIndex].withAddr = address;
           storeOrgs[storeIndex].account = account!;
           storeOrgs[storeIndex].daoId = org.daoId;
-          storeBox.put(userId + org.hash, storeOrgs[storeIndex]);
+          await storeBox.put(address + org.hash, storeOrgs[storeIndex]);
         }
       }
     }

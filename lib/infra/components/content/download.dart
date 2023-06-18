@@ -35,7 +35,13 @@ class MessageDownloadContent extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.w),
-          color: constTheme.centerChannelColor.withOpacity(0.1),
+          border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: constTheme.centerChannelColor.withOpacity(0.01),
+              blurRadius: 8.w,
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

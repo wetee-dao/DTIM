@@ -111,12 +111,13 @@ class _OrgViewPageState extends State<OrgViewPage> {
                     );
                   },
                 ),
-                menuBuilder: () => orgMenuRender(menuController, widget.width - 30.w),
+                menuBuilder: () => orgMenuRender(menuController, widget.width - 30.w, im),
               ),
               SizedBox(width: 10.w),
               InkWell(
                 onTap: () {
-                  showModelOrPage(context, "/search");
+                  var w = 0.8.sw > 700.w ? 700.w : 0.8.sw;
+                  showModelOrPage(context, "/search", width: w, top: 5.w);
                 },
                 child: Container(
                   height: 35.w,

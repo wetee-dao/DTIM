@@ -31,34 +31,39 @@ class GroupCallContent extends StatelessWidget {
       }
     }
     return InkWell(
-      // onTap: () => event.saveFile(context),
-      onTap: () async {
-        await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(
-              "消息内容",
-              style: TextStyle(fontSize: 18.w),
-            ),
-            content: Text(
-              event.toJson().toString(),
-              style: TextStyle(color: constTheme.centerChannelColor),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text("确定"),
-                onPressed: () => Navigator.pop(context),
-              )
-            ],
-          ),
-        );
-      },
+      // onTap: () async {
+      //   await showDialog(
+      //     context: context,
+      //     builder: (context) => AlertDialog(
+      //       title: Text(
+      //         "消息内容",
+      //         style: TextStyle(fontSize: 18.w),
+      //       ),
+      //       content: Text(
+      //         event.toJson().toString(),
+      //         style: TextStyle(color: constTheme.centerChannelColor),
+      //       ),
+      //       actions: <Widget>[
+      //         TextButton(
+      //           child: const Text("确定"),
+      //           onPressed: () => Navigator.pop(context),
+      //         )
+      //       ],
+      //     ),
+      //   );
+      // },
       child: Container(
         width: 250.w,
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.w),
-          color: constTheme.centerChannelColor.withOpacity(0.1),
+          border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: constTheme.centerChannelColor.withOpacity(0.01),
+              blurRadius: 8.w,
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
