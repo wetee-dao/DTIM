@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/infra/pages/dao/referendum.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
@@ -18,6 +19,7 @@ import 'project.dart';
 import 'roadmap.dart';
 import 'side_menu.dart';
 
+@RoutePage(name: "daoRoute")
 class DaoPage extends StatefulWidget {
   const DaoPage({Key? key}) : super(key: key);
 

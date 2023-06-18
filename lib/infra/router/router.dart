@@ -1,4 +1,3 @@
-import 'package:dtim/infra/pages/preloader.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +6,9 @@ import 'package:dtim/infra/pages/chain/sr25519_key.dart';
 import 'package:dtim/infra/pages/main_pc.dart';
 import 'package:dtim/infra/pages/select_org.dart';
 import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/infra/pages/dao/dao.dart';
+import 'package:dtim/infra/pages/org/org.dart';
+import 'package:dtim/infra/pages/preloader.dart';
 
 part 'router.gr.dart';
 
@@ -37,7 +39,10 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   List<AutoRoute> get routes {
     return [
       AutoRoute(path: '/', page: Preloader.page),
-      AutoRoute(path: '/pc/:app', page: Pc.page),
+      AutoRoute(path: '/pc/:app', page: Pc.page, children: [
+        AutoRoute(path: 'im', page: OrgRoute.page),
+        AutoRoute(path: 'dao', page: DaoRoute.page),
+      ]),
       AutoRoute(path: '/sr25519key', page: Sr25519key.page),
       AutoRoute(path: '/importSr25519key', page: ImportSr25519key.page),
       AutoRoute(path: '/select_org', page: SelectOrg.page),

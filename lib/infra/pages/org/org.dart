@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +9,7 @@ import 'package:dtim/application/store/theme.dart';
 import '../channel/chat.dart';
 import 'org_view.dart';
 
+@RoutePage(name: "orgRoute")
 class OrgPage extends StatefulWidget {
   const OrgPage({Key? key}) : super(key: key);
 

@@ -15,6 +15,18 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    OrgRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrgPage(),
+      );
+    },
+    DaoRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DaoPage(),
+      );
+    },
     ImportSr25519key.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -51,6 +63,34 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [OrgPage]
+class OrgRoute extends PageRouteInfo<void> {
+  const OrgRoute({List<PageRouteInfo>? children})
+      : super(
+          OrgRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrgRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DaoPage]
+class DaoRoute extends PageRouteInfo<void> {
+  const DaoRoute({List<PageRouteInfo>? children})
+      : super(
+          DaoRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DaoRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

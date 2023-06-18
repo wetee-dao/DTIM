@@ -166,7 +166,7 @@ class _UserSettingPageState extends State<UserSettingPage> {
                                 ? Avatar(mxContent: _data!.avatar, size: 45.w, id: im.me!.address)
                                 : Image.memory(avatar!.bytes, width: 45.w, height: 45.w, fit: BoxFit.cover),
                             SizedBox(width: 7.w),
-                            Text("Click to upload avatar", style: titleStyle.copyWith(fontSize: 17.w)),
+                            Text("Click to upload avatar", style: titleStyle.copyWith(fontSize: 15.w)),
                           ],
                         ),
                       ),
