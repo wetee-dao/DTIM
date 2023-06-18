@@ -44,7 +44,7 @@ class _MePopState extends State<MePop> {
       horizontalMargin: 0,
       showArrow: false,
       controller: menuController,
-      position: PreferredPosition.bottomLeft,
+      position: PreferredPosition.rightTop,
       pressType: PressType.singleClick,
       child: Avatar(
         bg: widget.bg,
