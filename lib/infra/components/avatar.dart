@@ -20,6 +20,8 @@ class Avatar extends StatelessWidget {
   static const double defaultSize = 44;
   final Client? client;
   final double fontSize;
+  final Color? bg;
+  final Color? color;
 
   const Avatar({
     required this.id,
@@ -30,6 +32,8 @@ class Avatar extends StatelessWidget {
     this.client,
     this.fontSize = 18,
     Key? key,
+    this.bg,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -89,7 +93,8 @@ class Avatar extends StatelessWidget {
               id,
               true,
               size,
-              color: constTheme.centerChannelColor,
+              color: color,
+              bg: bg,
             );
     }
 

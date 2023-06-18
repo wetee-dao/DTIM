@@ -171,13 +171,13 @@ class _DirectChatsState extends State<DirectChats> {
                         color: constTheme.centerChannelBg,
                       ),
                     ),
-                    child: UserAvatar(
+                    child: Avatar(
                       key: Key(room.directChatMatrixID ?? ""),
-                      room.directChatMatrixID ?? "-",
-                      true,
-                      25.w,
+                      id: room.directChatMatrixID ?? "-",
+                      size: 25.w,
                       color: constTheme.sidebarText,
                       bg: constTheme.sidebarText.withOpacity(0.1),
+                      mxContent: room.avatar,
                     ),
                   ),
                 ),
