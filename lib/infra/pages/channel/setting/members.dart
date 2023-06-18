@@ -117,7 +117,7 @@ class _ChannelMemberPageState extends State<ChannelMemberPage> {
                     Row(
                       children: [
                         SizedBox(width: 15.w),
-                        UserAvatar(
+                        BaseAvatar(
                           getUserShortId(userList[index].id),
                           true,
                           40.w,

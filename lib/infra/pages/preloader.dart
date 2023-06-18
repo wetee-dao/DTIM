@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/theme.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/native_wraper.dart';
 import 'package:dtim/router.dart';
@@ -94,11 +95,12 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   onLogined() async {
+    final accountOrgApi = await AccountOrgApi.create();
+    final orgs = await accountOrgApi.listByAccount(im.me!.address);
     if (widget.onResult != null) {
-      final accountOrgApi = await AccountOrgApi.create();
-      final orgs = await accountOrgApi.listByAccount(im.me!.address);
       // 登录账户
       if (orgs.isNotEmpty) {
+        await loadThemeFromOrg(orgs[0]);
         await waitFutureLoading(
           title: "连接中...",
           context: globalCtx(),
@@ -197,7 +199,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: constTheme.centerChannelBg,
+      backgroundColor: _loading ? constTheme.sidebarBg : constTheme.centerChannelBg,
       body: Center(
         child: _loading
             ? moveWindow(Column(
@@ -215,7 +217,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                   Text(
                     "DTIM",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20.w, color: constTheme.centerChannelColor.withOpacity(0.2)),
+                    style: TextStyle(fontSize: 20.w, color: constTheme.sidebarText.withOpacity(0.2)),
                   ),
                   SizedBox(height: 20.w),
                 ],
@@ -279,6 +281,8 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                                     name: accounts[i].address,
                                                     size: 50.w,
                                                     fontSize: 36,
+                                                    bg: constTheme.centerChannelColor.withOpacity(0.1),
+                                                    color: constTheme.centerChannelColor,
                                                   ),
                                                   SizedBox(width: 10.w),
                                                   Expanded(
@@ -560,14 +564,14 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                       "100% open source",
                                       style: TextStyle(
                                         fontSize: 30.w,
-                                        color: constTheme.centerChannelColor,
+                                        color: constTheme.sidebarText,
                                       ),
                                     ),
                                     Text(
                                       "decentralized office tools",
                                       style: TextStyle(
                                         fontSize: 30.w,
-                                        color: constTheme.centerChannelColor,
+                                        color: constTheme.sidebarText,
                                       ),
                                     )
                                   ],

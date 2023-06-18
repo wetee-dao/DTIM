@@ -101,7 +101,6 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
           width: width.w,
           height: height.w,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(4.w)),
             boxShadow: <BoxShadow>[
               BoxShadow(
                 color: Theme.of(context).brightness == Brightness.dark

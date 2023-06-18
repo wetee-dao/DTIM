@@ -27,6 +27,12 @@ class AccountOrgApi {
     return values.where((a) => a.account.address == userId).map((v) => v).toList();
   }
 
+  saveOrgTheme(String id, String theme) async {
+    var org = storeBox.get(id);
+    org!.theme = theme;
+    await storeBox.put(id, org);
+  }
+
   Future<List<AccountOrg>> accountSyncOrgs(
     String userId,
     List<String> fs,

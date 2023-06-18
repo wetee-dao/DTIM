@@ -172,7 +172,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
                         height: 90.w,
                         padding: EdgeInsets.all(15.w),
                         child: widget.call.room.isDirectChat
-                            ? UserAvatar(
+                            ? BaseAvatar(
                                 key: Key(widget.call.room.directChatMatrixID ?? "-"),
                                 widget.call.room.directChatMatrixID ?? "-",
                                 true,

@@ -48,7 +48,7 @@ class DaoMemberList extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserAvatar(
+                  BaseAvatar(
                     members[i],
                     true,
                     35.w,

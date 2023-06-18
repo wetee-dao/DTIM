@@ -78,6 +78,7 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..domain = fields[7] as String?
       ..chainUrl = fields[8] as String?
       ..daoId = fields[9] as int
+      ..theme = fields[13] as String?
       ..status = fields[10] as int
       ..withAddr = fields[11] as String
       ..account = fields[12] as Account;
@@ -86,7 +87,7 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
   @override
   void write(BinaryWriter writer, AccountOrg obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(2)
       ..write(obj.orgHash)
       ..writeByte(3)
@@ -103,6 +104,8 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..write(obj.chainUrl)
       ..writeByte(9)
       ..write(obj.daoId)
+      ..writeByte(13)
+      ..write(obj.theme)
       ..writeByte(10)
       ..write(obj.status)
       ..writeByte(11)

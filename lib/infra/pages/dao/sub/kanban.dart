@@ -252,7 +252,7 @@ class Kanban extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(width: 8.w),
-                // for (var i = 0; i < data.assignees.length; i++) UserAvatar(data.assignees[i], 25.w),
+                // for (var i = 0; i < data.assignees.length; i++) BaseAvatar(data.assignees[i], 25.w),
                 Expanded(child: Container()),
                 if (data.status == 0)
                   InkWell(

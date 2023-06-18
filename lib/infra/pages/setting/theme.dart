@@ -1,29 +1,34 @@
 import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dtim/application/service/apis/system_api.dart';
 import 'package:dtim/infra/components/setting/settings_ui.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/models/system.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);
 
   @override
-  _ThemePageState createState() => _ThemePageState();
+  State<ThemePage> createState() => _ThemePageState();
 }
 
 class _ThemePageState extends State<ThemePage> {
   bool useNotificationDotOnAppIcon = true;
   String theme = "";
+  late AppCubit im;
   late StreamSubscription<System> sub;
 
   @override
   void initState() {
     refresh();
+    im = context.read<AppCubit>();
     super.initState();
   }
 
@@ -45,11 +50,11 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: !isPc()
-      //     ? AppBar(
-      //         title: const Text('theme'),
-      //       )
-      //     : null,
+      appBar: PlatformInfos.isMobile
+          ? AppBar(
+              title: const Text('theme'),
+            )
+          : null,
       body: SettingsList(
         contentPadding: EdgeInsets.zero,
         platform: DevicePlatform.android,
@@ -64,6 +69,9 @@ class _ThemePageState extends State<ThemePage> {
                 initialValue: theme,
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
                 onToggle: (String v) async {
+                  final accountOrgApi = await AccountOrgApi.create();
+                  await accountOrgApi.saveOrgTheme(im.me!.address + im.currentState!.org.orgHash, v);
+                  // 设置全局设置，方便加载
                   final t = await setTheme(v);
                   AdaptiveTheme.of(globalCtx()).setTheme(
                     light: t,
@@ -79,6 +87,9 @@ class _ThemePageState extends State<ThemePage> {
                 type: "dark",
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
                 onToggle: (String v) async {
+                  final accountOrgApi = await AccountOrgApi.create();
+                  await accountOrgApi.saveOrgTheme(im.me!.address + im.currentState!.org.orgHash, v);
+                  // 设置全局设置，方便加载
                   final t = await setTheme(v);
                   AdaptiveTheme.of(globalCtx()).setTheme(
                     light: t,

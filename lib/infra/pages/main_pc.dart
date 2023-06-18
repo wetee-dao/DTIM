@@ -101,6 +101,8 @@ class _PCPageState extends State<PCPage> {
                       mxContent: avatar,
                       true,
                       40.w,
+                      bg: constTheme.sidebarText.withOpacity(0.1),
+                      color: constTheme.sidebarText,
                     ),
                   ),
                   Container(

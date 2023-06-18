@@ -488,20 +488,24 @@ const themes = [
     "codeTheme": "Night Owl Dark Theme",
   },
 ];
-
+const defaultTheme = 14;
 int currentTheme = 14;
 
 Future<ThemeData> setTheme(String name) async {
   currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);
 
   await (await SystemApi.create()).saveTheme(name);
-  return theme();
+  return theme(currentTheme);
 }
 
-ThemeData theme() {
-  final t = themes[currentTheme];
+Future<ThemeData> getDefaultTheme() async {
+  return theme(defaultTheme);
+}
+
+ThemeData theme(index) {
+  final t = themes[index];
   final b = t["type"] != null && t["type"] == "dark" ? Brightness.dark : Brightness.light;
-  final colors = getExtTheme(currentTheme);
+  final colors = getExtTheme(index);
   return ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSwatch(

@@ -163,8 +163,8 @@ class _UserSettingPageState extends State<UserSettingPage> {
                         child: Row(
                           children: [
                             avatar == null
-                                ? Avatar(mxContent: _data!.avatar, size: 50.w, id: im.me!.address)
-                                : Image.memory(avatar!.bytes, width: 50.w, height: 50.w, fit: BoxFit.cover),
+                                ? Avatar(mxContent: _data!.avatar, size: 45.w, id: im.me!.address)
+                                : Image.memory(avatar!.bytes, width: 45.w, height: 45.w, fit: BoxFit.cover),
                             SizedBox(width: 7.w),
                             Text("Click to upload avatar", style: titleStyle.copyWith(fontSize: 17.w)),
                           ],

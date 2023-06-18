@@ -89,7 +89,7 @@ class Avatar extends StatelessWidget {
                 child: textWidget,
               ),
             )
-          : UserAvatar(
+          : BaseAvatar(
               id,
               true,
               size,
@@ -106,20 +106,20 @@ class Avatar extends StatelessWidget {
   }
 }
 
-class UserAvatar extends StatefulWidget {
+class BaseAvatar extends StatefulWidget {
   final String avatarSrc;
   final bool online;
   final double avatarWidth;
   final Color? bg;
   final Color? color;
 
-  const UserAvatar(this.avatarSrc, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
+  const BaseAvatar(this.avatarSrc, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
 
   @override
-  State<UserAvatar> createState() => _UserAvatarState();
+  State<BaseAvatar> createState() => _BaseAvatarState();
 }
 
-class _UserAvatarState extends State<UserAvatar> {
+class _BaseAvatarState extends State<BaseAvatar> {
   Widget? ctx;
 
   buildCtx(BuildContext context) {
@@ -147,9 +147,9 @@ class _UserAvatarState extends State<UserAvatar> {
   }
 
   @override
-  void didUpdateWidget(covariant UserAvatar oldWidget) {
+  void didUpdateWidget(covariant BaseAvatar oldWidget) {
     if (oldWidget.color != widget.color) {
-      // ctx = null;
+      ctx = null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -163,7 +163,7 @@ class _UserAvatarState extends State<UserAvatar> {
   }
 }
 
-class UserAvatarWithPop extends StatefulWidget {
+class BaseAvatarWithPop extends StatefulWidget {
   final String id;
   final String name;
   final bool online;
@@ -172,7 +172,7 @@ class UserAvatarWithPop extends StatefulWidget {
   final Color? color;
   final Uri? mxContent;
 
-  const UserAvatarWithPop(
+  const BaseAvatarWithPop(
     this.id,
     this.name,
     this.online,
@@ -184,10 +184,10 @@ class UserAvatarWithPop extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<UserAvatarWithPop> createState() => _UserAvatarWithPopState();
+  State<BaseAvatarWithPop> createState() => _BaseAvatarWithPopState();
 }
 
-class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
+class _BaseAvatarWithPopState extends State<BaseAvatarWithPop> {
   final BasePopupMenuController menuController = BasePopupMenuController();
 
   @override
@@ -225,7 +225,7 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                     child: Avatar(
                       id: widget.id,
                       mxContent: widget.mxContent,
-                      size: widget.avatarWidth,
+                      size: 50.w,
                     ),
                   ),
                 ),

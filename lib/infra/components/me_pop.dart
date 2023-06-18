@@ -47,11 +47,11 @@ class _MePopState extends State<MePop> {
       position: PreferredPosition.bottomLeft,
       pressType: PressType.singleClick,
       child: Avatar(
-        // bg: widget.bg,
-        // color: widget.color,
+        bg: widget.bg,
+        color: widget.color,
         id: widget.id,
         mxContent: widget.mxContent,
-        size: 80.w,
+        size: 40.w,
       ),
       menuBuilder: () => Container(
         width: 270.w,

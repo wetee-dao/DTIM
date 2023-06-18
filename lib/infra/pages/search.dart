@@ -169,7 +169,7 @@ class _SearchPageState extends State<SearchPage> {
           //           children: [
           //             Column(
           //               children: [
-          //                 UserAvatar(
+          //                 BaseAvatar(
           //                   userList[index].avatarSrc,
           //                   userList[index].online,
           //                   60.w,

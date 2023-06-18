@@ -88,7 +88,7 @@ class App extends StatelessWidget {
     setGlobalKey(rootRouter.navigatorKey);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,
-      light: theme(),
+      light: theme(currentTheme),
       builder: (light, dark) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => app),

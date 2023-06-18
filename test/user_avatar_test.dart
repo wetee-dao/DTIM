@@ -15,7 +15,7 @@ void main() {
         theme: theme(),
         navigatorKey: rootNavigatorKey,
         home: const Scaffold(
-          body: UserAvatar(
+          body: BaseAvatar(
             "https://www.asyou.me/static/temp/images/icon-152x152.png",
             true,
             40,
@@ -33,7 +33,7 @@ void main() {
         theme: theme(),
         navigatorKey: rootNavigatorKey,
         home: const Scaffold(
-          body: UserAvatarWithPop(
+          body: BaseAvatarWithPop(
             "1",
             "name",
             true,

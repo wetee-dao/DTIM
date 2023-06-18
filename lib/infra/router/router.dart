@@ -21,6 +21,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
     if (authService.state.me != null ||
         resolver.routeName == Preloader.name ||
         resolver.routeName == Sr25519key.name ||
+        resolver.routeName == SelectOrg.name ||
         resolver.routeName == ImportSr25519key.name) {
       resolver.next();
     } else {

@@ -23,7 +23,7 @@ class MemberCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserAvatar(
+          BaseAvatar(
             label ?? "",
             true,
             50.w,

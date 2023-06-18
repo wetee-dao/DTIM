@@ -68,6 +68,10 @@ class AccountOrg {
   @HiveField(9)
   int daoId = 0;
 
+  // 区块链连接点
+  @HiveField(13)
+  String? theme;
+
   // 组织状态 1=>激活 2=>暂停 3=>删除
   @HiveField(10)
   int status = 1;

@@ -3,6 +3,7 @@ import 'package:dtim/domain/utils/functions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
+import 'package:dtim/domain/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -64,6 +65,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     final orgs = await accountOrgApi.listByAccount(im.me!.address);
     // 登录账户
     if (orgs.isNotEmpty) {
+      await loadThemeFromOrg(orgs[0]);
       waitFutureLoading(
         title: "连接中...",
         context: globalCtx(),
@@ -168,7 +170,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           //             ),
           //             child: Row(
           //               children: [
-          //                 UserAvatar(accounts[i].address, true, 50.w),
+          //                 BaseAvatar(accounts[i].address, true, 50.w),
           //                 SizedBox(width: 10.w),
           //                 Expanded(
           //                   child: accounts[i].name != null && accounts[i].name != ""
