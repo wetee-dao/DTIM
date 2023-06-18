@@ -9,7 +9,7 @@ void main() {
   testWidgets("test ModelBar", (WidgetTester tester) async {
     initScreen(1200);
 
-    await tester.pumpWidget(MaterialApp(theme: theme(), home: Scaffold(appBar: ModelBar(title: "Test"))));
+    await tester.pumpWidget(MaterialApp(theme: getDefaultTheme(), home: Scaffold(appBar: ModelBar(title: "Test"))));
     await tester.pumpAndSettle();
     expect(find.text("Test"), findsOneWidget);
   });

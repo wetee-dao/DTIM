@@ -12,7 +12,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         navigatorKey: rootNavigatorKey,
         home: const Scaffold(
           body: BaseAvatar(
@@ -30,7 +30,7 @@ void main() {
     initScreen(1200);
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         navigatorKey: rootNavigatorKey,
         home: const Scaffold(
           body: BaseAvatarWithPop(

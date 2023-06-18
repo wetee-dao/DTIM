@@ -12,7 +12,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: rootNavigatorKey,
-        theme: theme(),
+        theme: getDefaultTheme(),
         home: Scaffold(
           body: Column(
             children: [

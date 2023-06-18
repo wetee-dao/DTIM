@@ -11,7 +11,7 @@ loadThemeFromOrg(org) async {
       light: t,
     );
   } else {
-    final t = await getDefaultTheme();
+    final t = getDefaultTheme();
     AdaptiveTheme.of(globalCtx()).setTheme(
       light: t,
     );

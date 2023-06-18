@@ -10,7 +10,7 @@ void main() {
     initScreen(1200);
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         home: HoverListItem(
           onPressed: () {},
           subkey: 'test',

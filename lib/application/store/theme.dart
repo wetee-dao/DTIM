@@ -498,7 +498,7 @@ Future<ThemeData> setTheme(String name) async {
   return theme(currentTheme);
 }
 
-Future<ThemeData> getDefaultTheme() async {
+ThemeData getDefaultTheme() {
   return theme(defaultTheme);
 }
 

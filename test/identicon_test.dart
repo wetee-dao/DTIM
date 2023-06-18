@@ -13,7 +13,7 @@ void main() {
     final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate("test", scale: 1);
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         navigatorKey: rootNavigatorKey,
         home: Image.memory(
           img,
