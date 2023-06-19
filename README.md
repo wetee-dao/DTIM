@@ -22,12 +22,12 @@ Currently, we provide not only "ink!"-based DAO smart contract templates, but al
 
 At this stage, **DTIM** will provide a slack-like client which is based on the matrix protocol for instant messaging. Users can log in with a blockchain account. This tool is designed for modern devices and is compatible with devices equipped with Windows/mac/Linux/android/iOS, and provides organization members with a concise and convenient collaboration platform. 
 <p align="left">
-  <img src="https://github.com/DTIM/app/raw/main/docs/ui.png" style="width:800px";>
+  <img src="https://github.com/DAOent/DTIM/raw/main/docs/ui.png" style="width:800px";>
 </p>
 
 Through DAPP rendering engine which is based on flutter, **DTIM** is compatible with most DAPPs and run at a faster speed. The core business would be materialized by flutter native applications, and DAPPs would be rendered by the dapp engine.
 <p align="left">
-  <img src="https://github.com/DTIM/app/raw/main/docs/client.png" style="width:800px";>
+  <img src="https://github.com/DAOent/DTIM/raw/main/docs/client.png" style="width:800px";>
 </p>
 
 **DTIM** Client is a non-intrusive client that supports layer1 blockchain and layer2 smart contracts, and it's dedicated to adapting DAO scenarios. As an initial stage, we build the **DTIM** chain based on the substrate, and manage the **DTIM** chain by using DAO. After continuous improvement of the Client, we  create **DTIM** DAO, which is a fully autonomous and decentralized organization. Through our own requirements of **DTIM** and continuous introduction of other work modes of DAO, we provide substrate pallet and "ink!" smart contracts with a fast DAO solution Polkadot Ecosystem.
@@ -50,7 +50,7 @@ We provide DAO templates the substrate pallet and ink! Smart contracts:
 According to business needs, DAO organizations will set up skill groups, called "guilds", and each guild will automatically create public chat channels and Kanbans in DTIM. Users can join a guild based on their own strengths or willings.  Members can choose whether to participate in projects or events according to their own strengths and willingness. 
 
 <p align="left">
-  <img src="https://github.com/DTIM/app/raw/main/docs/structure.png" style="width:800px";>
+  <img src="https://github.com/DAOent/DTIM/raw/main/docs/structure.png" style="width:800px";>
 </p>
 
 We provide DAO templates the substrate pallet and ink! Smart contracts:
