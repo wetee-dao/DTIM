@@ -23,8 +23,9 @@ class CreatePrivatePage extends StatefulWidget {
 class _CreatePrivatePageState extends State<CreatePrivatePage> {
   String search = "";
   late AppCubit im;
-  List<link.Profile> userList = [];
+  List<link.Profile> allList = [];
   TextEditingController id = TextEditingController();
+  String searchText = "";
 
   @override
   void initState() {
@@ -45,13 +46,19 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
         await client.searchUserDirectory(search != "" ? "%$search" : "", limit: 1000000);
 
     setState(() {
-      userList = response.results.where((u) => u.userId != client.userID).toList();
+      allList = response.results.where((u) => u.userId != client.userID).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final userList = searchText == ""
+        ? allList
+        : allList
+            .where(
+                (v) => v.userId.contains(searchText) || (v.displayName != null && v.displayName!.contains(searchText)))
+            .toList();
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
@@ -62,9 +69,8 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                 context.router.pop();
               },
             ) as PreferredSizeWidget
-          : ModelBar(
-              title: "添加私信",
-              height: 50.w,
+          : TopSearchBar(
+              title: "搜索用户",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -72,48 +78,15 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                 }
                 context.router.pop();
               },
+              onInput: (String v) {
+                setState(() {
+                  searchText = v;
+                });
+              },
             ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: constTheme.centerChannelBg,
-            padding: EdgeInsets.only(top: 10.w, bottom: 10.w),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 15.w),
-                    child: Text(
-                      "ID：${getUserShortId(im.me!.address)}",
-                      style: TextStyle(
-                        color: constTheme.sidebarHeaderTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.w,
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // final client = im.currentState!.client;
-                    Clipboard.setData(ClipboardData(
-                      text: getUserShortId(im.me!.address),
-                    )).then((value) {
-                      BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
-                    });
-                  },
-                  icon: Icon(Icons.copy_rounded, size: 20.w, color: constTheme.sidebarHeaderTextColor),
-                ),
-                SizedBox(width: 15.w),
-              ],
-            ),
-          ),
-          Divider(
-            height: 1.w,
-            color: constTheme.centerChannelColor.withOpacity(0.08),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: userList.length,
@@ -213,7 +186,6 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               },
             ),
           ),
-
           Container(
             height: 55.w,
             padding: EdgeInsets.only(left: 15.w, right: 15.w),
@@ -230,7 +202,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               style: TextStyle(color: constTheme.buttonColor.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
-                hintText: '输入id邀请,如：@username',
+                hintText: '输入用户 id 开启私聊,如：@username',
                 hintStyle: TextStyle(height: 1.5, color: constTheme.buttonColor),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),

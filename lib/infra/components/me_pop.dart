@@ -41,7 +41,7 @@ class _MePopState extends State<MePop> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return BasePopupMenu(
       verticalMargin: 5.w,
-      horizontalMargin: 0,
+      horizontalMargin: -3.w,
       showArrow: false,
       controller: menuController,
       position: PreferredPosition.rightTop,

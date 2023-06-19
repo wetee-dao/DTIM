@@ -129,7 +129,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                     borderRadius: BorderRadius.all(Radius.circular(3.w)),
                   ),
                   alignment: Alignment.center,
-                  child: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText),
+                  child: Icon(AppIcons.search, size: 16.w, color: constTheme.sidebarText),
                 ),
               ),
             ],
@@ -227,10 +227,12 @@ class _OrgViewPageState extends State<OrgViewPage> {
                           GestureDetector(
                             key: const Key("create_private"),
                             onTap: () async {
+                              var w = 0.8.sw > 700.w ? 700.w : 0.8.sw;
                               showModelOrPage(
                                 context,
                                 "/create_private",
-                                width: 550.w,
+                                width: w,
+                                top: 5.w,
                                 height: 0.7.sh,
                               );
                             },

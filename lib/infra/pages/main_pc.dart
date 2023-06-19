@@ -123,16 +123,22 @@ class _PCPageState extends State<PCPage> {
                           builder: (BuildContext context, AsyncSnapshot<int> id) {
                             return Column(
                               children: [
-                                SiderBarItem(AppIcons.we_chat, "Chat", key: const Key("Chat"), selected: id.data == 0,
-                                    onTap: () {
+                                SiderBarItem(AppIcons.si_glyph_bubble_chat, "Chat",
+                                    key: const Key("Chat"), selected: id.data == 0, onTap: () {
                                   pageRouter.setActiveIndex(0);
                                   onSelect(0);
                                 }),
-                                // DAO管理
-                                SiderBarItem(AppIcons.chain, "Dao", key: const Key("DAO"), selected: id.data == 1,
-                                    onTap: () {
+                                // 任务管理
+                                SiderBarItem(AppIcons.kanban_1, "Kanban",
+                                    key: const Key("KANBAN"), selected: id.data == 1, onTap: () {
                                   pageRouter.setActiveIndex(1);
                                   onSelect(1);
+                                }),
+                                // DAO管理
+                                SiderBarItem(AppIcons.shujujicheng, "Integrate",
+                                    key: const Key("Integrate"), selected: id.data == 2, onTap: () {
+                                  pageRouter.setActiveIndex(2);
+                                  onSelect(2);
                                 }),
                               ],
                             );

@@ -30,10 +30,10 @@ class ChatDetails extends StatefulWidget {
   const ChatDetails({Key? key, required this.id}) : super(key: key);
 
   @override
-  ChatDetailsController createState() => ChatDetailsController();
+  State<ChatDetails> createState() => ChatDetailState();
 }
 
-class ChatDetailsController extends State<ChatDetails> {
+class ChatDetailState extends State<ChatDetails> {
   List<User>? members;
   bool displaySettings = true;
   late Client client;

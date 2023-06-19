@@ -21,6 +21,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late AppCubit im;
   List<link.PublicRoomsChunk> rooms = [];
+  String searchText = "";
   List userList = [];
 
   @override
@@ -46,6 +47,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final fiterRoom =
+        searchText == "" ? rooms : rooms.where((v) => v.name != null && v.name!.contains(searchText)).toList();
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
@@ -55,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
                 context.router.pop();
               },
             ) as PreferredSizeWidget
-          : ModelBar(
+          : TopSearchBar(
               title: "搜索频道",
               onBack: () {
                 if (widget.closeModel != null) {
@@ -64,45 +67,21 @@ class _SearchPageState extends State<SearchPage> {
                 }
                 context.router.pop();
               },
-            ),
+              onInput: (String v) {
+                setState(() {
+                  searchText = v;
+                });
+              }),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Container(
-          //   height: 40.w,
-          //   width: MediaQuery.of(context).size.width - 120.w,
-          //   margin: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.w, bottom: 15.w),
-          //   padding: EdgeInsets.only(left: 10.w),
-          //   decoration: BoxDecoration(
-          //     color: constTheme.sidebarText.withOpacity(0.1),
-          //     borderRadius: BorderRadius.all(Radius.circular(3.w)),
-          //   ),
-          //   alignment: Alignment.center,
-          //   child: TextField(
-          //     onTap: () {},
-          //     style: TextStyle(color: constTheme.sidebarText.withAlpha(155), fontSize: 13.w),
-          //     autofocus: true,
-          //     keyboardType: TextInputType.text,
-          //     decoration: InputDecoration(
-          //       hintText: '查找频道',
-          //       hintStyle: TextStyle(
-          //         height: 1.5,
-          //         color: constTheme.sidebarText.withAlpha(155),
-          //       ),
-          //       suffixIcon: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText.withAlpha(155)),
-          //       contentPadding: const EdgeInsets.all(0),
-          //       border: const OutlineInputBorder(borderSide: BorderSide.none),
-          //       label: null,
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: ListView.builder(
-              itemCount: rooms.length,
+              itemCount: fiterRoom.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                final room = rooms[index];
+                final room = fiterRoom[index];
                 return Container(
                   decoration: BoxDecoration(
                     border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08))),
