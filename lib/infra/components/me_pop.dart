@@ -1,9 +1,11 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/popup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../router/pop_router.dart';
@@ -67,7 +69,13 @@ class _MePopState extends State<MePop> {
             Row(
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(
+                      text: getUserShortId(widget.id),
+                    )).then((value) {
+                      BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
+                    });
+                  },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
                     child: Avatar(
@@ -90,9 +98,31 @@ class _MePopState extends State<MePop> {
                         style: TextStyle(fontSize: 18.w, color: constTheme.centerChannelColor),
                       ),
                       Expanded(
-                        child: Text(
-                          widget.id,
-                          style: TextStyle(fontSize: 12.w, height: 1.2, color: constTheme.centerChannelColor),
+                        child: RichText(
+                          text: TextSpan(
+                            text: widget.id,
+                            style: TextStyle(fontSize: 12.w, height: 1.2, color: constTheme.centerChannelColor),
+                            children: [
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: InkWell(
+                                  key: const Key("copyUserIDIcon"),
+                                  onTap: () async {
+                                    Clipboard.setData(ClipboardData(
+                                      text: getUserShortId(widget.id),
+                                    )).then((value) {
+                                      BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.copy_rounded,
+                                    size: 13.w,
+                                    color: constTheme.centerChannelColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

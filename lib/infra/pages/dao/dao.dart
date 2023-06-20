@@ -100,16 +100,16 @@ class _DaoPageState extends State<DaoPage> {
               height: 45.w,
               title: title == "" ? im.currentState!.org.orgName! : title,
               showMacosTop: false,
-              leading: Padding(
-                padding: EdgeInsets.only(left: 5.w),
-                child: IconButton(
-                  onPressed: () {
-                    drawerKey.currentState!.openDrawer();
-                  },
-                  icon: Icon(
+              leading: InkWell(
+                onTap: () {
+                  drawerKey.currentState!.openDrawer();
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(8.w),
+                  child: Icon(
                     AppIcons.kanban_1,
                     color: constTheme.sidebarHeaderTextColor,
-                    size: 16.w,
+                    size: 22.w,
                   ),
                 ),
               ),

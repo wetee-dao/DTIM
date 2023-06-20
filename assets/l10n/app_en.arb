@@ -521,6 +521,7 @@
   "notificationsEnabledForThisAccount": "Notifications enabled for this account",
   "notificationsEnabledForThisAccountDesc": "Disable governance on all sessions after closing",
   "directChats": "Direct Messages",
+  "mediaChats": "Media Messages",
   "containsDisplayName": "Contains display name",
   "containsUserName": "Contains username",
   "inviteForMe": "Invite me",

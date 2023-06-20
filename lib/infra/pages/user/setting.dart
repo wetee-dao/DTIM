@@ -119,7 +119,7 @@ class _UserSettingPageState extends State<UserSettingPage> {
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(5.w),
                         ),
-                        prefixIcon: Icon(Icons.text_fields, color: constTheme.centerChannelColor),
+                        prefixIcon: Icon(Icons.account_box_rounded, color: constTheme.centerChannelColor),
                       ),
                       onSaved: (v) {
                         _data!.name = v ?? "";

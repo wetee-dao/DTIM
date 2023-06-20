@@ -62,6 +62,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SelectOrgPage(),
       );
     },
+    IntegrateRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const IntegratePage(),
+      );
+    },
   };
 }
 
@@ -182,6 +188,20 @@ class SelectOrg extends PageRouteInfo<void> {
         );
 
   static const String name = 'SelectOrg';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [IntegratePage]
+class IntegrateRoute extends PageRouteInfo<void> {
+  const IntegrateRoute({List<PageRouteInfo>? children})
+      : super(
+          IntegrateRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'IntegrateRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

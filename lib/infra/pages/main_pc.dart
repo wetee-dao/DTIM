@@ -33,6 +33,7 @@ class _PCPageState extends State<PCPage> {
   final mainPages = [
     const OrgRoute(),
     const DaoRoute(),
+    const IntegrateRoute(),
   ];
 
   @override

@@ -82,7 +82,16 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   @override
   Future<void> handleNewGroupCall(GroupCall groupCall) async {
     printError("handleNewGroupCall => ${groupCall.groupCallId}");
-
+    // final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    // final scaffoldMessenger = ScaffoldMessenger.of(globalCtx());
+    // scaffoldMessenger.showSnackBar(
+    //   SnackBar(
+    //     content: Text("频道 ${groupCall.room.getLocalizedDisplayname()} 开启了多媒体通话"),
+    //     backgroundColor: constTheme.linkColor,
+    //     margin: EdgeInsets.only(bottom: 1.sh - 60.w),
+    //     behavior: SnackBarBehavior.floating,
+    //   ),
+    // );
     addGroupCallingPopup(groupCall.groupCallId, groupCall);
   }
 
