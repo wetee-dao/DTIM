@@ -96,7 +96,7 @@ class App extends StatelessWidget {
           BlocProvider(create: (_) => WebRTCCubit()),
         ],
         child: MaterialApp.router(
-          title: 'DAO',
+          title: 'DTIM',
           debugShowCheckedModeBanner: false,
           routerConfig: rootRouter.config(),
           localizationsDelegates: L10n.localizationsDelegates,

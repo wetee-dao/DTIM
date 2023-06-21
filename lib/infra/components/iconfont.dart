@@ -8,8 +8,11 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData chat = IconData(0xe61e, fontFamily: _family); // Chat#4
+  static const IconData tips_chat = IconData(0xe618, fontFamily: _family); // tips_chat
   static const IconData shujujicheng = IconData(0xe862, fontFamily: _family); // 数据集成
   static const IconData si_glyph_bubble_chat = IconData(0xe615, fontFamily: _family); // si-glyph-bubble-chat
+  static const IconData kanban = IconData(0xe603, fontFamily: _family); // kanban
   static const IconData kanban_1 = IconData(0xe742, fontFamily: _family); // kanban
   static const IconData search = IconData(0xe652, fontFamily: _family); // search
   static const IconData jinrudaobo = IconData(0xe616, fontFamily: _family); // 进入导播
@@ -56,8 +59,11 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.chat, "chat", "Chat#4"),
+    _PreviewIcon(AppIcons.tips_chat, "tips_chat", "tips_chat"),
     _PreviewIcon(AppIcons.shujujicheng, "shujujicheng", "数据集成"),
     _PreviewIcon(AppIcons.si_glyph_bubble_chat, "si_glyph_bubble_chat", "si-glyph-bubble-chat"),
+    _PreviewIcon(AppIcons.kanban, "kanban", "kanban"),
     _PreviewIcon(AppIcons.kanban_1, "kanban_1", "kanban"),
     _PreviewIcon(AppIcons.search, "search", "search"),
     _PreviewIcon(AppIcons.jinrudaobo, "jinrudaobo", "进入导播"),

@@ -36,31 +36,7 @@ class MessageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (event.type) {
       case EventTypes.Encryption:
-        return Container(
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.w),
-            border: Border.all(color: textColor.withOpacity(0.1)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: textColor.withOpacity(0.01),
-                blurRadius: 8.w,
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.task_rounded, color: textColor, size: 19.w),
-              SizedBox(width: 5.w),
-              Text(
-                "启用了E2E加密",
-                style: TextStyle(fontSize: 12.w, color: textColor),
-              )
-            ],
-          ),
-        );
+        return const RoomEvent(text: "启用了E2E加密");
       case EventTypes.RoomPowerLevels:
         return Container();
       case EventTypes.RoomJoinRules:

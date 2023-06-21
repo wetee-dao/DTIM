@@ -76,7 +76,7 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
                           color: constTheme.centerChannelBg,
                           child: Center(
                             child: Text(
-                              "Join DAO and run any app in web3",
+                              "Use DTIM and work in web3",
                               style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
                             ),
                           ),

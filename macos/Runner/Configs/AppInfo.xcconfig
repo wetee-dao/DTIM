@@ -8,7 +8,7 @@
 PRODUCT_NAME = wetee_dao
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = wetee.dao.weteeDao
+PRODUCT_BUNDLE_IDENTIFIER = app.wetee.dtim
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 wetee.dao. All rights reserved.

@@ -26,6 +26,8 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
+		6423E47B2A42DBD60079A645 /* libolm.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423E4792A42DBD60079A645 /* libolm.3.dylib */; };
+		6423E47C2A42DBE00079A645 /* libolm.3.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6423E4792A42DBD60079A645 /* libolm.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		643FC81B2A064353005433ED /* bridge_generated.h in Resources */ = {isa = PBXBuildFile; fileRef = 643FC8192A0642F9005433ED /* bridge_generated.h */; };
 		64D97BB42A2F4FBB00AC47C9 /* rust_wraper.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; };
 		64D97BB92A2F587200AC47C9 /* rust_wraper.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 643FC8152A064233005433ED /* rust_wraper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -58,7 +60,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 643FC80D2A064233005433ED /* rust_wraper.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = CA60CE47FC4ABE13D6A35245;
+			remoteGlobalIDString = CA600DEE3E9CD4A9675DF4B6;
 			remoteInfo = "rust_wraper-cdylib";
 		};
 /* End PBXContainerItemProxy section */
@@ -80,6 +82,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6423E47C2A42DBE00079A645 /* libolm.3.dylib in CopyFiles */,
 				64D97BB92A2F587200AC47C9 /* rust_wraper.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,6 +105,7 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
+		6423E4792A42DBD60079A645 /* libolm.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libolm.3.dylib; path = shared/libolm.3.dylib; sourceTree = "<group>"; };
 		643FC80D2A064233005433ED /* rust_wraper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = rust_wraper.xcodeproj; path = ../../rust_wraper/rust_wraper.xcodeproj; sourceTree = "<group>"; };
 		643FC8192A0642F9005433ED /* bridge_generated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bridge_generated.h; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6423E47B2A42DBD60079A645 /* libolm.3.dylib in Frameworks */,
 				64D97BB42A2F4FBB00AC47C9 /* rust_wraper.dylib in Frameworks */,
 				76E1FB9537C897D97B7AB838 /* Pods_Runner.framework in Frameworks */,
 			);
@@ -138,6 +143,7 @@
 		33CC10E42044A3C60003C045 = {
 			isa = PBXGroup;
 			children = (
+				6423E4792A42DBD60079A645 /* libolm.3.dylib */,
 				33FAB671232836740065AC1E /* Runner */,
 				33CEB47122A05771004F2AC0 /* Flutter */,
 				33CC10EE2044A3C60003C045 /* Products */,
@@ -258,7 +264,6 @@
 					33CC10EC2044A3C60003C045 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -498,12 +503,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = R4C78LVTG6;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/shared",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -626,12 +637,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = R4C78LVTG6;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/shared",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -648,12 +665,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = R4C78LVTG6;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/shared",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PROVISIONING_PROFILE_SPECIFIER = "";
