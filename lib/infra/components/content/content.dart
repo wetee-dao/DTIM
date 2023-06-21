@@ -257,7 +257,7 @@ class MessageContent extends StatelessWidget {
             event.senderFromMemoryOrFallback.calcDisplayname(),
             event.type,
           ),
-          icon: const Icon(Icons.info_outlined),
+          icon: Icon(Icons.info_outlined, size: 18.w),
           textColor: textColor,
           onPressed: () => onInfoTab!(event),
         );

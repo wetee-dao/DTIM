@@ -1,4 +1,3 @@
-import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/localized_extension.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -98,7 +97,6 @@ class GroupCallContent extends StatelessWidget {
                   if (voip.groupCalls[event.stateKey] != null)
                     ElevatedButton.icon(
                       onPressed: () async {
-                        printDebug(voip.groupCalls.toString());
                         final success = await waitFutureLoading(
                           context: context,
                           future: () => voip.requestTurnServerCredentials(),

@@ -82,6 +82,12 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   @override
   Future<void> handleNewGroupCall(GroupCall groupCall) async {
     printError("handleNewGroupCall => ${groupCall.groupCallId}");
+    final g = globalCtx().read<WebRTCCubit>();
+    if (voip.calls.keys.length > 1) {
+      g.update();
+      return;
+    }
+    g.update();
     // final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     // final scaffoldMessenger = ScaffoldMessenger.of(globalCtx());
     // scaffoldMessenger.showSnackBar(
@@ -92,7 +98,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     //     behavior: SnackBarBehavior.floating,
     //   ),
     // );
-    addGroupCallingPopup(groupCall.groupCallId, groupCall);
+    // addGroupCallingPopup(groupCall.groupCallId, groupCall);
   }
 
   @override

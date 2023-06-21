@@ -8,8 +8,8 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData meeting_board = IconData(0xe6f9, fontFamily: _family); // meeting-board
   static const IconData chat = IconData(0xe61e, fontFamily: _family); // Chat#4
-  static const IconData tips_chat = IconData(0xe618, fontFamily: _family); // tips_chat
   static const IconData shujujicheng = IconData(0xe862, fontFamily: _family); // 数据集成
   static const IconData si_glyph_bubble_chat = IconData(0xe615, fontFamily: _family); // si-glyph-bubble-chat
   static const IconData kanban = IconData(0xe603, fontFamily: _family); // kanban
@@ -59,8 +59,8 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.meeting_board, "meeting_board", "meeting-board"),
     _PreviewIcon(AppIcons.chat, "chat", "Chat#4"),
-    _PreviewIcon(AppIcons.tips_chat, "tips_chat", "tips_chat"),
     _PreviewIcon(AppIcons.shujujicheng, "shujujicheng", "数据集成"),
     _PreviewIcon(AppIcons.si_glyph_bubble_chat, "si_glyph_bubble_chat", "si-glyph-bubble-chat"),
     _PreviewIcon(AppIcons.kanban, "kanban", "kanban"),

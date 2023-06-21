@@ -275,9 +275,15 @@ class _OrgViewPageState extends State<OrgViewPage> {
                 ),
                 BlocBuilder<WebRTCCubit, WebRTCState>(builder: (context, state) {
                   final voip = im.currentState!.webrtcTool!.voip;
+                  print("voip.calls.length: ${voip.calls.length}");
+                  print("voip.calls: ${voip.calls.toString()}");
+                  print("voip.groupCalls: ${voip.groupCalls.toString()}");
                   List<Widget> calls = [];
-                  if (voip.calls.isNotEmpty) {
+                  if (voip.calls.isNotEmpty || voip.groupCalls.isNotEmpty) {
                     calls.add(Padding(
+                      // decoration: BoxDecoration(
+                      //   border: Border(bottom: BorderSide(color: constTheme.sidebarText.withOpacity(0.1))),
+                      // ),
                       padding: EdgeInsets.only(left: 15.w, right: 8.w, top: 10.w, bottom: 5.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -292,20 +298,14 @@ class _OrgViewPageState extends State<OrgViewPage> {
                               ),
                             ),
                           ),
-                          Icon(
-                            _controllerUsers.expanded
-                                ? Icons.keyboard_arrow_down_outlined
-                                : Icons.keyboard_arrow_up_outlined,
-                            size: 25.w,
-                            color: constTheme.sidebarText,
-                          ),
                         ],
                       ),
                     ));
                   }
 
-                  for (var k in voip.calls.keys) {
-                    final call = voip.calls[k]!;
+                  for (var k in voip.groupCalls.keys) {
+                    final call = voip.groupCalls[k]!;
+                    if (k.contains(":")) continue;
                     // final callActions = CallAction(call);
                     // final actions = callActions.buildActionButtons();
                     calls.add(
@@ -322,12 +322,92 @@ class _OrgViewPageState extends State<OrgViewPage> {
                           elevation: 0,
                         ),
                         onPressed: () {
+                          // im.currentState!.webrtcTool!.addCallingPopup(call.callId, call);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(width: 2.w),
+                              Icon(AppIcons.meeting_board, size: 19.w, color: constTheme.sidebarText),
+                              SizedBox(width: 7.w),
+                              Expanded(
+                                child: Text(
+                                  call.room.getLocalizedDisplayname(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 14.w,
+                                    color: constTheme.sidebarText,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  // im.currentState!.webrtcTool!.addCallingPopup(call.callId, call)
+                                },
+                                tooltip: 'open window',
+                                icon: Icon(
+                                  AppIcons.fangda,
+                                  size: 16.w,
+                                  color: constTheme.sidebarText,
+                                ),
+                              ),
+                            ],
+                          ),
+                          //   Row(
+                          //     mainAxisAlignment: MainAxisAlignment.start,
+                          //     children: [
+                          //       for (var i = 0; i < actions.length; i++)
+                          //         Container(
+                          //           decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                          //               color: actions[i].backgroundColor),
+                          //           margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
+                          //           child: IconButton(
+                          //             iconSize: 18.w,
+                          //             constraints: BoxConstraints(
+                          //                 minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                          //             style: IconButton.styleFrom(
+                          //               shape: RoundedRectangleBorder(
+                          //                 borderRadius: BorderRadius.circular(8.w),
+                          //               ),
+                          //             ),
+                          //             padding: EdgeInsets.zero,
+                          //             icon: actions[i].child,
+                          //             color: Colors.white,
+                          //             onPressed: () async {
+                          //               actions[i].onPressed();
+                          //             },
+                          //           ),
+                          //         ),
+                          //     ],
+                          //   ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  for (var k in voip.calls.keys) {
+                    final call = voip.calls[k]!;
+                    calls.add(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: constTheme.sidebarBg,
+                          surfaceTintColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: EdgeInsets.zero,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                            side: BorderSide.none,
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: () {
                           im.currentState!.webrtcTool!.addCallingPopup(call.callId, call);
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(top: BorderSide(color: constTheme.sidebarText.withOpacity(0.1)))),
-                          padding: EdgeInsets.only(left: 12.w, right: 10.w),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12.w, right: 0.w),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

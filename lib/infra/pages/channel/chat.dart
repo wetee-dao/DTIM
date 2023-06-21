@@ -283,7 +283,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
                     ),
                     tooltip: "meeting",
-                    icon: Icon(AppIcons.icon_meeting, color: constTheme.centerChannelColor, size: 22.w),
+                    icon: Icon(AppIcons.meeting_board, color: constTheme.centerChannelColor, size: 21.w),
                   ),
                 ),
               if (room!.isDirectChat)
