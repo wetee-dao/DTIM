@@ -10,7 +10,6 @@ class OrgState with _$OrgState {
   }) = _OrgState;
 }
 
-
 class OrgCubit extends Cubit<OrgState> {
   OrgCubit({state = const OrgState()}) : super(state);
 

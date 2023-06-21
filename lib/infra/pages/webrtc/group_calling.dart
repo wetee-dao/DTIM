@@ -3,24 +3,25 @@ import 'dart:async';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/application/store/theme.dart';
+import '../../../application/store/app/app.dart';
 import 'img_painter.dart';
 
 class GroupWebRTCalling extends StatefulWidget {
   final VoidCallback? onClear;
-  final BuildContext context;
   final String callId;
-  final link.GroupCall call;
-  final link.Client client;
+  // final link.GroupCall call;
+  // final link.Client client;
 
   const GroupWebRTCalling({
-    required this.context,
-    required this.call,
-    required this.client,
+    // required this.context,
+    // required this.call,
+    // required this.client,
     required this.callId,
     this.onClear,
     Key? key,
@@ -32,20 +33,25 @@ class GroupWebRTCalling extends StatefulWidget {
 
 class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   String? _state;
+  late AppCubit im;
+  late link.GroupCall call;
   late AnimationController _controller;
 
-  // bool get speakerOn => widget.call.speakerOn;
-  bool get isMicrophoneMuted => widget.call.isMicrophoneMuted;
-  bool get isLocalVideoMuted => widget.call.isLocalVideoMuted;
-  bool get isScreensharingEnabled => widget.call.screensharingEnabled;
-  // bool get isRemoteOnHold => widget.call.remoteOnHold;
-  bool get voiceonly => widget.call.type == link.GroupCallType.Voice;
-  bool get connecting => widget.call.state == link.GroupCallState.Entering;
-  bool get connected => widget.call.state == link.GroupCallState.Entered;
+  // bool get speakerOn => call.speakerOn;
+  bool get isMicrophoneMuted => call.isMicrophoneMuted;
+  bool get isLocalVideoMuted => call.isLocalVideoMuted;
+  bool get isScreensharingEnabled => call.screensharingEnabled;
+  // bool get isRemoteOnHold => call.remoteOnHold;
+  bool get voiceonly => call.type == link.GroupCallType.Voice;
+  bool get connecting => call.state == link.GroupCallState.Entering;
+  bool get connected => call.state == link.GroupCallState.Entered;
 
   @override
   void initState() {
     super.initState();
+    im = context.read<AppCubit>();
+    final voip = im.currentState!.webrtcTool!.voip;
+    call = voip.groupCalls[widget.callId]!;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -60,7 +66,6 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   }
 
   void initialize() async {
-    final call = widget.call;
     call.onGroupCallFeedsChanged.stream.listen(_handleCallState);
     call.onGroupCallEvent.stream.listen((event) {});
     _state = call.state;
@@ -89,7 +94,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
       const Duration(seconds: 2),
       () => widget.onClear?.call(),
     );
-    if (widget.call.type == link.CallType.kVideo) {
+    if (call.type == link.CallType.kVideo) {
       try {
         // unawaited(Wakelock.disable());
       } catch (_) {}
@@ -99,53 +104,41 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    // final callActions = CallAction(widget.call);
+    // final callActions = CallAction(call);
     // final actions = callActions.buildActionButtons();
     print("_state_state_state" + (_state ?? ""));
     return Scaffold(
-      backgroundColor: Colors.black.withOpacity(0.8),
-      body: Center(
-        child: Container(
-          alignment: Alignment.center,
-          width: 0.9.sw,
-          height: 0.8.sh,
-          decoration: BoxDecoration(
-            color: constTheme.centerChannelBg.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(20.w),
-          ),
-          child: _state == link.GroupCallState.Entered
-              ? Column(
+      backgroundColor: constTheme.centerChannelBg,
+      body: _state == link.GroupCallState.Entered
+          ? Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(10.w),
-                          child: IconButton(
-                            onPressed: () {
-                              widget.onClear?.call();
-                            },
-                            icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
-                            constraints:
-                                BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),
-                            padding: EdgeInsets.zero,
-                            tooltip: L10n.of(context)!.close,
-                            style: IconButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.w),
-                              ),
-                              hoverColor: constTheme.errorTextColor.withOpacity(0.2),
-                            ),
+                    Padding(
+                      padding: EdgeInsets.all(10.w),
+                      child: IconButton(
+                        onPressed: () {
+                          widget.onClear?.call();
+                        },
+                        icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
+                        constraints: BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),
+                        padding: EdgeInsets.zero,
+                        tooltip: L10n.of(context)!.close,
+                        style: IconButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.w),
                           ),
+                          hoverColor: constTheme.errorTextColor.withOpacity(0.2),
                         ),
-                      ],
+                      ),
                     ),
-                    const Spacer(),
                   ],
-                )
-              : renderLoading(),
-        ),
-      ),
+                ),
+                const Spacer(),
+              ],
+            )
+          : renderLoading(),
     );
   }
 
@@ -193,10 +186,10 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                   width: 90.w,
                   height: 90.w,
                   padding: EdgeInsets.all(15.w),
-                  child: widget.call.room.isDirectChat
+                  child: call.room.isDirectChat
                       ? BaseAvatar(
-                          key: Key(widget.call.room.directChatMatrixID ?? "-"),
-                          widget.call.room.directChatMatrixID ?? "-",
+                          key: Key(call.room.directChatMatrixID ?? "-"),
+                          call.room.directChatMatrixID ?? "-",
                           true,
                           60.w,
                           bg: Colors.transparent,
@@ -207,10 +200,8 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                           height: 60.w,
                           padding: EdgeInsets.only(top: 2.w),
                           child: Center(
-                            child: Icon(
-                                widget.call.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                                size: 45.w,
-                                color: constTheme.centerChannelColor),
+                            child: Icon(call.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                                size: 45.w, color: constTheme.centerChannelColor),
                           ),
                         ),
                 ),
@@ -233,7 +224,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 70.w),
           child: Text(
-            widget.call.groupCallId,
+            call.groupCallId,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -256,8 +247,8 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     icon: Icon(AppIcons.jinrudaobo, size: 30.w),
                     color: Colors.white,
                     onPressed: () async {
-                      final stream = await widget.call.initLocalStream();
-                      widget.call.enter(stream: stream);
+                      final stream = await call.initLocalStream();
+                      call.enter(stream: stream);
                     },
                   ),
                 ),
@@ -297,7 +288,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
               ],
             ),
             SizedBox(width: 30.w),
-            // if(widget.call)
+            // if(call)
             Column(
               children: [
                 Container(
@@ -308,7 +299,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     icon: Icon(Icons.close, size: 30.w),
                     color: Colors.white,
                     onPressed: () async {
-                      widget.call.terminate();
+                      call.terminate();
                     },
                   ),
                 ),

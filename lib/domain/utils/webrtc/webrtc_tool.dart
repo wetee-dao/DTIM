@@ -1,5 +1,4 @@
 import 'package:dtim/infra/pages/webrtc/calling.dart';
-import 'package:dtim/infra/pages/webrtc/group_calling.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -88,16 +87,6 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
       return;
     }
     g.update();
-    // final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    // final scaffoldMessenger = ScaffoldMessenger.of(globalCtx());
-    // scaffoldMessenger.showSnackBar(
-    //   SnackBar(
-    //     content: Text("频道 ${groupCall.room.getLocalizedDisplayname()} 开启了多媒体通话"),
-    //     backgroundColor: constTheme.linkColor,
-    //     margin: EdgeInsets.only(bottom: 1.sh - 60.w),
-    //     behavior: SnackBarBehavior.floating,
-    //   ),
-    // );
     // addGroupCallingPopup(groupCall.groupCallId, groupCall);
   }
 
@@ -149,40 +138,40 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     }
   }
 
-  void addGroupCallingPopup(String groupCallId, GroupCall groupCall) {
-    final context = globalCtx(); // web is weird
-    if (callingPopup != null) {
-      Logs().e('[VOIP] addCallingOverlay: The call session already exists?');
-      callingPopup!.remove();
-    }
-    // falling back on a dialog
-    if (kIsWeb) {
-      showDialog(
-        context: context,
-        builder: (context) => GroupWebRTCalling(
-          context: context,
-          client: client,
-          callId: groupCallId,
-          call: groupCall,
-          onClear: () => Navigator.of(context).pop(),
-        ),
-      );
-    } else {
-      callingPopup = OverlayEntry(
-        builder: (_) => GroupWebRTCalling(
-          context: context,
-          client: client,
-          callId: groupCallId,
-          call: groupCall,
-          onClear: () {
-            callingPopup?.remove();
-            callingPopup = null;
-          },
-        ),
-      );
-      globalState().overlay!.insert(callingPopup!);
-    }
-  }
+  // void addGroupCallingPopup(String groupCallId, GroupCall groupCall) {
+  //   final context = globalCtx(); // web is weird
+  //   if (callingPopup != null) {
+  //     Logs().e('[VOIP] addCallingOverlay: The call session already exists?');
+  //     callingPopup!.remove();
+  //   }
+  //   // falling back on a dialog
+  //   if (kIsWeb) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => GroupWebRTCalling(
+  //         context: context,
+  //         client: client,
+  //         callId: groupCallId,
+  //         call: groupCall,
+  //         onClear: () => Navigator.of(context).pop(),
+  //       ),
+  //     );
+  //   } else {
+  //     callingPopup = OverlayEntry(
+  //       builder: (_) => GroupWebRTCalling(
+  //         context: context,
+  //         client: client,
+  //         callId: groupCallId,
+  //         call: groupCall,
+  //         onClear: () {
+  //           callingPopup?.remove();
+  //           callingPopup = null;
+  //         },
+  //       ),
+  //     );
+  //     globalState().overlay!.insert(callingPopup!);
+  //   }
+  // }
 
   @override
   MediaDevices get mediaDevices => webrtc.navigator.mediaDevices;
