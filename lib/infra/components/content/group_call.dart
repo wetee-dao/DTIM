@@ -72,7 +72,16 @@ class GroupCallContent extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10.w),
               child: Row(
                 children: [
-                  Icon(AppIcons.icon_meeting, color: textColor.withOpacity(0.6), size: 35.w),
+                  Container(
+                    width: 40.w,
+                    height: 40.w,
+                    decoration: BoxDecoration(
+                      color: constTheme.centerChannelColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20.w),
+                    ),
+                    padding: EdgeInsets.all(10.w),
+                    child: Icon(AppIcons.meeting_board, color: textColor, size: 20.w),
+                  ),
                   SizedBox(width: 5.w),
                   Expanded(
                     child: Text(

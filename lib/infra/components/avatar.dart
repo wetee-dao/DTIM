@@ -207,7 +207,7 @@ class _BaseAvatarWithPopState extends State<BaseAvatarWithPop> {
       ),
       menuBuilder: () => Container(
         width: 320.w,
-        height: 170.w,
+        height: 150.w,
         padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(
           color: constTheme.centerChannelBg,

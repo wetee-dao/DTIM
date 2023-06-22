@@ -85,6 +85,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
             ) as PreferredSizeWidget
           : ModelBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
+              height: 45.w,
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -96,7 +97,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
       body: Column(
         children: [
           Container(
-            height: 35.w,
+            height: 30.w,
             width: double.maxFinite,
             color: constTheme.sidebarHeaderBg,
             child: TabBar(

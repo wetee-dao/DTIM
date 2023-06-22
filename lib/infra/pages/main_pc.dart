@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
@@ -159,6 +160,33 @@ class _PCPageState extends State<PCPage> {
                               ],
                             );
                           },
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: "discover and join",
+                        onPressed: () {
+                          printDebug("discover and join");
+                          context.router.pushNamed("/select_org?t=back");
+                        },
+                        icon: SizedBox(
+                          width: 36.w,
+                          height: 36.w,
+                          child: Center(
+                            child: Icon(
+                              AppIcons.discoverfill,
+                              size: 23.w,
+                              color: constTheme.sidebarText,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 6.w,
+                        height: 4.w,
+                        margin: EdgeInsets.only(top: 0.w, bottom: 5.w),
+                        decoration: BoxDecoration(
+                          color: constTheme.sidebarText,
+                          borderRadius: BorderRadius.circular(2.w),
                         ),
                       ),
                       if (aorgs != null)

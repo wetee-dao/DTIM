@@ -104,7 +104,7 @@ class _MsgState extends State<Msg> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (showAvatar) SizedBox(height: 10.w),
+                  if (showAvatar) SizedBox(height: 7.w),
                   if (showAvatar)
                     RichText(
                       text: TextSpan(

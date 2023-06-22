@@ -38,7 +38,7 @@ class MessageContent extends StatelessWidget {
       case EventTypes.Encryption:
         return const RoomEvent(text: "启用了E2E加密");
       case EventTypes.RoomPowerLevels:
-        return Container();
+        return const RoomEvent(text: "更新频道修改权限");
       case EventTypes.RoomJoinRules:
         var joinRule = event.content["join_rule"];
         if (joinRule == "invite") {
@@ -237,13 +237,64 @@ class MessageContent extends StatelessWidget {
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),
           builder: (context, snapshot) {
-            return _ButtonContent(
-              label: L10n.of(context)!.startedACall(
+            return RoomEvent(
+              icon: Icons.call_rounded,
+              wrap: true,
+              text: L10n.of(context)!.startedACall(
                 snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
               ),
-              icon: Icon(Icons.call_rounded, size: 17.w),
-              textColor: textColor,
-              onPressed: () => onInfoTab!(event),
+            );
+          },
+        );
+      case EventTypes.CallAnswer:
+        return FutureBuilder<User?>(
+          future: event.fetchSenderUser(),
+          builder: (context, snapshot) {
+            return RoomEvent(
+              icon: Icons.phone_rounded,
+              wrap: true,
+              text: L10n.of(context)!.answerCall(
+                snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+              ),
+            );
+          },
+        );
+      case EventTypes.CallCandidates:
+        return FutureBuilder<User?>(
+          future: event.fetchSenderUser(),
+          builder: (context, snapshot) {
+            return RoomEvent(
+              icon: Icons.call_to_action_rounded,
+              wrap: true,
+              text: L10n.of(context)!.candidatesCall(
+                snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+              ),
+            );
+          },
+        );
+      case EventTypes.CallHangup:
+        return FutureBuilder<User?>(
+          future: event.fetchSenderUser(),
+          builder: (context, snapshot) {
+            return RoomEvent(
+              icon: Icons.stop_rounded,
+              wrap: true,
+              text: L10n.of(context)!.hangupCall(
+                snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+              ),
+            );
+          },
+        );
+      case EventTypes.CallReject:
+        return FutureBuilder<User?>(
+          future: event.fetchSenderUser(),
+          builder: (context, snapshot) {
+            return RoomEvent(
+              icon: Icons.stop_rounded,
+              wrap: true,
+              text: L10n.of(context)!.hangupCall(
+                snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+              ),
             );
           },
         );

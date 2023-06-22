@@ -8,6 +8,10 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData discovery = IconData(0xe605, fontFamily: _family); // discovery
+  static const IconData discovery_2 = IconData(0xe63b, fontFamily: _family); // Discovery
+  static const IconData discoverfill = IconData(0xe650, fontFamily: _family); // discoverfill
+  static const IconData chatbot = IconData(0xe61c, fontFamily: _family); // Chatbot
   static const IconData meeting_board = IconData(0xe6f9, fontFamily: _family); // meeting-board
   static const IconData chat = IconData(0xe61e, fontFamily: _family); // Chat#4
   static const IconData shujujicheng = IconData(0xe862, fontFamily: _family); // 数据集成
@@ -59,6 +63,10 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.discovery, "discovery", "discovery"),
+    _PreviewIcon(AppIcons.discovery_2, "discovery_2", "Discovery"),
+    _PreviewIcon(AppIcons.discoverfill, "discoverfill", "discoverfill"),
+    _PreviewIcon(AppIcons.chatbot, "chatbot", "Chatbot"),
     _PreviewIcon(AppIcons.meeting_board, "meeting_board", "meeting-board"),
     _PreviewIcon(AppIcons.chat, "chat", "Chat#4"),
     _PreviewIcon(AppIcons.shujujicheng, "shujujicheng", "数据集成"),

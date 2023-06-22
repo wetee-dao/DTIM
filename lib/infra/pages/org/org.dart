@@ -78,6 +78,7 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
                     : moveWindow(
                         Container(
                           color: constTheme.centerChannelBg,
+                          padding: EdgeInsets.only(bottom: 100.h),
                           child: Center(
                             child: Text(
                               "Use DTIM and work in web3",

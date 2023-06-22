@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 class RoomEvent extends StatelessWidget {
   final String text;
+  final IconData? icon;
+  final bool? wrap;
 
-  const RoomEvent({super.key, required this.text});
+  const RoomEvent({super.key, required this.text, this.icon, this.wrap});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +16,22 @@ class RoomEvent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          transform: Matrix4.translationValues(-2.w, 0, 0),
-          child: Icon(Icons.task_rounded, color: constTheme.centerChannelColor, size: 19.w),
-        ),
+        wrap != null && wrap!
+            ? Container(
+                transform: Matrix4.translationValues(-1.w, 0, 0),
+                width: 20.w,
+                height: 20.w,
+                padding: EdgeInsets.all(4.w),
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20.w),
+                ),
+                child: Icon(icon ?? Icons.task_rounded, color: constTheme.centerChannelColor, size: 12.w),
+              )
+            : Container(
+                transform: Matrix4.translationValues(-1.w, 0, 0),
+                child: Icon(icon ?? Icons.task_rounded, color: constTheme.centerChannelColor, size: 19.w),
+              ),
         SizedBox(width: 2.w),
         SelectableText(
           text,

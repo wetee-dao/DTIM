@@ -98,7 +98,7 @@ class _DaoPageState extends State<DaoPage> {
       appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
-              title: title == "" ? im.currentState!.org.orgName! : title,
+              title: title == "" ? "${im.currentState!.org.orgName!} Kanban" : title,
               showMacosTop: false,
               leading: InkWell(
                 onTap: () {

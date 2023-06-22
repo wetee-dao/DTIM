@@ -114,6 +114,27 @@
       "senderName": {}
     }
   },
+  "answerCall": "{senderName} answer call",
+  "@answerCall": {
+    "type": "text",
+    "placeholders": {
+      "senderName": {}
+    }
+  },
+   "candidatesCall": "{senderName} candidate call",
+  "@candidatesCall": {
+    "type": "text",
+    "placeholders": {
+      "senderName": {}
+    }
+  },
+  "hangupCall": "{senderName} hangup call",
+  "@hangupCall": {
+    "type": "text",
+    "placeholders": {
+      "senderName": {}
+    }
+  },
   "userSentUnknownEvent": "sent {type} event",
   "@userSentUnknownEvent": {
     "type": "text",
