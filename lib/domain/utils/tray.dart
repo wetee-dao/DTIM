@@ -31,6 +31,7 @@ showtray() async {
 
   await trayManager.setContextMenu(Menu(items: items));
   trayManager.addListener(TrayManagerListener());
+  trayManager.setToolTip("DTIM");
   await windowManager.setPreventClose(true);
   windowManager.addListener(WindowManagerListener());
 }
@@ -45,15 +46,15 @@ class TrayManagerListener implements TrayListener {
   void onTrayIconMouseUp() {}
 
   @override
-  void onTrayIconRightMouseDown() {}
+  void onTrayIconRightMouseDown() {
+    trayManager.popUpContextMenu();
+  }
 
   @override
   void onTrayIconRightMouseUp() {}
 
   @override
-  void onTrayMenuItemClick(MenuItem menuItem) {
-    print("onTrayMenuItemClickonTrayMenuItemClick");
-  }
+  void onTrayMenuItemClick(MenuItem menuItem) {}
 }
 
 class WindowManagerListener implements WindowListener {

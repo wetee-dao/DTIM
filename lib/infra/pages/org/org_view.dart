@@ -26,7 +26,7 @@ class OrgViewPage extends StatefulWidget {
 
 class _OrgViewPageState extends State<OrgViewPage> {
   late ExpandableController _controllerChannels;
-  late ExpandableController _controllerStarred;
+  // late ExpandableController _controllerStarred;
   late ExpandableController _controllerUsers;
 
   final BasePopupMenuController menuController = BasePopupMenuController();
@@ -38,7 +38,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
   void initState() {
     super.initState();
     _controllerChannels = ExpandableController(initialExpanded: true);
-    _controllerStarred = ExpandableController(initialExpanded: true);
+    // _controllerStarred = ExpandableController(initialExpanded: true);
     _controllerUsers = ExpandableController(initialExpanded: true);
     menuController.addListener(() {
       menuStreamController.add(menuController.menuIsShowing);
@@ -52,7 +52,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
   void dispose() {
     super.dispose();
     _controllerChannels.dispose();
-    _controllerStarred.dispose();
+    // _controllerStarred.dispose();
     _controllerUsers.dispose();
   }
 
@@ -334,7 +334,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
                                 child: Text(
                                   call.room.getLocalizedDisplayname(),
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w800,
                                     fontSize: 14.w,
                                     color: constTheme.sidebarText,
                                   ),
@@ -418,7 +417,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
                                 child: Text(
                                   call.room.getLocalizedDisplayname(),
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w800,
                                     fontSize: 14.w,
                                     color: constTheme.sidebarText,
                                   ),
