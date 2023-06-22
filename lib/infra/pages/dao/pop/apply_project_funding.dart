@@ -40,14 +40,14 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       BotToast.showText(text: 'The application amount is not less than 0.', duration: const Duration(seconds: 2));
       return;
     }
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoApplyProjectFunds(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           projectId: int.parse(widget.projectId),
           amount: _data.amount,
           ext: const WithGovPs(
@@ -56,7 +56,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
             member: MemberGroup(scope: 1, id: 0),
           ),
         );
-        await daoCtx.daoRefresh();
+        await workCtx.daoRefresh();
       },
     );
 

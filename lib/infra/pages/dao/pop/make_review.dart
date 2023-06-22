@@ -38,20 +38,20 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
     }
     _formKey.currentState!.save();
 
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoProjectMakeReview(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           projectId: int.parse(widget.projectId),
           taskId: int.parse(widget.id),
           approve: _data.approve,
           meta: _data.msg,
         );
-        await daoCtx.daoRefresh();
+        await workCtx.daoRefresh();
       },
     );
 

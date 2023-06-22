@@ -44,20 +44,20 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
     }
     _formKey.currentState!.save();
 
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoCreateRoadmapTask(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           roadmapId: _data.roadmapId,
           name: _data.name,
           priority: _data.priority,
           tags: Uint8List.fromList(_data.tags),
         );
-        await daoCtx.daoRefresh();
+        await workCtx.daoRefresh();
       },
     );
 

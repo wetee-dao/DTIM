@@ -394,14 +394,14 @@ class Kanban extends StatelessWidget {
       BotToast.showText(text: "验证者不能为空", duration: const Duration(seconds: 2));
       return;
     }
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoProjectStartTask(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
@@ -411,14 +411,14 @@ class Kanban extends StatelessWidget {
 
   requestReview(TaskInfo data) async {
     print(data.id);
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoProjectRequestReview(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
@@ -427,14 +427,14 @@ class Kanban extends StatelessWidget {
   }
 
   taskDone(TaskInfo data) async {
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoProjectTaskDone(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
@@ -443,7 +443,7 @@ class Kanban extends StatelessWidget {
   }
 
   makeReviwe(TaskInfo data) async {
-    if (!data.reviewers.contains(daoCtx.user.address)) {
+    if (!data.reviewers.contains(workCtx.user.address)) {
       BotToast.showText(text: "You are not the reviewer of the task", duration: const Duration(seconds: 2));
       return;
     }

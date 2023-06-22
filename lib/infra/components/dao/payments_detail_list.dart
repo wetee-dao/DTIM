@@ -63,7 +63,7 @@ class PaymentsDetailList extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20.w),
-        Consumer<DAOCTX>(builder: (_, dao, child) {
+        Consumer<WorkCTX>(builder: (_, dao, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -75,7 +75,7 @@ class PaymentsDetailList extends StatelessWidget {
             ],
           );
         }),
-        Consumer<DAOCTX>(builder: (_, dao, child) {
+        Consumer<WorkCTX>(builder: (_, dao, child) {
           return Column(
             children: List.generate(
               dao.votes.length,

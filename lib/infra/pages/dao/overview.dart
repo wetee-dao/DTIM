@@ -40,13 +40,13 @@ class Overviewpage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.w),
                       PrimaryText(
-                        text: 'Data overview in DAO',
+                        text: 'Data overview in Work',
                         size: 14.w,
                       ),
                     ],
                   ),
                   SizedBox(height: 15.w),
-                  Consumer<DAOCTX>(
+                  Consumer<WorkCTX>(
                     builder: (_, dao, child) {
                       return SizedBox(
                         width: double.maxFinite,
@@ -103,7 +103,7 @@ class Overviewpage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 15.w),
-                  Consumer<DAOCTX>(builder: (_, dao, child) {
+                  Consumer<WorkCTX>(builder: (_, dao, child) {
                     return Referendums(
                       wrap: false,
                       showTitle: false,
@@ -126,7 +126,7 @@ class Overviewpage extends StatelessWidget {
                 ),
               ),
             ),
-            child: Consumer<DAOCTX>(builder: (_, dao, child) {
+            child: Consumer<WorkCTX>(builder: (_, dao, child) {
               return DaoIsJoined(
                 isJoined: dao.members.contains(dao.user.address),
                 child: SingleChildScrollView(

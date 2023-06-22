@@ -25,7 +25,7 @@ class Guildpage extends StatefulWidget {
 }
 
 class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
-  late final DAOCTX dao;
+  late final WorkCTX dao;
   GuildInfo? info;
   List<String> members = [];
   late TabController _tabController;
@@ -38,7 +38,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
-    dao = context.read<DAOCTX>();
+    dao = context.read<WorkCTX>();
   }
 
   init(GuildInfo guild) {
@@ -103,7 +103,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                               okLabel: L10n.of(globalCtx())!.next,
                               cancelLabel: L10n.of(globalCtx())!.cancel,
                             )) {
-                          if (!await daoCtx.checkAfterTx()) return;
+                          if (!await workCtx.checkAfterTx()) return;
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
@@ -121,7 +121,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                                   ),
                                 ),
                               );
-                              await daoCtx.daoRefresh();
+                              await workCtx.daoRefresh();
                               getData();
                             },
                           );

@@ -37,19 +37,19 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
     }
     _formKey.currentState!.save();
 
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.daoGovVoteForReferendum(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           index: int.parse(widget.id),
           vote: _data.vote,
           approve: _data.approve,
         );
-        await daoCtx.daoRefresh();
+        await workCtx.daoRefresh();
       },
     );
 

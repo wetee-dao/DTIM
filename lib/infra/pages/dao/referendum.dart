@@ -18,12 +18,12 @@ class ReferendumPage extends StatefulWidget {
 }
 
 class _ReferendumPageState extends State<ReferendumPage> {
-  late final DAOCTX dao;
+  late final WorkCTX dao;
 
   @override
   void initState() {
     super.initState();
-    dao = context.read<DAOCTX>();
+    dao = context.read<WorkCTX>();
     getData();
   }
 
@@ -64,13 +64,13 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     if (dao.votes.isNotEmpty)
                       InkWell(
                         onTap: () async {
-                          if (!await daoCtx.checkAfterTx()) return;
+                          if (!await workCtx.checkAfterTx()) return;
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
                               await rustApi.daoGovUnlock(
                                   from: dao.user.address, client: dao.chainClient, daoId: dao.org.daoId);
-                              await daoCtx.daoRefresh();
+                              await workCtx.daoRefresh();
                             },
                           );
                         },
@@ -105,7 +105,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: daoCtx.dao.purpose,
+                  text: workCtx.dao.purpose,
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),
@@ -118,7 +118,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
             color: constTheme.centerChannelDivider,
           ),
           Expanded(
-            child: Consumer<DAOCTX>(builder: (_, dao, child) {
+            child: Consumer<WorkCTX>(builder: (_, dao, child) {
               return Referendums(
                 pending: dao.pending.where((r) => r.memberGroup.scope == 1).toList(),
                 going: dao.going.where((r) => r.memberGroup.scope == 1).toList(),

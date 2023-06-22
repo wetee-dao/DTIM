@@ -28,7 +28,7 @@ class ProjectPage extends StatefulWidget {
 
 class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin {
   final boardScrollController = ScrollController();
-  late final DAOCTX dao;
+  late final WorkCTX dao;
   late TabController _tabController;
   late PageController pageController = PageController();
   final titleList = <String>["Kanban", "Members", "Referendums"];
@@ -47,7 +47,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
-    dao = context.read<DAOCTX>();
+    dao = context.read<WorkCTX>();
   }
 
   init(ProjectInfo project) {
@@ -138,7 +138,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                             okLabel: L10n.of(globalCtx())!.next,
                             cancelLabel: L10n.of(globalCtx())!.cancel,
                           )) {
-                        if (!await daoCtx.checkAfterTx()) return;
+                        if (!await workCtx.checkAfterTx()) return;
                         await waitFutureLoading(
                           context: globalCtx(),
                           future: () async {
@@ -156,7 +156,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                                 ),
                               ),
                             );
-                            await daoCtx.daoRefresh();
+                            await workCtx.daoRefresh();
                             getData();
                           },
                         );

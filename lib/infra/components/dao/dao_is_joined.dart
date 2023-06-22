@@ -52,7 +52,7 @@ class DaoIsJoined extends StatelessWidget {
                     ),
                     SizedBox(height: 10.w),
                     Text(
-                      'You are not a member of this DAO',
+                      'You are not a member of this Work',
                       style: TextStyle(
                         color: constTheme.centerChannelColor,
                         fontSize: 15.w,
@@ -63,7 +63,7 @@ class DaoIsJoined extends StatelessWidget {
                     ElevatedButton(
                       key: const Key('joinDao'),
                       onPressed: () {
-                        if (daoCtx.nativeAmount.free < 100) {
+                        if (workCtx.nativeAmount.free < 100) {
                           BotToast.showText(
                               text: "The user's balance is not enough to pay the handling fee",
                               duration: const Duration(seconds: 2));
