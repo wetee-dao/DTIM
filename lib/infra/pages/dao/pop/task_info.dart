@@ -51,7 +51,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
   getData() {
     rustApi
         .daoProjectTaskInfo(
-      client: daoCtx.chainClient,
+      client: workCtx.chainClient,
       projectId: int.parse(widget.projectId),
       taskId: int.parse(widget.id),
     )
@@ -70,21 +70,21 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: context,
       future: () async {
         await rustApi.daoProjectCreateTask(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           name: _data.name,
           priority: _data.priority,
           skills: Uint8List.fromList(_data.tags),
           desc: _data.desc,
           point: _data.point,
           projectId: int.parse(widget.projectId),
-          assignees: [daoCtx.user.address],
+          assignees: [workCtx.user.address],
           amount: _data.amount,
           maxAssignee: 3,
         );

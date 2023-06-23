@@ -95,17 +95,17 @@ class Referendums extends StatelessWidget {
                 InkWell(
                   key: Key("referendumStart${pending[index].index}"),
                   onTap: () async {
-                    if (!await daoCtx.checkAfterTx()) return;
+                    if (!await workCtx.checkAfterTx()) return;
                     await waitFutureLoading(
                       context: globalCtx(),
                       future: () async {
                         await rustApi.daoGovStartReferendum(
-                          from: daoCtx.user.address,
-                          client: daoCtx.chainClient,
-                          daoId: daoCtx.org.daoId,
+                          from: workCtx.user.address,
+                          client: workCtx.chainClient,
+                          daoId: workCtx.org.daoId,
                           index: pending[index].index,
                         );
-                        await daoCtx.daoRefresh();
+                        await workCtx.daoRefresh();
                       },
                     );
                   },
@@ -179,7 +179,7 @@ class Referendums extends StatelessWidget {
                     size: 13.w,
                   ),
                 ),
-                renderTime(going[index], daoCtx),
+                renderTime(going[index], workCtx),
                 Container(
                   width: 80.w,
                   height: 30.w,
@@ -255,8 +255,8 @@ class Referendums extends StatelessWidget {
         disabled: true,
       );
     }
-    if (going.end - daoCtx.blockNumber > 0) {
-      final cindex = daoCtx.votes.indexWhere((v) => v.referendumIndex == going.id);
+    if (going.end - workCtx.blockNumber > 0) {
+      final cindex = workCtx.votes.indexWhere((v) => v.referendumIndex == going.id);
       return cindex > -1
           ? renderBox(
               PrimaryText(
@@ -285,7 +285,7 @@ class Referendums extends StatelessWidget {
               ),
             );
     }
-    if (going.status == 0 && going.end - daoCtx.blockNumber <= 0 && going.end + going.delay - daoCtx.blockNumber > 0) {
+    if (going.status == 0 && going.end - workCtx.blockNumber <= 0 && going.end + going.delay - workCtx.blockNumber > 0) {
       return renderBox(
         PrimaryText(
           text: "Delay time",
@@ -294,22 +294,22 @@ class Referendums extends StatelessWidget {
         ),
       );
     }
-    if (going.status == 0 && going.end - daoCtx.blockNumber < 0) {
+    if (going.status == 0 && going.end - workCtx.blockNumber < 0) {
       if (going.tally.yes > 0) {
         return InkWell(
           key: Key("referendumExecute${going.id}"),
           onTap: () async {
-            if (!await daoCtx.checkAfterTx()) return;
+            if (!await workCtx.checkAfterTx()) return;
             await waitFutureLoading(
               context: globalCtx(),
               future: () async {
                 await rustApi.daoGovRunProposal(
-                  from: daoCtx.user.address,
-                  client: daoCtx.chainClient,
-                  daoId: daoCtx.org.daoId,
+                  from: workCtx.user.address,
+                  client: workCtx.chainClient,
+                  daoId: workCtx.org.daoId,
                   index: going.id,
                 );
-                await daoCtx.daoRefresh();
+                await workCtx.daoRefresh();
               },
             );
           },

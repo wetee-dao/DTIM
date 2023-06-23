@@ -66,7 +66,7 @@ class SideMenu extends StatelessWidget {
             //   onTap: () => onTap("Combind Boards"),
             // ),
             Divider(color: constTheme.sidebarText.withOpacity(0.18)),
-            Consumer<DAOCTX>(builder: (_, dao, child) {
+            Consumer<WorkCTX>(builder: (_, dao, child) {
               return Column(
                 children: [
                   ...dao.guilds.map((e) => iconBuilder(

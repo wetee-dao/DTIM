@@ -13,7 +13,7 @@ import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 
-class DAOCTX with ChangeNotifier {
+class WorkCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
   late DaoInfo dao;
@@ -191,4 +191,4 @@ class DAOCTX with ChangeNotifier {
   }
 }
 
-final daoCtx = DAOCTX();
+final workCtx = WorkCTX();

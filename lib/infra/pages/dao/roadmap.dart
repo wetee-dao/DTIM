@@ -23,7 +23,7 @@ class RoadMapPage extends StatefulWidget {
 
 class _RoadMapPageState extends State<RoadMapPage> {
   late final AppCubit im;
-  late final DAOCTX dao;
+  late final WorkCTX dao;
   bool _loading = true;
   List<Quarter> quarters = [];
 
@@ -31,7 +31,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    dao = context.read<DAOCTX>();
+    dao = context.read<WorkCTX>();
     getData();
     dao.addListener(getData);
   }
@@ -114,7 +114,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: daoCtx.dao.purpose,
+                text: workCtx.dao.purpose,
                 size: 14.w,
               ),
               SizedBox(height: 10.w),

@@ -31,7 +31,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
   @override
   void initState() {
     super.initState();
-    ss58Address = daoCtx.ss58Address;
+    ss58Address = workCtx.ss58Address;
   }
 
   void submitAction() async {
@@ -39,25 +39,25 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (daoCtx.nativeAmount.free < daoCtx.dao.chainUnit) {
+    if (workCtx.nativeAmount.free < workCtx.dao.chainUnit) {
       BotToast.showText(
         text: "The user's balance is not enough to pay the handling fee",
         duration: const Duration(seconds: 2),
       );
       return;
     }
-    if (!await daoCtx.inputPassword()) return;
+    if (!await workCtx.inputPassword()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         await rustApi.joinDao(
-          from: daoCtx.user.address,
-          client: daoCtx.chainClient,
-          daoId: daoCtx.org.daoId,
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
           shareExpect: _data.share,
           value: _data.value,
         );
-        await daoCtx.daoRefresh();
+        await workCtx.daoRefresh();
       },
     );
 
@@ -77,7 +77,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "Join DAO",
+              title: "Join Work",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -87,7 +87,7 @@ class _JoinDaoPageState extends State<JoinDaoPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "Join DAO",
+              title: "Join Work",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();

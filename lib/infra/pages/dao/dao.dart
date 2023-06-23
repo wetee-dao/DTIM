@@ -50,20 +50,20 @@ class _DaoPageState extends State<DaoPage> {
     super.initState();
     currentId.add(pageStr);
     im = context.read<AppCubit>();
-    daoCtx.connectChain(im.currentState!.org, im.me!, () {
+    workCtx.connectChain(im.currentState!.org, im.me!, () {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
         // print("获取新的区块头");
-        daoCtx.timeTick();
+        workCtx.timeTick();
       });
     });
   }
 
   getData() async {
-    daoCtx.getVoteData();
+    workCtx.getVoteData();
     if (mounted) {
       setState(() {
-        title = daoCtx.dao.name;
+        title = workCtx.dao.name;
       });
     }
   }
@@ -116,10 +116,10 @@ class _DaoPageState extends State<DaoPage> {
               tools: CloseBar(color: constTheme.sidebarText),
             )
           : null,
-      body: daoCtx.chainClient > -1
+      body: workCtx.chainClient > -1
           ? ChangeNotifierProvider.value(
               key: const Key("daoView"),
-              value: daoCtx,
+              value: workCtx,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -164,13 +164,13 @@ class _DaoPageState extends State<DaoPage> {
     if (pageStr.contains("Guilds")) {
       final ids = pageStr.split(" ");
       final guildState = guildKey.currentState as GuildpageState;
-      final guild = daoCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
+      final guild = workCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
       guildState.init(guild);
     }
     if (pageStr.contains("Projects")) {
       final ids = pageStr.split(" ");
       final projectState = projectKey.currentState as ProjectPageState;
-      final project = daoCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
+      final project = workCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
       // guildKey.currentState?.getData();
       projectState.init(project);
     }

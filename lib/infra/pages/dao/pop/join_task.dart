@@ -36,28 +36,28 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
     }
     _formKey.currentState!.save();
 
-    if (!await daoCtx.checkAfterTx()) return;
+    if (!await workCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         if (_data.type == 0) {
           await rustApi.daoProjectJoinTask(
-            from: daoCtx.user.address,
-            client: daoCtx.chainClient,
-            daoId: daoCtx.org.daoId,
+            from: workCtx.user.address,
+            client: workCtx.chainClient,
+            daoId: workCtx.org.daoId,
             projectId: int.parse(widget.projectId),
             taskId: int.parse(widget.id),
           );
         } else {
           await rustApi.daoProjectJoinTaskReview(
-            from: daoCtx.user.address,
-            client: daoCtx.chainClient,
-            daoId: daoCtx.org.daoId,
+            from: workCtx.user.address,
+            client: workCtx.chainClient,
+            daoId: workCtx.org.daoId,
             projectId: int.parse(widget.projectId),
             taskId: int.parse(widget.id),
           );
         }
-        await daoCtx.daoRefresh();
+        await workCtx.daoRefresh();
       },
     );
 
