@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
-import 'package:dtim/infra/pages/dao/referendum.dart';
+import 'package:dtim/infra/pages/work/referendum.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,14 +20,14 @@ import 'roadmap.dart';
 import 'side_menu.dart';
 
 @RoutePage(name: "daoRoute")
-class DaoPage extends StatefulWidget {
-  const DaoPage({Key? key}) : super(key: key);
+class WorkPage extends StatefulWidget {
+  const WorkPage({Key? key}) : super(key: key);
 
   @override
-  State<DaoPage> createState() => _DaoPageState();
+  State<WorkPage> createState() => _WorkPageState();
 }
 
-class _DaoPageState extends State<DaoPage> {
+class _WorkPageState extends State<WorkPage> {
   final mainPages = [
     const Overviewpage(),
     const RoadMapPage(),
@@ -99,7 +99,7 @@ class _DaoPageState extends State<DaoPage> {
       appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
-              title: title == "" ? "${im.currentState!.org.orgName!} Kanban" : title,
+              title: "Kanban",
               showMacosTop: false,
               leading: InkWell(
                 onTap: () {
@@ -108,7 +108,7 @@ class _DaoPageState extends State<DaoPage> {
                 child: Padding(
                   padding: EdgeInsets.all(8.w),
                   child: Icon(
-                    AppIcons.kanban_1,
+                    AppIcons.kanban,
                     color: constTheme.sidebarHeaderTextColor,
                     size: 22.w,
                   ),

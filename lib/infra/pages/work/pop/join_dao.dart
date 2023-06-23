@@ -10,15 +10,15 @@ import 'package:dtim/application/store/dao_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
-class JoinDaoPage extends StatefulWidget {
+class JoinWorkPage extends StatefulWidget {
   final Function? closeModel;
-  const JoinDaoPage({Key? key, this.closeModel}) : super(key: key);
+  const JoinWorkPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
-  State<JoinDaoPage> createState() => _JoinDaoPageState();
+  State<JoinWorkPage> createState() => _JoinWorkPageState();
 }
 
-class _JoinDaoPageState extends State<JoinDaoPage> {
+class _JoinWorkPageState extends State<JoinWorkPage> {
   bool publicGroup = false;
   late String ss58Address;
   final SubmitData _data = SubmitData(

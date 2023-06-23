@@ -36,7 +36,7 @@ abstract class _$AppRouter extends RootStackRouter {
     DaoRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const DaoPage(),
+        child: const WorkPage(),
       );
     },
     IntegrateRoute.name: (routeData) {
@@ -114,7 +114,7 @@ class SelectOrg extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [DaoPage]
+/// [WorkPage]
 class DaoRoute extends PageRouteInfo<void> {
   const DaoRoute({List<PageRouteInfo>? children})
       : super(

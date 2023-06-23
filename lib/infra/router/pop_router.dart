@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 
 import 'package:dtim/infra/pages/channel/create_private.dart';
 import 'package:dtim/infra/pages/channel/setting/setting.dart';
-import 'package:dtim/infra/pages/dao/pop/apply_project_funding.dart';
-import 'package:dtim/infra/pages/dao/pop/create_project.dart';
-import 'package:dtim/infra/pages/dao/pop/create_roadmap.dart';
-import 'package:dtim/infra/pages/dao/pop/create_task.dart';
-import 'package:dtim/infra/pages/dao/pop/join_dao.dart';
-import 'package:dtim/infra/pages/dao/pop/make_review.dart';
-import 'package:dtim/infra/pages/dao/pop/referendum_vote.dart';
-import 'package:dtim/infra/pages/dao/pop/task_info.dart';
+import 'package:dtim/infra/pages/work/pop/apply_project_funding.dart';
+import 'package:dtim/infra/pages/work/pop/create_project.dart';
+import 'package:dtim/infra/pages/work/pop/create_roadmap.dart';
+import 'package:dtim/infra/pages/work/pop/create_task.dart';
+import 'package:dtim/infra/pages/work/pop/join_dao.dart';
+import 'package:dtim/infra/pages/work/pop/make_review.dart';
+import 'package:dtim/infra/pages/work/pop/referendum_vote.dart';
+import 'package:dtim/infra/pages/work/pop/task_info.dart';
 import 'package:dtim/infra/pages/setting/setting.dart';
-import 'package:dtim/infra/pages/dao/pop/join_task.dart';
+import 'package:dtim/infra/pages/work/pop/join_task.dart';
 import 'package:dtim/infra/pages/channel/create.dart';
 import 'package:dtim/infra/pages/search.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
@@ -52,7 +52,7 @@ getPage(String url, Function closeModel) {
     final pstr = url.replaceAll("/apply_project_funding/", "");
     return ApplyProjectFundingPage(projectId: pstr, closeModel: closeModel);
   } else if (url.indexOf("/join_dao") == 0) {
-    return JoinDaoPage(closeModel: closeModel);
+    return JoinWorkPage(closeModel: closeModel);
   } else if (url.indexOf("/create_dao_project") == 0) {
     return CreateProjectPage(closeModel: closeModel);
   } else if (url.indexOf("/referendum_vote") == 0) {

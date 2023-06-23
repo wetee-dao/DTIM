@@ -7,7 +7,7 @@ import 'package:dtim/infra/pages/chain/sr25519_key.dart';
 import 'package:dtim/infra/pages/main_pc.dart';
 import 'package:dtim/infra/pages/select_org.dart';
 import 'package:dtim/application/store/app/app.dart';
-import 'package:dtim/infra/pages/dao/dao.dart';
+import 'package:dtim/infra/pages/work/work.dart';
 import 'package:dtim/infra/pages/org/org.dart';
 import 'package:dtim/infra/pages/preloader.dart';
 
@@ -139,7 +139,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
 //     GoRoute(
 //       path: '/join_dao',
 //       builder: (BuildContext context, GoRouterState state) {
-//         return const JoinDaoPage();
+//         return const JoinWorkPage();
 //       },
 //     ),
 //     GoRoute(
