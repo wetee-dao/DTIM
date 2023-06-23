@@ -7,7 +7,7 @@ import 'package:dtim/infra/components/dao/dao_is_joined.dart';
 import 'package:dtim/infra/components/dao/info_card.dart';
 import 'package:dtim/infra/components/dao/payments_detail_list.dart';
 import 'package:dtim/infra/components/dao/text.dart';
-import 'package:dtim/application/store/dao_ctx.dart';
+import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'sub/referendum.dart';
 

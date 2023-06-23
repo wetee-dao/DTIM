@@ -16,12 +16,16 @@ external String signFromAddressFunc(String address, String ctx);
 external int connectFunc(String url);
 @JS("startClient")
 external String startClientFunc(int client);
+@JS("stopClient")
+external String stopClienttFunc(int client);
 @JS("pingClient")
 external String pingClientFunc(int client);
 @JS("getBlockNumber")
 external String getBlockNumberFunc(int client);
 @JS("nativeBalance")
 external String nativeBalanceFunc(int client, String address);
+@JS("daoBalance")
+external String daoBalanceFunc(int client, int daoId, String address);
 @JS("daoInfo")
 external String daoInfoFunc(int client, int daoId);
 @JS("ss58")
@@ -292,6 +296,15 @@ class rustApi {
     }
   }
 
+  static Future<void> stopClient({required int client, dynamic hint}) async {
+    try {
+      var result = await promiseToFuture(stopClienttFunc(client));
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static Future<List<String>> seedGenerate({dynamic hint}) {
     return Future(() => []);
   }
@@ -364,9 +377,20 @@ class rustApi {
     return Future(() {});
   }
 
-  static Future<AssetAccountData> daoBalance(
-      {required int client, required int daoId, required String address, dynamic hint}) {
-    return Future(() => AssetAccountData(free: 0, frozen: 0, reserved: 0));
+  static Future<AssetAccountData> daoBalance({
+    required int client,
+    required int daoId,
+    required String address,
+    dynamic hint,
+  }) async {
+    try {
+      final result = await promiseToFuture(daoBalanceFunc(client, daoId, address));
+      final data = convert.jsonDecode(result);
+
+      return AssetAccountDataJ.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<DaoInfo> daoInfo({required int client, required int daoId, dynamic hint}) async {
@@ -414,7 +438,7 @@ class rustApi {
       required Uint8List tags,
       dynamic hint}) async {
     try {
-      return await promiseToFuture(daoCreateRoadmapTaskFunc(
+      await promiseToFuture(daoCreateRoadmapTaskFunc(
         from,
         client,
         daoId,
@@ -423,6 +447,7 @@ class rustApi {
         priority,
         tags,
       ));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -436,13 +461,14 @@ class rustApi {
       required int value,
       dynamic hint}) async {
     try {
-      return await promiseToFuture(joinDaoFunc(
+      await promiseToFuture(joinDaoFunc(
         from,
         client,
         daoId,
         shareExpect,
         value,
       ));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -505,7 +531,7 @@ class rustApi {
       WithGovPs? ext,
       dynamic hint}) async {
     try {
-      return await promiseToFuture(createProjectFunc(
+      await promiseToFuture(createProjectFunc(
         from,
         client,
         daoId,
@@ -513,6 +539,7 @@ class rustApi {
         desc,
         ext,
       ));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -527,7 +554,7 @@ class rustApi {
       WithGovPs? ext,
       dynamic hint}) async {
     try {
-      return await promiseToFuture(createGuildFunc(
+      await promiseToFuture(createGuildFunc(
         from,
         client,
         daoId,
@@ -535,6 +562,7 @@ class rustApi {
         desc,
         ext,
       ));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -575,7 +603,8 @@ class rustApi {
   static Future<bool> daoGovStartReferendum(
       {required String from, required int client, required int daoId, required int index, dynamic hint}) async {
     try {
-      return await promiseToFuture(daoGovStartReferendumFunc(from, client, daoId, index));
+      await promiseToFuture(daoGovStartReferendumFunc(from, client, daoId, index));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -590,7 +619,7 @@ class rustApi {
       required bool approve,
       dynamic hint}) async {
     try {
-      return await promiseToFuture(daoGovVoteForReferendumFunc(
+      await promiseToFuture(daoGovVoteForReferendumFunc(
         from,
         client,
         daoId,
@@ -598,6 +627,7 @@ class rustApi {
         vote,
         approve,
       ));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -607,7 +637,13 @@ class rustApi {
       {required String from, required int client, required int daoId, dynamic hint}) async {
     try {
       var result = await promiseToFuture(daoGovVotesOfUserFunc(from, client, daoId));
-      return [];
+      var data = convert.jsonDecode(result) as List<dynamic>;
+      List<GovVoteJ> list = [];
+      for (var i = 0; i < data.length; i++) {
+        var item = data[i] as Map<String, dynamic>;
+        list.add(GovVoteJ.fromJson(item));
+      }
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -616,7 +652,8 @@ class rustApi {
   static Future<bool> daoGovRunProposal(
       {required String from, required int client, required int daoId, required int index, dynamic hint}) async {
     try {
-      return await promiseToFuture(daoGovRunProposalFunc(from, client, daoId, index));
+      await promiseToFuture(daoGovRunProposalFunc(from, client, daoId, index));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -625,8 +662,8 @@ class rustApi {
   static Future<bool> daoGovUnlock(
       {required String from, required int client, required int daoId, dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoGovUnlockFunc(client, daoId));
-      return result;
+      await promiseToFuture(daoGovUnlockFunc(client, daoId));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -694,7 +731,7 @@ class rustApi {
       required int amount,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectCreateTaskFunc(
+      await promiseToFuture(daoProjectCreateTaskFunc(
         from,
         client,
         daoId,
@@ -709,7 +746,7 @@ class rustApi {
         maxAssignee,
         amount,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -723,14 +760,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectStartTaskFunc(
+      await promiseToFuture(daoProjectStartTaskFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -744,14 +781,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectRequestReviewFunc(
+      await promiseToFuture(daoProjectRequestReviewFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -765,14 +802,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectTaskDoneFunc(
+      await promiseToFuture(daoProjectTaskDoneFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -786,14 +823,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectJoinTaskFunc(
+      await promiseToFuture(daoProjectJoinTaskFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -807,14 +844,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectLeaveTaskFunc(
+      await promiseToFuture(daoProjectLeaveTaskFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -828,14 +865,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectJoinTaskReviewFunc(
+      await promiseToFuture(daoProjectJoinTaskReviewFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -849,14 +886,14 @@ class rustApi {
       required int taskId,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectLeaveTaskReviewFunc(
+      await promiseToFuture(daoProjectLeaveTaskReviewFunc(
         from,
         client,
         daoId,
         projectId,
         taskId,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -872,7 +909,7 @@ class rustApi {
       required String meta,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectMakeReviewFunc(
+      await promiseToFuture(daoProjectMakeReviewFunc(
         from,
         client,
         daoId,
@@ -881,7 +918,7 @@ class rustApi {
         approve,
         meta,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -895,8 +932,8 @@ class rustApi {
       WithGovPs? ext,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectJoinRequestFunc(from, client, daoId, projectId, ext));
-      return result;
+      await promiseToFuture(daoProjectJoinRequestFunc(from, client, daoId, projectId, ext));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -910,8 +947,8 @@ class rustApi {
       required String user,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoProjectJoinRequestWithRootFunc(from, client, daoId, projectId, user));
-      return result;
+      await promiseToFuture(daoProjectJoinRequestWithRootFunc(from, client, daoId, projectId, user));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -925,8 +962,8 @@ class rustApi {
       WithGovPs? ext,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoGuildJoinRequestFunc(from, client, daoId, guildId, ext));
-      return result;
+      await promiseToFuture(daoGuildJoinRequestFunc(from, client, daoId, guildId, ext));
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -951,7 +988,7 @@ class rustApi {
       WithGovPs? ext,
       dynamic hint}) async {
     try {
-      var result = await promiseToFuture(daoApplyProjectFundsFunc(
+      await promiseToFuture(daoApplyProjectFundsFunc(
         from,
         client,
         daoId,
@@ -959,7 +996,7 @@ class rustApi {
         amount,
         ext,
       ));
-      return result;
+      return true;
     } catch (e) {
       rethrow;
     }

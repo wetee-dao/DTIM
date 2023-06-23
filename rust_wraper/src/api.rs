@@ -198,11 +198,11 @@ pub fn dao_init_from_pair(client: u32, address: String) -> anyhow::Result<()> {
 
 pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<AssetAccountData> {
     let c = Client::from_index(client)?;
-    let mut balance = WeteeAsset::new(c);
+    let mut asset = WeteeAsset::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
-        let b = balance.balance(dao_id, address.clone()).await.unwrap();
+        let b = asset.balance(dao_id, address.clone()).await.unwrap();
         Ok(AssetAccountData {
             free: b.free.try_into().unwrap(),
             frozen: b.frozen.try_into().unwrap(),

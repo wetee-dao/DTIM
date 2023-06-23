@@ -33,12 +33,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SelectOrgPage(),
       );
     },
-    DaoRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WorkPage(),
-      );
-    },
     IntegrateRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -66,6 +60,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const PCPage(),
+      );
+    },
+    DaoRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WorkPage(),
       );
     },
   };
@@ -109,20 +109,6 @@ class SelectOrg extends PageRouteInfo<void> {
         );
 
   static const String name = 'SelectOrg';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WorkPage]
-class DaoRoute extends PageRouteInfo<void> {
-  const DaoRoute({List<PageRouteInfo>? children})
-      : super(
-          DaoRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DaoRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -202,6 +188,20 @@ class Pc extends PageRouteInfo<void> {
         );
 
   static const String name = 'Pc';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WorkPage]
+class DaoRoute extends PageRouteInfo<void> {
+  const DaoRoute({List<PageRouteInfo>? children})
+      : super(
+          DaoRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DaoRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

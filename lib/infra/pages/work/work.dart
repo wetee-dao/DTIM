@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/close_bar.dart';
-import 'package:dtim/application/store/dao_ctx.dart';
+import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';
 

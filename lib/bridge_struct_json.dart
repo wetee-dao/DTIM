@@ -250,3 +250,25 @@ class RewardJ extends Reward {
   factory RewardJ.fromJson(Map<String, dynamic> json) => _$RewardJFromJson(json);
   Map<String, dynamic> toJson() => _$RewardJToJson(this);
 }
+
+@JsonSerializable()
+class GovVoteJ extends GovVote {
+  GovVoteJ({
+    required int daoId,
+    required int pledge,
+    required int opinion,
+    required int voteWeight,
+    required int unlockBlock,
+    required int referendumIndex,
+  }) : super(
+     daoId: daoId,
+    pledge: pledge,
+    opinion: opinion,
+    voteWeight: voteWeight,
+    unlockBlock: unlockBlock,
+    referendumIndex: referendumIndex,
+  );
+
+  factory GovVoteJ.fromJson(Map<String, dynamic> json) => _$GovVoteJFromJson(json);
+  Map<String, dynamic> toJson() => _$GovVoteJToJson(this);
+}

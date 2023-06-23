@@ -237,3 +237,21 @@ Map<String, dynamic> _$RewardJToJson(RewardJ instance) => <String, dynamic>{
       'assetId': instance.assetId,
       'amount': instance.amount,
     };
+
+GovVoteJ _$GovVoteJFromJson(Map<String, dynamic> json) => GovVoteJ(
+      daoId: json['daoId'] as int,
+      pledge: json['pledge'] as int,
+      opinion: json['opinion'] as int,
+      voteWeight: json['voteWeight'] as int,
+      unlockBlock: json['unlockBlock'] as int,
+      referendumIndex: json['referendumIndex'] as int,
+    );
+
+Map<String, dynamic> _$GovVoteJToJson(GovVoteJ instance) => <String, dynamic>{
+      'daoId': instance.daoId,
+      'pledge': instance.pledge,
+      'opinion': instance.opinion,
+      'voteWeight': instance.voteWeight,
+      'unlockBlock': instance.unlockBlock,
+      'referendumIndex': instance.referendumIndex,
+    };

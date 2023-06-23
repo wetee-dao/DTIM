@@ -43,23 +43,23 @@ class WorkCTX with ChangeNotifier {
     if (porg.chainUrl != null) {
       user = puser;
       org = porg;
-      rustApi.connect(url: porg.chainUrl!).then((_clientIndex) async {
-        rustApi.startClient(client: _clientIndex).then((e) {
+      rustApi.connect(url: porg.chainUrl!).then((clientIndex) async {
+        rustApi.startClient(client: clientIndex).then((e) {
           chainClient = -1;
           printSuccess("连接断开");
           notifyListeners();
         }).catchError((e) {
           chainClient = -1;
-          printSuccess("连接错误");
+          printError("连接错误 => $e");
           notifyListeners();
         });
 
         Future.delayed(const Duration(seconds: 1), () async {
           for (var i = 0; i < 20; i++) {
             try {
-              await rustApi.getBlockNumber(client: _clientIndex);
-              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $_clientIndex");
-              chainClient = _clientIndex;
+              await rustApi.getBlockNumber(client: clientIndex);
+              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $clientIndex");
+              chainClient = clientIndex;
               // 成功后结束循环
               i = 20;
               notifyListeners();
