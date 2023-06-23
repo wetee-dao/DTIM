@@ -42,8 +42,8 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
       AutoRoute(path: '/', page: Preloader.page),
       AutoRoute(path: '/pc/:t', page: Pc.page, children: [
         AutoRoute(path: 'im', page: OrgRoute.page),
-        AutoRoute(path: 'dao', page: DaoRoute.page),
-        AutoRoute(path: 'integrate', page: IntegrateRoute.page),
+        AutoRoute(path: 'dao', page: DaoRoute.page, maintainState: false),
+        AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
       ]),
       AutoRoute(path: '/sr25519key', page: Sr25519key.page),
       AutoRoute(path: '/importSr25519key', page: ImportSr25519key.page),

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:dtim/domain/utils/platform_infos.dart';
@@ -31,7 +32,10 @@ showtray() async {
 
   await trayManager.setContextMenu(Menu(items: items));
   trayManager.addListener(TrayManagerListener());
-  trayManager.setToolTip("DTIM");
+  if (Platform.isMacOS) {
+    trayManager.setToolTip("DTIM");
+  }
+
   await windowManager.setPreventClose(true);
   windowManager.addListener(WindowManagerListener());
 }

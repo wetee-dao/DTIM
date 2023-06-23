@@ -18,7 +18,7 @@ class OrgPage extends StatefulWidget {
   State<OrgPage> createState() => _OrgPageState();
 }
 
-class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
+class _OrgPageState extends State<OrgPage> {
   double leftWidth = 200.w;
 
   @override
@@ -28,7 +28,6 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -94,7 +93,4 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
