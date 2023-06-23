@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use crate::model::{
     member_ps_trans, member_trans, AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote,
     GuildInfo, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, WithGovPs, U8Wrap,
@@ -17,7 +19,7 @@ use asyou_rust_sdk::{
     model::{account::KeyringJSON, dao::WithGov},
     Client,
 };
-use tokio::runtime::Runtime;
+use tokio::{runtime::Runtime, time::sleep};
 
 // use std::sync::Arc;
 // pub enum Platform {
@@ -40,8 +42,22 @@ pub fn connect(url: String) -> anyhow::Result<usize> {
 pub fn start_client(client: u32) -> anyhow::Result<()> {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
-        let mut c = Client::from_index(client)?;
-        let _ = c.start().await;
+        loop {
+            let mut c = Client::from_index(client)?;
+            let status = c.get_status().unwrap_or(0);
+            if status == 3 {
+                println!("链接退出");
+                break;
+            }
+            let _ = c.start().await;
+            let status = c.get_status().unwrap_or(0);
+            if status == 3 {
+                println!("链接退出");
+                break;
+            }
+            println!("链接出现错误，5秒后重链");
+            sleep(Duration::from_secs(5)).await;
+        }
         Ok(())
     })
 }
@@ -49,8 +65,8 @@ pub fn start_client(client: u32) -> anyhow::Result<()> {
 pub fn stop_client(client: u32) -> anyhow::Result<()> {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
-        let mut c = Client::from_index(client)?;
-        let _ = c.start().await;
+        let c = Client::from_index(client)?;
+        c.stop().await.unwrap();
         Ok(())
     })
 }

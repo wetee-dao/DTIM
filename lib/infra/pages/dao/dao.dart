@@ -72,6 +72,7 @@ class _DaoPageState extends State<DaoPage> {
   void dispose() {
     super.dispose();
     _timer?.cancel();
+    workCtx.disconnectChain();
   }
 
   @override

@@ -77,6 +77,12 @@ class WorkCTX with ChangeNotifier {
     }
   }
 
+  disconnectChain(){
+    rustApi.stopClient(client: chainClient).then((_){
+      chainClient = -1;
+    });
+  }
+
   getData({notify = true}) async {
     // 区块链代码
     blockNumber = await rustApi.getBlockNumber(client: chainClient);
