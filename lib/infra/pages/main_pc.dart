@@ -17,7 +17,8 @@ import 'package:dtim/application/store/theme.dart';
 
 @RoutePage(name: "pc")
 class PCPage extends StatefulWidget {
-  const PCPage({Key? key}) : super(key: key);
+  final String t;
+  const PCPage({Key? key, @pathParam required this.t}) : super(key: key);
 
   @override
   State<PCPage> createState() => _PCPageState();
@@ -41,7 +42,7 @@ class _PCPageState extends State<PCPage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    currentId.add(0);
+    currentId.add(pcpages.indexOf(widget.t));
     getData();
   }
 

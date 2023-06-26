@@ -57,9 +57,15 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     Pc.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<PcArgs>(
+          orElse: () => PcArgs(t: pathParams.getString('t')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const PCPage(),
+        child: PCPage(
+          key: args.key,
+          t: args.t,
+        ),
       );
     },
     DaoRoute.name: (routeData) {
@@ -180,16 +186,40 @@ class OrgRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [PCPage]
-class Pc extends PageRouteInfo<void> {
-  const Pc({List<PageRouteInfo>? children})
-      : super(
+class Pc extends PageRouteInfo<PcArgs> {
+  Pc({
+    Key? key,
+    required String t,
+    List<PageRouteInfo>? children,
+  }) : super(
           Pc.name,
+          args: PcArgs(
+            key: key,
+            t: t,
+          ),
+          rawPathParams: {'t': t},
           initialChildren: children,
         );
 
   static const String name = 'Pc';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<PcArgs> page = PageInfo<PcArgs>(name);
+}
+
+class PcArgs {
+  const PcArgs({
+    this.key,
+    required this.t,
+  });
+
+  final Key? key;
+
+  final String t;
+
+  @override
+  String toString() {
+    return 'PcArgs{key: $key, t: $t}';
+  }
 }
 
 /// generated route for

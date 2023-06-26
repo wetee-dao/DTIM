@@ -12,7 +12,7 @@ import 'package:dtim/infra/pages/org/org.dart';
 import 'package:dtim/infra/pages/preloader.dart';
 
 part 'router.gr.dart';
-
+const List<String> pcpages = ["im", "dao", "integrate"];
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends _$AppRouter implements AutoRouteGuard {
   AppCubit authService;

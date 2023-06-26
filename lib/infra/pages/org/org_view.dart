@@ -26,7 +26,6 @@ class OrgViewPage extends StatefulWidget {
 
 class _OrgViewPageState extends State<OrgViewPage> {
   late ExpandableController _controllerChannels;
-  // late ExpandableController _controllerStarred;
   late ExpandableController _controllerUsers;
 
   final BasePopupMenuController menuController = BasePopupMenuController();
@@ -38,7 +37,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   void initState() {
     super.initState();
     _controllerChannels = ExpandableController(initialExpanded: true);
-    // _controllerStarred = ExpandableController(initialExpanded: true);
     _controllerUsers = ExpandableController(initialExpanded: true);
     menuController.addListener(() {
       menuStreamController.add(menuController.menuIsShowing);
@@ -52,7 +50,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   void dispose() {
     super.dispose();
     _controllerChannels.dispose();
-    // _controllerStarred.dispose();
     _controllerUsers.dispose();
   }
 
@@ -280,6 +277,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   print("voip.calls: ${voip.calls.toString()}");
                   print("voip.groupCalls: ${voip.groupCalls.toString()}");
                   List<Widget> calls = [];
+                  
                   if (voip.calls.isNotEmpty || voip.groupCalls.isNotEmpty) {
                     calls.add(Padding(
                       // decoration: BoxDecoration(
@@ -306,6 +304,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
                   for (var k in voip.calls.keys) {
                     final call = voip.calls[k]!;
+                    if(call.isGroupCall) continue;
                     calls.add(
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(

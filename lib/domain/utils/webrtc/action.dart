@@ -8,7 +8,8 @@ import '../platform_infos.dart';
 
 class CallAction {
   final link.CallSession call;
-  CallAction(this.call);
+  final link.GroupCall? gcall;
+  CallAction(this.call,{this.gcall});
 
   link.CallState get _state => call.state;
   bool get speakerOn => call.speakerOn;
