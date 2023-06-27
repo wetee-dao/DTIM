@@ -10,8 +10,8 @@ import '../platform_infos.dart';
 
 class CallAction {
   final link.CallSession call;
-  final link.GroupCall? gcall;
-  CallAction(this.call, {this.gcall});
+  // final link.GroupCall? gcall;
+  CallAction(this.call);
 
   link.CallState get _state => call.state;
   bool get speakerOn => call.speakerOn;
@@ -33,32 +33,6 @@ class CallAction {
 
     final hangupButton = Action(
       onPressed: () async {
-        if (gcall != null) {
-          final result = await showModalActionSheet<int>(
-            style: AdaptiveStyle.iOS,
-            context: globalCtx(),
-            actions: [
-              const SheetAction(
-                icon: Icons.info,
-                label: 'leave call',
-                key: 1,
-              ),
-              const SheetAction(
-                icon: Icons.info,
-                label: 'terminate call',
-                key: 2,
-              ),
-            ],
-          );
-          if (result == 1) {
-            return gcall!.leave();
-          } else if (result == 2) {
-            return gcall!.terminate();
-          }
-          return;
-        }
-        // return gcall!.leave();
-
         if (call.isRinging) {
           call.reject();
         } else {
@@ -177,6 +151,151 @@ class CallAction {
     }
 
     call.setScreensharingEnabled(!call.screensharingEnabled);
+  }
+}
+
+class GCallAction {
+  final link.GroupCall call;
+  GCallAction(this.call);
+
+  String get _state => call.state;
+  // bool get speakerOn => call.speakerOn;
+  bool get isMicrophoneMuted => call.isMicrophoneMuted;
+  bool get isLocalVideoMuted => call.isLocalVideoMuted;
+  bool get isScreensharingEnabled => call.screensharingEnabled;
+  // bool get isRemoteOnHold => call.remoteOnHold;
+  bool get voiceonly => call.type == 'm.voice';
+  bool get connecting => call.state == link.GroupCallState.Entering;
+  bool get connected => call.state == link.GroupCallState.Entered;
+
+  List<Action> buildActionButtons() {
+    final switchCameraButton = Action(
+      tooltip: 'switchCamera',
+      onPressed: _switchCamera,
+      backgroundColor: Colors.black45,
+      child: const Icon(Icons.switch_camera),
+    );
+
+    final hangupButton = Action(
+      onPressed: () async {
+        final result = await showModalActionSheet<int>(
+          style: AdaptiveStyle.iOS,
+          context: globalCtx(),
+          actions: [
+            const SheetAction(
+              icon: Icons.info,
+              label: 'leave call',
+              key: 1,
+            ),
+            const SheetAction(
+              icon: Icons.info,
+              label: 'terminate call',
+              key: 2,
+            ),
+          ],
+        );
+        if (result == 1) {
+          return call.leave();
+        } else if (result == 2) {
+          return call.terminate();
+        }
+      },
+      tooltip: 'Hangup',
+      backgroundColor: _state == link.GroupCallState.Ended ? Colors.black45 : Colors.red,
+      child: const Icon(Icons.call_end),
+    );
+
+    // final answerButton = Action(
+    //   onPressed: () => call.answer(),
+    //   tooltip: 'Answer',
+    //   backgroundColor: Colors.green,
+    //   child: const Icon(Icons.phone),
+    // );
+
+    final muteMicButton = Action(
+      tooltip: 'muteMic',
+      onPressed: () => call.setMicrophoneMuted(!call.isMicrophoneMuted),
+      backgroundColor: isMicrophoneMuted ? Colors.blueGrey : Colors.black45,
+      child: Icon(isMicrophoneMuted ? Icons.mic_off : Icons.mic),
+    );
+
+    final screenSharingButton = Action(
+      tooltip: 'screenSharing',
+      onPressed: _screenSharing,
+      backgroundColor: isScreensharingEnabled ? Colors.blueGrey : Colors.black45,
+      child: const Icon(Icons.desktop_mac),
+    );
+
+    // final holdButton = Action(
+    //   tooltip: 'hold',
+    //   onPressed: () => call.setRemoteOnHold(!call.remoteOnHold),
+    //   backgroundColor: isRemoteOnHold ? Colors.blueGrey : Colors.black45,
+    //   child: Icon(isRemoteOnHold ? Icons.pause : Icons.pause),
+    // );
+
+    final muteCameraButton = Action(
+      tooltip: 'muteCam',
+      onPressed: () => call.setLocalVideoMuted(!call.isLocalVideoMuted),
+      backgroundColor: isLocalVideoMuted ? Colors.yellow : Colors.black45,
+      child: Icon(isLocalVideoMuted ? Icons.videocam_off : Icons.videocam),
+    );
+
+    switch (_state) {
+      case "entering":
+        return [hangupButton];
+      case "entered":
+        return [
+          muteMicButton,
+          //switchSpeakerButton,
+          if (!voiceonly && !kIsWeb) switchCameraButton,
+          if (!voiceonly) muteCameraButton,
+          if (PlatformInfos.isMobile || PlatformInfos.isWeb) screenSharingButton,
+          // holdButton,
+          hangupButton,
+        ];
+      case "ended":
+        return [
+          hangupButton,
+        ];
+      default:
+        break;
+    }
+    return [hangupButton];
+  }
+
+  void _switchCamera() async {
+    if (call.localUserMediaStream != null) {
+      await Helper.switchCamera(
+        call.localUserMediaStream!.stream!.getVideoTracks()[0],
+      );
+      if (PlatformInfos.isMobile) {
+        // call.facingMode == 'user' ? call.facingMode = 'environment' : call.facingMode = 'user';
+      }
+    }
+  }
+
+  void _screenSharing() async {
+    if (PlatformInfos.isAndroid) {
+      if (!call.screensharingEnabled) {
+        FlutterForegroundTask.init(
+          androidNotificationOptions: AndroidNotificationOptions(
+            channelId: 'notification_channel_id',
+            channelName: 'Foreground Notification',
+            channelDescription: 'Foreground Notification',
+          ),
+          iosNotificationOptions: const IOSNotificationOptions(),
+          foregroundTaskOptions: const ForegroundTaskOptions(),
+        );
+        FlutterForegroundTask.startService(
+          notificationTitle: "screen sharing",
+          notificationText: "screen sharing",
+        );
+      } else {
+        FlutterForegroundTask.stopService();
+      }
+    }
+
+    // call.setScreensharingEnabled(!call.screensharingEnabled);
   }
 }
 

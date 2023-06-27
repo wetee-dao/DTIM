@@ -111,7 +111,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
     print("_state_state_state" + (_state ?? ""));
     print(gcall.userMediaStreams);
     link.CallSession? call = gcall.calls.isNotEmpty ? gcall.calls[0] : null;
-    final actions = call != null ? CallAction(call, gcall: gcall).buildActionButtons() : [];
+    final actions = call != null ? GCallAction(gcall).buildActionButtons() : [];
     // call.remoteUserMediaStream
 
     return Scaffold(
@@ -144,22 +144,22 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                 ),
                 Expanded(
                   child: Wrap(runSpacing: 20.w, spacing: 20.w, alignment: WrapAlignment.start, children: [
-                    SizedBox(
-                      width: 140.w,
-                      height: 100.w,
-                      child: MStreamView(
-                        gcall.localUserMediaStream!,
-                        mainView: true,
-                        matrixClient: im.currentState!.client,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 140.w,
+                    //   height: 100.w,
+                    //   child: MStreamView(
+                    //     gcall.localUserMediaStream!,
+                    //     mainView: true,
+                    //     matrixClient: im.currentState!.client,
+                    //   ),
+                    // ),
                     for (var i = 0; i < gcall.userMediaStreams.length; i++)
                       SizedBox(
                         width: 140.w,
                         height: 100.w,
                         child: MStreamView(
                           gcall.userMediaStreams[i],
-                          mainView: false,
+                          mainView: true,
                           matrixClient: im.currentState!.client,
                         ),
                       ),
