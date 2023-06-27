@@ -157,7 +157,8 @@ class CallAction {
 
 class GCallAction {
   final link.GroupCall call;
-  GCallAction(this.call);
+  final Function? onChange;
+  GCallAction(this.call, {this.onChange});
 
   String get _state => call.state;
   // bool get speakerOn => call.speakerOn;
@@ -196,9 +197,10 @@ class GCallAction {
           ],
         );
         if (result == 1) {
-          return call.leave();
+          await call.leave();
         } else if (result == 2) {
-          return call.terminate();
+          await call.terminate();
+          return onChange?.call();
         }
       },
       tooltip: 'Hangup',
@@ -215,7 +217,10 @@ class GCallAction {
 
     final muteMicButton = Action(
       tooltip: 'muteMic',
-      onPressed: () => call.setMicrophoneMuted(!call.isMicrophoneMuted),
+      onPressed: () async {
+        await call.setMicrophoneMuted(!call.isMicrophoneMuted);
+        return onChange?.call();
+      },
       backgroundColor: isMicrophoneMuted ? Colors.blueGrey : Colors.black45,
       child: Icon(isMicrophoneMuted ? Icons.mic_off : Icons.mic),
     );
@@ -236,7 +241,10 @@ class GCallAction {
 
     final muteCameraButton = Action(
       tooltip: 'muteCam',
-      onPressed: () => call.setLocalVideoMuted(!call.isLocalVideoMuted),
+      onPressed: () async {
+        await call.setLocalVideoMuted(!call.isLocalVideoMuted);
+        return onChange?.call();
+      },
       backgroundColor: isLocalVideoMuted ? Colors.yellow : Colors.black45,
       child: Icon(isLocalVideoMuted ? Icons.videocam_off : Icons.videocam),
     );
@@ -274,6 +282,7 @@ class GCallAction {
         // call.facingMode == 'user' ? call.facingMode = 'environment' : call.facingMode = 'user';
       }
     }
+    onChange?.call();
   }
 
   void _screenSharing() async {
@@ -298,6 +307,7 @@ class GCallAction {
     }
 
     // call.setScreensharingEnabled(!call.screensharingEnabled);
+    onChange?.call();
   }
 }
 

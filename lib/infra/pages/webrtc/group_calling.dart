@@ -105,14 +105,14 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    printError("shuaxinshuaxin");
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    // final callActions = CallAction(call);
-    // final actions = callActions.buildActionButtons();
-    print("_state_state_state" + (_state ?? ""));
-    print(gcall.userMediaStreams);
     link.CallSession? call = gcall.calls.isNotEmpty ? gcall.calls[0] : null;
-    final actions = call != null ? GCallAction(gcall).buildActionButtons() : [];
-    // call.remoteUserMediaStream
+    final actions = call != null
+        ? GCallAction(gcall, onChange: () {
+            setState(() {});
+          }).buildActionButtons()
+        : [];
 
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -143,63 +143,65 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                   ],
                 ),
                 Expanded(
-                  child: Wrap(runSpacing: 20.w, spacing: 20.w, alignment: WrapAlignment.start, children: [
-                    // SizedBox(
-                    //   width: 140.w,
-                    //   height: 100.w,
-                    //   child: MStreamView(
-                    //     gcall.localUserMediaStream!,
-                    //     mainView: true,
-                    //     matrixClient: im.currentState!.client,
-                    //   ),
-                    // ),
-                    for (var i = 0; i < gcall.userMediaStreams.length; i++)
-                      SizedBox(
-                        width: 140.w,
-                        height: 100.w,
-                        child: MStreamView(
-                          gcall.userMediaStreams[i],
-                          mainView: true,
-                          matrixClient: im.currentState!.client,
+                  child: Center(
+                    child: Wrap(runSpacing: 20.w, spacing: 20.w, alignment: WrapAlignment.start, children: [
+                      // SizedBox(
+                      //   width: 140.w,
+                      //   height: 100.w,
+                      //   child: MStreamView(
+                      //     gcall.localUserMediaStream!,
+                      //     mainView: true,
+                      //     matrixClient: im.currentState!.client,
+                      //   ),
+                      // ),
+                      for (var i = 0; i < gcall.userMediaStreams.length; i++)
+                        SizedBox(
+                          width: 200.w,
+                          height: 160.w,
+                          child: MStreamView(
+                            gcall.userMediaStreams[i],
+                            mainView: true,
+                            matrixClient: im.currentState!.client,
+                          ),
                         ),
-                      ),
-                    //   child: CustomPaint(
-                    //     painter: ImgPainter(
-                    //       _controller,
-                    //       color: constTheme.buttonBg,
-                    //     ),
-                    //     child: Center(
-                    //       child: ClipRRect(
-                    //         borderRadius: BorderRadius.circular(200.0),
-                    //         child: Container(
-                    //           color: constTheme.centerChannelBg,
-                    //           width: 90.w,
-                    //           height: 90.w,
-                    //           padding: EdgeInsets.all(15.w),
-                    //           child: gcall.room.isDirectChat
-                    //               ? BaseAvatar(
-                    //                   key: Key(gcall.room.directChatMatrixID ?? "-"),
-                    //                   gcall.room.directChatMatrixID ?? "-",
-                    //                   true,
-                    //                   60.w,
-                    //                   bg: Colors.transparent,
-                    //                   color: constTheme.centerChannelColor,
-                    //                 )
-                    //               : Container(
-                    //                   width: 60.w,
-                    //                   height: 60.w,
-                    //                   padding: EdgeInsets.only(top: 2.w),
-                    //                   child: Center(
-                    //                     child: Icon(gcall.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                    //                         size: 45.w, color: constTheme.centerChannelColor),
-                    //                   ),
-                    //                 ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ]),
+                      //   child: CustomPaint(
+                      //     painter: ImgPainter(
+                      //       _controller,
+                      //       color: constTheme.buttonBg,
+                      //     ),
+                      //     child: Center(
+                      //       child: ClipRRect(
+                      //         borderRadius: BorderRadius.circular(200.0),
+                      //         child: Container(
+                      //           color: constTheme.centerChannelBg,
+                      //           width: 90.w,
+                      //           height: 90.w,
+                      //           padding: EdgeInsets.all(15.w),
+                      //           child: gcall.room.isDirectChat
+                      //               ? BaseAvatar(
+                      //                   key: Key(gcall.room.directChatMatrixID ?? "-"),
+                      //                   gcall.room.directChatMatrixID ?? "-",
+                      //                   true,
+                      //                   60.w,
+                      //                   bg: Colors.transparent,
+                      //                   color: constTheme.centerChannelColor,
+                      //                 )
+                      //               : Container(
+                      //                   width: 60.w,
+                      //                   height: 60.w,
+                      //                   padding: EdgeInsets.only(top: 2.w),
+                      //                   child: Center(
+                      //                     child: Icon(gcall.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                      //                         size: 45.w, color: constTheme.centerChannelColor),
+                      //                   ),
+                      //                 ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ]),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.all(15.w),
