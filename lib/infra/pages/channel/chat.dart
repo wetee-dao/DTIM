@@ -270,7 +270,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         }
                         await voip.newGroupCall(
                           room!.id,
-                          link.GroupCallType.Voice,
+                          link.GroupCallType.Video,
                           link.GroupCallIntent.Prompt,
                         );
                       } catch (e) {
