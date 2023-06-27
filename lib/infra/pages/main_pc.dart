@@ -138,7 +138,7 @@ class _PCPageState extends State<PCPage> {
                                 ),
                                 // 任务管理
                                 SiderBarItem(
-                                  "Kanban",
+                                  "Dwork",
                                   img: "https://wetee.app/icons/kanban.png",
                                   key: const Key("KANBAN"),
                                   selected: id.data == 1,

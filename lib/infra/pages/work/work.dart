@@ -99,7 +99,7 @@ class _WorkPageState extends State<WorkPage> {
       appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
-              title: "Kanban",
+              title: "Dwork",
               showMacosTop: false,
               leading: InkWell(
                 onTap: () {

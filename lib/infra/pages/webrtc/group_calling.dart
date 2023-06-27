@@ -144,14 +144,23 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                 ),
                 Expanded(
                   child: Wrap(runSpacing: 20.w, spacing: 20.w, alignment: WrapAlignment.start, children: [
+                    SizedBox(
+                      width: 140.w,
+                      height: 100.w,
+                      child: MStreamView(
+                        gcall.localUserMediaStream!,
+                        mainView: true,
+                        matrixClient: im.currentState!.client,
+                      ),
+                    ),
                     for (var i = 0; i < gcall.userMediaStreams.length; i++)
                       SizedBox(
                         width: 140.w,
                         height: 100.w,
                         child: MStreamView(
                           gcall.userMediaStreams[i],
-                          mainView: i == 0,
-                          matrixClient: im.currentState!.client!,
+                          mainView: false,
+                          matrixClient: im.currentState!.client,
                         ),
                       ),
                     //   child: CustomPaint(

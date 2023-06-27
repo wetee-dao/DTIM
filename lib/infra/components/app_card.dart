@@ -50,17 +50,17 @@ class AppCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 4.w),
+                    SizedBox(height: 2.w),
                     PrimaryText(
                       text: label!,
                       size: 15.w,
                       fontWeight: FontWeight.w800,
                     ),
-                    SizedBox(height: 3.w),
+                    SizedBox(height: 2.w),
                     Expanded(
                       child: PrimaryText(
                         text: amount!,
-                        size: 13.w,
+                        size: 12.w,
                         height: 1.1,
                       ),
                     ),

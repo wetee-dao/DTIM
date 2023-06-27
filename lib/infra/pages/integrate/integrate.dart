@@ -110,14 +110,14 @@ class _IntegratePageState extends State<IntegratePage> {
                   AppCard(
                     icon: "https://wetee.app/icons/kanban.png",
                     background: Color.fromARGB(255, 48, 1, 57),
-                    label: "Kanban",
+                    label: "Dwork",
                     amount: '区块链的去中心化特性与协作看板的实时思维映射功能,实现更可信、开放且智能的团队协作方式',
                   ),
                   AppCard(
                     icon: "https://wetee.app/icons/bifrost.png",
                     background: Colors.black,
                     label: "Bifrost",
-                    amount: '区块链的去中心化特性与协作看板的实时思维映射功能,实现更可信、开放且智能的团队协作方式',
+                    amount: 'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
                   ),
                 ],
               ),
