@@ -1,3 +1,5 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
@@ -9,7 +11,7 @@ import '../platform_infos.dart';
 class CallAction {
   final link.CallSession call;
   final link.GroupCall? gcall;
-  CallAction(this.call,{this.gcall});
+  CallAction(this.call, {this.gcall});
 
   link.CallState get _state => call.state;
   bool get speakerOn => call.speakerOn;
@@ -30,7 +32,33 @@ class CallAction {
     );
 
     final hangupButton = Action(
-      onPressed: () {
+      onPressed: () async {
+        if (gcall != null) {
+          final result = await showModalActionSheet<int>(
+            style: AdaptiveStyle.iOS,
+            context: globalCtx(),
+            actions: [
+              const SheetAction(
+                icon: Icons.info,
+                label: 'leave call',
+                key: 1,
+              ),
+              const SheetAction(
+                icon: Icons.info,
+                label: 'terminate call',
+                key: 2,
+              ),
+            ],
+          );
+          if (result == 1) {
+            return gcall!.leave();
+          } else if (result == 2) {
+            return gcall!.terminate();
+          }
+          return;
+        }
+        // return gcall!.leave();
+
         if (call.isRinging) {
           call.reject();
         } else {
@@ -68,7 +96,7 @@ class CallAction {
       onPressed: () => call.setRemoteOnHold(!call.remoteOnHold),
       backgroundColor: isRemoteOnHold ? Colors.blueGrey : Colors.black45,
       child: Icon(isRemoteOnHold ? Icons.pause : Icons.pause),
-    ); 
+    );
 
     final muteCameraButton = Action(
       tooltip: 'muteCam',
@@ -76,6 +104,13 @@ class CallAction {
       backgroundColor: isLocalVideoMuted ? Colors.yellow : Colors.black45,
       child: Icon(isLocalVideoMuted ? Icons.videocam_off : Icons.videocam),
     );
+
+    // final closeGroupCallButton = Action(
+    //   tooltip: 'closeGroupCall',
+    //   onPressed: () => gcall!.terminate(),
+    //   backgroundColor: Colors.red,
+    //   child: const Icon(Icons.close),
+    // );
 
     switch (_state) {
       case link.CallState.kRinging:

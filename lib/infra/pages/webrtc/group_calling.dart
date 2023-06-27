@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/pages/webrtc/steam_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -108,8 +109,10 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
     // final callActions = CallAction(call);
     // final actions = callActions.buildActionButtons();
     print("_state_state_state" + (_state ?? ""));
+    print(gcall.userMediaStreams);
     link.CallSession? call = gcall.calls.isNotEmpty ? gcall.calls[0] : null;
-    final actions = call != null ? CallAction(call).buildActionButtons() : [];
+    final actions = call != null ? CallAction(call, gcall: gcall).buildActionButtons() : [];
+    // call.remoteUserMediaStream
 
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -139,11 +142,60 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-                const Spacer(),
+                Expanded(
+                  child: Wrap(runSpacing: 20.w, spacing: 20.w, alignment: WrapAlignment.start, children: [
+                    for (var i = 0; i < gcall.userMediaStreams.length; i++)
+                      SizedBox(
+                        width: 140.w,
+                        height: 100.w,
+                        child: MStreamView(
+                          gcall.userMediaStreams[i],
+                          mainView: i == 0,
+                          matrixClient: im.currentState!.client!,
+                        ),
+                      ),
+                    //   child: CustomPaint(
+                    //     painter: ImgPainter(
+                    //       _controller,
+                    //       color: constTheme.buttonBg,
+                    //     ),
+                    //     child: Center(
+                    //       child: ClipRRect(
+                    //         borderRadius: BorderRadius.circular(200.0),
+                    //         child: Container(
+                    //           color: constTheme.centerChannelBg,
+                    //           width: 90.w,
+                    //           height: 90.w,
+                    //           padding: EdgeInsets.all(15.w),
+                    //           child: gcall.room.isDirectChat
+                    //               ? BaseAvatar(
+                    //                   key: Key(gcall.room.directChatMatrixID ?? "-"),
+                    //                   gcall.room.directChatMatrixID ?? "-",
+                    //                   true,
+                    //                   60.w,
+                    //                   bg: Colors.transparent,
+                    //                   color: constTheme.centerChannelColor,
+                    //                 )
+                    //               : Container(
+                    //                   width: 60.w,
+                    //                   height: 60.w,
+                    //                   padding: EdgeInsets.only(top: 2.w),
+                    //                   child: Center(
+                    //                     child: Icon(gcall.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                    //                         size: 45.w, color: constTheme.centerChannelColor),
+                    //                   ),
+                    //                 ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                  ]),
+                ),
                 Container(
                   padding: EdgeInsets.all(15.w),
                   decoration: BoxDecoration(
-                    border: Border(top: BorderSide( color:constTheme.centerChannelColor.withOpacity(0.08), width: 1.w)),
+                    border: Border(top: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08), width: 1.w)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -165,6 +217,30 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
+                // Column(
+                //   children: [
+                //     Container(
+                //       decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                //       margin: EdgeInsets.only(bottom: 15.w),
+                //       child: IconButton(
+                //         padding: EdgeInsets.all(18.w),
+                //         icon: Icon(Icons.close, size: 30.w),
+                //         color: Colors.white,
+                //         onPressed: () async {
+                //           gcall.terminate();
+                //         },
+                //       ),
+                //     ),
+                //     Text(
+                //       "terminate",
+                //       style: TextStyle(
+                //         fontSize: 15.w,
+                //         color: constTheme.centerChannelColor,
+                //         fontWeight: FontWeight.w300,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             )
           : renderLoading(),
