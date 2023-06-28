@@ -44,6 +44,10 @@ class AccountOrg {
   @HiveField(3)
   String? orgName;
 
+    // 组织名
+  @HiveField(14)
+  String? orgDesc;
+
   // 组织主颜色
   @HiveField(4)
   String? orgColor;

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:chips_choice/chips_choice.dart';
+// import 'package:chips_choice/chips_choice.dart';
 import 'package:dtim/domain/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +28,7 @@ class SelectOrgPage extends StatefulWidget {
 class _SelectOrgPageState extends State<SelectOrgPage> {
   List<String> selected = [];
   List<Account?> accounts = [];
+  List<AccountOrg> userOrgs = [];
   late AppCubit im;
   late AccountOrgApi accountOrgApi;
 
@@ -38,18 +39,20 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     AccountApi.create().then((v) async {
       accounts = await v.getUsers();
       accountOrgApi = await AccountOrgApi.create();
-      final orgList = (await accountOrgApi.listByAccount(im.me!.address)).map((o) => o.orgHash).toList();
+      userOrgs = await accountOrgApi.listByAccount(im.me!.address);
+      final orgList = userOrgs.map((o) => o.orgHash).toList();
       selected = orgList;
-      Future.delayed(Duration.zero).then((value) async {
-        if (query.getString("auto") == "t") {
+      setState(() {});
+      if (query.getString("auto", "") == "t") {
+        Future.delayed(Duration.zero).then((value) async {
           await accountOrgApi.accountSyncOrgs(
             im.me!.address,
             selected,
             orgs,
           );
           await gotoOrg();
-        }
-      });
+        });
+      }
     });
 
     super.initState();
@@ -62,16 +65,15 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   }
 
   Future<void> gotoOrg() async {
-    final orgs = await accountOrgApi.listByAccount(im.me!.address);
     // 登录账户
-    if (orgs.isNotEmpty) {
-      await loadThemeFromOrg(orgs[0]);
+    if (userOrgs.isNotEmpty) {
+      await loadThemeFromOrg(userOrgs[0]);
       waitFutureLoading(
         title: "连接中...",
         context: globalCtx(),
         future: () async {
-          await im.connect(orgs[0]);
-          im.setCurrent(orgs[0]);
+          await im.connect(userOrgs[0]);
+          im.setCurrent(userOrgs[0]);
           BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
           if (isPc()) {
             globalCtx().router.root.back();
@@ -88,6 +90,142 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
   Future<void> beforeLeave() async {
     return;
+  }
+
+  selectCreateType() {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    showModalBottomSheet(
+      context: context,
+      constraints: BoxConstraints(maxWidth: 100.sw, minWidth: 100.sw),
+      backgroundColor: constTheme.centerChannelBg,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 25.w),
+            InkWell(
+              key: const Key("addChainNode"),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                ),
+                width: MediaQuery.of(context).size.width * 0.8,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "创建链上隐私组织节点",
+                      style: TextStyle(
+                        color: constTheme.centerChannelBg,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19.w,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () async {
+                context.router.pop();
+                if (accounts.length >= 3) {
+                  BotToast.showText(
+                    text: L10n.of(context)!.tooManyUsers,
+                    duration: const Duration(seconds: 2),
+                  );
+                  return;
+                }
+                await context.router.pushNamed("/sr25519key");
+              },
+            ),
+            SizedBox(height: 15.w),
+            InkWell(
+              key: const Key("addCloudNode"),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                ),
+                width: MediaQuery.of(context).size.width * 0.8,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "创建云端的组织",
+                      style: TextStyle(
+                        color: constTheme.centerChannelBg,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19.w,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () async {
+                context.router.pop();
+                if (accounts.length >= 3) {
+                  BotToast.showText(
+                    text: L10n.of(context)!.tooManyUsers,
+                    duration: const Duration(seconds: 2),
+                  );
+                  return;
+                }
+                await context.router.pushNamed("/sr25519key");
+              },
+            ),
+            SizedBox(height: 15.w),
+            InkWell(
+              key: const Key("addLocalNode"),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                ),
+                width: MediaQuery.of(context).size.width * 0.8,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "部署本地组织节点",
+                      style: TextStyle(
+                        color: constTheme.centerChannelBg,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19.w,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () async {
+                context.router.pop();
+                if (accounts.length >= 3) {
+                  BotToast.showText(
+                    text: L10n.of(context)!.tooManyUsers,
+                    duration: const Duration(seconds: 2),
+                  );
+                  return;
+                }
+                await context.router.pushNamed("/sr25519key");
+              },
+            ),
+            SizedBox(
+              height: 25.w,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -138,114 +276,116 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Container(
-          //   height: double.maxFinite,
-          //   width: 260.w,
-          //   color: constTheme.sidebarBg,
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.start,
-          //     children: [
-          //       for (final i = 0; i < accounts.length; i++)
-          //         InkWell(
-          //           onTap: () {
-          //             setState(() {
-          //               currentAddress = accounts[i].address;
-          //             });
-          //           },
-          //           child: Container(
-          //             padding: EdgeInsets.symmetric(
-          //               vertical: 10.w,
-          //               horizontal: 15.w,
-          //             ),
-          //             decoration: BoxDecoration(
-          //               border: Border(
-          //                 left: BorderSide(
-          //                   width: 5.w,
-          //                   color: accounts[i].address == currentAddress
-          //                       ? constTheme.sidebarTextActiveBorder
-          //                       : constTheme.sidebarBg,
-          //                 ),
-          //               ),
-          //               color: accounts[i].address == currentAddress ? constTheme.centerChannelBg : null,
-          //             ),
-          //             child: Row(
-          //               children: [
-          //                 BaseAvatar(accounts[i].address, true, 50.w),
-          //                 SizedBox(width: 10.w),
-          //                 Expanded(
-          //                   child: accounts[i].name != null && accounts[i].name != ""
-          //                       ? Text(
-          //                           accounts[i].name!,
-          //                           style: TextStyle(
-          //                             color: constTheme.sidebarHeaderTextColor,
-          //                             fontSize: 16.w,
-          //                           ),
-          //                         )
-          //                       : Text(
-          //                           accounts[i].address,
-          //                           style: TextStyle(
-          //                             color: constTheme.sidebarHeaderTextColor,
-          //                             fontSize: 12.w,
-          //                           ),
-          //                         ),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //       InkWell(
-          //         onTap: () => context.router.pushNamed("/sr25519key"),
-          //         child: Container(
-          //           height: 50.w,
-          //           decoration: BoxDecoration(
-          //             border: Border(
-          //               top: BorderSide(
-          //                 width: 1.w,
-          //                 color: constTheme.sidebarText.withOpacity(0.05),
-          //               ),
-          //             ),
-          //           ),
-          //           child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.center,
-          //             children: [
-          //               Icon(
-          //                 Icons.add,
-          //                 color: constTheme.sidebarHeaderTextColor,
-          //               ),
-          //               Text(
-          //                 "添加帐号",
-          //                 style: TextStyle(
-          //                   color: constTheme.sidebarHeaderTextColor,
-          //                   fontSize: 14.w,
-          //                 ),
-          //               )
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          SizedBox(height: 20.w),
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, bottom: 10.w),
+            child: Text("已加入组织", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+          ),
+          Row(
+            children: [
+              SizedBox(width: 20.w),
+              for (var i = 0; i < userOrgs.length; i++)
+                AnimatedContainer(
+                  width: 150.w,
+                  height: 200.w,
+                  duration: const Duration(milliseconds: 300),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: constTheme.centerChannelColor.withOpacity(0.1),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 206.w,
+                        height: 130.w,
+                        decoration: BoxDecoration(
+                          color: userOrgs[i].orgColor != null ? hexToColor(userOrgs[i].orgColor!) : Colors.transparent,
+                        ),
+                        child: Image.network(
+                          userOrgs[i].orgImg ?? "",
+                          width: 206.w,
+                          fit: BoxFit.contain,
+                          height: 150.w,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              userOrgs[i].orgName ?? "",
+                              style: TextStyle(
+                                color: constTheme.centerChannelColor,
+                                fontSize: 16.w,
+                              ),
+                            ),
+                            Text(
+                              userOrgs[i].orgDesc ?? "",
+                              style: TextStyle(
+                                color: constTheme.centerChannelColor,
+                                fontSize: 12.w,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, top: 20.w, bottom: 10.w),
+            child: Text("组织列表", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+          ),
           Expanded(
             flex: 1,
             child: Padding(
-              padding: EdgeInsets.all(10.w),
-              child: ChipsChoice<String>.multiple(
-                wrapped: true,
-                value: selected,
-                onChanged: (val) => setState(() => selected = val),
-                choiceItems: C2Choice.listFrom<String, Org>(
-                  source: orgs,
-                  value: (i, v) => v.hash,
-                  label: (i, v) => v.hash,
-                ),
-                choiceBuilder: (item, i) {
-                  return OrgCard(
-                    org: orgs[i],
-                    selected: item.selected,
-                    onSelect: item.select!,
-                  );
-                },
+              padding: EdgeInsets.only(left: 20.w),
+              // child: ChipsChoice<String>.multiple(
+              //   wrapped: true,
+              //   value: selected,
+              //   onChanged: (val) => setState(() => selected = val),
+              //   choiceItems: C2Choice.listFrom<String, Org>(
+              //     source: orgs,
+              //     value: (i, v) => v.hash,
+              //     label: (i, v) => v.hash,
+              //   ),
+              //   choiceBuilder: (item, i) {
+              child: Wrap(
+                runSpacing: 20.w,
+                spacing: 20.w,
+                alignment: WrapAlignment.start,
+                children: [
+                  for (var i = 0; i < orgs.where((o) => !selected.contains(o.hash)).length; i++)
+                    OrgCard(org: orgs[i], onSelect: (v) {}),
+                  InkWell(
+                    onTap: selectCreateType,
+                    child: AnimatedContainer(
+                      width: 150.w,
+                      height: 200.w,
+                      duration: const Duration(milliseconds: 300),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        color: constTheme.centerChannelColor.withOpacity(0.1),
+                      ),
+                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Icon(Icons.add_circle_outlined, color: constTheme.centerChannelColor, size: 30.w),
+                        SizedBox(height: 10.w),
+                        Text(
+                          "创建组织",
+                          style: TextStyle(
+                            color: constTheme.centerChannelColor,
+                            fontSize: 16.w,
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -291,6 +431,15 @@ List<Org> orgs = [
       img: "https://wetee.app/static/web3/img/logo.png",
       homeUrl: "www.asyou.me/",
     ),
-    apps: [],
+    apps: [
+      OrgApp(
+        name: "dwork",
+        // icon: "",
+        desc: "dwork",
+        meta: {"chainUrl": "ws://chain-ws.tc.asyou.me:80","workId":"5000"},
+        hash: '',
+        type: 0,
+      )
+    ],
   )
 ];

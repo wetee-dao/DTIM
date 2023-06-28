@@ -410,6 +410,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 initialData: "",
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   List<link.Event> events = timeline != null ? timeline!.events : [];
+                  // events = events.where((e) => e.type != link.EventTypes.GroupCallMemberPrefix).toList();
                   return ListView.builder(
                     cacheExtent: 100000,
                     key: Key("chat_list_${widget.channerlID}"),

@@ -81,6 +81,7 @@ class AccountOrgApi {
         if (org != null) {
           final at = AccountOrg(org.hash);
           at.orgName = org.name;
+          at.orgDesc = org.desc;
           at.orgAvater = org.metaData!.avater;
           at.orgImg = org.metaData!.img;
           at.orgColor = org.metaData!.color;
@@ -96,6 +97,7 @@ class AccountOrgApi {
         // 更新
         if (org != null) {
           storeOrgs[storeIndex].orgName = org.name;
+          storeOrgs[storeIndex].orgDesc = org.desc;
           storeOrgs[storeIndex].orgAvater = org.metaData!.avater;
           storeOrgs[storeIndex].orgImg = org.metaData!.img;
           storeOrgs[storeIndex].orgColor = org.metaData!.color;

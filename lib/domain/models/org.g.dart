@@ -114,21 +114,20 @@ class OrgAppAdapter extends TypeAdapter<OrgApp> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return OrgApp()
-      ..appId = fields[1] as int
-      ..hash = fields[2] as String
-      ..type = fields[3] as int
-      ..url = fields[4] as String?
-      ..name = fields[5] as String?
-      ..desc = fields[6] as String?;
+    return OrgApp(
+      hash: fields[2] as String,
+      type: fields[3] as int,
+      url: fields[4] as String?,
+      name: fields[5] as String?,
+      desc: fields[6] as String?,
+      meta: (fields[7] as Map?)?.cast<String, String>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, OrgApp obj) {
     writer
       ..writeByte(6)
-      ..writeByte(1)
-      ..write(obj.appId)
       ..writeByte(2)
       ..write(obj.hash)
       ..writeByte(3)
@@ -138,7 +137,9 @@ class OrgAppAdapter extends TypeAdapter<OrgApp> {
       ..writeByte(5)
       ..write(obj.name)
       ..writeByte(6)
-      ..write(obj.desc);
+      ..write(obj.desc)
+      ..writeByte(7)
+      ..write(obj.meta);
   }
 
   @override

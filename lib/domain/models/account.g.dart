@@ -72,6 +72,7 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       fields[2] as String,
     )
       ..orgName = fields[3] as String?
+      ..orgDesc = fields[14] as String?
       ..orgColor = fields[4] as String?
       ..orgAvater = fields[5] as String?
       ..orgImg = fields[6] as String?
@@ -87,11 +88,13 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
   @override
   void write(BinaryWriter writer, AccountOrg obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(2)
       ..write(obj.orgHash)
       ..writeByte(3)
       ..write(obj.orgName)
+      ..writeByte(14)
+      ..write(obj.orgDesc)
       ..writeByte(4)
       ..write(obj.orgColor)
       ..writeByte(5)

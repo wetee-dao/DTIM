@@ -135,6 +135,13 @@
       "senderName": {}
     }
   },
+  "groupCallMemberJoin": "{senderName} join meet",
+  "@groupCallMemberJoin": {
+    "type": "text",
+    "placeholders": {
+      "senderName": {}
+    }
+  },
   "userSentUnknownEvent": "sent {type} event",
   "@userSentUnknownEvent": {
     "type": "text",

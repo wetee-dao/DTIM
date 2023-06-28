@@ -79,9 +79,6 @@ class OrgMetaData {
 
 @HiveType(typeId: 5)
 class OrgApp {
-  @HiveField(1)
-  int appId = 0;
-
   // 应用hash
   @HiveField(2)
   String hash = "";
@@ -104,4 +101,21 @@ class OrgApp {
   // 应用
   @HiveField(6)
   String? desc;
+
+  // 应用名
+  @HiveField(8)
+  String? icon;
+
+    // 应用
+  @HiveField(7)
+  Map<String,String>? meta;
+
+  OrgApp({
+    required this.hash,
+    required this.type,
+    this.url,
+    this.name,
+    this.desc,
+    this.meta,
+  });
 }

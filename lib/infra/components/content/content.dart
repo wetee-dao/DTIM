@@ -1,3 +1,4 @@
+import 'package:dtim/infra/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
@@ -293,6 +294,19 @@ class MessageContent extends StatelessWidget {
               icon: Icons.stop_rounded,
               wrap: true,
               text: L10n.of(context)!.hangupCall(
+                snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
+              ),
+            );
+          },
+        );
+      case EventTypes.GroupCallMemberPrefix:
+        return FutureBuilder<User?>(
+          future: event.fetchSenderUser(),
+          builder: (context, snapshot) {
+            return RoomEvent(
+              icon: AppIcons.jinrudaobo,
+              wrap: true,
+              text: L10n.of(context)!.groupCallMemberJoin(
                 snapshot.data?.calcDisplayname() ?? event.senderFromMemoryOrFallback.calcDisplayname(),
               ),
             );

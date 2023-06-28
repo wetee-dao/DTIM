@@ -1,5 +1,4 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -249,7 +248,6 @@ class GCallAction {
       child: Icon(isLocalVideoMuted ? Icons.videocam_off : Icons.videocam),
     );
 
-    printError(call.type);
     switch (_state) {
       case "entering":
         return [hangupButton];
