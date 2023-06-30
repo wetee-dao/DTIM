@@ -64,10 +64,6 @@ class AccountOrg {
   @HiveField(7)
   String? domain;
 
-  // 组织区块链
-  @HiveField(8)
-  String? chainUrl;
-
   // 组织Id
   @HiveField(9)
   int daoId = 0;

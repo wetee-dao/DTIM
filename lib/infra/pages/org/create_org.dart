@@ -1,34 +1,40 @@
-import 'package:dtim/native_wraper.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/infra/components/iconfont.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:flutter/services.dart';
+import 'package:matrix/matrix.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:dtim/router.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
-import 'package:dtim/domain/models/account.dart';
-import 'package:dtim/application/service/apis/account_api.dart';
 import 'package:dtim/infra/components/app_bar.dart';
 
-@RoutePage(name: "sr25519key")
-class Sr25519KeyPage extends StatefulWidget {
-  const Sr25519KeyPage({Key? key}) : super(key: key);
+@RoutePage(name: "createOrg")
+class CreateOrgPage extends StatefulWidget {
+  const CreateOrgPage({Key? key}) : super(key: key);
 
   @override
-  State<Sr25519KeyPage> createState() => _Sr25519KeyPageState();
+  State<CreateOrgPage> createState() => _CreateOrgPageState();
 }
 
-class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
+class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
   List<String> seeds = [];
   int step = 0;
-  String _name = "";
-  String _password = "";
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _imController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final SubmitData _data = SubmitData(
+    name: "",
+    desc: "",
+    purpose: "",
+    imApi: "",
+    bg: "",
+    logo: "",
+    img: "",
+    homeUrl: "",
+  );
 
   @override
   void initState() {
@@ -36,21 +42,15 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
     getSeeds();
   }
 
-  getSeeds() {
-    rustApi.seedGenerate().then((value) {
-      setState(() {
-        seeds = value;
-      });
-    });
-  }
+  getSeeds() {}
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final titles = [L10n.of(context)!.singup1, L10n.of(context)!.singup2];
+    final titles = ["1. 在云端/电脑上部署节点", "2. 链接到DTIM区块链"];
     return Scaffold(
       appBar: LocalAppBar(
-        title: L10n.of(context)!.signUp,
+        title: "部署本地组织节点",
         onBack: () {
           if (step == 0) {
             context.router.pop();
@@ -70,7 +70,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                L10n.of(context)!.generate,
+                "部署组织节点",
                 style: TextStyle(
                   fontSize: 32.w,
                   color: constTheme.centerChannelColor,
@@ -109,55 +109,35 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
               color: constTheme.centerChannelColor.withOpacity(0.08),
               borderRadius: BorderRadius.circular(5.w),
             ),
-            child: Wrap(
-              children: [
-                for (var i = 0; i < seeds.length; i++)
-                  Container(
-                    padding: EdgeInsets.all(5.w),
-                    child: Text(
-                      seeds[i],
-                      style: TextStyle(
-                        fontSize: 14.w,
-                        color: constTheme.centerChannelColor,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 5.w,
-          ),
-          InkWell(
-            onTap: () {
-              Clipboard.setData(ClipboardData(
-                text: seeds.join(" "),
-              )).then((value) {
-                BotToast.showText(text: L10n.of(context)!.mnemonicCopied, duration: const Duration(seconds: 2));
-              });
-            },
-            child: Row(
-              children: [
-                Icon(
-                  Icons.copy_all,
-                  size: 20.w,
+            child: TextFormField(
+              key: const Key("imUrl"),
+              style: TextStyle(color: constTheme.centerChannelColor),
+              controller: _imController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return '不能为空';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: "请输入im地址",
+                hintStyle: TextStyle(
+                  fontSize: 14.w,
                   color: constTheme.centerChannelColor,
                 ),
-                SizedBox(width: 5.w),
-                Text(
-                  L10n.of(context)!.copyClipboard,
-                  style: TextStyle(
-                    fontSize: 14.w,
-                    color: constTheme.centerChannelColor,
-                    fontWeight: FontWeight.w800,
-                  ),
+                filled: true,
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  AppIcons.chat,
+                  color: constTheme.centerChannelColor,
                 ),
-              ],
+                errorMaxLines: 2,
+              ),
             ),
           ),
           SizedBox(
-            height: 40.w,
+            height: 10.w,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,10 +167,22 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
           SizedBox(height: 50.w),
           InkWell(
             key: const Key("goNext"),
-            onTap: () {
-              setState(() {
-                step = 1;
-              });
+            onTap: () async {
+              try {
+                final service = Uri.parse(_imController.text.replaceAll(RegExp(r"\s*"), ""));
+                final im = context.read<AppCubit>();
+                final userName = '${im.me!.address}@${service.host}/${platformGet()}';
+                final client = Client(userName);
+
+                // 链接节点
+                await client.init();
+                await client.checkHomeserver(service);
+                setState(() {
+                  step = 1;
+                });
+              } catch (e) {
+                BotToast.showText(text: "im地址不正确", duration: const Duration(seconds: 2));
+              }
             },
             child: Container(
               padding: EdgeInsets.symmetric(
@@ -233,12 +225,12 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
         child: Column(
           children: [
             TextFormField(
-              key: const Key("nick"),
+              key: const Key("name"),
               style: TextStyle(
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: L10n.of(context)!.accountName,
+                hintText: "请输入组织名称",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -247,35 +239,29 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
-                  Icons.account_balance_wallet,
+                  Icons.account_balance_wallet_rounded,
                   color: constTheme.centerChannelColor,
                 ),
                 errorMaxLines: 2,
               ),
               onSaved: (v) {
-                _name = v ?? "";
+                _data.name = v ?? "";
               },
               validator: (value) {
-                RegExp reg = RegExp(r'^[\u4E00-\u9FA5A-Za-z0-9_]+$');
-                if (!reg.hasMatch(value ?? "")) {
-                  return L10n.of(context)!.accountNameRule;
-                }
                 if (value == null || value.isEmpty) {
-                  return L10n.of(context)!.accountNameNotNull;
+                  return '不能为空';
                 }
                 return null;
               },
             ),
             SizedBox(height: 10.w),
             TextFormField(
-              key: const Key("passwd"),
+              key: const Key("logo"),
               style: TextStyle(
                 color: constTheme.centerChannelColor,
               ),
-              controller: _passwordController,
-              obscureText: true,
               decoration: InputDecoration(
-                hintText: L10n.of(context)!.accountPasswd,
+                hintText: "请输入组织logo地址",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -284,31 +270,23 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
-                  Icons.password,
+                  Icons.logo_dev_rounded,
                   color: constTheme.centerChannelColor,
                 ),
                 errorMaxLines: 2,
               ),
               onSaved: (v) {
-                _password = v ?? "";
-              },
-              validator: (value) {
-                RegExp reg = RegExp(r'^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$');
-                if (!reg.hasMatch(value ?? "")) {
-                  return L10n.of(context)!.accountPasswdRule;
-                }
-                return null;
+                _data.logo = v ?? "";
               },
             ),
             SizedBox(height: 10.w),
             TextFormField(
-              key: const Key("passwd2"),
+              key: const Key("desc"),
               style: TextStyle(
                 color: constTheme.centerChannelColor,
               ),
-              obscureText: true,
               decoration: InputDecoration(
-                hintText: L10n.of(context)!.accountPasswd2,
+                hintText: "请输入组织描述",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -317,19 +295,119 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                 fillColor: constTheme.centerChannelColor.withOpacity(0.08),
                 border: InputBorder.none,
                 prefixIcon: Icon(
-                  Icons.password,
+                  Icons.description_rounded,
                   color: constTheme.centerChannelColor,
                 ),
                 errorMaxLines: 2,
               ),
               onSaved: (v) {
-                _password = v ?? "";
+                _data.desc = v ?? "";
               },
               validator: (value) {
-                if (_passwordController.text != value) {
-                  return L10n.of(context)!.accountPasswdNoeq;
+                if (value == null || value.isEmpty) {
+                  return '不能为空';
                 }
                 return null;
+              },
+            ),
+            SizedBox(height: 10.w),
+            TextFormField(
+              key: const Key("purpose"),
+              style: TextStyle(
+                color: constTheme.centerChannelColor,
+              ),
+              decoration: InputDecoration(
+                hintText: "请输入组织宗旨(选填)",
+                hintStyle: TextStyle(
+                  fontSize: 14.w,
+                  color: constTheme.centerChannelColor,
+                ),
+                filled: true,
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.tag_rounded,
+                  color: constTheme.centerChannelColor,
+                ),
+                errorMaxLines: 2,
+              ),
+              onSaved: (v) {
+                _data.purpose = v ?? "";
+              },
+            ),
+            SizedBox(height: 10.w),
+            TextFormField(
+              key: const Key("bg"),
+              style: TextStyle(
+                color: constTheme.centerChannelColor,
+              ),
+              decoration: InputDecoration(
+                hintText: "请输入组织背景图片地址(选填)",
+                hintStyle: TextStyle(
+                  fontSize: 14.w,
+                  color: constTheme.centerChannelColor,
+                ),
+                filled: true,
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.colorize_rounded,
+                  color: constTheme.centerChannelColor,
+                ),
+                errorMaxLines: 2,
+              ),
+              onSaved: (v) {
+                _data.bg = v ?? "";
+              },
+            ),
+            SizedBox(height: 10.w),
+            TextFormField(
+              key: const Key("img"),
+              style: TextStyle(
+                color: constTheme.centerChannelColor,
+              ),
+              decoration: InputDecoration(
+                hintText: "请输入组织介绍图片地址(选填)",
+                hintStyle: TextStyle(
+                  fontSize: 14.w,
+                  color: constTheme.centerChannelColor,
+                ),
+                filled: true,
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.image_rounded,
+                  color: constTheme.centerChannelColor,
+                ),
+                errorMaxLines: 2,
+              ),
+              onSaved: (v) {
+                _data.img = v ?? "";
+              },
+            ),
+            SizedBox(height: 10.w),
+            TextFormField(
+              key: const Key("homeUrl"),
+              style: TextStyle(
+                color: constTheme.centerChannelColor,
+              ),
+              decoration: InputDecoration(
+                hintText: "请输入组织主页地址(选填)",
+                hintStyle: TextStyle(
+                  fontSize: 14.w,
+                  color: constTheme.centerChannelColor,
+                ),
+                filled: true,
+                fillColor: constTheme.centerChannelColor.withOpacity(0.08),
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.home_rounded,
+                  color: constTheme.centerChannelColor,
+                ),
+                errorMaxLines: 2,
+              ),
+              onSaved: (v) {
+                _data.homeUrl = v ?? "";
               },
             ),
             SizedBox(height: 50.w),
@@ -340,32 +418,6 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   return;
                 }
                 _formKey.currentState!.save();
-
-                rustApi
-                    .getSeedPhrase(seedStr: seeds.join(" "), name: _name, password: _password)
-                    .then((accountStr) async {
-                  // print(accountStr);
-
-                  // 解码区块链账户问题
-                  final chainData = ChainData.fromJson(
-                    convert.jsonDecode(accountStr),
-                  );
-
-                  // 创建账户
-                  final initUser = Account(
-                    address: chainData.address,
-                    chainData: accountStr,
-                    orgs: [],
-                  );
-                  initUser.name = chainData.meta["name"];
-                  initUser.domain = "";
-
-                  //保存在本地
-                  await (await AccountApi.create()).addUser(initUser);
-                  BotToast.showText(text: L10n.of(globalCtx())!.accountCreated, duration: const Duration(seconds: 2));
-
-                  globalCtx().router.pop();
-                });
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -406,4 +458,26 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
     }
     return Container();
   }
+}
+
+class SubmitData {
+  String name;
+  String desc;
+  String purpose;
+  String imApi;
+  String bg;
+  String logo;
+  String img;
+  String homeUrl;
+
+  SubmitData({
+    required this.desc,
+    required this.name,
+    required this.purpose,
+    required this.imApi,
+    required this.bg,
+    required this.logo,
+    required this.img,
+    required this.homeUrl,
+  });
 }

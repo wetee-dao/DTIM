@@ -144,7 +144,13 @@ class AppCubit extends Cubit<AppState> {
     final systemStore = await SystemApi.create();
     systemStore.saveLogin("");
     emit(const AppState());
-    globalCtx().router.back();
+    for (var i = 0; i < 10; i++) {
+      if (globalCtx().router.canPop()) {
+        globalCtx().router.pop();
+      }else{
+        break;
+      }
+    }
   }
 
   // 连接账户

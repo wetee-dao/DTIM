@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/infra/pages/work/referendum.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,31 +14,32 @@ import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import 'guild.dart';
+import 'overview.dart';
 import 'project.dart';
-import 'roadmap.dart';
-import 'side_menu.dart';
+import 'gov_menu.dart';
 
-@RoutePage(name: "daoRoute")
-class WorkPage extends StatefulWidget {
-  const WorkPage({Key? key}) : super(key: key);
+@RoutePage(name: "govRoute")
+class GovPage extends StatefulWidget {
+  const GovPage({Key? key}) : super(key: key);
 
   @override
-  State<WorkPage> createState() => _WorkPageState();
+  State<GovPage> createState() => _GovPageState();
 }
 
-class _WorkPageState extends State<WorkPage> {
+class _GovPageState extends State<GovPage> {
   final mainPages = [
-    const RoadMapPage(),
-    // const ReferendumPage(),
+    const Overviewpage(),
+    // const RoadMapPage(),
+    const ReferendumPage(),
     // const CombindBoardPage(),
-    Container(),
-    Guildpage(key: guildKey),
-    ProjectPage(key: projectKey)
+    // Container(),
+    // Guildpage(key: guildKey),
+    // ProjectPage(key: projectKey)
   ];
   late PageController pageController = PageController();
   late final AppCubit im;
   final StreamController<String> currentId = StreamController<String>.broadcast();
-  String pageStr = "RoadMap";
+  String pageStr = "Overview";
   String title = "";
   Timer? _timer;
   int? c;
@@ -96,7 +98,7 @@ class _WorkPageState extends State<WorkPage> {
       appBar: isPc()
           ? SideBarAppBar(
               height: 45.w,
-              title: "Kanban",
+              title: "OpenGov",
               showMacosTop: false,
               leading: InkWell(
                 onTap: () {
@@ -105,7 +107,7 @@ class _WorkPageState extends State<WorkPage> {
                 child: Padding(
                   padding: EdgeInsets.all(8.w),
                   child: Icon(
-                    AppIcons.kanban,
+                    AppIcons.sxgl,
                     color: constTheme.sidebarHeaderTextColor,
                     size: 22.w,
                   ),
@@ -116,7 +118,7 @@ class _WorkPageState extends State<WorkPage> {
           : null,
       body: workCtx.chainClient > -1
           ? ChangeNotifierProvider.value(
-              key: const Key("workView"),
+              key: const Key("daoView"),
               value: workCtx,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,16 +179,20 @@ class _WorkPageState extends State<WorkPage> {
   int getPageIndex(str) {
     pageStr = str;
     switch (str) {
-      case "RoadMap":
+      case "Overview":
         return 0;
+      case "RoadMap":
+        return 1;
+      case "Referendums":
+        return 2;
       // case "Combind Boards":
       //   return 3;
       default:
         if (str.contains("Guilds")) {
-          return 1;
+          return 4;
         }
         if (str.contains("Projects")) {
-          return 2;
+          return 5;
         }
     }
     return 0;

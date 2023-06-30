@@ -65,6 +65,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   autoLogin() async {
+    setState(() => _loading = false);
     final systemStore = await SystemApi.create();
     final winsystem = await systemStore.get();
     if (winsystem != null && winsystem.loginAccount != null && winsystem.loginAccount != "") {

@@ -5,13 +5,13 @@ use crate::model::{
     GuildInfo, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, WithGovPs, U8Wrap,
 };
 use anyhow::{self, Ok};
-use asyou_rust_sdk::{
+use wetee_rust_sdk::{
     account,
     chain::UNIT,
     hander::{
         balance::Balance,
         wetee_asset::WeteeAsset,
-        wetee_dao::WeteeDAO,
+        wetee_org::WeteeDAO,
         wetee_gov::{Opinion, Pledge, ReferendumStatus, WeteeGov},
         wetee_guild::WeteeGuild,
         wetee_project::{TaskStatus, WeteeProject},

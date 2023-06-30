@@ -34,14 +34,14 @@ class SideMenu extends StatelessWidget {
               height: 20.w,
               alignment: Alignment.topCenter,
             ),
-            iconBuilder(
-              key: const Key("Overview"),
-              assetName: Icons.apps_rounded,
-              name: "Overview",
-              color: constTheme,
-              selected: id == "Overview",
-              onTap: () => onTap("Overview"),
-            ),
+            // iconBuilder(
+            //   key: const Key("Overview"),
+            //   assetName: Icons.apps_rounded,
+            //   name: "Overview",
+            //   color: constTheme,
+            //   selected: id == "Overview",
+            //   onTap: () => onTap("Overview"),
+            // ),
             iconBuilder(
               key: const Key("RoadMap"),
               assetName: Icons.integration_instructions_rounded,
@@ -49,14 +49,6 @@ class SideMenu extends StatelessWidget {
               color: constTheme,
               selected: id == "RoadMap",
               onTap: () => onTap("RoadMap"),
-            ),
-            iconBuilder(
-              key: const Key("Referendums"),
-              assetName: Icons.how_to_vote_rounded,
-              name: "Referendums",
-              color: constTheme,
-              selected: id == "Referendums",
-              onTap: () => onTap("Referendums"),
             ),
             // iconBuilder(
             //   assetName: Icons.library_add_rounded,

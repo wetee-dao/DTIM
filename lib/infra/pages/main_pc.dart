@@ -34,6 +34,7 @@ class _PCPageState extends State<PCPage> {
 
   final mainPages = [
     const OrgRoute(),
+    const GovRoute(),
     const DaoRoute(),
     const IntegrateRoute(),
   ];
@@ -136,15 +137,25 @@ class _PCPageState extends State<PCPage> {
                                     onSelect(0);
                                   },
                                 ),
-                                // 任务管理
                                 SiderBarItem(
-                                  "Dwork",
-                                  img: "https://wetee.app/icons/kanban.png",
-                                  key: const Key("KANBAN"),
+                                  "Gov",
+                                  icon: AppIcons.sxgl,
+                                  key: const Key("Gov"),
                                   selected: id.data == 1,
                                   onTap: () {
                                     pageRouter.setActiveIndex(1);
                                     onSelect(1);
+                                  },
+                                ),
+                                // 任务管理
+                                SiderBarItem(
+                                  "Kanban",
+                                  img: "https://wetee.app/icons/kanban.png",
+                                  key: const Key("KANBAN"),
+                                  selected: id.data == 2,
+                                  onTap: () {
+                                    pageRouter.setActiveIndex(2);
+                                    onSelect(2);
                                   },
                                 ),
                                 // DAO管理
@@ -152,10 +163,10 @@ class _PCPageState extends State<PCPage> {
                                   "Integrate",
                                   icon: AppIcons.shujujicheng,
                                   key: const Key("Integrate"),
-                                  selected: id.data == 2,
+                                  selected: id.data == 3,
                                   onTap: () {
-                                    pageRouter.setActiveIndex(2);
-                                    onSelect(2);
+                                    pageRouter.setActiveIndex(3);
+                                    onSelect(3);
                                   },
                                 ),
                               ],

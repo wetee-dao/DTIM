@@ -1,4 +1,4 @@
-use asyou_rust_sdk::hander::wetee_gov::MemmberData;
+use wetee_rust_sdk::hander::wetee_gov::MemmberData;
 
 /// roadmap 季度
 #[derive(Clone, PartialEq, Eq, Default, Debug)]

@@ -44,7 +44,6 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
         onBack: () {
           if (step == 0) {
             context.router.pop();
-            ;
           } else {
             setState(() {
               step = step - 1;

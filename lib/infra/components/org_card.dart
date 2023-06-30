@@ -54,10 +54,10 @@ class OrgCard extends StatelessWidget {
                     width: 206.w,
                     height: 130.w,
                     decoration: BoxDecoration(
-                      color: org.metaData!.color != null ? hexToColor(org.metaData!.color!) : Colors.transparent,
+                      color: org.bg != null ? hexToColor(org.bg!) : Colors.transparent,
                     ),
                     child: Image.network(
-                      org.metaData!.img ?? "",
+                      org.img ?? "",
                       width: 206.w,
                       fit: BoxFit.contain,
                       height: 150.w,

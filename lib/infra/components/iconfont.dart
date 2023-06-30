@@ -8,6 +8,8 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData sxgl = IconData(0xe60b, fontFamily: _family); // sxgl
+  static const IconData houtaiguanli_houtaiguanli = IconData(0xe636, fontFamily: _family); // 后台管理-后台管理
   static const IconData discovery = IconData(0xe605, fontFamily: _family); // discovery
   static const IconData discovery_2 = IconData(0xe63b, fontFamily: _family); // Discovery
   static const IconData discoverfill = IconData(0xe650, fontFamily: _family); // discoverfill
@@ -63,6 +65,8 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.sxgl, "sxgl", "sxgl"),
+    _PreviewIcon(AppIcons.houtaiguanli_houtaiguanli, "houtaiguanli_houtaiguanli", "后台管理-后台管理"),
     _PreviewIcon(AppIcons.discovery, "discovery", "discovery"),
     _PreviewIcon(AppIcons.discovery_2, "discovery_2", "Discovery"),
     _PreviewIcon(AppIcons.discoverfill, "discoverfill", "discoverfill"),

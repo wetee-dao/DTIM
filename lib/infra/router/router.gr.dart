@@ -74,6 +74,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const WorkPage(),
       );
     },
+    GovRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const GovPage(),
+      );
+    },
+    CreateOrg.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CreateOrgPage(),
+      );
+    },
   };
 }
 
@@ -232,6 +244,34 @@ class DaoRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DaoRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [GovPage]
+class GovRoute extends PageRouteInfo<void> {
+  const GovRoute({List<PageRouteInfo>? children})
+      : super(
+          GovRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'GovRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CreateOrgPage]
+class CreateOrg extends PageRouteInfo<void> {
+  const CreateOrg({List<PageRouteInfo>? children})
+      : super(
+          CreateOrg.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CreateOrg';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

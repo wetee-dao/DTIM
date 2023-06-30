@@ -103,122 +103,18 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 25.w),
-            InkWell(
-              key: const Key("addChainNode"),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                ),
-                width: MediaQuery.of(context).size.width * 0.8,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: constTheme.centerChannelColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "创建链上隐私组织节点",
-                      style: TextStyle(
-                        color: constTheme.centerChannelBg,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19.w,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () async {
-                context.router.pop();
-                if (accounts.length >= 3) {
-                  BotToast.showText(
-                    text: L10n.of(context)!.tooManyUsers,
-                    duration: const Duration(seconds: 2),
-                  );
-                  return;
-                }
-                await context.router.pushNamed("/sr25519key");
-              },
-            ),
+            createOrg("addChainNode", "创建链上隐私组织节点", constTheme, () async {
+
+            }, false),
             SizedBox(height: 15.w),
-            InkWell(
-              key: const Key("addCloudNode"),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                ),
-                width: MediaQuery.of(context).size.width * 0.8,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: constTheme.centerChannelColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "创建云端的组织",
-                      style: TextStyle(
-                        color: constTheme.centerChannelBg,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19.w,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () async {
-                context.router.pop();
-                if (accounts.length >= 3) {
-                  BotToast.showText(
-                    text: L10n.of(context)!.tooManyUsers,
-                    duration: const Duration(seconds: 2),
-                  );
-                  return;
-                }
-                await context.router.pushNamed("/sr25519key");
-              },
-            ),
+            createOrg("addSubNode", "创建附属组织节点", constTheme, () async {
+
+            }, false),
             SizedBox(height: 15.w),
-            InkWell(
-              key: const Key("addLocalNode"),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                ),
-                width: MediaQuery.of(context).size.width * 0.8,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: constTheme.centerChannelColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "部署本地组织节点",
-                      style: TextStyle(
-                        color: constTheme.centerChannelBg,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19.w,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () async {
-                context.router.pop();
-                if (accounts.length >= 3) {
-                  BotToast.showText(
-                    text: L10n.of(context)!.tooManyUsers,
-                    duration: const Duration(seconds: 2),
-                  );
-                  return;
-                }
-                await context.router.pushNamed("/sr25519key");
-              },
-            ),
+            createOrg("addLocalNode", "部署本地组织节点", constTheme, () async {
+              context.router.pop();
+              await context.router.pushNamed("/create_org");
+            }, true),
             SizedBox(
               height: 25.w,
             ),
@@ -284,6 +180,8 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           Row(
             children: [
               SizedBox(width: 20.w),
+              if (userOrgs.isEmpty)
+                Text("暂无组织", style: TextStyle(color: constTheme.centerChannelColor.withOpacity(0.5), fontSize: 16.w)),
               for (var i = 0; i < userOrgs.length; i++)
                 AnimatedContainer(
                   width: 150.w,
@@ -417,29 +315,71 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 }
 
 List<Org> orgs = [
-  Org(
-    "asyoume",
-    daoId: 5000,
-    name: "WeteeDAO",
-    desc: "we3 在线协作，分布式办公软件",
-    chainUrl: "ws://chain-ws.tc.asyou.me:80",
-    // chainUrl: "ws://127.0.0.1:3994",
-    metaData: OrgMetaData(
-      domain: "im.tc.asyou.me",
-      color: "#000000",
-      avater: "https://wetee.app/images/icon.png",
-      img: "https://wetee.app/static/web3/img/logo.png",
-      homeUrl: "www.asyou.me/",
-    ),
-    apps: [
-      OrgApp(
-        name: "dwork",
-        // icon: "",
-        desc: "dwork",
-        meta: {"chainUrl": "ws://chain-ws.tc.asyou.me:80","workId":"5000"},
-        hash: '',
-        type: 0,
-      )
-    ],
-  )
+  // Org(
+  //   "asyoume",
+  //   daoId: 5000,
+  //   name: "WeteeDAO",
+  //   desc: "we3 在线协作，分布式办公软件",
+  //   purpose: "",
+  //   imApi: "im.tc.asyou.me",
+  //   bg: "#000000",
+  //   logo: "https://wetee.app/images/icon.png",
+  //   img: "https://wetee.app/static/web3/img/logo.png",
+  //   homeUrl: "www.asyou.me/",
+  //   apps: [
+  //     OrgApp(
+  //       url: "dtim://",
+  //       name: "dwork",
+  //       icon: "",
+  //       desc: "dwork",
+  //       meta: {"chainUrl": "ws://chain-ws.tc.asyou.me:80", "workId": "5000"},
+  //       hash: '',
+  //       type: 0,
+  //     )
+  //   ],
+  // )
 ];
+
+createOrg(key, title, constTheme, ontap, enable) {
+  return InkWell(
+    key: Key(key),
+    onTap: ontap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 15,
+      ),
+      width: MediaQuery.of(globalCtx()).size.width * 0.8,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: constTheme.centerChannelColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: constTheme.centerChannelBg,
+              fontWeight: FontWeight.bold,
+              fontSize: 19.w,
+            ),
+          ),
+          if (!enable) SizedBox(width: 15.w),
+          if (!enable)
+            Container(
+              decoration: BoxDecoration(
+                color: constTheme.buttonBg,
+                borderRadius: BorderRadius.circular(5.w),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 8.w),
+              child: Text(
+                "未开放",
+                style: TextStyle(color: constTheme.buttonColor, fontSize: 13.w),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
+}

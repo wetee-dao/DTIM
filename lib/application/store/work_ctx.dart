@@ -13,6 +13,7 @@ import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 
+const chainUrl = "ws://chain-ws.tc.asyou.me:80";
 class WorkCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
@@ -34,53 +35,51 @@ class WorkCTX with ChangeNotifier {
   List<GovProps> pending = [];
   List<GovReferendum> going = [];
 
-  connectChain(porg, puser, callback) async {
+  connectChain(AccountOrg porg, puser, callback) async {
     if (chainClient > -1) {
       await getData();
       callback();
       return;
     }
-    if (porg.chainUrl != null) {
-      user = puser;
-      org = porg;
-      rustApi.connect(url: porg.chainUrl!).then((clientIndex) async {
-        rustApi.startClient(client: clientIndex).then((e) {
-          chainClient = -1;
-          printSuccess("连接断开");
-          notifyListeners();
-        }).catchError((e) {
-          chainClient = -1;
-          printError("连接错误 => $e");
-          notifyListeners();
-        });
 
-        Future.delayed(const Duration(seconds: 1), () async {
-          for (var i = 0; i < 20; i++) {
-            try {
-              await rustApi.getBlockNumber(client: clientIndex);
-              printSuccess("连接到区块链 ==> ${porg.chainUrl!} ===> $clientIndex");
-              chainClient = clientIndex;
-              // 成功后结束循环
-              i = 20;
-              notifyListeners();
-            } catch (e) {
-              printError("尝试获取区块连失败 ==> ${e.toString()}");
-            }
-            await Future.delayed(const Duration(seconds: 1));
-          }
-          await getData();
-          callback();
-        });
+    user = puser;
+    org = porg;
+    rustApi.connect(url: chainUrl).then((clientIndex) async {
+      rustApi.startClient(client: clientIndex).then((e) {
+        chainClient = -1;
+        printSuccess("连接断开");
+        notifyListeners();
       }).catchError((e) {
-        printError("连接到区块链 ==> ${porg.chainUrl!} ===> 失败 ===> ${e.toString()}");
+        chainClient = -1;
+        printError("连接错误 => $e");
+        notifyListeners();
       });
-    }
+
+      Future.delayed(const Duration(seconds: 1), () async {
+        for (var i = 0; i < 20; i++) {
+          try {
+            await rustApi.getBlockNumber(client: clientIndex);
+            printSuccess("连接到区块链 ==> $chainUrl ===> $clientIndex");
+            chainClient = clientIndex;
+            // 成功后结束循环
+            i = 20;
+            notifyListeners();
+          } catch (e) {
+            printError("尝试获取区块连失败 ==> ${e.toString()}");
+          }
+          await Future.delayed(const Duration(seconds: 1));
+        }
+        await getData();
+        callback();
+      });
+    }).catchError((e) {
+      printError("连接到区块链 ==> $chainUrl ===> 失败 ===> ${e.toString()}");
+    });
   }
 
-  disconnectChain(){
-    rustApi.stopClient(client: chainClient).then((_){
-      chainClient = -1;
-    });
+  disconnectChain() async {
+    await rustApi.stopClient(client: chainClient);
+    chainClient = -1;
   }
 
   getData({notify = true}) async {
@@ -136,7 +135,7 @@ class WorkCTX with ChangeNotifier {
 
   Future<bool> checkAfterTx() async {
     if (!members.contains(user.address)) {
-      BotToast.showText(text: 'You are not a member of this DAO', duration: const Duration(seconds: 2));
+      BotToast.showText(text: 'You are not a member of this Org workgroup', duration: const Duration(seconds: 2));
       return false;
     }
     if (nativeAmount.free < 100) {

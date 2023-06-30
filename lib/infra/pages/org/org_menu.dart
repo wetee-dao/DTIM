@@ -41,7 +41,7 @@ List<List<ItemModel>> menuItems = [
           context: globalCtx(),
           future: () async {
             await accountOrgApi.deleteOrg(im.me!.address, im.currentState!.org.orgHash);
-            im.logout();
+            await im.logout();
           },
         );
       }
