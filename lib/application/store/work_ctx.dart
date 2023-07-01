@@ -13,8 +13,8 @@ import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 
-// const chainUrl = "ws://chain-ws.tc.asyou.me:80";
-const chainUrl = "ws://127.0.0.1:9944";
+const chainUrl = "ws://chain-ws.tc.asyou.me:80";
+// const chainUrl = "ws://127.0.0.1:9944";
 
 class WorkCTX with ChangeNotifier {
   late Account user;
