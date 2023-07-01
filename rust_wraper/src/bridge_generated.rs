@@ -19,13 +19,15 @@ use std::sync::Arc;
 
 // Section: imports
 
+use crate::model::App;
 use crate::model::AssetAccountData;
-use crate::model::DaoInfo;
 use crate::model::GovProps;
 use crate::model::GovReferendum;
 use crate::model::GovVote;
 use crate::model::GuildInfo;
 use crate::model::MemberGroup;
+use crate::model::OrgApp;
+use crate::model::OrgInfo;
 use crate::model::ProjectInfo;
 use crate::model::Quarter;
 use crate::model::QuarterTask;
@@ -172,6 +174,12 @@ fn wire_create_dao_impl(
     name: impl Wire2Api<String> + UnwindSafe,
     purpose: impl Wire2Api<String> + UnwindSafe,
     meta_data: impl Wire2Api<String> + UnwindSafe,
+    desc: impl Wire2Api<String> + UnwindSafe,
+    im_api: impl Wire2Api<String> + UnwindSafe,
+    bg: impl Wire2Api<String> + UnwindSafe,
+    logo: impl Wire2Api<String> + UnwindSafe,
+    img: impl Wire2Api<String> + UnwindSafe,
+    home_url: impl Wire2Api<String> + UnwindSafe,
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
@@ -185,8 +193,176 @@ fn wire_create_dao_impl(
             let api_name = name.wire2api();
             let api_purpose = purpose.wire2api();
             let api_meta_data = meta_data.wire2api();
+            let api_desc = desc.wire2api();
+            let api_im_api = im_api.wire2api();
+            let api_bg = bg.wire2api();
+            let api_logo = logo.wire2api();
+            let api_img = img.wire2api();
+            let api_home_url = home_url.wire2api();
             move |task_callback| {
-                create_dao(api_client, api_from, api_name, api_purpose, api_meta_data)
+                create_dao(
+                    api_client,
+                    api_from,
+                    api_name,
+                    api_purpose,
+                    api_meta_data,
+                    api_desc,
+                    api_im_api,
+                    api_bg,
+                    api_logo,
+                    api_img,
+                    api_home_url,
+                )
+            }
+        },
+    )
+}
+fn wire_orgs_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "orgs",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            move |task_callback| orgs(api_client)
+        },
+    )
+}
+fn wire_create_app_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    from: impl Wire2Api<String> + UnwindSafe,
+    name: impl Wire2Api<String> + UnwindSafe,
+    desc: impl Wire2Api<String> + UnwindSafe,
+    icon: impl Wire2Api<String> + UnwindSafe,
+    url: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "create_app",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_from = from.wire2api();
+            let api_name = name.wire2api();
+            let api_desc = desc.wire2api();
+            let api_icon = icon.wire2api();
+            let api_url = url.wire2api();
+            move |task_callback| {
+                create_app(api_client, api_from, api_name, api_desc, api_icon, api_url)
+            }
+        },
+    )
+}
+fn wire_update_app_status_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    from: impl Wire2Api<String> + UnwindSafe,
+    app_id: impl Wire2Api<u64> + UnwindSafe,
+    status: impl Wire2Api<u8> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "update_app_status",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_from = from.wire2api();
+            let api_app_id = app_id.wire2api();
+            let api_status = status.wire2api();
+            move |task_callback| update_app_status(api_client, api_from, api_app_id, api_status)
+        },
+    )
+}
+fn wire_org_integrate_app_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    from: impl Wire2Api<String> + UnwindSafe,
+    org_id: impl Wire2Api<u64> + UnwindSafe,
+    app_id: impl Wire2Api<u64> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "org_integrate_app",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_from = from.wire2api();
+            let api_org_id = org_id.wire2api();
+            let api_app_id = app_id.wire2api();
+            let api_ext = ext.wire2api();
+            move |task_callback| {
+                org_integrate_app(api_client, api_from, api_org_id, api_app_id, api_ext)
+            }
+        },
+    )
+}
+fn wire_app_hubs_impl(port_: MessagePort, client: impl Wire2Api<u32> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "app_hubs",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            move |task_callback| app_hubs(api_client)
+        },
+    )
+}
+fn wire_org_apps_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    org_id: impl Wire2Api<u64> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "org_apps",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_org_id = org_id.wire2api();
+            move |task_callback| org_apps(api_client, api_org_id)
+        },
+    )
+}
+fn wire_update_org_app_status_impl(
+    port_: MessagePort,
+    client: impl Wire2Api<u32> + UnwindSafe,
+    from: impl Wire2Api<String> + UnwindSafe,
+    org_id: impl Wire2Api<u64> + UnwindSafe,
+    app_id: impl Wire2Api<u64> + UnwindSafe,
+    status: impl Wire2Api<u8> + UnwindSafe,
+    ext: impl Wire2Api<Option<WithGovPs>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "update_org_app_status",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_client = client.wire2api();
+            let api_from = from.wire2api();
+            let api_org_id = org_id.wire2api();
+            let api_app_id = app_id.wire2api();
+            let api_status = status.wire2api();
+            let api_ext = ext.wire2api();
+            move |task_callback| {
+                update_org_app_status(
+                    api_client, api_from, api_org_id, api_app_id, api_status, api_ext,
+                )
             }
         },
     )
@@ -1318,6 +1494,22 @@ impl Wire2Api<u8> for u8 {
 
 // Section: impl IntoDart
 
+impl support::IntoDart for App {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.id.into_dart(),
+            self.url.into_dart(),
+            self.name.into_dart(),
+            self.desc.into_dart(),
+            self.icon.into_dart(),
+            self.creator.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for App {}
+
 impl support::IntoDart for AssetAccountData {
     fn into_dart(self) -> support::DartAbi {
         vec![
@@ -1329,23 +1521,6 @@ impl support::IntoDart for AssetAccountData {
     }
 }
 impl support::IntoDartExceptPrimitive for AssetAccountData {}
-
-impl support::IntoDart for DaoInfo {
-    fn into_dart(self) -> support::DartAbi {
-        vec![
-            self.id.into_dart(),
-            self.creator.into_dart(),
-            self.start_block.into_dart(),
-            self.dao_account_id.into_dart(),
-            self.name.into_dart(),
-            self.purpose.into_dart(),
-            self.meta_data.into_dart(),
-            self.chain_unit.into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl support::IntoDartExceptPrimitive for DaoInfo {}
 
 impl support::IntoDart for GovProps {
     fn into_dart(self) -> support::DartAbi {
@@ -1416,6 +1591,46 @@ impl support::IntoDart for MemberGroup {
     }
 }
 impl support::IntoDartExceptPrimitive for MemberGroup {}
+
+impl support::IntoDart for OrgApp {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.id.into_dart(),
+            self.start_block.into_dart(),
+            self.name.into_dart(),
+            self.desc.into_dart(),
+            self.icon.into_dart(),
+            self.url.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for OrgApp {}
+
+impl support::IntoDart for OrgInfo {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.id.into_dart(),
+            self.creator.into_dart(),
+            self.start_block.into_dart(),
+            self.dao_account_id.into_dart(),
+            self.name.into_dart(),
+            self.purpose.into_dart(),
+            self.meta_data.into_dart(),
+            self.desc.into_dart(),
+            self.im_api.into_dart(),
+            self.bg.into_dart(),
+            self.logo.into_dart(),
+            self.img.into_dart(),
+            self.home_url.into_dart(),
+            self.chain_unit.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for OrgInfo {}
 
 impl support::IntoDart for ProjectInfo {
     fn into_dart(self) -> support::DartAbi {

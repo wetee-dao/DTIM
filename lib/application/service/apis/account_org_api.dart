@@ -1,5 +1,6 @@
 import 'package:dtim/domain/models/account.dart';
 import 'package:dtim/domain/models/org.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:hive/hive.dart';
 
 class AccountOrgApi {
@@ -35,6 +36,30 @@ class AccountOrgApi {
 
   deleteOrg(String userId, String orgHash) async {
     await storeBox.delete(userId + orgHash);
+  }
+
+  addOrg(String address, Org org) async {
+    final accountStoreBox = await Hive.openBox<Account>('Account');
+    final account = accountStoreBox.get(address);
+    final at = AccountOrg(org.hash);
+    printError(org.imApi??"xxxxxx");
+    var img = "";
+    if (org.img != null && org.img != "") {
+      img = org.img!;
+    } else if (org.logo != null && org.logo != "") {
+      img = org.logo!;
+    }
+    at.orgName = org.name;
+    at.orgDesc = org.desc;
+    at.orgAvater = org.logo;
+    at.orgImg = img;
+    at.orgColor = org.bg;
+    at.domain = org.imApi;
+    at.status = 1;
+    at.withAddr = address;
+    at.account = account!;
+    at.daoId = org.daoId;
+    await storeBox.put(address + org.hash, at);
   }
 
   Future<List<AccountOrg>> accountSyncOrgs(

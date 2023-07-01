@@ -59,9 +59,69 @@ abstract class RustWraper {
       required String name,
       required String purpose,
       required String metaData,
+      required String desc,
+      required String imApi,
+      required String bg,
+      required String logo,
+      required String img,
+      required String homeUrl,
       dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kCreateDaoConstMeta;
+
+  Future<List<OrgInfo>> orgs({required int client, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kOrgsConstMeta;
+
+  Future<void> createApp(
+      {required int client,
+      required String from,
+      required String name,
+      required String desc,
+      required String icon,
+      required String url,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kCreateAppConstMeta;
+
+  Future<void> updateAppStatus(
+      {required int client,
+      required String from,
+      required int appId,
+      required int status,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kUpdateAppStatusConstMeta;
+
+  Future<void> orgIntegrateApp(
+      {required int client,
+      required String from,
+      required int orgId,
+      required int appId,
+      WithGovPs? ext,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kOrgIntegrateAppConstMeta;
+
+  Future<List<App>> appHubs({required int client, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kAppHubsConstMeta;
+
+  Future<List<OrgApp>> orgApps(
+      {required int client, required int orgId, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kOrgAppsConstMeta;
+
+  Future<void> updateOrgAppStatus(
+      {required int client,
+      required String from,
+      required int orgId,
+      required int appId,
+      required int status,
+      WithGovPs? ext,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kUpdateOrgAppStatusConstMeta;
 
   Future<void> createAsset(
       {required int client,
@@ -97,7 +157,7 @@ abstract class RustWraper {
 
   FlutterRustBridgeTaskConstMeta get kDaoBalanceConstMeta;
 
-  Future<DaoInfo> daoInfo(
+  Future<OrgInfo> daoInfo(
       {required int client, required int daoId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDaoInfoConstMeta;
@@ -417,6 +477,44 @@ abstract class RustWraper {
   FlutterRustBridgeTaskConstMeta get kDaoApplyProjectFundsConstMeta;
 }
 
+class App {
+  final int id;
+
+  /// url of the App.
+  /// App url
+  final String url;
+
+  /// name of the App.
+  /// App 名字
+  final String name;
+
+  /// name of the App.
+  /// App 介绍
+  final String desc;
+
+  /// icon of the App.
+  /// App icon
+  final String icon;
+
+  /// creator of Task
+  /// 创建者
+  final String creator;
+
+  /// State of the App
+  /// App 状态
+  final int status;
+
+  const App({
+    required this.id,
+    required this.url,
+    required this.name,
+    required this.desc,
+    required this.icon,
+    required this.creator,
+    required this.status,
+  });
+}
+
 class AssetAccountData {
   final int free;
   final int reserved;
@@ -426,49 +524,6 @@ class AssetAccountData {
     required this.free,
     required this.reserved,
     required this.frozen,
-  });
-}
-
-/// DAO specific information
-/// 组织信息
-class DaoInfo {
-  final int id;
-
-  /// creator of DAO
-  /// 创建者
-  final String creator;
-
-  /// The block that creates the DAO
-  /// DAO创建的区块
-  final int startBlock;
-
-  /// DAO account id.
-  /// DAO 链上账户ID
-  final String daoAccountId;
-
-  /// name of the DAO.
-  /// DAO 名字
-  final String name;
-
-  /// Purpose of the DAO.
-  /// DAO 目标宗旨
-  final String purpose;
-
-  /// DAO 元数据 图片等内容
-  final String metaData;
-
-  /// 区块链 1 Unit 等于多少余额
-  final int chainUnit;
-
-  const DaoInfo({
-    required this.id,
-    required this.creator,
-    required this.startBlock,
-    required this.daoAccountId,
-    required this.name,
-    required this.purpose,
-    required this.metaData,
-    required this.chainUnit,
   });
 }
 
@@ -625,6 +680,113 @@ class MemberGroup {
   const MemberGroup({
     required this.scope,
     required this.id,
+  });
+}
+
+class OrgApp {
+  final int id;
+
+  /// The block that creates the DAO
+  /// DAO创建的区块
+  final int startBlock;
+
+  /// name of the DAO.
+  /// DAO 名字
+  final String name;
+
+  /// name of the DAO.
+  /// DAO 介绍
+  final String desc;
+
+  /// icon of the DAO.
+  /// DAO icon
+  final String icon;
+
+  /// url 图片等内容
+  final String url;
+
+  /// State of the OrgApp
+  /// OrgApp 状态
+  final int status;
+
+  const OrgApp({
+    required this.id,
+    required this.startBlock,
+    required this.name,
+    required this.desc,
+    required this.icon,
+    required this.url,
+    required this.status,
+  });
+}
+
+/// DAO specific information
+/// 组织信息
+class OrgInfo {
+  final int id;
+
+  /// creator of DAO
+  /// 创建者
+  final String creator;
+
+  /// The block that creates the DAO
+  /// DAO创建的区块
+  final int startBlock;
+
+  /// DAO account id.
+  /// DAO 链上账户ID
+  final String daoAccountId;
+
+  /// name of the DAO.
+  /// DAO 名字
+  final String name;
+
+  /// Purpose of the DAO.
+  /// DAO 目标宗旨
+  final String purpose;
+
+  /// DAO 元数据 图片等内容
+  final String metaData;
+
+  /// name of the DAO.
+  /// DAO 介绍
+  final String desc;
+
+  /// im api
+  final String imApi;
+
+  /// org color
+  final String bg;
+
+  /// org logo
+  final String logo;
+
+  /// 组织大图
+  final String img;
+
+  /// 组织主页
+  final String homeUrl;
+
+  /// 区块链 1 Unit 等于多少余额
+  final int chainUnit;
+  final int status;
+
+  const OrgInfo({
+    required this.id,
+    required this.creator,
+    required this.startBlock,
+    required this.daoAccountId,
+    required this.name,
+    required this.purpose,
+    required this.metaData,
+    required this.desc,
+    required this.imApi,
+    required this.bg,
+    required this.logo,
+    required this.img,
+    required this.homeUrl,
+    required this.chainUnit,
+    required this.status,
   });
 }
 

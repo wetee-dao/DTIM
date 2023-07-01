@@ -20,7 +20,7 @@ Map<String, dynamic> _$AssetAccountDataJToJson(AssetAccountDataJ instance) =>
       'frozen': instance.frozen,
     };
 
-DaoInfoJ _$DaoInfoJFromJson(Map<String, dynamic> json) => DaoInfoJ(
+OrgInfoJ _$OrgInfoJFromJson(Map<String, dynamic> json) => OrgInfoJ(
       id: json['id'] as int,
       creator: json['creator'] as String,
       startBlock: json['startBlock'] as int,
@@ -28,10 +28,17 @@ DaoInfoJ _$DaoInfoJFromJson(Map<String, dynamic> json) => DaoInfoJ(
       name: json['name'] as String,
       purpose: json['purpose'] as String,
       metaData: json['metaData'] as String,
+      desc: json['desc'] as String,
+      imApi: json['imApi'] as String,
+      bg: json['bg'] as String,
+      logo: json['logo'] as String,
+      img: json['img'] as String,
+      homeUrl: json['homeUrl'] as String,
+      status: json['status'] as int,
       chainUnit: json['chainUnit'] as int,
     );
 
-Map<String, dynamic> _$DaoInfoJToJson(DaoInfoJ instance) => <String, dynamic>{
+Map<String, dynamic> _$OrgInfoJToJson(OrgInfoJ instance) => <String, dynamic>{
       'id': instance.id,
       'creator': instance.creator,
       'startBlock': instance.startBlock,
@@ -39,7 +46,14 @@ Map<String, dynamic> _$DaoInfoJToJson(DaoInfoJ instance) => <String, dynamic>{
       'name': instance.name,
       'purpose': instance.purpose,
       'metaData': instance.metaData,
+      'desc': instance.desc,
+      'imApi': instance.imApi,
+      'bg': instance.bg,
+      'logo': instance.logo,
+      'img': instance.img,
+      'homeUrl': instance.homeUrl,
       'chainUnit': instance.chainUnit,
+      'status': instance.status,
     };
 
 QuarterJ _$QuarterJFromJson(Map<String, dynamic> json) => QuarterJ(

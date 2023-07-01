@@ -195,18 +195,42 @@ class RustWraperImpl implements RustWraper {
       required String name,
       required String purpose,
       required String metaData,
+      required String desc,
+      required String imApi,
+      required String bg,
+      required String logo,
+      required String img,
+      required String homeUrl,
       dynamic hint}) {
     var arg0 = api2wire_u32(client);
     var arg1 = _platform.api2wire_String(from);
     var arg2 = _platform.api2wire_String(name);
     var arg3 = _platform.api2wire_String(purpose);
     var arg4 = _platform.api2wire_String(metaData);
+    var arg5 = _platform.api2wire_String(desc);
+    var arg6 = _platform.api2wire_String(imApi);
+    var arg7 = _platform.api2wire_String(bg);
+    var arg8 = _platform.api2wire_String(logo);
+    var arg9 = _platform.api2wire_String(img);
+    var arg10 = _platform.api2wire_String(homeUrl);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_create_dao(port_, arg0, arg1, arg2, arg3, arg4),
+      callFfi: (port_) => _platform.inner.wire_create_dao(port_, arg0, arg1,
+          arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10),
       parseSuccessData: _wire2api_unit,
       constMeta: kCreateDaoConstMeta,
-      argValues: [client, from, name, purpose, metaData],
+      argValues: [
+        client,
+        from,
+        name,
+        purpose,
+        metaData,
+        desc,
+        imApi,
+        bg,
+        logo,
+        img,
+        homeUrl
+      ],
       hint: hint,
     ));
   }
@@ -214,7 +238,186 @@ class RustWraperImpl implements RustWraper {
   FlutterRustBridgeTaskConstMeta get kCreateDaoConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "create_dao",
-        argNames: ["client", "from", "name", "purpose", "metaData"],
+        argNames: [
+          "client",
+          "from",
+          "name",
+          "purpose",
+          "metaData",
+          "desc",
+          "imApi",
+          "bg",
+          "logo",
+          "img",
+          "homeUrl"
+        ],
+      );
+
+  Future<List<OrgInfo>> orgs({required int client, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_orgs(port_, arg0),
+      parseSuccessData: _wire2api_list_org_info,
+      constMeta: kOrgsConstMeta,
+      argValues: [client],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kOrgsConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "orgs",
+        argNames: ["client"],
+      );
+
+  Future<void> createApp(
+      {required int client,
+      required String from,
+      required String name,
+      required String desc,
+      required String icon,
+      required String url,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(from);
+    var arg2 = _platform.api2wire_String(name);
+    var arg3 = _platform.api2wire_String(desc);
+    var arg4 = _platform.api2wire_String(icon);
+    var arg5 = _platform.api2wire_String(url);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_create_app(port_, arg0, arg1, arg2, arg3, arg4, arg5),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kCreateAppConstMeta,
+      argValues: [client, from, name, desc, icon, url],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kCreateAppConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "create_app",
+        argNames: ["client", "from", "name", "desc", "icon", "url"],
+      );
+
+  Future<void> updateAppStatus(
+      {required int client,
+      required String from,
+      required int appId,
+      required int status,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(from);
+    var arg2 = _platform.api2wire_u64(appId);
+    var arg3 = api2wire_u8(status);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_update_app_status(port_, arg0, arg1, arg2, arg3),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kUpdateAppStatusConstMeta,
+      argValues: [client, from, appId, status],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kUpdateAppStatusConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "update_app_status",
+        argNames: ["client", "from", "appId", "status"],
+      );
+
+  Future<void> orgIntegrateApp(
+      {required int client,
+      required String from,
+      required int orgId,
+      required int appId,
+      WithGovPs? ext,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(from);
+    var arg2 = _platform.api2wire_u64(orgId);
+    var arg3 = _platform.api2wire_u64(appId);
+    var arg4 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_org_integrate_app(port_, arg0, arg1, arg2, arg3, arg4),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kOrgIntegrateAppConstMeta,
+      argValues: [client, from, orgId, appId, ext],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kOrgIntegrateAppConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "org_integrate_app",
+        argNames: ["client", "from", "orgId", "appId", "ext"],
+      );
+
+  Future<List<App>> appHubs({required int client, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_app_hubs(port_, arg0),
+      parseSuccessData: _wire2api_list_app,
+      constMeta: kAppHubsConstMeta,
+      argValues: [client],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kAppHubsConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "app_hubs",
+        argNames: ["client"],
+      );
+
+  Future<List<OrgApp>> orgApps(
+      {required int client, required int orgId, dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_u64(orgId);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_org_apps(port_, arg0, arg1),
+      parseSuccessData: _wire2api_list_org_app,
+      constMeta: kOrgAppsConstMeta,
+      argValues: [client, orgId],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kOrgAppsConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "org_apps",
+        argNames: ["client", "orgId"],
+      );
+
+  Future<void> updateOrgAppStatus(
+      {required int client,
+      required String from,
+      required int orgId,
+      required int appId,
+      required int status,
+      WithGovPs? ext,
+      dynamic hint}) {
+    var arg0 = api2wire_u32(client);
+    var arg1 = _platform.api2wire_String(from);
+    var arg2 = _platform.api2wire_u64(orgId);
+    var arg3 = _platform.api2wire_u64(appId);
+    var arg4 = api2wire_u8(status);
+    var arg5 = _platform.api2wire_opt_box_autoadd_with_gov_ps(ext);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_update_org_app_status(
+          port_, arg0, arg1, arg2, arg3, arg4, arg5),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kUpdateOrgAppStatusConstMeta,
+      argValues: [client, from, orgId, appId, status, ext],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kUpdateOrgAppStatusConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "update_org_app_status",
+        argNames: ["client", "from", "orgId", "appId", "status", "ext"],
       );
 
   Future<void> createAsset(
@@ -338,13 +541,13 @@ class RustWraperImpl implements RustWraper {
         argNames: ["client", "daoId", "address"],
       );
 
-  Future<DaoInfo> daoInfo(
+  Future<OrgInfo> daoInfo(
       {required int client, required int daoId, dynamic hint}) {
     var arg0 = api2wire_u32(client);
     var arg1 = _platform.api2wire_u64(daoId);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_dao_info(port_, arg0, arg1),
-      parseSuccessData: _wire2api_dao_info,
+      parseSuccessData: _wire2api_org_info,
       constMeta: kDaoInfoConstMeta,
       argValues: [client, daoId],
       hint: hint,
@@ -1359,6 +1562,21 @@ class RustWraperImpl implements RustWraper {
     return (raw as List<dynamic>).cast<String>();
   }
 
+  App _wire2api_app(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return App(
+      id: _wire2api_u64(arr[0]),
+      url: _wire2api_String(arr[1]),
+      name: _wire2api_String(arr[2]),
+      desc: _wire2api_String(arr[3]),
+      icon: _wire2api_String(arr[4]),
+      creator: _wire2api_String(arr[5]),
+      status: _wire2api_u8(arr[6]),
+    );
+  }
+
   AssetAccountData _wire2api_asset_account_data(dynamic raw) {
     final arr = raw as List<dynamic>;
     if (arr.length != 3)
@@ -1372,22 +1590,6 @@ class RustWraperImpl implements RustWraper {
 
   bool _wire2api_bool(dynamic raw) {
     return raw as bool;
-  }
-
-  DaoInfo _wire2api_dao_info(dynamic raw) {
-    final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
-    return DaoInfo(
-      id: _wire2api_u64(arr[0]),
-      creator: _wire2api_String(arr[1]),
-      startBlock: _wire2api_u64(arr[2]),
-      daoAccountId: _wire2api_String(arr[3]),
-      name: _wire2api_String(arr[4]),
-      purpose: _wire2api_String(arr[5]),
-      metaData: _wire2api_String(arr[6]),
-      chainUnit: _wire2api_u64(arr[7]),
-    );
   }
 
   GovProps _wire2api_gov_props(dynamic raw) {
@@ -1449,6 +1651,10 @@ class RustWraperImpl implements RustWraper {
     );
   }
 
+  List<App> _wire2api_list_app(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_app).toList();
+  }
+
   List<GovProps> _wire2api_list_gov_props(dynamic raw) {
     return (raw as List<dynamic>).map(_wire2api_gov_props).toList();
   }
@@ -1463,6 +1669,14 @@ class RustWraperImpl implements RustWraper {
 
   List<GuildInfo> _wire2api_list_guild_info(dynamic raw) {
     return (raw as List<dynamic>).map(_wire2api_guild_info).toList();
+  }
+
+  List<OrgApp> _wire2api_list_org_app(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_org_app).toList();
+  }
+
+  List<OrgInfo> _wire2api_list_org_info(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_org_info).toList();
   }
 
   List<ProjectInfo> _wire2api_list_project_info(dynamic raw) {
@@ -1496,6 +1710,44 @@ class RustWraperImpl implements RustWraper {
     return MemberGroup(
       scope: _wire2api_u8(arr[0]),
       id: _wire2api_u64(arr[1]),
+    );
+  }
+
+  OrgApp _wire2api_org_app(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return OrgApp(
+      id: _wire2api_u64(arr[0]),
+      startBlock: _wire2api_u64(arr[1]),
+      name: _wire2api_String(arr[2]),
+      desc: _wire2api_String(arr[3]),
+      icon: _wire2api_String(arr[4]),
+      url: _wire2api_String(arr[5]),
+      status: _wire2api_u8(arr[6]),
+    );
+  }
+
+  OrgInfo _wire2api_org_info(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 15)
+      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
+    return OrgInfo(
+      id: _wire2api_u64(arr[0]),
+      creator: _wire2api_String(arr[1]),
+      startBlock: _wire2api_u64(arr[2]),
+      daoAccountId: _wire2api_String(arr[3]),
+      name: _wire2api_String(arr[4]),
+      purpose: _wire2api_String(arr[5]),
+      metaData: _wire2api_String(arr[6]),
+      desc: _wire2api_String(arr[7]),
+      imApi: _wire2api_String(arr[8]),
+      bg: _wire2api_String(arr[9]),
+      logo: _wire2api_String(arr[10]),
+      img: _wire2api_String(arr[11]),
+      homeUrl: _wire2api_String(arr[12]),
+      chainUnit: _wire2api_u64(arr[13]),
+      status: _wire2api_u8(arr[14]),
     );
   }
 
@@ -2005,6 +2257,12 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
     ffi.Pointer<wire_uint_8_list> name,
     ffi.Pointer<wire_uint_8_list> purpose,
     ffi.Pointer<wire_uint_8_list> meta_data,
+    ffi.Pointer<wire_uint_8_list> desc,
+    ffi.Pointer<wire_uint_8_list> im_api,
+    ffi.Pointer<wire_uint_8_list> bg,
+    ffi.Pointer<wire_uint_8_list> logo,
+    ffi.Pointer<wire_uint_8_list> img,
+    ffi.Pointer<wire_uint_8_list> home_url,
   ) {
     return _wire_create_dao(
       port_,
@@ -2013,6 +2271,12 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
       name,
       purpose,
       meta_data,
+      desc,
+      im_api,
+      bg,
+      logo,
+      img,
+      home_url,
     );
   }
 
@@ -2024,6 +2288,12 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>)>>('wire_create_dao');
   late final _wire_create_dao = _wire_create_daoPtr.asFunction<
       void Function(
@@ -2032,7 +2302,196 @@ class RustWraperWire implements FlutterRustBridgeWireBase {
           ffi.Pointer<wire_uint_8_list>,
           ffi.Pointer<wire_uint_8_list>,
           ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
           ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_orgs(
+    int port_,
+    int client,
+  ) {
+    return _wire_orgs(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire_orgsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
+          'wire_orgs');
+  late final _wire_orgs = _wire_orgsPtr.asFunction<void Function(int, int)>();
+
+  void wire_create_app(
+    int port_,
+    int client,
+    ffi.Pointer<wire_uint_8_list> from,
+    ffi.Pointer<wire_uint_8_list> name,
+    ffi.Pointer<wire_uint_8_list> desc,
+    ffi.Pointer<wire_uint_8_list> icon,
+    ffi.Pointer<wire_uint_8_list> url,
+  ) {
+    return _wire_create_app(
+      port_,
+      client,
+      from,
+      name,
+      desc,
+      icon,
+      url,
+    );
+  }
+
+  late final _wire_create_appPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_create_app');
+  late final _wire_create_app = _wire_create_appPtr.asFunction<
+      void Function(
+          int,
+          int,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>)>();
+
+  void wire_update_app_status(
+    int port_,
+    int client,
+    ffi.Pointer<wire_uint_8_list> from,
+    int app_id,
+    int status,
+  ) {
+    return _wire_update_app_status(
+      port_,
+      client,
+      from,
+      app_id,
+      status,
+    );
+  }
+
+  late final _wire_update_app_statusPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint64,
+              ffi.Uint8)>>('wire_update_app_status');
+  late final _wire_update_app_status = _wire_update_app_statusPtr.asFunction<
+      void Function(int, int, ffi.Pointer<wire_uint_8_list>, int, int)>();
+
+  void wire_org_integrate_app(
+    int port_,
+    int client,
+    ffi.Pointer<wire_uint_8_list> from,
+    int org_id,
+    int app_id,
+    ffi.Pointer<wire_WithGovPs> ext,
+  ) {
+    return _wire_org_integrate_app(
+      port_,
+      client,
+      from,
+      org_id,
+      app_id,
+      ext,
+    );
+  }
+
+  late final _wire_org_integrate_appPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_org_integrate_app');
+  late final _wire_org_integrate_app = _wire_org_integrate_appPtr.asFunction<
+      void Function(int, int, ffi.Pointer<wire_uint_8_list>, int, int,
+          ffi.Pointer<wire_WithGovPs>)>();
+
+  void wire_app_hubs(
+    int port_,
+    int client,
+  ) {
+    return _wire_app_hubs(
+      port_,
+      client,
+    );
+  }
+
+  late final _wire_app_hubsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint32)>>(
+          'wire_app_hubs');
+  late final _wire_app_hubs =
+      _wire_app_hubsPtr.asFunction<void Function(int, int)>();
+
+  void wire_org_apps(
+    int port_,
+    int client,
+    int org_id,
+  ) {
+    return _wire_org_apps(
+      port_,
+      client,
+      org_id,
+    );
+  }
+
+  late final _wire_org_appsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64, ffi.Uint32, ffi.Uint64)>>('wire_org_apps');
+  late final _wire_org_apps =
+      _wire_org_appsPtr.asFunction<void Function(int, int, int)>();
+
+  void wire_update_org_app_status(
+    int port_,
+    int client,
+    ffi.Pointer<wire_uint_8_list> from,
+    int org_id,
+    int app_id,
+    int status,
+    ffi.Pointer<wire_WithGovPs> ext,
+  ) {
+    return _wire_update_org_app_status(
+      port_,
+      client,
+      from,
+      org_id,
+      app_id,
+      status,
+      ext,
+    );
+  }
+
+  late final _wire_update_org_app_statusPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Uint32,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Uint64,
+              ffi.Uint64,
+              ffi.Uint8,
+              ffi.Pointer<wire_WithGovPs>)>>('wire_update_org_app_status');
+  late final _wire_update_org_app_status =
+      _wire_update_org_app_statusPtr.asFunction<
+          void Function(int, int, ffi.Pointer<wire_uint_8_list>, int, int, int,
+              ffi.Pointer<wire_WithGovPs>)>();
 
   void wire_create_asset(
     int port_,

@@ -16,8 +16,8 @@ class AssetAccountDataJ extends AssetAccountData {
 }
 
 @JsonSerializable()
-class DaoInfoJ extends DaoInfo {
-  DaoInfoJ(
+class OrgInfoJ extends OrgInfo {
+  OrgInfoJ(
       {required int id,
       required String creator,
       required int startBlock,
@@ -25,6 +25,13 @@ class DaoInfoJ extends DaoInfo {
       required String name,
       required String purpose,
       required String metaData,
+      required String desc,
+      required String imApi,
+      required String bg,
+      required String logo,
+      required String img,
+      required String homeUrl,
+      required int status,
       required int chainUnit})
       : super(
             id: id,
@@ -34,10 +41,17 @@ class DaoInfoJ extends DaoInfo {
             name: name,
             purpose: purpose,
             metaData: metaData,
+            desc: desc,
+            imApi: imApi,
+            bg: bg,
+            logo: logo,
+            img: img,
+            homeUrl: homeUrl,
+            status: status,
             chainUnit: chainUnit);
 
-  factory DaoInfoJ.fromJson(Map<String, dynamic> json) => _$DaoInfoJFromJson(json);
-  Map<String, dynamic> toJson() => _$DaoInfoJToJson(this);
+  factory OrgInfoJ.fromJson(Map<String, dynamic> json) => _$OrgInfoJFromJson(json);
+  Map<String, dynamic> toJson() => _$OrgInfoJToJson(this);
 }
 
 @JsonSerializable()
@@ -261,13 +275,13 @@ class GovVoteJ extends GovVote {
     required int unlockBlock,
     required int referendumIndex,
   }) : super(
-     daoId: daoId,
-    pledge: pledge,
-    opinion: opinion,
-    voteWeight: voteWeight,
-    unlockBlock: unlockBlock,
-    referendumIndex: referendumIndex,
-  );
+          daoId: daoId,
+          pledge: pledge,
+          opinion: opinion,
+          voteWeight: voteWeight,
+          unlockBlock: unlockBlock,
+          referendumIndex: referendumIndex,
+        );
 
   factory GovVoteJ.fromJson(Map<String, dynamic> json) => _$GovVoteJFromJson(json);
   Map<String, dynamic> toJson() => _$GovVoteJToJson(this);

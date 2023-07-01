@@ -147,7 +147,7 @@ class AppCubit extends Cubit<AppState> {
     for (var i = 0; i < 10; i++) {
       if (globalCtx().router.canPop()) {
         globalCtx().router.pop();
-      }else{
+      } else {
         break;
       }
     }
@@ -155,8 +155,10 @@ class AppCubit extends Cubit<AppState> {
 
   // 连接账户
   Future<bool> connect(AccountOrg org) async {
+    final server = Uri.parse(org.domain ?? "");
+    final domain = server.host;
     // 构建账户密码
-    final userName = '${me!.address}@${org.domain}/${platformGet()}';
+    final userName = '${me!.address}@$domain/${platformGet()}';
 
     printInfo("connect => $userName");
 
@@ -186,16 +188,16 @@ class AppCubit extends Cubit<AppState> {
       databaseBuilder: (_) async {
         if (PlatformInfos.isWeb) {
           final db = HiveCollectionsDatabase(
-            org.domain!.replaceAll(".", "_"),
+            domain.replaceAll(".", "_"),
             me!.address,
           );
           await db.open();
           return db;
         }
         final dir = await getApplicationSupportDirectory();
-        printDebug("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
+        printDebug("hlive ===> ${dir.path} ${domain.replaceAll(".", "_")}");
         final db = HiveCollectionsDatabase(
-          org.domain!.replaceAll(".", "_"),
+          domain.replaceAll(".", "_"),
           "${dir.path}/${me!.address}",
         );
         await db.open();
@@ -205,7 +207,7 @@ class AppCubit extends Cubit<AppState> {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http(org.domain!, ''));
+    await client.checkHomeserver(server);
 
     if (!client.isLogged()) {
       try {
@@ -261,7 +263,10 @@ class AppCubit extends Cubit<AppState> {
 
   // 设置当前账户
   setCurrent(AccountOrg org) {
-    final id = '${me!.address}@${org.domain}/${platformGet()}';
+    final server = Uri.parse(org.domain ?? "");
+    final domain = server.host;
+
+    final id = '${me!.address}@$domain/${platformGet()}';
     emit(state.copyWith(currentOrg: id));
     state.connectionStates[id]?.syncChannel();
   }

@@ -18,6 +18,12 @@ void main() async {
     name: "TESTDAO",
     purpose: "For the freedom of programming",
     metaData: "{}",
+    bg: '',
+    desc: '',
+    homeUrl: '',
+    imApi: '',
+    img: '',
+    logo: '',
   );
   await rustApi.createAsset(
     client: clientIndex,

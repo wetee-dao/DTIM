@@ -1,25 +1,26 @@
 use std::time::Duration;
 
 use crate::model::{
-    member_ps_trans, member_trans, AssetAccountData, DaoInfo, GovProps, GovReferendum, GovVote,
-    GuildInfo, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, WithGovPs, U8Wrap,
+    member_ps_trans, member_trans, App, AssetAccountData, GovProps, GovReferendum,
+    GovVote, GuildInfo, OrgApp, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, U8Wrap,
+    WithGovPs, OrgInfo,
 };
 use anyhow::{self, Ok};
+use tokio::{runtime::Runtime, time::sleep};
 use wetee_rust_sdk::{
     account,
     chain::UNIT,
     hander::{
         balance::Balance,
         wetee_asset::WeteeAsset,
-        wetee_org::WeteeDAO,
         wetee_gov::{Opinion, Pledge, ReferendumStatus, WeteeGov},
         wetee_guild::WeteeGuild,
+        wetee_org::{Status, WeteeOrg},
         wetee_project::{TaskStatus, WeteeProject},
     },
     model::{account::KeyringJSON, dao::WithGov},
     Client,
 };
-use tokio::{runtime::Runtime, time::sleep};
 
 // use std::sync::Arc;
 // pub enum Platform {
@@ -114,21 +115,211 @@ pub fn create_dao(
     name: String,
     purpose: String,
     meta_data: String,
+    desc: String,
+    im_api: String,
+    bg: String,
+    logo: String,
+    img: String,
+    home_url: String,
 ) -> anyhow::Result<()> {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
         let c = Client::from_index(client)?;
-        let mut dao = WeteeDAO::new(c);
-
+        let mut dao = WeteeOrg::new(c);
         dao.create_dao(
             from.clone(),
             name.clone(),
             purpose.clone(),
             meta_data.clone(),
+            desc.clone(),
+            im_api.clone(),
+            bg.clone(),
+            logo.clone(),
+            img.clone(),
+            home_url.clone(),
         )
-        .await.unwrap();
+        .await
+        .unwrap();
         Ok(())
     })
+}
+
+pub fn orgs(client: u32) -> anyhow::Result<Vec<OrgInfo>> {
+    let rt = Runtime::new().unwrap();
+    let c = Client::from_index(client)?;
+    let res = rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+        let res = dao.orgs().await.unwrap();
+        res.into_iter().map(|r| OrgInfo{
+            id: r.1.id,
+            name:  String::from_utf8(r.1.name).unwrap(),
+            purpose:  String::from_utf8(r.1.purpose).unwrap(),
+            meta_data:  String::from_utf8(r.1.meta_data).unwrap(),
+            desc:  String::from_utf8(r.1.desc).unwrap(),
+            im_api:  String::from_utf8(r.1.im_api).unwrap(),
+            bg:  String::from_utf8(r.1.bg).unwrap(),
+            logo:  String::from_utf8(r.1.logo).unwrap(),
+            img:  String::from_utf8(r.1.img).unwrap(),
+            home_url:  String::from_utf8(r.1.home_url).unwrap(),
+            status: if r.1.status == Status::Active { 1 } else { 0 },
+            creator: account::ss58_to_address(r.1.creator.to_string()).unwrap(),
+            start_block: r.1.start_block,
+            dao_account_id: account::ss58_to_address(r.1.dao_account_id.to_string()).unwrap(),
+            chain_unit: UNIT,
+        }).collect()
+    });
+    Ok(res)
+}
+
+pub fn create_app(
+    client: u32,
+    from: String,
+    name: String,
+    desc: String,
+    icon: String,
+    url: String,
+) -> anyhow::Result<()> {
+    let rt = Runtime::new().unwrap();
+    let c = Client::from_index(client)?;
+    rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+
+        dao.create_app(
+            from.clone(),
+            name.clone(),
+            desc.clone(),
+            icon.clone(),
+            url.clone(),
+        )
+        .await
+        .unwrap();
+    });
+    Ok(())
+}
+
+pub fn update_app_status(client: u32, from: String, app_id: u64, status: u8) -> anyhow::Result<()> {
+    let rt = Runtime::new().unwrap();
+    let c = Client::from_index(client)?;
+    rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+
+        dao.update_app_status(from.clone(), app_id, status)
+            .await
+            .unwrap();
+    });
+    Ok(())
+}
+
+pub fn org_integrate_app(
+    client: u32,
+    from: String,
+    org_id: u64,
+    app_id: u64,
+    ext: Option<WithGovPs>,
+) -> anyhow::Result<()> {
+    let rt = Runtime::new().unwrap();
+    let c = Client::from_index(client)?;
+    rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+
+        dao.org_integrate_app(
+            from.clone(),
+            org_id,
+            app_id,
+            if ext.is_some() {
+                let e = ext.unwrap();
+                Some(WithGov {
+                    run_type: e.run_type,
+                    amount: e.amount.into(),
+                    member: member_ps_trans(e.member),
+                })
+            } else {
+                None
+            },
+        )
+        .await
+        .unwrap();
+    });
+    Ok(())
+}
+
+pub fn app_hubs(client: u32) -> anyhow::Result<Vec<App>> {
+    let rt = Runtime::new().unwrap();
+    let c = Client::from_index(client)?;
+    let res = rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+
+        let apps = dao.app_hubs().await.unwrap();
+        apps.into_iter()
+            .map(|a| App {
+                id: a.1.id,
+                name: String::from_utf8(a.1.name).unwrap(),
+                desc: String::from_utf8(a.1.desc).unwrap(),
+                icon: String::from_utf8(a.1.icon).unwrap(),
+                url: String::from_utf8(a.1.url).unwrap(),
+                status: if a.1.status == Status::Active { 1 } else { 0 },
+                creator: account::ss58_to_address(a.1.creator.to_string()).unwrap(),
+            })
+            .collect()
+    });
+    Ok(res)
+}
+
+pub fn org_apps(client: u32, org_id: u64) -> anyhow::Result<Vec<OrgApp>> {
+    let rt = Runtime::new().unwrap();
+    let c = Client::from_index(client)?;
+    let res = rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+
+        let apps = dao.org_apps(org_id).await.unwrap();
+        apps.into_iter()
+            .map(|a| OrgApp {
+                id: a.id,
+                name: String::from_utf8(a.name).unwrap(),
+                desc: String::from_utf8(a.desc).unwrap(),
+                icon: String::from_utf8(a.icon).unwrap(),
+                url: String::from_utf8(a.url).unwrap(),
+                status: if a.status == Status::Active { 1 } else { 0 },
+                start_block: a.start_block,
+            })
+            .collect()
+    });
+    Ok(res)
+}
+
+pub fn update_org_app_status(
+    client: u32,
+    from: String,
+    org_id: u64,
+    app_id: u64,
+    status: u8,
+    ext: Option<WithGovPs>,
+) -> anyhow::Result<()> {
+    let c = Client::from_index(client)?;
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        let mut dao = WeteeOrg::new(c);
+
+        dao.update_org_app_status(
+            from.clone(),
+            org_id,
+            app_id,
+            status,
+            if ext.is_some() {
+                let e = ext.unwrap();
+                Some(WithGov {
+                    run_type: e.run_type,
+                    amount: e.amount.into(),
+                    member: member_ps_trans(e.member),
+                })
+            } else {
+                None
+            },
+        )
+        .await
+        .unwrap();
+    });
+    Ok(())
 }
 
 pub fn create_asset(
@@ -145,18 +336,20 @@ pub fn create_asset(
         let c = Client::from_index(client)?;
         let mut asset = WeteeAsset::new(c);
 
-        asset.create_asset(
-            from.clone(),
-            dao_id,
-            name.clone(),
-            symbol.clone(),
-            total_supply.into(),
-            decimals.into(),
-        ).await.unwrap();
+        asset
+            .create_asset(
+                from.clone(),
+                dao_id,
+                name.clone(),
+                symbol.clone(),
+                total_supply.into(),
+                decimals.into(),
+            )
+            .await
+            .unwrap();
         Ok(())
     })
 }
-
 
 pub fn get_block_number(client: u32) -> anyhow::Result<u64> {
     let rt = Runtime::new().unwrap();
@@ -211,14 +404,14 @@ pub fn dao_balance(client: u32, dao_id: u64, address: String) -> anyhow::Result<
     })
 }
 
-pub fn dao_info(client: u32, dao_id: u64) -> anyhow::Result<DaoInfo> {
+pub fn dao_info(client: u32, dao_id: u64) -> anyhow::Result<OrgInfo> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
         let info = dao.dao_info(dao_id).await.unwrap();
-        Ok(DaoInfo {
+        Ok(OrgInfo {
             id: dao_id,
             creator: account::ss58_to_address(info.creator.to_string()).unwrap(),
             start_block: info.start_block,
@@ -227,13 +420,20 @@ pub fn dao_info(client: u32, dao_id: u64) -> anyhow::Result<DaoInfo> {
             purpose: String::from_utf8(info.purpose).unwrap(),
             meta_data: String::from_utf8(info.meta_data).unwrap(),
             chain_unit: UNIT,
+            desc: String::from_utf8(info.desc).unwrap(),
+            im_api: String::from_utf8(info.im_api).unwrap(),
+            bg: String::from_utf8(info.bg).unwrap(),
+            logo: String::from_utf8(info.logo).unwrap(),
+            img: String::from_utf8(info.img).unwrap(),
+            home_url: String::from_utf8(info.home_url).unwrap(),
+            status: if info.status == Status::Active { 1 } else { 0 },
         })
     })
 }
 
 pub fn dao_total_issuance(client: u32, dao_id: u64) -> anyhow::Result<u64> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -244,7 +444,7 @@ pub fn dao_total_issuance(client: u32, dao_id: u64) -> anyhow::Result<u64> {
 
 pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Quarter>> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -263,7 +463,7 @@ pub fn dao_roadmap(client: u32, dao_id: u64, year: u32) -> anyhow::Result<Vec<Qu
                         name: String::from_utf8(t.name).unwrap(),
                         priority: t.priority,
                         creator: account::ss58_to_address(t.creator.to_string()).unwrap(),
-                        tags: t.tags.into_iter().map(|t|U8Wrap{value:t}).collect(),
+                        tags: t.tags.into_iter().map(|t| U8Wrap { value: t }).collect(),
                         status: t.status,
                     })
                     .collect(),
@@ -285,7 +485,7 @@ pub fn dao_create_roadmap_task(
     tags: Vec<u8>,
 ) -> anyhow::Result<bool> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -307,7 +507,7 @@ pub fn join_dao(
     value: u64,
 ) -> anyhow::Result<bool> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -319,7 +519,7 @@ pub fn join_dao(
 
 pub fn dao_memebers(client: u32, dao_id: u64) -> anyhow::Result<Vec<String>> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -624,7 +824,7 @@ pub fn dao_gov_unlock(from: String, client: u32, dao_id: u64) -> anyhow::Result<
 
 pub fn dao_memeber_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<String>> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -727,7 +927,11 @@ pub fn dao_project_task_list(client: u32, project_id: u64) -> anyhow::Result<Vec
                             return account::ss58_to_address(account.to_string()).unwrap();
                         })
                         .collect(),
-                    skills: task.skills.into_iter().map(|t|U8Wrap{value:t}).collect(),
+                    skills: task
+                        .skills
+                        .into_iter()
+                        .map(|t| U8Wrap { value: t })
+                        .collect(),
                 };
             })
             .collect())
@@ -784,7 +988,11 @@ pub fn dao_project_task_info(
                     return account::ss58_to_address(account.to_string()).unwrap();
                 })
                 .collect(),
-            skills: task.skills.into_iter().map(|t|U8Wrap{value:t}).collect(),
+            skills: task
+                .skills
+                .into_iter()
+                .map(|t| U8Wrap { value: t })
+                .collect(),
         })
     })
 }
@@ -1091,7 +1299,7 @@ pub fn dao_guild_join_request(
 
 pub fn dao_member_point(client: u32, dao_id: u64, member: String) -> anyhow::Result<u32> {
     let c = Client::from_index(client)?;
-    let mut dao = WeteeDAO::new(c);
+    let mut dao = WeteeOrg::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
@@ -1160,7 +1368,7 @@ pub fn dao_apply_project_funds(
 //     rt.block_on(async {
 //         println!("xxxxx22");
 //         let work = Client::from_index(0).unwrap();
-//         let mut dao = WeteeDAO::new(work);
+//         let mut dao = WeteeOrg::new(work);
 //         let daoinfo = dao.dao_info(5000).await.unwrap();
 //         print!("xxxxx {:?}", daoinfo.name);
 //     });

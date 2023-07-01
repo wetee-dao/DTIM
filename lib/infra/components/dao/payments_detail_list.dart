@@ -13,7 +13,7 @@ class PaymentsDetailList extends StatelessWidget {
   final AssetAccountData share;
   final String address;
   final int userPoint;
-  final DaoInfo dao;
+  final OrgInfo dao;
   const PaymentsDetailList({
     Key? key,
     required this.address,

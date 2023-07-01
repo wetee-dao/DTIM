@@ -3,7 +3,6 @@ import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:dtim/infra/pages/select_org.dart';
 import 'package:dtim/infra/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +40,7 @@ class _PCPageState extends State<PCPage> {
 
   @override
   void initState() {
+    print("PCPagePCPage");
     super.initState();
     im = context.read<AppCubit>();
     currentId.add(pcpages.indexOf(widget.t));
@@ -204,7 +204,7 @@ class _PCPageState extends State<PCPage> {
                       if (aorgs != null)
                         for (var i = 0; i < aorgs!.length; i++)
                           Tooltip(
-                            message: orgs[i].name,
+                            message: aorgs![i].orgName,
                             verticalOffset: -8.w,
                             margin: EdgeInsets.only(left: 50.w),
                             child: Container(

@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "ok": "ok",
+  "gotoApp": "Goto App",
   "loadingPleaseWait": "Loading… Please wait.",
   "videoWithSize": "Video ({size})",
   "@videoWithSize": {
@@ -308,6 +309,7 @@
     }
   },
   "password": "Password",
+  "userPaypassword": "This operation requires inputting your account password and paying on-chain transaction fees.",
   "changePassword": "Change password",
   "@changePassword": {
     "type": "text",

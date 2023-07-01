@@ -393,11 +393,11 @@ class rustApi {
     }
   }
 
-  static Future<DaoInfo> daoInfo({required int client, required int daoId, dynamic hint}) async {
+  static Future<OrgInfo> daoInfo({required int client, required int daoId, dynamic hint}) async {
     try {
       final result = await promiseToFuture(daoInfoFunc(client, daoId));
       var data = convert.jsonDecode(result);
-      return DaoInfoJ.fromJson(data);
+      return OrgInfoJ.fromJson(data);
     } catch (e) {
       rethrow;
     }
@@ -1001,4 +1001,6 @@ class rustApi {
       rethrow;
     }
   }
+
+  static orgs() {}
 }

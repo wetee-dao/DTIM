@@ -23,6 +23,12 @@ class OrgCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    var img = "";
+    if (org.img != null && org.img != "") {
+      img = org.img!;
+    } else if (org.logo != null && org.logo != "") {
+      img = org.logo!;
+    }
     return AnimatedContainer(
       width: 150.w,
       height: 200.w,
@@ -57,19 +63,21 @@ class OrgCard extends StatelessWidget {
                       color: org.bg != null ? hexToColor(org.bg!) : Colors.transparent,
                     ),
                     child: Image.network(
-                      org.img ?? "",
+                      img,
                       width: 206.w,
-                      fit: BoxFit.contain,
-                      height: 150.w,
+                      fit: BoxFit.cover,
+                      height: 130.w,
                     ),
                   ),
-                  Padding(
+                  Container(
                     padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+                    width: 206.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          org.name ?? "",
+                          "#${org.hash} ${org.name ?? ""}",
                           style: TextStyle(
                             color: constTheme.centerChannelColor,
                             fontSize: 16.w,

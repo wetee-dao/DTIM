@@ -1,7 +1,11 @@
 import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/infra/components/iconfont.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dtim/infra/components/loading_dialog.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -11,6 +15,8 @@ import 'package:window_manager/window_manager.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/app_bar.dart';
+
+import '../../../application/store/work_ctx.dart';
 
 @RoutePage(name: "createOrg")
 class CreateOrgPage extends StatefulWidget {
@@ -418,6 +424,43 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                   return;
                 }
                 _formKey.currentState!.save();
+                final im = context.read<AppCubit>();
+
+                rustApi.connect(url: chainUrl).then((client) async {
+                  if (!await inputPasswordg(im.me!)){
+                    return;
+                  }
+                  final res = await waitFutureLoading<String>(
+                    context: globalCtx(),
+                    future: () async {
+                      printSuccess(_imController.text.replaceAll(RegExp(r"\s*"), ""));
+                      try {
+                        await rustApi.createDao(
+                          client: client,
+                          from: im.me!.address,
+                          name: _data.name,
+                          purpose: _data.purpose,
+                          metaData: "{}",
+                          desc: _data.desc,
+                          imApi: _imController.text.replaceAll(RegExp(r"\s*"), ""),
+                          bg: _data.bg,
+                          logo: _data.logo,
+                          img: _data.img,
+                          homeUrl: _data.homeUrl,
+                        );
+                      } catch (e) {
+                        return "The user's balance is not enough to pay the handling fee";
+                      }
+                      return "ok";
+                    },
+                  );
+                  if (res.result != "ok") {
+                    BotToast.showText(text: res.result ?? "error", duration: const Duration(seconds: 2));
+                    return;
+                  }
+                  BotToast.showText(text: "Create org success", duration: const Duration(seconds: 2));
+                  globalCtx().router.pop();
+                });
               },
               child: Container(
                 padding: EdgeInsets.symmetric(

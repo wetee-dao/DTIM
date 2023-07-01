@@ -13,11 +13,13 @@ import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 
-const chainUrl = "ws://chain-ws.tc.asyou.me:80";
+// const chainUrl = "ws://chain-ws.tc.asyou.me:80";
+const chainUrl = "ws://127.0.0.1:9944";
+
 class WorkCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
-  late DaoInfo dao;
+  late OrgInfo dao;
   late AssetAccountData daoAmount;
   late int userPoint;
   late AssetAccountData nativeAmount;
@@ -158,42 +160,46 @@ class WorkCTX with ChangeNotifier {
   }
 
   Future<bool> inputPassword() async {
-    if (!PlatformInfos.isWeb) {
-      final ctx = globalCtx();
-      final input = await showTextInputDialog(
-        useRootNavigator: false,
-        context: ctx,
-        title: L10n.of(ctx)!.password,
-        okLabel: L10n.of(ctx)!.ok,
-        cancelLabel: L10n.of(ctx)!.cancel,
-        textFields: [
-          DialogTextField(
-            obscureText: true,
-            hintText: L10n.of(ctx)!.pleaseEnterYourPassword,
-            initialText: "",
-          )
-        ],
-      );
-      if (input == null) return false;
-      final res = await waitFutureLoading<String>(
-        context: globalCtx(),
-        future: () async {
-          final pwd = input[0];
-          try {
-            await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
-          } catch (e) {
-            return "密码错误";
-          }
-          return "ok";
-        },
-      );
-      if (res.result != "ok") {
-        BotToast.showText(text: res.result ?? "error", duration: const Duration(seconds: 2));
-        return false;
-      }
-    }
-    return true;
+    return await inputPasswordg(user);
   }
 }
 
 final workCtx = WorkCTX();
+
+Future<bool> inputPasswordg(Account user) async {
+  if (!PlatformInfos.isWeb) {
+    final ctx = globalCtx();
+    final input = await showTextInputDialog(
+      useRootNavigator: false,
+      context: ctx,
+      title: L10n.of(ctx)!.userPaypassword,
+      okLabel: L10n.of(ctx)!.ok,
+      cancelLabel: L10n.of(ctx)!.cancel,
+      textFields: [
+        DialogTextField(
+          obscureText: true,
+          hintText: L10n.of(ctx)!.pleaseEnterYourPassword,
+          initialText: "",
+        )
+      ],
+    );
+    if (input == null) return false;
+    final res = await waitFutureLoading<String>(
+      context: globalCtx(),
+      future: () async {
+        final pwd = input[0];
+        try {
+          await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
+        } catch (e) {
+          return "密码错误";
+        }
+        return "ok";
+      },
+    );
+    if (res.result != "ok") {
+      BotToast.showText(text: res.result ?? "error", duration: const Duration(seconds: 2));
+      return false;
+    }
+  }
+  return true;
+}
