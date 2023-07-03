@@ -1,10 +1,12 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/bridge_struct.dart' as native;
+import 'package:dtim/domain/models/org.dart';
 import 'package:dtim/infra/components/app_card.dart';
 // import 'package:dtim/infra/components/dao/info_card.dart';
 // import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/native_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,36 +24,52 @@ class IntegratePage extends StatefulWidget {
 }
 
 class _IntegratePageState extends State<IntegratePage> {
-  final mainPages = [];
-  late PageController pageController = PageController();
+  TextEditingController searchController = TextEditingController();
   late final AppCubit im;
-  final StreamController<String> currentId = StreamController<String>.broadcast();
+  List<native.App> apps = [];
+  List<OrgApp> oapps = [];
   String pageStr = "Overview";
   String title = "";
-  Timer? _timer;
-  int? c;
+  bool loding = true;
+  String searchText = "";
 
   @override
   void initState() {
     super.initState();
-    currentId.add(pageStr);
     im = context.read<AppCubit>();
+    workCtx.connectChain(im.currentState!.org, im.me!, () {
+      getData();
+    });
   }
 
-  getData() async {}
+  getData() async {
+    apps = await rustApi.appHubs(client: workCtx.chainClient);
+    oapps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
+    loding = false;
+    setState(() {});
+  }
 
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> drawerKey = GlobalKey(debugLabel: "drawer");
+    if (loding) {
+      return Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w));
+    }
+
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final fapps = searchText == ""
+        ? apps.reversed.toList()
+        : apps.reversed
+            .toList()
+            .where((a) =>
+                a.name.toLowerCase().contains(searchText.toLowerCase()) ||
+                a.desc.toLowerCase().contains(searchText.toLowerCase()))
+            .toList();
     return Scaffold(
-      key: drawerKey,
       backgroundColor: constTheme.centerChannelBg,
       appBar: SideBarAppBar(
         height: 45.w,
@@ -86,13 +104,18 @@ class _IntegratePageState extends State<IntegratePage> {
                   Expanded(
                     child: TextField(
                       autofocus: true,
+                      controller: searchController,
                       decoration: InputDecoration(
                         hintText: "按名称，类别搜索应用",
                         contentPadding: const EdgeInsets.all(0),
                         hintStyle: TextStyle(height: 1, color: constTheme.sidebarHeaderTextColor, fontSize: 14.w),
                         border: InputBorder.none,
                       ),
-                      onChanged: (value) {},
+                      onChanged: (String v) {
+                        setState(() {
+                          searchText = v;
+                        });
+                      },
                       style: TextStyle(color: constTheme.sidebarHeaderTextColor),
                     ),
                   ),
@@ -106,18 +129,41 @@ class _IntegratePageState extends State<IntegratePage> {
                 runSpacing: 20.w,
                 spacing: 20.w,
                 alignment: WrapAlignment.start,
-                children: const [
-                  AppCard(
-                    icon: "https://wetee.app/icons/kanban.png",
-                    background: Color.fromARGB(255, 48, 1, 57),
-                    label: "Kanban",
-                    amount: '区块链的去中心化特性与协作看板的实时思维映射功能,实现更可信、开放且智能的团队协作方式',
-                  ),
-                  AppCard(
+                children: [
+                  for (var app in fapps)
+                    AppCard(
+                      id: app.id,
+                      icon: app.icon,
+                      disable: false,
+                      isActive: getActive(app),
+                      // background: constTheme.buttonBg,
+                      background: const Color.fromARGB(255, 4, 18, 53),
+                      label: app.name,
+                      amount: app.desc,
+                    ),
+                  // AppCard(
+                  //   icon: "https://wetee.app/icons/sxgl.png",
+                  //   background: Color.fromARGB(255, 1, 18, 57),
+                  //   label: "Gov&Asset",
+                  //   amount: 'Implementing more democratic, transparent and inclusive decision making processes through smart contracts',
+                  // ),
+                  // dtim:///gov
+                  // AppCard(
+                  //   icon: "https://wetee.app/icons/kanban.png",
+                  //   background: Color.fromARGB(255, 48, 1, 57),
+                  //   label: "Kanban",
+                  //   amount: 'The decentralization characteristic of blockchains and the real-time mind mapping function of collaborative whiteboards can realize a more trustworthy, open and intelligent way of team collaboration by mapping thoughts in real time.',
+                  // ),
+                  // dtim:///work
+                  const AppCard(
+                    id: 5000,
+                    disable: true,
+                    isActive: false,
                     icon: "https://wetee.app/icons/bifrost.png",
                     background: Colors.black,
                     label: "Bifrost",
-                    amount: 'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
+                    amount:
+                        'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
                   ),
                 ],
               ),
@@ -126,5 +172,9 @@ class _IntegratePageState extends State<IntegratePage> {
         ),
       ),
     );
+  }
+
+  bool getActive(native.App org){
+    return oapps.where((oa) => oa.appId==org.id).toList().isNotEmpty;
   }
 }

@@ -1715,16 +1715,17 @@ class RustWraperImpl implements RustWraper {
 
   OrgApp _wire2api_org_app(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return OrgApp(
       id: _wire2api_u64(arr[0]),
-      startBlock: _wire2api_u64(arr[1]),
-      name: _wire2api_String(arr[2]),
-      desc: _wire2api_String(arr[3]),
-      icon: _wire2api_String(arr[4]),
-      url: _wire2api_String(arr[5]),
-      status: _wire2api_u8(arr[6]),
+      appId: _wire2api_u64(arr[1]),
+      startBlock: _wire2api_u64(arr[2]),
+      name: _wire2api_String(arr[3]),
+      desc: _wire2api_String(arr[4]),
+      icon: _wire2api_String(arr[5]),
+      url: _wire2api_String(arr[6]),
+      status: _wire2api_u8(arr[7]),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:dtim/bridge_struct.dart' as native;
 
 part 'org.g.dart';
 
@@ -40,10 +41,6 @@ class Org {
   @HiveField(14)
   String? homeUrl;
 
-  // 应用列表
-  @HiveField(7)
-  List<OrgApp> apps = [];
-
   Org(
     this.hash, {
     required this.daoId,
@@ -55,48 +52,8 @@ class Org {
     this.logo,
     this.img,
     this.homeUrl,
-    this.apps = const [],
   });
 }
-
-// @HiveType(typeId: 4)
-// class OrgMetaData {
-//   // @Id()
-//   // int id = 0;
-
-//   // 团队授权网址
-//   @HiveField(1)
-//   String? domain;
-
-//   // 团队空间
-//   @HiveField(6)
-//   String? space;
-
-//   // 团队图标
-//   @HiveField(2)
-//   String? avater;
-
-//   // 团队大图
-//   @HiveField(3)
-//   String? img;
-
-//   // 团队颜色
-//   @HiveField(4)
-//   String? color;
-
-//   // 官网地址
-//   @HiveField(5)
-//   String? homeUrl;
-
-//   OrgMetaData({
-//     this.domain,
-//     this.avater,
-//     this.homeUrl,
-//     this.img,
-//     this.color,
-//     this.space,
-//   });
-// }
 
 @HiveType(typeId: 5)
 class OrgApp {
@@ -127,6 +84,10 @@ class OrgApp {
   @HiveField(8)
   String? icon;
 
+
+  @HiveField(9)
+  int? appId;
+
   // 应用
   @HiveField(7)
   Map<String,String>? meta;
@@ -139,5 +100,21 @@ class OrgApp {
     this.desc,
     this.meta,
     this.icon,
+    this.appId
   });
+}
+
+
+List<OrgApp> trans(List<native.OrgApp> orgs) {
+  return orgs
+      .map((o) => OrgApp(
+            hash: o.id.toString(),
+            appId: o.appId,
+            type: 0,
+            name: o.name,
+            icon: o.icon,
+            desc: o.desc,
+            url: o.url,
+          ))
+      .toList();
 }

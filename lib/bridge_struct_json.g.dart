@@ -269,3 +269,45 @@ Map<String, dynamic> _$GovVoteJToJson(GovVoteJ instance) => <String, dynamic>{
       'unlockBlock': instance.unlockBlock,
       'referendumIndex': instance.referendumIndex,
     };
+
+OrgAppJ _$OrgAppJFromJson(Map<String, dynamic> json) => OrgAppJ(
+      id: json['id'] as int,
+      appId: json['appId'] as int,
+      startBlock: json['startBlock'] as int,
+      name: json['name'] as String,
+      desc: json['desc'] as String,
+      icon: json['icon'] as String,
+      url: json['url'] as String,
+      status: json['status'] as int,
+    );
+
+Map<String, dynamic> _$OrgAppJToJson(OrgAppJ instance) => <String, dynamic>{
+      'id': instance.id,
+      'appId': instance.appId,
+      'startBlock': instance.startBlock,
+      'name': instance.name,
+      'desc': instance.desc,
+      'icon': instance.icon,
+      'url': instance.url,
+      'status': instance.status,
+    };
+
+AppJ _$AppJFromJson(Map<String, dynamic> json) => AppJ(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      desc: json['desc'] as String,
+      icon: json['icon'] as String,
+      url: json['url'] as String,
+      status: json['status'] as int,
+      creator: json['creator'] as String,
+    );
+
+Map<String, dynamic> _$AppJToJson(AppJ instance) => <String, dynamic>{
+      'id': instance.id,
+      'url': instance.url,
+      'name': instance.name,
+      'desc': instance.desc,
+      'icon': instance.icon,
+      'creator': instance.creator,
+      'status': instance.status,
+    };

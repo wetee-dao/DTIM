@@ -275,6 +275,7 @@ pub fn org_apps(client: u32, org_id: u64) -> anyhow::Result<Vec<OrgApp>> {
         apps.into_iter()
             .map(|a| OrgApp {
                 id: a.id,
+                app_id: a.app_id,
                 name: String::from_utf8(a.name).unwrap(),
                 desc: String::from_utf8(a.desc).unwrap(),
                 icon: String::from_utf8(a.icon).unwrap(),

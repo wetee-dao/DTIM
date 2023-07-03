@@ -77,7 +77,7 @@ class OrgCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "#${org.hash} ${org.name ?? ""}",
+                          "#${org.name ?? ""}",
                           style: TextStyle(
                             color: constTheme.centerChannelColor,
                             fontSize: 16.w,

@@ -685,6 +685,7 @@ class MemberGroup {
 
 class OrgApp {
   final int id;
+  final int appId;
 
   /// The block that creates the DAO
   /// DAO创建的区块
@@ -711,6 +712,7 @@ class OrgApp {
 
   const OrgApp({
     required this.id,
+    required this.appId,
     required this.startBlock,
     required this.name,
     required this.desc,

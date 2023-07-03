@@ -38,6 +38,14 @@ class SideMenu extends StatelessWidget {
               onTap: () => onTap("Overview"),
             ),
             iconBuilder(
+              key: const Key("Members"),
+              assetName: Icons.how_to_vote_rounded,
+              name: "Members",
+              color: constTheme,
+              selected: id == "Members",
+              onTap: () => onTap("Members"),
+            ),
+            iconBuilder(
               key: const Key("Referendums"),
               assetName: Icons.how_to_vote_rounded,
               name: "Referendums",

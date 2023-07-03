@@ -1,4 +1,5 @@
 // import 'package:dtim/infra/pages/channel/create.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/user/kyc.dart';
 import 'package:dtim/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
@@ -79,10 +80,10 @@ getPage(String url, Function closeModel) {
   return const Center(child: Text("404"));
 }
 
-showModelOrPage(context, url, {double width = 520, double height = 550, double top = 30}) {
+Future<T?> showModelOrPage<T>(context, url, {double width = 520, double height = 550, double top = 30}) async {
   final constTheme = Theme.of(context).extension<ExtColors>()!;
   if (isPc() || PlatformInfos.isWeb) {
-    showDialog(
+   return showDialog<T>(
       context: context,
       useSafeArea: true,
       barrierColor: Theme.of(context).brightness == Brightness.dark
@@ -111,12 +112,12 @@ showModelOrPage(context, url, {double width = 520, double height = 550, double t
             ],
           ),
           child: getPage(url, () {
-            Navigator.pop(context);
+            context.router.pop();
           }),
         );
       },
     );
   } else {
-    context.pushNamed(url);
+    return context.router.pushNamed(url);
   }
 }

@@ -65,16 +65,16 @@ class Overviewpage extends StatelessWidget {
                               label: "Issued SHARE",
                               amount: dao.totalIssuance.toString(),
                             ),
-                            InfoCard(
-                              icon: AppIcons.zuzhi_data_organization_6,
-                              label: "Skilled Guild",
-                              amount: '${dao.guilds.length}',
-                            ),
-                            InfoCard(
-                              icon: AppIcons.xiangmu,
-                              label: "Project",
-                              amount: '${dao.projects.length}',
-                            ),
+                            // InfoCard(
+                            //   icon: AppIcons.zuzhi_data_organization_6,
+                            //   label: "Skilled Guild",
+                            //   amount: '${dao.guilds.length}',
+                            // ),
+                            // InfoCard(
+                            //   icon: AppIcons.xiangmu,
+                            //   label: "Project",
+                            //   amount: '${dao.projects.length}',
+                            // ),
                           ],
                         ),
                       );

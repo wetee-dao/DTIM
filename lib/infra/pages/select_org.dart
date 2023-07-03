@@ -33,6 +33,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   List<Account?> accounts = [];
   List<AccountOrg> userOrgs = [];
   List<Org> orgs = [];
+  WorkCTX? wctx;
   late AppCubit im;
   late AccountOrgApi accountOrgApi;
 
@@ -43,7 +44,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
     getData().then((v) {
       final query = context.routeData.queryParams;
-      if (query.getString("auto", "") == "t") {
+      if (query.getString("t", "") == "auto") {
         Future.delayed(Duration.zero).then((value) async {
           await gotoOrg();
         });
@@ -52,36 +53,41 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   }
 
   Future<void> getData() async {
-    final client = await rustApi.connect(url: chainUrl);
-    final v = await rustApi.orgs(client: client);
-
-    orgs = v
-        .map((o) => Org(
-              o.id.toString(),
-              daoId: o.id,
-              name: o.name,
-              desc: o.desc,
-              logo: o.logo,
-              img: o.img,
-              imApi: o.imApi,
-              homeUrl: o.homeUrl,
-            ))
-        .toList();
-
-    final vuser = await AccountApi.create();
-
-    accounts = await vuser.getUsers();
     accountOrgApi = await AccountOrgApi.create();
     userOrgs = await accountOrgApi.listByAccount(im.me!.address);
+
+    final vuser = await AccountApi.create();
+    accounts = await vuser.getUsers();
     final orgList = userOrgs.map((o) => o.orgHash).toList();
     selected = orgList;
-
     setState(() {});
+
+    final org = AccountOrg("test");
+    wctx = WorkCTX();
+    wctx!.connectChain(org, im.me!, () async {
+      final v = await rustApi.orgs(client: wctx!.chainClient);
+      orgs = v
+          .map((o) => Org(
+                o.id.toString(),
+                daoId: o.id,
+                name: o.name,
+                desc: o.desc,
+                logo: o.logo,
+                img: o.img,
+                imApi: o.imApi,
+                homeUrl: o.homeUrl,
+              ))
+          .toList();
+
+      wctx?.disconnectChain();
+      if (mounted) setState(() {});
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    wctx?.disconnectChain();
     beforeLeave();
   }
 
@@ -124,13 +130,15 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 25.w),
-            createOrg("addChainNode", "创建链上隐私组织节点", constTheme, () async {}, false),
+            createOrg("addChainNode", "创建隐私组织底座", constTheme, () async {}, false),
             SizedBox(height: 15.w),
-            createOrg("addSubNode", "创建附属组织节点", constTheme, () async {}, false),
+            createOrg("addSubNode", "创建附属组织", constTheme, () async {}, false),
             SizedBox(height: 15.w),
-            createOrg("addLocalNode", "部署本地组织节点", constTheme, () async {
+            createOrg("addLocalNode", "部署本地组织底座", constTheme, () async {
               context.router.pop();
-              await context.router.pushNamed("/create_org");
+              await context.router.pushNamed("/create_org").then((value) {
+                getData();
+              });
             }, true),
             SizedBox(
               height: 25.w,
@@ -165,6 +173,11 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               onPressed: () async {
                 if (userOrgs.isEmpty) {
                   BotToast.showText(text: L10n.of(context)!.selectOrg, duration: const Duration(seconds: 2));
+                  return;
+                }
+                final query = context.routeData.queryParams;
+                if (query.getString("t", "") == "back") {
+                  context.router.pop();
                   return;
                 }
                 await gotoOrg();
@@ -242,7 +255,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "#${userOrgs[i].orgHash} ${userOrgs[i].orgName ?? ""}",
+                                "# ${userOrgs[i].orgName ?? ""}",
                                 style: TextStyle(
                                   color: constTheme.centerChannelColor,
                                   fontSize: 16.w,

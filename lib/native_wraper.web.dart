@@ -258,6 +258,44 @@ external bool daoGuildJoinRequestFunc(
   WithGovPs? ext,
 );
 
+@JS("appHubs")
+external bool appHubsFunc(int client);
+
+@JS("createDao")
+external bool createDaoFunc(
+  int client,
+  String from,
+  String name,
+  String purpose,
+  String metaData,
+  String desc,
+  String imApi,
+  String bg,
+  String logo,
+  String img,
+  String homeUrl,
+);
+
+@JS("orgIntegrateApp")
+external bool orgIntegrateAppFunc(
+  int client,
+  String from,
+  int orgId,
+  int appId,
+  WithGovPs? ext,
+);
+
+@JS("orgApps")
+external bool orgAppsFunc(
+  int client,
+  int orgId,
+);
+
+@JS("orgs")
+external bool orgsFunc(
+  int client,
+);
+
 // ignore: camel_case_types
 class rustApi {
   static Future<String> connectWallet() async {
@@ -329,16 +367,6 @@ class rustApi {
     } catch (e) {
       rethrow;
     }
-  }
-
-  static Future<void> createDao(
-      {required int client,
-      required String from,
-      required String name,
-      required String purpose,
-      required String metaData,
-      dynamic hint}) {
-    return Future(() {});
   }
 
   static Future<void> createAsset(
@@ -1002,5 +1030,100 @@ class rustApi {
     }
   }
 
-  static orgs() {}
+  static Future<List<App>> appHubs({required int client, dynamic hint}) async {
+    try {
+      final result = await promiseToFuture(appHubsFunc(client));
+      var data = convert.jsonDecode(result) as List<dynamic>;
+      List<AppJ> list = [];
+      for (var i = 0; i < data.length; i++) {
+        var item = data[i] as Map<String, dynamic>;
+        list.add(AppJ.fromJson(item));
+      }
+      return list;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> createDao(
+      {required int client,
+      required String from,
+      required String name,
+      required String purpose,
+      required String metaData,
+      required String desc,
+      required String imApi,
+      required String bg,
+      required String logo,
+      required String img,
+      required String homeUrl,
+      dynamic hint}) async {
+    try {
+      await promiseToFuture(createDaoFunc(
+        client,
+        from,
+        name,
+        purpose,
+        metaData,
+        desc,
+        imApi,
+        bg,
+        logo,
+        img,
+        homeUrl,
+      ));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<OrgApp>> orgApps({required int client, required int orgId, dynamic hint}) async {
+    try {
+      final result = await promiseToFuture(orgAppsFunc(client, orgId));
+      var data = convert.jsonDecode(result) as List<dynamic>;
+      List<OrgAppJ> list = [];
+      for (var i = 0; i < data.length; i++) {
+        var item = data[i] as Map<String, dynamic>;
+        list.add(OrgAppJ.fromJson(item));
+      }
+      return list;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<OrgInfo>> orgs({required int client, dynamic hint}) async {
+    try {
+      final result = await promiseToFuture(orgsFunc(client));
+      var data = convert.jsonDecode(result) as List<dynamic>;
+      List<OrgInfoJ> list = [];
+      for (var i = 0; i < data.length; i++) {
+        var item = data[i] as Map<String, dynamic>;
+        list.add(OrgInfoJ.fromJson(item));
+      }
+      return list;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> orgIntegrateApp(
+      {required int client,
+      required String from,
+      required int orgId,
+      required int appId,
+      WithGovPs? ext,
+      dynamic hint}) async {
+    try {
+      await promiseToFuture(orgIntegrateAppFunc(
+        client,
+        from,
+        orgId,
+        appId,
+        ext,
+      ));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import 'org.dart';
+
 part 'account.g.dart';
 
 @HiveType(typeId: 1)
@@ -44,7 +46,7 @@ class AccountOrg {
   @HiveField(3)
   String? orgName;
 
-    // 组织名
+  // 组织名
   @HiveField(14)
   String? orgDesc;
 
@@ -82,6 +84,10 @@ class AccountOrg {
 
   @HiveField(12)
   late Account account;
+
+  // 应用列表
+  @HiveField(15)
+  List<OrgApp>? apps = [];
 
   AccountOrg(this.orgHash);
 }

@@ -119,7 +119,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         widget.onResult!.call(true);
       }
     } else {
-      globalCtx().router.pushNamed("/select_org?auto=t");
+      globalCtx().router.pushNamed("/select_org?t=auto");
     }
   }
 

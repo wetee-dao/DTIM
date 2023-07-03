@@ -6,6 +6,7 @@ initDB() async {
   Hive.registerAdapter(AccountAdapter());
   Hive.registerAdapter(AccountOrgAdapter());
   Hive.registerAdapter(OrgAdapter());
+  Hive.registerAdapter(OrgAppAdapter());
 
   // if (DB != null) {
   //   return DB!;

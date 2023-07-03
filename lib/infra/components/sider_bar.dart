@@ -50,11 +50,16 @@ class SiderBarItem extends StatelessWidget {
                         height: 20.w,
                       )),
             SizedBox(height: 3.w),
-            Text(
-              name,
-              style: TextStyle(
-                color: constTheme.sidebarText,
-                fontSize: 10.w,
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              height: 14.w,
+              child: Text(
+                name.split("&").first,
+                style: TextStyle(
+                  color: constTheme.sidebarText,
+                  fontSize: 10.w,
+                ),
+                overflow: TextOverflow.clip,
               ),
             ),
           ],

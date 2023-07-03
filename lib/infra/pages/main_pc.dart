@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/router/router.dart';
+import 'package:dtim/native_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +32,7 @@ class _PCPageState extends State<PCPage> {
   double rightWidth = 200.w;
   String rightUrl = "";
   Uri? avatar;
+  List<OrgApp> apps = [];
 
   final mainPages = [
     const OrgRoute(),
@@ -48,20 +51,33 @@ class _PCPageState extends State<PCPage> {
   }
 
   getData() async {
+    final accountOrgApi = await AccountOrgApi.create();
     final os = await (await AccountOrgApi.create()).listByAccount(im.me!.address);
     setState(() {
       aorgs = os;
     });
     if (im.currentState != null) {
       var u = await im.currentState!.client.getAvatarUrl(im.currentState!.client.userID ?? "");
+      AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.orgHash);
+      if (org != null) {
+        apps = org.apps ?? [];
+      }
       setState(() {
         avatar = u;
+      });
+
+      workCtx.connectChain(im.currentState!.org, im.me!, () async {
+        apps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
+        await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
+        setState(() {});
       });
     }
   }
 
   @override
   void dispose() {
+    printDebug("PCPage dispose");
+    workCtx.disconnectChain();
     super.dispose();
   }
 
@@ -137,30 +153,43 @@ class _PCPageState extends State<PCPage> {
                                     onSelect(0);
                                   },
                                 ),
-                                SiderBarItem(
-                                  "Gov",
-                                  icon: AppIcons.sxgl,
-                                  key: const Key("Gov"),
-                                  selected: id.data == 1,
-                                  onTap: () {
-                                    pageRouter.setActiveIndex(1);
-                                    onSelect(1);
-                                  },
-                                ),
-                                // 任务管理
-                                SiderBarItem(
-                                  "Kanban",
-                                  img: "https://wetee.app/icons/kanban.png",
-                                  key: const Key("KANBAN"),
-                                  selected: id.data == 2,
-                                  onTap: () {
-                                    pageRouter.setActiveIndex(2);
-                                    onSelect(2);
-                                  },
-                                ),
+                                for (var app in apps)
+                                  SiderBarItem(
+                                    app.name ?? "",
+                                    img: app.icon,
+                                    key: Key("app_${app.hash}"),
+                                    selected: id.data == app.appId! + 1,
+                                    onTap: () {
+                                      if (app.appId! < 2) {
+                                        pageRouter.setActiveIndex(app.appId! + 1);
+                                        onSelect(app.appId! + 1);
+                                      }
+                                    },
+                                  ),
+                                // SiderBarItem(
+                                //   "Gov",
+                                //   icon: AppIcons.sxgl,
+                                //   key: const Key("Gov"),
+                                //   selected: id.data == 1,
+                                //   onTap: () {
+                                //     pageRouter.setActiveIndex(1);
+                                //     onSelect(1);
+                                //   },
+                                // ),
+                                // // 任务管理
+                                // SiderBarItem(
+                                //   "Kanban",
+                                //   img: "https://wetee.app/icons/kanban.png",
+                                //   key: const Key("KANBAN"),
+                                //   selected: id.data == 2,
+                                //   onTap: () {
+                                //     pageRouter.setActiveIndex(2);
+                                //     onSelect(2);
+                                //   },
+                                // ),
                                 // DAO管理
                                 SiderBarItem(
-                                  "Integrate",
+                                  "Apps",
                                   icon: AppIcons.shujujicheng,
                                   key: const Key("Integrate"),
                                   selected: id.data == 3,
@@ -178,7 +207,9 @@ class _PCPageState extends State<PCPage> {
                         tooltip: "discover and join",
                         onPressed: () {
                           printDebug("discover and join");
-                          context.router.pushNamed("/select_org?t=back");
+                          context.router.pushNamed("/select_org?t=back").then((value) {
+                            workCtx.connectChain(im.currentState!.org, im.me!, () {});
+                          });
                         },
                         icon: SizedBox(
                           width: 36.w,
@@ -246,7 +277,7 @@ class _PCPageState extends State<PCPage> {
                                       )
                                     : Center(
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(2.w),
+                                          borderRadius: BorderRadius.circular(6.w),
                                           child: Image.network(
                                             fit: BoxFit.cover,
                                             aorgs![i].orgAvater!,

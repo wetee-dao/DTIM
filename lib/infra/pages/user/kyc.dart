@@ -46,7 +46,7 @@ class _KycPageState extends State<KycPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "zkSBT authentication",
+              title: "Manta network zkSBT authentication",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();

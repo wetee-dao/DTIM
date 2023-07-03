@@ -1,4 +1,5 @@
 import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/infra/components/iconfont.dart';
 import 'package:auto_route/auto_route.dart';
@@ -426,8 +427,11 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 _formKey.currentState!.save();
                 final im = context.read<AppCubit>();
 
-                rustApi.connect(url: chainUrl).then((client) async {
-                  if (!await inputPasswordg(im.me!)){
+                final org = AccountOrg("test");
+                printInfo("workCtx.connectChain");
+                workCtx.connectChain(org, im.me!, () async {
+                   printInfo("workCtx.connectChain2");
+                  if (!await inputPasswordg(im.me!)) {
                     return;
                   }
                   final res = await waitFutureLoading<String>(
@@ -436,7 +440,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                       printSuccess(_imController.text.replaceAll(RegExp(r"\s*"), ""));
                       try {
                         await rustApi.createDao(
-                          client: client,
+                          client: workCtx.chainClient,
                           from: im.me!.address,
                           name: _data.name,
                           purpose: _data.purpose,

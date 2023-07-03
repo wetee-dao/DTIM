@@ -27,14 +27,13 @@ class OrgAdapter extends TypeAdapter<Org> {
       logo: fields[12] as String?,
       img: fields[13] as String?,
       homeUrl: fields[14] as String?,
-      apps: (fields[7] as List).cast<OrgApp>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Org obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(10)
       ..writeByte(1)
       ..write(obj.hash)
       ..writeByte(2)
@@ -54,9 +53,7 @@ class OrgAdapter extends TypeAdapter<Org> {
       ..writeByte(13)
       ..write(obj.img)
       ..writeByte(14)
-      ..write(obj.homeUrl)
-      ..writeByte(7)
-      ..write(obj.apps);
+      ..write(obj.homeUrl);
   }
 
   @override
@@ -88,13 +85,14 @@ class OrgAppAdapter extends TypeAdapter<OrgApp> {
       desc: fields[6] as String?,
       meta: (fields[7] as Map?)?.cast<String, String>(),
       icon: fields[8] as String?,
+      appId: fields[9] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, OrgApp obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(2)
       ..write(obj.hash)
       ..writeByte(3)
@@ -107,6 +105,8 @@ class OrgAppAdapter extends TypeAdapter<OrgApp> {
       ..write(obj.desc)
       ..writeByte(8)
       ..write(obj.icon)
+      ..writeByte(9)
+      ..write(obj.appId)
       ..writeByte(7)
       ..write(obj.meta);
   }

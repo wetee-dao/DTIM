@@ -242,6 +242,7 @@ pub struct App {
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
 pub struct OrgApp {
     pub id: u64,
+    pub app_id: u64,
     /// The block that creates the DAO
     /// DAO创建的区块
     pub start_block: u64,

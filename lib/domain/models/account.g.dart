@@ -81,13 +81,14 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..theme = fields[13] as String?
       ..status = fields[10] as int
       ..withAddr = fields[11] as String
-      ..account = fields[12] as Account;
+      ..account = fields[12] as Account
+      ..apps = (fields[15] as List?)?.cast<OrgApp>();
   }
 
   @override
   void write(BinaryWriter writer, AccountOrg obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(2)
       ..write(obj.orgHash)
       ..writeByte(3)
@@ -111,7 +112,9 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..writeByte(11)
       ..write(obj.withAddr)
       ..writeByte(12)
-      ..write(obj.account);
+      ..write(obj.account)
+      ..writeByte(15)
+      ..write(obj.apps);
   }
 
   @override

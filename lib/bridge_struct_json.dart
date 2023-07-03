@@ -286,3 +286,53 @@ class GovVoteJ extends GovVote {
   factory GovVoteJ.fromJson(Map<String, dynamic> json) => _$GovVoteJFromJson(json);
   Map<String, dynamic> toJson() => _$GovVoteJToJson(this);
 }
+
+@JsonSerializable()
+class OrgAppJ extends OrgApp {
+  const OrgAppJ({
+    required int id,
+    required int appId,
+    required int startBlock,
+    required String name,
+    required String desc,
+    required String icon,
+    required String url,
+    required int status,
+  }):super(
+    id: id,
+    appId: appId,
+    startBlock: startBlock,
+    name: name,
+    desc: desc,
+    icon: icon,
+    url: url,
+    status: status,
+  );
+
+  factory OrgAppJ.fromJson(Map<String, dynamic> json) => _$OrgAppJFromJson(json);
+  Map<String, dynamic> toJson() => _$OrgAppJToJson(this);
+}
+
+@JsonSerializable()
+class AppJ extends App{
+  const AppJ({
+    required int id,
+    required String name,
+    required String desc,
+    required String icon,
+    required String url,
+    required int status,
+    required String creator,
+  }):super(
+    id: id,
+    name: name,
+    desc: desc,
+    icon: icon,
+    url: url,
+    status: status,
+    creator: creator
+  );
+
+  factory AppJ.fromJson(Map<String, dynamic> json) => _$AppJFromJson(json);
+  Map<String, dynamic> toJson() => _$AppJToJson(this);
+}

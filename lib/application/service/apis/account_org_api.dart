@@ -38,11 +38,24 @@ class AccountOrgApi {
     await storeBox.delete(userId + orgHash);
   }
 
+  AccountOrg? getOrg(String userId, String orgHash) {
+    return storeBox.get(userId + orgHash);
+  }
+
+
+  saveApp(String userId, String orgHash, List<OrgApp> apps) async {
+    var org = storeBox.get(userId + orgHash);
+    if (org != null) {
+      org.apps = apps;
+      await storeBox.put(userId + orgHash, org);
+    }
+  }
+
   addOrg(String address, Org org) async {
     final accountStoreBox = await Hive.openBox<Account>('Account');
     final account = accountStoreBox.get(address);
     final at = AccountOrg(org.hash);
-    printError(org.imApi??"xxxxxx");
+    printError(org.imApi ?? "xxxxxx");
     var img = "";
     if (org.img != null && org.img != "") {
       img = org.img!;

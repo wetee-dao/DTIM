@@ -14,6 +14,7 @@ import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import 'guild.dart';
+import 'member.dart';
 import 'overview.dart';
 import 'project.dart';
 import 'gov_menu.dart';
@@ -29,7 +30,7 @@ class GovPage extends StatefulWidget {
 class _GovPageState extends State<GovPage> {
   final mainPages = [
     const Overviewpage(),
-    // const RoadMapPage(),
+    const MemberPage(),
     const ReferendumPage(),
     // const CombindBoardPage(),
     // Container(),
@@ -181,7 +182,7 @@ class _GovPageState extends State<GovPage> {
     switch (str) {
       case "Overview":
         return 0;
-      case "RoadMap":
+      case "Members":
         return 1;
       case "Referendums":
         return 2;

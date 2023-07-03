@@ -37,7 +37,7 @@ class WorkCTX with ChangeNotifier {
   List<GovProps> pending = [];
   List<GovReferendum> going = [];
 
-  connectChain(AccountOrg porg, puser, callback) async {
+  connectChain(AccountOrg porg,Account puser,Function callback) async {
     if (chainClient > -1) {
       await getData();
       callback();
@@ -80,6 +80,7 @@ class WorkCTX with ChangeNotifier {
   }
 
   disconnectChain() async {
+    if(chainClient==-1) return;
     await rustApi.stopClient(client: chainClient);
     chainClient = -1;
   }
@@ -87,6 +88,8 @@ class WorkCTX with ChangeNotifier {
   getData({notify = true}) async {
     // 区块链代码
     blockNumber = await rustApi.getBlockNumber(client: chainClient);
+
+    if(org.daoId==0) return;
 
     // DAO信息
     dao = await rustApi.daoInfo(client: chainClient, daoId: org.daoId);

@@ -1596,6 +1596,7 @@ impl support::IntoDart for OrgApp {
     fn into_dart(self) -> support::DartAbi {
         vec![
             self.id.into_dart(),
+            self.app_id.into_dart(),
             self.start_block.into_dart(),
             self.name.into_dart(),
             self.desc.into_dart(),
