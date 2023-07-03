@@ -50,7 +50,7 @@ class _GovPageState extends State<GovPage> {
     super.initState();
     currentId.add(pageStr);
     im = context.read<AppCubit>();
-    workCtx.connectChain(im.currentState!.org, im.me!, () {
+    workCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
         // print("获取新的区块头");
@@ -72,7 +72,6 @@ class _GovPageState extends State<GovPage> {
   void dispose() {
     super.dispose();
     _timer?.cancel();
-    // workCtx.disconnectChain();
   }
 
   @override

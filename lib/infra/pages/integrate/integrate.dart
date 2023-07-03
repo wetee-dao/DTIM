@@ -37,7 +37,7 @@ class _IntegratePageState extends State<IntegratePage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    workCtx.connectChain(im.currentState!.org, im.me!, () {
+    workCtx.connectChain(() {
       getData();
     });
   }
@@ -172,8 +172,7 @@ class _IntegratePageState extends State<IntegratePage> {
                     icon: "https://wetee.app/icons/54881907.png",
                     background: Colors.black,
                     label: "Acala",
-                    amount:
-                        'Cross-chain DeFi Hub for Polkadot, Kusama and beyond',
+                    amount: 'Cross-chain DeFi Hub for Polkadot, Kusama and beyond',
                   ),
                   const AppCard(
                     id: 5000,
@@ -182,8 +181,7 @@ class _IntegratePageState extends State<IntegratePage> {
                     icon: "https://wetee.app/icons/astar.png",
                     background: Colors.black,
                     label: "Astar",
-                    amount:
-                        'The Future of Multichain Smart Contracts',
+                    amount: 'The Future of Multichain Smart Contracts',
                   ),
                 ],
               ),
@@ -194,7 +192,7 @@ class _IntegratePageState extends State<IntegratePage> {
     );
   }
 
-  bool getActive(native.App org){
-    return oapps.where((oa) => oa.appId==org.id).toList().isNotEmpty;
+  bool getActive(native.App org) {
+    return oapps.where((oa) => oa.appId == org.id).toList().isNotEmpty;
   }
 }

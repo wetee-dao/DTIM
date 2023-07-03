@@ -47,10 +47,10 @@ class _WorkPageState extends State<WorkPage> {
     super.initState();
     currentId.add(pageStr);
     im = context.read<AppCubit>();
-    workCtx.connectChain(im.currentState!.org, im.me!, () {
+    title = workCtx.dao.name;
+    workCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-        // print("获取新的区块头");
         workCtx.timeTick();
       });
     });
@@ -58,18 +58,12 @@ class _WorkPageState extends State<WorkPage> {
 
   getData() async {
     workCtx.getVoteData();
-    if (mounted) {
-      setState(() {
-        title = workCtx.dao.name;
-      });
-    }
   }
 
   @override
   void dispose() {
     super.dispose();
     _timer?.cancel();
-    // workCtx.disconnectChain();
   }
 
   @override
@@ -169,7 +163,6 @@ class _WorkPageState extends State<WorkPage> {
       final ids = pageStr.split(" ");
       final projectState = projectKey.currentState as ProjectPageState;
       final project = workCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
-      // guildKey.currentState?.getData();
       projectState.init(project);
     }
   }

@@ -155,6 +155,9 @@ class AppCubit extends Cubit<AppState> {
 
   // 连接账户
   Future<bool> connect(AccountOrg org) async {
+    if(org.domain!.contains("http://")){
+      org.domain = org.domain!.replaceFirst("http://", "https://");
+    }
     final server = Uri.parse(org.domain ?? "");
     final domain = server.host;
     // 构建账户密码

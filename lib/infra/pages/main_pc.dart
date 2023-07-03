@@ -66,7 +66,8 @@ class _PCPageState extends State<PCPage> {
         avatar = u;
       });
 
-      workCtx.connectChain(im.currentState!.org, im.me!, () async {
+      workCtx.setOrg(im.currentState!.org, im.me!);
+      workCtx.connectChain(() async {
         apps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
         await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
         setState(() {});
@@ -77,7 +78,6 @@ class _PCPageState extends State<PCPage> {
   @override
   void dispose() {
     printDebug("PCPage dispose");
-    workCtx.disconnectChain();
     super.dispose();
   }
 
@@ -208,7 +208,7 @@ class _PCPageState extends State<PCPage> {
                         onPressed: () {
                           printDebug("discover and join");
                           context.router.pushNamed("/select_org?t=back").then((value) {
-                            workCtx.connectChain(im.currentState!.org, im.me!, () {});
+                            getData();
                           });
                         },
                         icon: SizedBox(

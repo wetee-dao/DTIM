@@ -13,7 +13,7 @@ import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 
-const chainUrl = "ws://chain-ws.tc.asyou.me:80";
+var chainUrl = PlatformInfos.isDesktop ? "ws://chain-ws.tc.asyou.me:80" : "wss://chain-api.tc.asyou.me";
 // const chainUrl = "ws://127.0.0.1:9944";
 
 class WorkCTX with ChangeNotifier {
@@ -37,15 +37,18 @@ class WorkCTX with ChangeNotifier {
   List<GovProps> pending = [];
   List<GovReferendum> going = [];
 
-  connectChain(AccountOrg porg,Account puser,Function callback) async {
+  setOrg(AccountOrg porg, Account puser) {
+    user = puser;
+    org = porg;
+  }
+
+  connectChain(Function callback) async {
     if (chainClient > -1) {
       await getData();
       callback();
       return;
     }
 
-    user = puser;
-    org = porg;
     rustApi.connect(url: chainUrl).then((clientIndex) async {
       rustApi.startClient(client: clientIndex).then((e) {
         chainClient = -1;
@@ -80,7 +83,7 @@ class WorkCTX with ChangeNotifier {
   }
 
   disconnectChain() async {
-    if(chainClient==-1) return;
+    if (chainClient == -1) return;
     await rustApi.stopClient(client: chainClient);
     chainClient = -1;
   }
@@ -89,7 +92,7 @@ class WorkCTX with ChangeNotifier {
     // 区块链代码
     blockNumber = await rustApi.getBlockNumber(client: chainClient);
 
-    if(org.daoId==0) return;
+    if (org.daoId == 0) return;
 
     // DAO信息
     dao = await rustApi.daoInfo(client: chainClient, daoId: org.daoId);
@@ -114,6 +117,7 @@ class WorkCTX with ChangeNotifier {
   }
 
   getVoteData({notify = true}) async {
+    if (org.daoId == 0) return;
     pending = await rustApi.daoGovPendingReferendumList(client: chainClient, daoId: org.daoId);
     going = await rustApi.daoGovReferendumList(client: chainClient, daoId: org.daoId);
 
@@ -130,6 +134,7 @@ class WorkCTX with ChangeNotifier {
         await getVoteData();
       } else {
         if (user.address != '') {
+          if (org.daoId == 0) return;
           nativeAmount = await rustApi.nativeBalance(client: chainClient, address: user.address);
           share = await rustApi.daoBalance(client: chainClient, daoId: org.daoId, address: user.address);
         }

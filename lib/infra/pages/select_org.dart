@@ -41,6 +41,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   void initState() {
     im = context.read<AppCubit>();
     super.initState();
+    if(im.me==null){
+      context.router.replaceNamed("/");
+    }
 
     getData().then((v) {
       final query = context.routeData.queryParams;
@@ -62,10 +65,8 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     selected = orgList;
     setState(() {});
 
-    final org = AccountOrg("test");
-    wctx = WorkCTX();
-    wctx!.connectChain(org, im.me!, () async {
-      final v = await rustApi.orgs(client: wctx!.chainClient);
+    workCtx.connectChain(() async {
+      final v = await rustApi.orgs(client: workCtx.chainClient);
       orgs = v
           .map((o) => Org(
                 o.id.toString(),
@@ -79,7 +80,6 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               ))
           .toList();
 
-      wctx?.disconnectChain();
       if (mounted) setState(() {});
     });
   }
@@ -87,7 +87,6 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   @override
   void dispose() {
     super.dispose();
-    wctx?.disconnectChain();
     beforeLeave();
   }
 

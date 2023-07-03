@@ -33,16 +33,15 @@ class _RoadMapPageState extends State<RoadMapPage> {
     im = context.read<AppCubit>();
     dao = context.read<WorkCTX>();
     getData();
-    dao.addListener(getData);
   }
 
   @override
   void dispose() {
-    dao.removeListener(getData);
     super.dispose();
   }
 
   getData() async {
+    print("getData");
     quarters = await rustApi.daoRoadmap(
       client: dao.chainClient,
       daoId: im.currentState!.org.daoId,
