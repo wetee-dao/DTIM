@@ -165,6 +165,26 @@ class _IntegratePageState extends State<IntegratePage> {
                     amount:
                         'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
                   ),
+                  const AppCard(
+                    id: 5000,
+                    disable: true,
+                    isActive: false,
+                    icon: "https://wetee.app/icons/54881907.png",
+                    background: Colors.black,
+                    label: "Acala",
+                    amount:
+                        'Cross-chain DeFi Hub for Polkadot, Kusama and beyond',
+                  ),
+                  const AppCard(
+                    id: 5000,
+                    disable: true,
+                    isActive: false,
+                    icon: "https://wetee.app/icons/astar.png",
+                    background: Colors.black,
+                    label: "Astar",
+                    amount:
+                        'The Future of Multichain Smart Contracts',
+                  ),
                 ],
               ),
             ),
