@@ -65,6 +65,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     selected = orgList;
     setState(() {});
 
+    workCtx.setOrg(AccountOrg(""), im.me!);
     workCtx.connectChain(() async {
       final v = await rustApi.orgs(client: workCtx.chainClient);
       orgs = v
