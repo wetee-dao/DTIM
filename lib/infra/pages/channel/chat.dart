@@ -254,14 +254,14 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         future: () => voip.requestTurnServerCredentials(),
                       );
                       if (success.result == null) {
-                        BotToast.showText(text: "获取 turn 服务器失败");
+                        BotToast.showText(text: L10n.of(context)!.turnError);
                       }
                       try {
                         if (!room!.groupCallsEnabled) {
                           await room!.enableGroupCalls();
                         }
                         if (!room!.canCreateGroupCall) {
-                          BotToast.showText(text: "无法创建会议,请检查是否有权限");
+                          BotToast.showText(text: L10n.of(context)!.meetingNoPermission);
                           return;
                         }
                         if (voip.groupCalls[room!.id] != null) {
@@ -297,7 +297,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         future: () => voip.requestTurnServerCredentials(),
                       );
                       if (success.result == null) {
-                        BotToast.showText(text: "获取 turn 服务器失败");
+                        BotToast.showText(text: L10n.of(context)!.turnError);
                       }
                       try {
                         await voip.inviteToCall(room!.id, link.CallType.kVoice);
@@ -530,17 +530,23 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             ),
             SizedBox(height: 5.w),
             Text(
-              "${event.senderId == client.userID ? "我" : event.senderFromMemoryOrFallback.calcDisplayname()}于 ${formatDate(
-                event.originServerTs,
-                [
-                  yyyy,
-                  ' 年 ',
-                  mm,
-                  " 月 ",
-                  dd,
-                  " 日",
-                ],
-              )} 创建此频道，这是${room!.isDirectChat ? "聊天" : "频道"}的开头。",
+              L10n.of(context)!.msgCreate(
+                event.senderId == client.userID
+                    ? L10n.of(context)!.me
+                    : event.senderFromMemoryOrFallback.calcDisplayname(),
+                room!.isDirectChat ? "chat" : "channel",
+                formatDate(
+                  event.originServerTs,
+                  [
+                    yyyy,
+                    ' - ',
+                    mm,
+                    " - ",
+                    dd,
+                    " -",
+                  ],
+                ),
+              ),
               style: TextStyle(
                 color: constTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
@@ -202,7 +203,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               style: TextStyle(color: constTheme.buttonColor.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
-                hintText: '输入用户 id 开启私聊,如：@username',
+                hintText: '${L10n.of(context)!.enterUserID}：@username',
                 hintStyle: TextStyle(height: 1.5, color: constTheme.buttonColor),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),

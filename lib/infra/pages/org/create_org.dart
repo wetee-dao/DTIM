@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:dtim/application/store/theme.dart';
@@ -53,10 +54,10 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final titles = ["1. 在云端/电脑上部署节点", "2. 链接到DTIM区块链"];
+    final titles = ["1. Deploy the node on the cloud/computer", "2. Connect to the DTIM blockchain  "];
     return Scaffold(
       appBar: LocalAppBar(
-        title: "部署本地组织节点",
+        title: "Deploying an on-premise organization node:",
         onBack: () {
           if (step == 0) {
             context.router.pop();
@@ -76,7 +77,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "部署组织节点",
+                "Deploying an on-premise organization node:",
                 style: TextStyle(
                   fontSize: 32.w,
                   color: constTheme.centerChannelColor,
@@ -126,7 +127,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 return null;
               },
               decoration: InputDecoration(
-                hintText: "请输入im地址",
+                hintText: "Please enter im address",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -159,12 +160,17 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
               SizedBox(width: 5.w),
               Expanded(
                 // margin: EdgeInsets.only(left: 5.w),
-                child: Text(
-                  L10n.of(context)!.mnemonicNote,
-                  style: TextStyle(
-                    fontSize: 12.w,
-                    color: constTheme.linkColor.withOpacity(0.7),
-                    fontWeight: FontWeight.w800,
+                child: InkWell(
+                  onTap: () async {
+                    await launchUrl(Uri.parse("https://github.com/DAOent/dao-entrance-node"));
+                  },
+                  child: Text(
+                    "We have provided deployment documents, click to view",
+                    style: TextStyle(
+                      fontSize: 12.w,
+                      color: constTheme.linkColor.withOpacity(0.7),
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ),
@@ -236,7 +242,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织名称",
+                hintText: "Please enter organization name",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -267,7 +273,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织logo地址",
+                hintText: "Please enter the organization logo url",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -292,7 +298,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织描述",
+                hintText: "Please enter a brief description of the organization",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -323,7 +329,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织宗旨(选填)",
+                hintText: "Please enter organization mission (optional)",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -348,7 +354,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织背景图片地址(选填)",
+                hintText: "Please enter the organization background image URL (optional)",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -373,7 +379,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织介绍图片地址(选填)",
+                hintText: "Please enter the URL of the image to be used to introduce the organization (optional)",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -398,7 +404,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 color: constTheme.centerChannelColor,
               ),
               decoration: InputDecoration(
-                hintText: "请输入组织主页地址(选填)",
+                hintText: "Please enter the organization homepage URL (optional)",
                 hintStyle: TextStyle(
                   fontSize: 14.w,
                   color: constTheme.centerChannelColor,
@@ -427,7 +433,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 final im = context.read<AppCubit>();
 
                 workCtx.connectChain(() async {
-                   printInfo("workCtx.connectChain2");
+                  printInfo("workCtx.connectChain2");
                   if (!await inputPasswordg(im.me!)) {
                     return;
                   }

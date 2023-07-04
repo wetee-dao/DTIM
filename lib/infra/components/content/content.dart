@@ -37,41 +37,41 @@ class MessageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (event.type) {
       case EventTypes.Encryption:
-        return const RoomEvent(text: "启用了E2E加密");
+        return const RoomEvent(text: "Enabled E2E encryption"); // 启用了E2E加密
       case EventTypes.RoomPowerLevels:
-        return const RoomEvent(text: "更新频道修改权限");
+        return const RoomEvent(text: "Updated channel modification permissions"); //更新频道修改权限
       case EventTypes.RoomJoinRules:
         var joinRule = event.content["join_rule"];
         if (joinRule == "invite") {
-          return const RoomEvent(text: "设置频道加入规则为 邀请");
+          return const RoomEvent(text: "The channel joining rule has been set to 'Invitation'"); // 设置频道加入规则为 邀请
         } else if (joinRule == "public") {
-          return const RoomEvent(text: "设置频道加入规则为 公开");
+          return const RoomEvent(text: "The channel joining rule has been set to 'Public'"); //设置频道加入规则为 公开
         } else {
           return Text(event.toJson().toString());
         }
-      case EventTypes.HistoryVisibility:
+      case EventTypes.HistoryVisibility: // 设置频道历史消息可见性为
         var historyVisibility = event.content["history_visibility"];
         if (historyVisibility == "invited") {
           return RoomEvent(
-            text: "设置频道历史消息可见性为 ${HistoryVisibility.invited.getLocalizedString(
+            text: "The channel history message visibility has been set to ${HistoryVisibility.invited.getLocalizedString(
               MatrixLocals(L10n.of(context)!),
             )}",
           );
         } else if (historyVisibility == "joined") {
           return RoomEvent(
-            text: "设置频道历史消息可见性为 ${HistoryVisibility.joined.getLocalizedString(
+            text: "The channel history message visibility has been set to ${HistoryVisibility.joined.getLocalizedString(
               MatrixLocals(L10n.of(context)!),
             )}",
           );
         } else if (historyVisibility == "shared") {
           return RoomEvent(
-            text: "设置频道历史消息可见性为 ${HistoryVisibility.shared.getLocalizedString(
+            text: "The channel history message visibility has been set to ${HistoryVisibility.shared.getLocalizedString(
               MatrixLocals(L10n.of(context)!),
             )}",
           );
         } else if (historyVisibility == "world_readable") {
           return RoomEvent(
-            text: "设置频道历史消息可见性为 ${HistoryVisibility.worldReadable.getLocalizedString(
+            text: "The channel history message visibility has been set to ${HistoryVisibility.worldReadable.getLocalizedString(
               MatrixLocals(L10n.of(context)!),
             )}",
           );
@@ -82,18 +82,18 @@ class MessageContent extends StatelessWidget {
         var guestAccess = event.content["guest_access"];
         if (guestAccess == "can_join") {
           return const RoomEvent(
-            text: "设置频道访客可加入",
+            text: "Channel guests can join has been set", // 设置频道访客可加入
           );
         } else if (guestAccess == "forbidden") {
           return const RoomEvent(
-            text: "设置频道访客禁止加入",
+            text: "Channel guests are not allowed to join has been set",  // 设置频道访客禁止加入
           );
         } else {
           return Text(event.toJson().toString());
         }
       case EventTypes.RoomName:
         return RoomEvent(
-          text: "设置频道名称为 ${event.content["name"]}",
+          text: "The channel name has been set to ${event.content["name"]}", // 设置频道名称为
         );
       case EventTypes.Message:
       case EventTypes.Encrypted:

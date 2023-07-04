@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:dtim/domain/utils/theme.dart';
 import 'package:dtim/infra/router/router.dart';
 import 'package:dtim/native_wraper.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -234,26 +237,46 @@ class _PCPageState extends State<PCPage> {
                       ),
                       if (aorgs != null)
                         for (var i = 0; i < aorgs!.length; i++)
-                          Tooltip(
-                            message: aorgs![i].orgName,
-                            verticalOffset: -8.w,
-                            margin: EdgeInsets.only(left: 50.w),
+                          GestureDetector(
+                            onTap: () async {
+                              if (im.currentState!.org.daoId == aorgs![i].daoId) {
+                                return;
+                              }
+                              if (im.sign == "") {
+                                await im.login(im.me!);
+                              }
+                              // ignore: use_build_context_synchronously
+                              final org = globalCtx().read<OrgCubit>();
+                              org.setChannelId("");
+                              await waitFutureLoading(
+                                context: globalCtx(),
+                                future: () async {
+                                  im.currentState!.client.dispose(closeDatabase: false);
+                                  await im.connect(aorgs![i]);
+                                  im.setCurrent(aorgs![i]);
+                                  await getData();
+                                },
+                              );
+                              await loadThemeFromOrg(aorgs![i]);
+                            },
                             child: Container(
-                              width: 40.w,
-                              height: 40.w,
-                              padding: EdgeInsets.all(2.w),
+                              width: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,
+                              height: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,
+                              padding: im.currentState!.org.daoId == aorgs![i].daoId ? EdgeInsets.all(2.w) : null,
                               margin: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
                               decoration: BoxDecoration(
                                 color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(8.w),
                                 border: Border.all(
-                                  color: constTheme.sidebarTextActiveBorder.withOpacity(0.7),
+                                  color: im.currentState!.org.daoId == aorgs![i].daoId
+                                      ? constTheme.sidebarTextActiveBorder.withOpacity(0.7)
+                                      : constTheme.sidebarBg,
                                   width: 2.w,
                                 ),
                               ),
                               child: Container(
-                                width: 36.w,
-                                height: 36.w,
+                                width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
                                 decoration: BoxDecoration(
                                   color: aorgs![i].orgColor != null
                                       ? hexToColor(aorgs![i].orgColor!)
@@ -281,8 +304,8 @@ class _PCPageState extends State<PCPage> {
                                           child: Image.network(
                                             fit: BoxFit.cover,
                                             aorgs![i].orgAvater!,
-                                            width: 36.w,
-                                            height: 36.w,
+                                            width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                            height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
                                           ),
                                         ),
                                       ),

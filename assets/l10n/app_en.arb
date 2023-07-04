@@ -701,5 +701,17 @@
   "openVideoCamera": "Video aufnehmen",
   "unsupportedAndroidVersion": "Unsupported Android version",
   "unsupportedAndroidVersionLong": "This feature requires a newer Android version. Please check for updates or Lineage OS support.",
-  "oopsSomethingWentWrong": "Oops, something went wrong…"
+  "oopsSomethingWentWrong": "Oops, something went wrong…",
+  "meetingNoPermission": "Unable to create conference, please check if you have permission",
+  "enterUserID":"Enter user id to start a private chat, such as",
+  "me": "I",
+  "msgCreate": "{who} created this {chatType} at , this is the beginning of {chatType}",
+  "@msgCreate": {
+    "placeholders": {
+      "who": {},
+      "chatType": {},
+      "date": {}
+    }
+  },
+  "turnError": "Failed to get the turn server"
 }

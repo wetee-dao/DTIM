@@ -41,7 +41,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   void initState() {
     im = context.read<AppCubit>();
     super.initState();
-    if(im.me==null){
+    if (im.me == null) {
       context.router.replaceNamed("/");
     }
 
@@ -129,11 +129,11 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 25.w),
-            createOrg("addChainNode", "创建隐私组织底座", constTheme, () async {}, false),
+            createOrg("addChainNode", "Creating a private consortium foundation", constTheme, () async {}, false),
             SizedBox(height: 15.w),
-            createOrg("addSubNode", "创建附属组织", constTheme, () async {}, false),
+            createOrg("addSubNode", "Creating a subsidiary organization", constTheme, () async {}, false),
             SizedBox(height: 15.w),
-            createOrg("addLocalNode", "部署本地组织底座", constTheme, () async {
+            createOrg("addLocalNode", "Deploying an on-premise organization foundation", constTheme, () async {
               context.router.pop();
               await context.router.pushNamed("/create_org").then((value) {
                 getData();
@@ -198,7 +198,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           SizedBox(height: 20.w),
           Padding(
             padding: EdgeInsets.only(left: 20.w, bottom: 10.w),
-            child: Text("已加入组织", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+            child: Text("joined organization", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
           ),
           Row(
             children: [
@@ -206,71 +206,74 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
               if (userOrgs.isEmpty)
                 Text("暂无组织", style: TextStyle(color: constTheme.centerChannelColor.withOpacity(0.5), fontSize: 16.w)),
               for (var i = 0; i < userOrgs.length; i++)
-                InkWell(
-                  onLongPress: () async {
-                    if (OkCancelResult.ok ==
-                        await showOkCancelAlertDialog(
-                          useRootNavigator: false,
-                          title: "提示",
-                          message: "退出组织",
-                          context: globalCtx(),
-                          okLabel: L10n.of(globalCtx())!.next,
-                          cancelLabel: L10n.of(globalCtx())!.cancel,
-                        )) {
-                      await accountOrgApi.deleteOrg(im.me!.address, userOrgs[i].orgHash);
-                      await getData();
-                    }
-                  },
-                  child: AnimatedContainer(
-                    width: 150.w,
-                    height: 200.w,
-                    duration: const Duration(milliseconds: 300),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      color: constTheme.centerChannelColor.withOpacity(0.1),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 206.w,
-                          height: 130.w,
-                          decoration: BoxDecoration(
-                            color:
-                                userOrgs[i].orgColor != null ? hexToColor(userOrgs[i].orgColor!) : Colors.transparent,
-                          ),
-                          child: Image.network(
-                            userOrgs[i].orgImg ?? "",
+                Container(
+                  margin: EdgeInsets.only(right: 10.w),
+                  child: InkWell(
+                    onLongPress: () async {
+                      if (OkCancelResult.ok ==
+                          await showOkCancelAlertDialog(
+                            useRootNavigator: false,
+                            title: "Notice",
+                            message: "Are you sure you want to quit this organization?",
+                            context: globalCtx(),
+                            okLabel: L10n.of(globalCtx())!.next,
+                            cancelLabel: L10n.of(globalCtx())!.cancel,
+                          )) {
+                        await accountOrgApi.deleteOrg(im.me!.address, userOrgs[i].orgHash);
+                        await getData();
+                      }
+                    },
+                    child: AnimatedContainer(
+                      width: 150.w,
+                      height: 200.w,
+                      duration: const Duration(milliseconds: 300),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        color: constTheme.centerChannelColor.withOpacity(0.1),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
                             width: 206.w,
-                            fit: BoxFit.cover,
                             height: 130.w,
+                            decoration: BoxDecoration(
+                              color:
+                                  userOrgs[i].orgColor != null ? hexToColor(userOrgs[i].orgColor!) : Colors.transparent,
+                            ),
+                            child: Image.network(
+                              userOrgs[i].orgImg ?? "",
+                              width: 206.w,
+                              fit: BoxFit.cover,
+                              height: 130.w,
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
-                          width: 206.w,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "# ${userOrgs[i].orgName ?? ""}",
-                                style: TextStyle(
-                                  color: constTheme.centerChannelColor,
-                                  fontSize: 16.w,
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+                            width: 206.w,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "# ${userOrgs[i].orgName ?? ""}",
+                                  style: TextStyle(
+                                    color: constTheme.centerChannelColor,
+                                    fontSize: 16.w,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                userOrgs[i].orgDesc ?? "",
-                                style: TextStyle(
-                                  color: constTheme.centerChannelColor,
-                                  fontSize: 12.w,
+                                Text(
+                                  userOrgs[i].orgDesc ?? "",
+                                  style: TextStyle(
+                                    color: constTheme.centerChannelColor,
+                                    fontSize: 12.w,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -278,7 +281,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           ),
           Padding(
             padding: EdgeInsets.only(left: 20.w, top: 20.w, bottom: 10.w),
-            child: Text("组织列表", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+            child: Text("Organization list", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
           ),
           Expanded(
             flex: 1,
@@ -296,8 +299,8 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                         if (OkCancelResult.ok ==
                             await showOkCancelAlertDialog(
                               useRootNavigator: false,
-                              title: "提示",
-                              message: "加入组织",
+                              title: "Notice",
+                              message: "Join organization",
                               context: globalCtx(),
                               okLabel: L10n.of(globalCtx())!.next,
                               cancelLabel: L10n.of(globalCtx())!.cancel,

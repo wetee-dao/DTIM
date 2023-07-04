@@ -5686,6 +5686,7 @@ dependencies = [
 [[package]]
 name = "wetee_rust_sdk"
 version = "0.5.0"
+source = "git+https://github.com/WeteeDAO/wetee-rust-sdk.git#99fbf775c0dc20cf65aab28b1f5087db0936e988"
 dependencies = [
  "anyhow",
  "base64 0.13.1",
