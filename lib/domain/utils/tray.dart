@@ -109,4 +109,14 @@ class WindowManagerListener implements WindowListener {
 
   @override
   void onWindowUnmaximize() {}
+  
+  @override
+  void onWindowDocked() {
+    // TODO: implement onWindowDocked
+  }
+  
+  @override
+  void onWindowUndocked() {
+    // TODO: implement onWindowUndocked
+  }
 }

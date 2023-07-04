@@ -348,7 +348,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(12.0),
-        children: [body],
+        children: [],
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
