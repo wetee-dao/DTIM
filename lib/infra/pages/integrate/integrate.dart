@@ -37,6 +37,7 @@ class _IntegratePageState extends State<IntegratePage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
+    workCtx.setOrg(im.currentState!.org, im.me!);
     workCtx.connectChain(() {
       getData();
     });

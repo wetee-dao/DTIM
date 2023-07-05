@@ -48,6 +48,7 @@ class _WorkPageState extends State<WorkPage> {
     currentId.add(pageStr);
     im = context.read<AppCubit>();
     title = workCtx.dao.name;
+    workCtx.setOrg(im.currentState!.org, im.me!);
     workCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {

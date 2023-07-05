@@ -50,6 +50,7 @@ class _GovPageState extends State<GovPage> {
     super.initState();
     currentId.add(pageStr);
     im = context.read<AppCubit>();
+    workCtx.setOrg(im.currentState!.org, im.me!);
     workCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {

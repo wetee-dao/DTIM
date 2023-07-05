@@ -49,7 +49,7 @@ dependencies:
   # 多选框
   chips_choice: ^3.0.0
   # matrix 连接库
-  matrix: ^0.21.2
+  matrix: ^0.22.0
   matrix_link_text: ^2.0.0
   # 日期格式化插件
   date_format: ^2.0.7
@@ -72,34 +72,44 @@ dependencies:
   # webrtc
   flutter_webrtc: ^0.9.32
   webrtc_interface: ^1.0.13
-
+  # 托盘管理
+  tray_manager: ^0.2.0
+  # 视频播放
   chewie: ^1.4.1
   flutter_map: ^4.0.0
   latlong2: ^0.8.1
   punycode: ^1.0.0
+  # 打开url
   url_launcher: ^6.1.10
+  # 实用程序函数
   collection: ^1.17.1
+  # 隐私储存
   flutter_secure_storage: ^8.0.0
-  image_picker: ^0.8.7
+  image_picker: ^1.0.0
+  # tab 样式
   tab_indicator_styler: ^2.0.0
+  # 桌面通知
   desktop_notifications: ^0.6.3
+  # 桌面生命周期
   desktop_lifecycle: ^0.1.0
+  # toast弹窗
   bot_toast: ^4.0.3
+  # 右上角数字
   badges: ^3.0.2
+  # 加密
   flutter_olm: ^1.2.0
   flutter_openssl_crypto: ^0.1.0
-  tray_manager: ^0.2.0
-  vs_scrollbar: ^0.2.1
-  equatable: ^2.0.5
-  fl_chart: ^0.62.0
+  # fl_chart: ^0.63.0
   video_compress: ^3.1.2
-  device_info_plus: ^8.1.0
+  # 录音
   record: ^4.4.4
+  # 函数防抖
   easy_debounce: ^2.0.3
-
   # 文件选择
   file_picker: ^5.2.10
-  flutter_foreground_task: ^5.2.0
+  # 后台任务
+  flutter_foreground_task: ^6.0.0+1
+  # 储存
   hive_flutter: ^1.1.0
 
 dev_dependencies:
@@ -112,7 +122,7 @@ dev_dependencies:
   hive_generator: ^2.0.0
   freezed: ^2.2.0
   build_runner: ^2.2.0
-  ffigen: ^7.2.11
+  ffigen: ^8.0.2
   json_serializable: ^6.5.4
   dart_code_metrics: ^5.7.3
   iconfont_convert: ^1.0.0
