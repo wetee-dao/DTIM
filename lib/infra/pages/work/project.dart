@@ -20,7 +20,8 @@ import 'sub/referendum.dart';
 final GlobalKey projectKey = GlobalKey();
 
 class ProjectPage extends StatefulWidget {
-  const ProjectPage({super.key});
+  final ProjectInfo info;
+  const ProjectPage({super.key, required this.info});
 
   @override
   State<ProjectPage> createState() => ProjectPageState();
@@ -32,7 +33,6 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   late TabController _tabController;
   late PageController pageController = PageController();
   final titleList = <String>["Kanban", "Members", "Referendums"];
-  ProjectInfo? info;
   List<String> members = [];
   AssetAccountData? share;
   List<GovProps> pending = [];
@@ -48,28 +48,22 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
     super.initState();
     _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
     dao = context.read<WorkCTX>();
-  }
-
-  init(ProjectInfo project) {
-    setState(() {
-      info = project;
-    });
     getData();
   }
 
   getData() async {
-    members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: info!.id);
+    members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: widget.info.id);
 
-    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, projectId: info!.id);
+    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, projectId: widget.info.id);
     todo = ps.where((p) => p.status == 0).toList();
     inProgress = ps.where((p) => p.status == 1).toList();
     inReview = ps.where((p) => p.status == 2).toList();
     done = ps.where((p) => p.status == 3).toList();
 
-    share = await rustApi.daoBalance(client: dao.chainClient, daoId: dao.org.daoId, address: info!.daoAccountId);
+    share = await rustApi.daoBalance(client: dao.chainClient, daoId: dao.org.daoId, address: widget.info.daoAccountId);
 
-    pending = dao.pending.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == info!.id).toList();
-    going = dao.going.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == info!.id).toList();
+    pending = dao.pending.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == widget.info.id).toList();
+    going = dao.going.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == widget.info.id).toList();
 
     if (mounted) setState(() {});
   }
@@ -97,7 +91,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   ),
                   SizedBox(width: 10.w),
                   PrimaryText(
-                    text: info != null ? "#${info!.id} ${info!.name}" : "",
+                    text: "#${widget.info.id} ${widget.info.name}",
                     size: 25.w,
                     height: 1,
                     fontWeight: FontWeight.w800,
@@ -106,7 +100,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   Padding(
                     padding: EdgeInsets.only(top: 8.w),
                     child: PrimaryText(
-                      text: info != null ? info!.description : "",
+                      text: widget.info.description,
                       size: 14.w,
                       height: 1.9,
                     ),
@@ -123,7 +117,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                       //       from: dao.user.address,
                       //       client: dao.chainClient,
                       //       daoId: dao.org.daoId,
-                      //       projectId: info!.id,
+                      //       projectId: widget.info.id,
                       //     );
                       //     Navigator.of(context).pop();
                       //     Navigator.of(context).pop();
@@ -146,13 +140,13 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                               from: dao.user.address,
                               client: dao.chainClient,
                               daoId: dao.org.daoId,
-                              projectId: info!.id,
+                              projectId: widget.info.id,
                               ext: WithGovPs(
                                 runType: 1,
                                 amount: 100,
                                 member: MemberGroup(
                                   scope: 3,
-                                  id: info!.id,
+                                  id: widget.info.id,
                                 ),
                               ),
                             );
@@ -189,7 +183,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   InkWell(
                     key: const Key("createTaskBtn"),
                     onTap: () {
-                      showModelOrPage(context, "/create_task/${info!.id}/-1", width: 800, height: 500);
+                      showModelOrPage(context, "/create_task/${widget.info.id}/-1", width: 800, height: 500);
                     },
                     child: Container(
                       height: 30.w,
@@ -230,7 +224,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   SizedBox(width: 10.w),
                   InkWell(
                     onTap: () {
-                      showModelOrPage(context, "/apply_project_funding/${info!.id}", width: 500, height: 300);
+                      showModelOrPage(context, "/apply_project_funding/${widget.info.id}", width: 500, height: 300);
                     },
                     child: Container(
                       height: 25.w,

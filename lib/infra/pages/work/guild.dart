@@ -18,7 +18,8 @@ import 'sub/referendum.dart';
 final GlobalKey guildKey = GlobalKey();
 
 class Guildpage extends StatefulWidget {
-  const Guildpage({Key? key}) : super(key: key);
+  final GuildInfo guild;
+  const Guildpage({Key? key, required this.guild}) : super(key: key);
 
   @override
   State<Guildpage> createState() => GuildpageState();
@@ -26,7 +27,6 @@ class Guildpage extends StatefulWidget {
 
 class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   late final WorkCTX dao;
-  GuildInfo? info;
   List<String> members = [];
   late TabController _tabController;
   late PageController pageController = PageController();
@@ -39,27 +39,23 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
     dao = context.read<WorkCTX>();
-  }
-
-  init(GuildInfo guild) {
-    setState(() {
-      info = guild;
-    });
     getData();
   }
 
   getData() async {
-    members = await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: info!.id);
+    members =
+        await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: widget.guild.id);
     if (mounted) setState(() {});
 
     await dao.getVoteData();
-    pending = dao.pending.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == info!.id).toList();
-    going = dao.going.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == info!.id).toList();
+    pending = dao.pending.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == widget.guild.id).toList();
+    going = dao.going.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == widget.guild.id).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final info = widget.guild;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       body: Column(
@@ -81,13 +77,13 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: info != null ? "#${info!.id} ${info!.name}" : "",
+                      text: "#${info.id} ${info.name}",
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
                     // SizedBox(width: 20.w),
                     // PrimaryText(
-                    //   text: info != null ? info!.desc : "",
+                    //   text: info != null ? info.desc : "",
                     //   size: 14.w,
                     //   height: 1.9,
                     // ),
@@ -111,13 +107,13 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                                 from: dao.user.address,
                                 client: dao.chainClient,
                                 daoId: dao.org.daoId,
-                                guildId: info!.id,
+                                guildId: info.id,
                                 ext: WithGovPs(
                                   runType: 1,
                                   amount: 100,
                                   member: MemberGroup(
                                     scope: 2,
-                                    id: info!.id,
+                                    id: info.id,
                                   ),
                                 ),
                               );
@@ -154,7 +150,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: info != null ? info!.desc : "",
+                  text: info.desc,
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),

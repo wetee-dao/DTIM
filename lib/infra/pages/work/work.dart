@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/pages/work/roadmap.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,6 @@ import 'package:dtim/application/store/theme.dart';
 
 import 'guild.dart';
 import 'project.dart';
-import 'roadmap.dart';
 import 'side_menu.dart';
 
 @RoutePage(name: "daoRoute")
@@ -26,17 +26,7 @@ class WorkPage extends StatefulWidget {
 }
 
 class _WorkPageState extends State<WorkPage> {
-  final mainPages = [
-    const RoadMapPage(),
-    // const ReferendumPage(),
-    // const CombindBoardPage(),
-    Container(),
-    Guildpage(key: guildKey),
-    ProjectPage(key: projectKey)
-  ];
-  late PageController pageController = PageController();
   late final AppCubit im;
-  final StreamController<String> currentId = StreamController<String>.broadcast();
   String pageStr = "RoadMap";
   String title = "";
   Timer? _timer;
@@ -45,7 +35,6 @@ class _WorkPageState extends State<WorkPage> {
   @override
   void initState() {
     super.initState();
-    currentId.add(pageStr);
     im = context.read<AppCubit>();
     title = workCtx.dao.name;
     workCtx.setOrg(im.currentState!.org, im.me!);
@@ -78,12 +67,11 @@ class _WorkPageState extends State<WorkPage> {
           ? null
           : SizedBox(
               width: 70.w,
-              child: StreamBuilder(
-                stream: currentId.stream,
-                builder: (BuildContext context, AsyncSnapshot<String> id) {
-                  return SideMenu(id.data ?? pageStr, (id) {
-                    pageController.jumpToPage(getPageIndex(id));
-                    currentId.add(id);
+              child: SideMenu(
+                pageStr,
+                (id) {
+                  setState(() {
+                    pageStr = id;
                   });
                 },
               ),
@@ -119,32 +107,17 @@ class _WorkPageState extends State<WorkPage> {
                   if (isPc() || PlatformInfos.isWeb)
                     SizedBox(
                       width: 170.w,
-                      child: StreamBuilder(
-                        stream: currentId.stream,
-                        builder: (BuildContext context, AsyncSnapshot<String> id) {
-                          return SideMenu(id.data ?? pageStr, (id) {
-                            final index = getPageIndex(id);
-                            pageController
-                                .animateToPage(index,
-                                    duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
-                                .then((v) {
-                              pageHook();
-                            });
-
-                            currentId.add(id);
-                            if (c != null) {}
+                      child: SideMenu(
+                        pageStr,
+                        (id) {
+                          setState(() {
+                            pageStr = id;
                           });
                         },
                       ),
                     ),
                   Expanded(
-                    child: PageView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: pageController,
-                      scrollDirection: Axis.vertical,
-                      onPageChanged: (page) {},
-                      children: mainPages,
-                    ),
+                    child: pageRender(pageStr),
                   )
                 ],
               ),
@@ -153,19 +126,19 @@ class _WorkPageState extends State<WorkPage> {
     );
   }
 
-  pageHook() {
+  pageRender(id) {
     if (pageStr.contains("Guilds")) {
       final ids = pageStr.split(" ");
-      final guildState = guildKey.currentState as GuildpageState;
       final guild = workCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
-      guildState.init(guild);
+      return Guildpage(guild: guild);
     }
     if (pageStr.contains("Projects")) {
       final ids = pageStr.split(" ");
-      final projectState = projectKey.currentState as ProjectPageState;
       final project = workCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
-      projectState.init(project);
+     return  ProjectPage(info: project);
     }
+
+    return const RoadMapPage();
   }
 
   int getPageIndex(str) {

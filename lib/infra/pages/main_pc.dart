@@ -306,6 +306,24 @@ class _PCPageState extends State<PCPage> {
                                             aorgs![i].orgAvater!,
                                             width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
                                             height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                            // loadingBuilder:
+                                            //     (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                            //   return Center(
+                                            //     child: Text(
+                                            //       aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                            //       style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                            //     ),
+                                            //   );
+                                            // },
+                                            errorBuilder:
+                                                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Center(
+                                                child: Text(
+                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
                                       ),
