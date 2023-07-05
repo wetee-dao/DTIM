@@ -70,7 +70,7 @@ dependencies:
   # svg
   flutter_svg: ^2.0.5
   # webrtc
-  flutter_webrtc: ^0.9.32
+  flutter_webrtc: ^0.9.35
   webrtc_interface: ^1.0.13
   # 托盘管理
   tray_manager: ^0.2.0
