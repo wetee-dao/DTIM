@@ -44,19 +44,20 @@ class SiderBarItem extends StatelessWidget {
                         height: 20.w,
                         fit: BoxFit.cover,
                         color: constTheme.sidebarText,
-                        // loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                        //   return Container(
-                        //     width: 22.w,
-                        //     height: 22.w,
-                        //     decoration: BoxDecoration(
-                        //       color: constTheme.sidebarText.withOpacity(0.1),
-                        //       borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                        //     ),
-                        //     child: Center(
-                        //       child: Text(name[0], style: TextStyle(fontSize: 12.w, color: constTheme.sidebarText)),
-                        //     ),
-                        //   );
-                        // },
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            width: 22.w,
+                            height: 22.w,
+                            decoration: BoxDecoration(
+                              color: constTheme.sidebarText.withOpacity(0.1),
+                              borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                            ),
+                            child: Center(
+                              child: Text(name[0], style: TextStyle(fontSize: 12.w, color: constTheme.sidebarText)),
+                            ),
+                          );
+                        },
                         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                           return Container(
                             width: 22.w,
@@ -70,7 +71,6 @@ class SiderBarItem extends StatelessWidget {
                             ),
                           );
                         },
-                        
                       )
                     : SizedBox(
                         width: 20.w,

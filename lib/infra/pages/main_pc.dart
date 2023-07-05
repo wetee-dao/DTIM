@@ -21,8 +21,10 @@ import 'package:dtim/application/store/theme.dart';
 
 @RoutePage(name: "pc")
 class PCPage extends StatefulWidget {
-  final String t;
-  const PCPage({Key? key, @pathParam required this.t}) : super(key: key);
+  const PCPage({
+    Key? key,
+    // @pathParam required this.t,
+  }) : super(key: key);
 
   @override
   State<PCPage> createState() => _PCPageState();
@@ -49,7 +51,7 @@ class _PCPageState extends State<PCPage> {
     print("PCPagePCPage");
     super.initState();
     im = context.read<AppCubit>();
-    currentId.add(pcpages.indexOf(widget.t));
+    // currentId.add(pcpages.indexOf(widget.t));
     getData();
   }
 
@@ -306,15 +308,16 @@ class _PCPageState extends State<PCPage> {
                                             aorgs![i].orgAvater!,
                                             width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
                                             height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
-                                            // loadingBuilder:
-                                            //     (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                            //   return Center(
-                                            //     child: Text(
-                                            //       aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
-                                            //       style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
-                                            //     ),
-                                            //   );
-                                            // },
+                                            loadingBuilder:
+                                                (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return Center(
+                                                child: Text(
+                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                                ),
+                                              );
+                                            },
                                             errorBuilder:
                                                 (BuildContext context, Object exception, StackTrace? stackTrace) {
                                               return Center(

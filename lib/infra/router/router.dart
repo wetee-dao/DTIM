@@ -42,7 +42,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   List<AutoRoute> get routes {
     return [
       AutoRoute(path: '/', page: Preloader.page),
-      AutoRoute(path: '/pc/:t', page: Pc.page, children: [
+      AutoRoute(path: '/pc', page: Pc.page, children: [
         AutoRoute(path: 'im', page: OrgRoute.page),
         AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
         AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
