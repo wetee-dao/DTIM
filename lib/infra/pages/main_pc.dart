@@ -29,7 +29,7 @@ class PCPage extends StatefulWidget {
   @override
   State<PCPage> createState() => _PCPageState();
 }
-
+const url = ["im","gov","work","integrate"];
 class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
   List<AccountOrg>? aorgs;
@@ -48,10 +48,9 @@ class _PCPageState extends State<PCPage> {
 
   @override
   void initState() {
-    print("PCPagePCPage");
     super.initState();
     im = context.read<AppCubit>();
-    // currentId.add(pcpages.indexOf(widget.t));
+    currentId.add(url.indexOf(context.router.currentPath.replaceAll("/pc/", "")));
     getData();
   }
 
@@ -171,27 +170,6 @@ class _PCPageState extends State<PCPage> {
                                       }
                                     },
                                   ),
-                                // SiderBarItem(
-                                //   "Gov",
-                                //   icon: AppIcons.sxgl,
-                                //   key: const Key("Gov"),
-                                //   selected: id.data == 1,
-                                //   onTap: () {
-                                //     pageRouter.setActiveIndex(1);
-                                //     onSelect(1);
-                                //   },
-                                // ),
-                                // // 任务管理
-                                // SiderBarItem(
-                                //   "Kanban",
-                                //   img: "https://wetee.app/icons/kanban.png",
-                                //   key: const Key("KANBAN"),
-                                //   selected: id.data == 2,
-                                //   onTap: () {
-                                //     pageRouter.setActiveIndex(2);
-                                //     onSelect(2);
-                                //   },
-                                // ),
                                 // DAO管理
                                 SiderBarItem(
                                   "Apps",
@@ -245,7 +223,9 @@ class _PCPageState extends State<PCPage> {
                                 return;
                               }
                               if (im.sign == "") {
-                                await im.login(im.me!);
+                                if (!await im.login(im.me!)) {
+                                  return;
+                                }
                               }
                               // ignore: use_build_context_synchronously
                               final org = globalCtx().read<OrgCubit>();
