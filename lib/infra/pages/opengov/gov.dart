@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
-import 'package:dtim/infra/pages/work/referendum.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +15,7 @@ import 'package:dtim/application/store/theme.dart';
 import 'member.dart';
 import 'overview.dart';
 import 'gov_menu.dart';
+import 'referendum.dart';
 
 @RoutePage(name: "govRoute")
 class GovPage extends StatefulWidget {
@@ -129,8 +129,7 @@ class _GovPageState extends State<GovPage> {
                             pageController
                                 .animateToPage(index,
                                     duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
-                                .then((v) {
-                            });
+                                .then((v) {});
 
                             currentId.add(id);
                             if (c != null) {}
@@ -153,7 +152,6 @@ class _GovPageState extends State<GovPage> {
           : Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w)),
     );
   }
-
 
   int getPageIndex(str) {
     pageStr = str;

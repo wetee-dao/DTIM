@@ -1,61 +1,45 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:dtim/native_wraper.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
-import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/application/store/theme.dart';
-import 'sub/member.dart';
 
-final GlobalKey guildKey = GlobalKey();
+import '../work/sub/member.dart';
 
-class Guildpage extends StatefulWidget {
-  final GuildInfo guild;
-  const Guildpage({Key? key, required this.guild}) : super(key: key);
+class MemberPage extends StatefulWidget {
+  const MemberPage({Key? key}) : super(key: key);
 
   @override
-  State<Guildpage> createState() => GuildpageState();
+  State<MemberPage> createState() => MemberPageState();
 }
 
-class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
+class MemberPageState extends State<MemberPage> {
   late final WorkCTX dao;
   List<String> members = [];
-  late TabController _tabController;
-  late PageController pageController = PageController();
-  final titleList = <String>["Members", "Referendums"];
-  List<GovProps> pending = [];
-  List<GovReferendum> going = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
     dao = context.read<WorkCTX>();
     getData();
   }
 
   getData() async {
-    members =
-        await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: widget.guild.id);
+    members = await rustApi.daoMemebers(client: dao.chainClient, daoId: dao.org.daoId);
+    print(members);
     if (mounted) setState(() {});
-
-    await dao.getVoteData();
-    pending = dao.pending.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == widget.guild.id).toList();
-    going = dao.going.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == widget.guild.id).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final info = widget.guild;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       body: Column(
@@ -77,13 +61,13 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: "#${info.id} ${info.name}",
+                      text: "Members",
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
                     // SizedBox(width: 20.w),
                     // PrimaryText(
-                    //   text: info != null ? info.desc : "",
+                    //   text: info != null ? info!.desc : "",
                     //   size: 14.w,
                     //   height: 1.9,
                     // ),
@@ -94,7 +78,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                             await showOkCancelAlertDialog(
                               useRootNavigator: false,
                               title: "Notice",
-                              message: "Do you confirm to join? Your application will be reviewed by internal members",
+                              message: "Do you confirm to join?",
                               context: globalCtx(),
                               okLabel: L10n.of(globalCtx())!.next,
                               cancelLabel: L10n.of(globalCtx())!.cancel,
@@ -103,20 +87,20 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
-                              await rustApi.daoGuildJoinRequest(
-                                from: dao.user.address,
-                                client: dao.chainClient,
-                                daoId: dao.org.daoId,
-                                guildId: info.id,
-                                ext: WithGovPs(
-                                  runType: 1,
-                                  amount: 100,
-                                  member: MemberGroup(
-                                    scope: 2,
-                                    id: info.id,
-                                  ),
-                                ),
-                              );
+                              // await rustApi.daoGuildJoinRequest(
+                              //   from: dao.user.address,
+                              //   client: dao.chainClient,
+                              //   daoId: dao.org.daoId,
+                              //   guildId: info!.id,
+                              //   ext: WithGovPs(
+                              //     runType: 1,
+                              //     amount: 100,
+                              //     member: MemberGroup(
+                              //       scope: 2,
+                              //       id: info!.id,
+                              //     ),
+                              //   ),
+                              // );
                               await workCtx.daoRefresh();
                               getData();
                             },
@@ -149,46 +133,16 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                   ],
                 ),
                 SizedBox(height: 8.w),
-                PrimaryText(
-                  text: info.desc,
-                  size: 14.w,
-                ),
+                // PrimaryText(
+                //   text: info != null ? info!.desc : "",
+                //   size: 14.w,
+                // ),
                 SizedBox(height: 5.w),
               ],
             ),
           ),
-          TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            labelColor: constTheme.centerChannelColor,
-            unselectedLabelColor: constTheme.centerChannelColor.withOpacity(0.6),
-            labelStyle: TextStyle(fontSize: 13.w),
-            unselectedLabelStyle: TextStyle(fontSize: 13.w),
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            labelPadding: EdgeInsets.only(left: 12.w, right: 12.w),
-            tabs: titleList.map((e) => Tab(text: e)).toList(),
-            dividerColor: Colors.transparent,
-            indicator: MaterialIndicator(
-              color: constTheme.sidebarTextActiveBorder,
-              strokeWidth: 10,
-            ),
-            onTap: (i) => pageController.jumpToPage(i),
-          ),
-          Divider(
-            height: 1,
-            color: constTheme.centerChannelDivider,
-          ),
           Expanded(
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: pageController,
-              scrollDirection: Axis.vertical,
-              onPageChanged: (page) {},
-              children: [
-                Members(members: members),
-                Referendums(pending: pending, going: going),
-              ],
-            ),
+            child: Members(members: members),
           ),
           SizedBox(height: 30.w),
         ],

@@ -282,7 +282,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           ),
           Padding(
             padding: EdgeInsets.only(left: 20.w, top: 20.w, bottom: 10.w),
-            child: Text("Organization list", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+            child: Text("Existed organization", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
           ),
           Expanded(
             flex: 1,

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert' as convert;
+import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/theme.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/native_wraper.dart';
@@ -49,13 +51,12 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     getList(() {
       if (accounts.isNotEmpty && !runInTest) {
         autoLogin();
+        return;
       }
-      if (im.connections.keys.isEmpty) {
-        Timer(const Duration(milliseconds: 2000), () {
-          if (!mounted) return;
-          setState(() => _loading = false);
-        });
-      }
+      workCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: []));
+      workCtx.connectChain(() async {
+        setState(() => _loading = false);
+      });
     });
   }
 
@@ -97,6 +98,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   onLogined() async {
     final accountOrgApi = await AccountOrgApi.create();
     final orgs = await accountOrgApi.listByAccount(im.me!.address);
+    setState(() => _loading = false);
     if (widget.onResult != null) {
       // 登录账户
       if (orgs.isNotEmpty) {
@@ -130,7 +132,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
   }
 
   static Future<void> pop() async {
-    await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    exit(0);
   }
 
   selectAccountType() {

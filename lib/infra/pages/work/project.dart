@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,6 @@ import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/bridge_struct.dart';
 import 'sub/kanban.dart';
 import 'sub/member.dart';
-import 'sub/referendum.dart';
 
 final GlobalKey projectKey = GlobalKey();
 
@@ -52,7 +52,8 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   }
 
   getData() async {
-    members = await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: widget.info.id);
+    members =
+        await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: widget.info.id);
 
     final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, projectId: widget.info.id);
     todo = ps.where((p) => p.status == 0).toList();

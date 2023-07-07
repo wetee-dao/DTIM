@@ -86,7 +86,7 @@ class SiderBarItem extends StatelessWidget {
                   color: constTheme.sidebarText,
                   fontSize: 10.w,
                 ),
-                overflow: TextOverflow.clip,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

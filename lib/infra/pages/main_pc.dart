@@ -29,7 +29,9 @@ class PCPage extends StatefulWidget {
   @override
   State<PCPage> createState() => _PCPageState();
 }
-const url = ["im","gov","work","integrate"];
+
+const url = ["im", "gov", "work", "integrate"];
+
 class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
   List<AccountOrg>? aorgs;
