@@ -11,6 +11,7 @@ CRATE="$DIR/../rust_wraper"
 echo "RUST ROOT => $CRATE"
 cd "$CRATE"
 
-rm ./Cargo.lock
 cargo build --target=x86_64-pc-windows-msvc --release
-cp -r "$DIR/../rust_wraper/target/release/rust_wraper.dll" "$DIR/../windows/shared/rust_wraper.dll"
+cp -r "$DIR/../rust_wraper/target/x86_64-pc-windows-msvc/release/rust_wraper.dll" "$DIR/../windows/shared/rust_wraper.dll"
+
+#export https_proxy=http://127.0.0.1:7890;export http_proxy=http://127.0.0.1:7890;export all_proxy=socks5://127.0.0.1:7890

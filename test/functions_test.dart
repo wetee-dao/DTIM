@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/utils/functions.dart';
+import 'package:dtim/domain/utils/functions.dart';
 
 void main() {
   test("test getUserShortId", () {

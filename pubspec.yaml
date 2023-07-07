@@ -1,4 +1,4 @@
-name: asyou_app
+name: dtim
 description: A DAO client with substrate.
 
 publish_to: 'none'
@@ -29,7 +29,7 @@ dependencies:
   # 语法扩展
   expandable: ^5.0.1
   # 路由
-  auto_route: ^7.1.0
+  auto_route: ^7.4.0
   # 主题
   adaptive_theme: ^3.2.0
   # 桌面客户端样式
@@ -45,11 +45,11 @@ dependencies:
   # 状态管理
   freezed_annotation: ^2.2.0
   # json
-  json_annotation: ^4.7.0
+  json_annotation: ^4.8.1
   # 多选框
   chips_choice: ^3.0.0
   # matrix 连接库
-  matrix: ^0.20.2
+  matrix: ^0.21.2
   matrix_link_text: ^2.0.0
   # 日期格式化插件
   date_format: ^2.0.7
@@ -58,7 +58,7 @@ dependencies:
   # 音频
   audioplayers: ^4.0.1
   # 弹窗
-  adaptive_dialog: ^1.9.0-no-macos.2
+  adaptive_dialog: ^1.9.0-0
   # 缩略图
   flutter_blurhash: ^0.7.0
   # 视频播放器
@@ -70,7 +70,7 @@ dependencies:
   # svg
   flutter_svg: ^2.0.5
   # webrtc
-  flutter_webrtc: ^0.9.30+hotfix.2
+  flutter_webrtc: ^0.9.32
   webrtc_interface: ^1.0.13
 
   chewie: ^1.4.1
@@ -100,6 +100,7 @@ dependencies:
   # 文件选择
   file_picker: ^5.2.10
   flutter_foreground_task: ^5.2.0
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -111,14 +112,14 @@ dev_dependencies:
   hive_generator: ^2.0.0
   freezed: ^2.2.0
   build_runner: ^2.2.0
-  ffigen: ^8.0.2
+  ffigen: ^7.2.11
   json_serializable: ^6.5.4
   dart_code_metrics: ^5.7.3
   iconfont_convert: ^1.0.0
 
 dependency_overrides:
   # c库调用
-  ffi: ^2.0.1
+  # ffi: ^2.0.1
 
 flutter:
   generate: true
@@ -127,6 +128,7 @@ flutter:
     - assets/
     - assets/l10n/
     - assets/images/
+    - assets/icons/
   fonts:
     - family: iconfont
       fonts:

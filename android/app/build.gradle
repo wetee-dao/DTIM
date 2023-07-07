@@ -96,7 +96,7 @@ dependencies {
 
 //         workingDir "../../rust_wraper"
 //         environment "ANDROID_NDK_HOME", "$ANDROID_NDK"
-//         // if (org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem.isWindows()) {
+//         // if (org.gradle.nativeplatform.platform.internal.DefaultNativePlatformInfos.currentOperatingSystem.isWindows()) {
 //         //     commandLine 'cmd', '/C', ndk_command
 //         // } else {
 //         //     commandLine 'sh', '-c', ndk_command

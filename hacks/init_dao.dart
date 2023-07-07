@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:asyou_app/bridge_struct.dart';
-import 'package:asyou_app/native_wraper.io.dart';
+import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/native_wraper.dart';
 
 // ignore: constant_identifier_names
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
@@ -18,6 +18,12 @@ void main() async {
     name: "TESTDAO",
     purpose: "For the freedom of programming",
     metaData: "{}",
+    bg: '',
+    desc: '',
+    homeUrl: '',
+    imApi: '',
+    img: '',
+    logo: '',
   );
   await rustApi.createAsset(
     client: clientIndex,

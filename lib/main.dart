@@ -1,5 +1,8 @@
-import 'dart:io';
-
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/app/org.dart';
+import 'package:dtim/application/store/db.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/infra/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
@@ -7,25 +10,23 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:asyou_app/utils/tray.dart';
+import 'package:dtim/domain/utils/tray.dart';
 
-import 'apis/apis.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'application/store/app/webrtc.dart';
 import 'router.dart';
-import 'router/router.dart';
-import 'store/app/org.dart';
-import 'store/app/webrtc.dart';
-import 'store/im.dart';
-import 'store/db.dart';
-import 'store/theme.dart';
-import 'utils/screen/screen.dart';
-import 'utils/screen/screen_util.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen_util.dart';
 
 final botToastBuilder = BotToastInit();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
-  await windowManager.hide();
+  if (isPc()) {
+    await windowManager.ensureInitialized();
+    await windowManager.hide();
+  }
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
 
   // 数据库初始化
@@ -61,7 +62,7 @@ Future<void> main() async {
     );
 
     windowManager.waitUntilReadyToShow(windowOptions, () async {
-      if (Platform.isMacOS || Platform.isWindows) {
+      if (PlatformInfos.isMacOS || PlatformInfos.isWindows) {
         await windowManager.setHasShadow(true);
       }
       await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
@@ -74,27 +75,28 @@ Future<void> main() async {
     initScreen(400);
   }
 
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-  final rootRouter = AppRouter();
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final app = AppCubit();
+    final rootRouter = AppRouter(app);
     setGlobalKey(rootRouter.navigatorKey);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.light,
-      light: theme(),
+      light: theme(currentTheme),
       builder: (light, dark) => MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => AppCubit()),
+          BlocProvider(create: (_) => app),
           BlocProvider(create: (_) => OrgCubit()),
           BlocProvider(create: (_) => WebRTCCubit()),
         ],
         child: MaterialApp.router(
-          title: 'DAO',
+          title: 'DTIM',
           debugShowCheckedModeBanner: false,
           routerConfig: rootRouter.config(),
           localizationsDelegates: L10n.localizationsDelegates,

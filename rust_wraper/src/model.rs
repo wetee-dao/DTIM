@@ -1,4 +1,4 @@
-use asyou_rust_sdk::hander::wetee_gov::MemmberData;
+use wetee_rust_sdk::hander::wetee_gov::MemmberData;
 
 /// roadmap 季度
 #[derive(Clone, PartialEq, Eq, Default, Debug)]
@@ -26,7 +26,7 @@ pub struct QuarterTask {
     pub creator: String,
     /// tag info
     /// 数据标签
-    pub tags: Vec<u8>,
+    pub tags: Vec<U8Wrap>,
     /// State of the Task
     /// DAO状态
     /// ToDo = 0,
@@ -210,9 +210,56 @@ pub struct TaskInfo {
     pub reviewers: Vec<String>,
     /// skill info
     /// 技能
-    pub skills: Vec<u8>,
+    pub skills: Vec<U8Wrap>,
     /// State of the WETEE
     /// WETEE状态
+    pub status: u8,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct App {
+    pub id: u64,
+    /// url of the App.
+    /// App url
+    pub url: String,
+    /// name of the App.
+    /// App 名字
+    pub name: String,
+    /// name of the App.
+    /// App 介绍
+    pub desc: String,
+    /// icon of the App.
+    /// App icon
+    pub icon: String,
+    /// creator of Task
+    /// 创建者
+    pub creator: String,
+    /// State of the App
+    /// App 状态
+    pub status: u8,
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct OrgApp {
+    pub id: u64,
+    pub app_id: u64,
+    /// The block that creates the DAO
+    /// DAO创建的区块
+    pub start_block: u64,
+    /// name of the DAO.
+    /// DAO 名字
+    pub name: String,
+    /// name of the DAO.
+    /// DAO 介绍
+    pub desc: String,
+    /// icon of the DAO.
+    /// DAO icon
+    pub icon: String,
+    //// url data
+    /// url 图片等内容
+    pub url: String,
+    /// State of the OrgApp
+    /// OrgApp 状态
     pub status: u8,
 }
 
@@ -226,7 +273,7 @@ pub struct Reward {
 /// DAO specific information
 /// 组织信息
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
-pub struct DaoInfo {
+pub struct OrgInfo {
     pub id: u64,
     /// creator of DAO
     /// 创建者
@@ -246,8 +293,22 @@ pub struct DaoInfo {
     //// meta data
     /// DAO 元数据 图片等内容
     pub meta_data: String,
+    /// name of the DAO.
+    /// DAO 介绍
+    pub desc: String,
+    /// im api
+    pub im_api: String,
+    /// org color
+    pub bg: String,
+    /// org logo
+    pub logo: String,
+    /// 组织大图
+    pub img: String,
+    /// 组织主页
+    pub home_url: String,
     /// 区块链 1 Unit 等于多少余额
     pub chain_unit: u64,
+    pub status: u8,
 }
 
 /// vote yes or no
@@ -278,4 +339,9 @@ pub fn member_ps_trans(member: MemberGroup) -> MemmberData {
         3 => MemmberData::PROJECT(member.id),
         _ => MemmberData::GLOBAL,
     }
+}
+
+#[derive(Clone, PartialEq, Eq, Default, Debug)]
+pub struct U8Wrap{
+   pub value: u8
 }

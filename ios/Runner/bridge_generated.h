@@ -42,7 +42,13 @@ uintptr_t new_dart_opaque(Dart_Handle handle);
 
 intptr_t init_frb_dart_api_dl(void *obj);
 
+void wire_connect_wallet(int64_t port_);
+
 void wire_connect(int64_t port_, struct wire_uint_8_list *url);
+
+void wire_start_client(int64_t port_, uint32_t client);
+
+void wire_stop_client(int64_t port_, uint32_t client);
 
 void wire_seed_generate(int64_t port_);
 
@@ -60,8 +66,6 @@ void wire_add_seed(int64_t port_, struct wire_uint_8_list *seed);
 void wire_sign_from_address(int64_t port_,
                             struct wire_uint_8_list *address,
                             struct wire_uint_8_list *ctx);
-
-void wire_start_client(int64_t port_, uint32_t client);
 
 void wire_create_dao(int64_t port_,
                      uint32_t client,
@@ -310,13 +314,15 @@ void free_WireSyncReturn(WireSyncReturn ptr);
 
 static int64_t dummy_method_to_enforce_bundling(void) {
     int64_t dummy_var = 0;
+    dummy_var ^= ((int64_t) (void*) wire_connect_wallet);
     dummy_var ^= ((int64_t) (void*) wire_connect);
+    dummy_var ^= ((int64_t) (void*) wire_start_client);
+    dummy_var ^= ((int64_t) (void*) wire_stop_client);
     dummy_var ^= ((int64_t) (void*) wire_seed_generate);
     dummy_var ^= ((int64_t) (void*) wire_get_seed_phrase);
     dummy_var ^= ((int64_t) (void*) wire_add_keyring);
     dummy_var ^= ((int64_t) (void*) wire_add_seed);
     dummy_var ^= ((int64_t) (void*) wire_sign_from_address);
-    dummy_var ^= ((int64_t) (void*) wire_start_client);
     dummy_var ^= ((int64_t) (void*) wire_create_dao);
     dummy_var ^= ((int64_t) (void*) wire_create_asset);
     dummy_var ^= ((int64_t) (void*) wire_get_block_number);

@@ -73,4 +73,34 @@ DAO
 
 ## 贡献
 
+### 项目结构
+- domain/
+  - entity/
+- application/
+  - service/
+  - bloc/
+- inter/
+  - dto/
+- infra/
+  - hive/
+  - ui/
+    - pages/
+    - widgets/
+- main.dart
+
+### 组件分类
+
+- XxxService
+  - 无状态服务
+- XxxBloc
+  - 状态管理
+- XxxBlocView/ XxxView
+  - Bloc对应的View
+- XxxScreen
+  - 组装View的Screen
+- XxxPage
+  - 接收外部参数,控制Screen的Page
+- XxxRoute
+  - 用于跳转到不同Page的Route
+
 [安装与运行](./docs/install_and_run.md)

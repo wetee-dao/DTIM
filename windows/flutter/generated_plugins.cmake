@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   desktop_lifecycle
   dynamic_color
   emoji_picker_flutter
+  file_selector_windows
   flutter_secure_storage_windows
   flutter_webrtc
   record_windows

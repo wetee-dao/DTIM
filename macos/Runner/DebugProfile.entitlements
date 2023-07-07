@@ -3,16 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>com.apple.security.app-sandbox</key>
-	<false/>
-	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>me.asyou.asyou_app</string>
-	</array>
+	<true/>
 	<key>com.apple.security.cs.allow-jit</key>
+	<true/>
+	<key>com.apple.security.device.audio-input</key>
+	<true/>
+	<key>com.apple.security.device.camera</key>
 	<true/>
 	<key>com.apple.security.network.client</key>
 	<true/>
 	<key>com.apple.security.network.server</key>
 	<true/>
+	<key>com.apple.security.personal-information.location</key>
+	<true/>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)app.wetee.dtim</string>
+	</array>
 </dict>
 </plist>

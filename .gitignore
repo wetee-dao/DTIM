@@ -33,7 +33,6 @@ migrate_working_dir/
 /build/
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
@@ -52,7 +51,9 @@ app.*.map.json
 exts
 libolm.3.dylib
 libcrypto.1.1.dylib
-rust_wraper/Cargo.lock
+# rust_wraper/Cargo.lock
 linux/shared/librust_wraper.so
 xxx.zip
 xxx
+/.fvm/flutter_sdk/
+hacks/.config

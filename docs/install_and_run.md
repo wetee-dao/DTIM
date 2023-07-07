@@ -1,8 +1,3 @@
-# DAO-entrance phase 1 - Milestone 2/3
-> NOTE Window flutter_rust_bridge config is not ready
-
-This repository is for the submission of milestone 3 of the Web 3 Foundation Grant
-
 ### Rust Setup 
 - [Linux development environment](https://docs.substrate.io/install/linux/).
 - [MacOS development environment](https://docs.substrate.io/install/macos/).

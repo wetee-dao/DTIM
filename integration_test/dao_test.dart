@@ -1,11 +1,11 @@
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/native_wraper.io.dart';
-import 'package:asyou_app/store/dao_ctx.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/application/store/work_ctx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'package:asyou_app/main.dart' as app;
+import 'package:dtim/main.dart' as app;
 
 import 'base.dart';
 import 'extensions/wait_for.dart';
@@ -82,8 +82,8 @@ void main() {
 
     await tester.waitFor(find.byKey(const Key('daoView')), timeout: const Duration(seconds: 50));
 
-    await rustApi.daoInitFromPair(client: daoCtx.chainClient, address: daoCtx.user.address);
-    await daoCtx.getData();
+    await rustApi.daoInitFromPair(client: workCtx.chainClient, address: workCtx.user.address);
+    await workCtx.getData();
     await Future.delayed(const Duration(seconds: 6));
 
     await tester.waitFor(find.byKey(const Key('joinDao')), timeout: const Duration(seconds: 50));
@@ -180,14 +180,14 @@ void main() {
     await tester.tap(find.byKey(const Key('Referendums')));
     await tester.waitFor(find.byKey(const Key('ReferendumView')), timeout: const Duration(seconds: 50));
 
-    if (daoCtx.pending.isNotEmpty) {
-      var pending = daoCtx.pending[0];
+    if (workCtx.pending.isNotEmpty) {
+      var pending = workCtx.pending[0];
       await tester.tap(find.byKey(Key('referendumStart${pending.index}')));
       await Future.delayed(const Duration(seconds: 10));
       await tester.pumpAndSettle();
     }
 
-    // var going = daoCtx.going.lastWhere((v) => v.status == 0);
+    // var going = workCtx.going.lastWhere((v) => v.status == 0);
     // await tester.waitFor(find.byKey(Key('referendumExecute${going.id}')), timeout: const Duration(seconds: 50));
     // await tester.tap(find.byKey(Key('referendumExecute${going.id}')));
   });
@@ -211,10 +211,10 @@ void main() {
     var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);
     await rustApi.daoProjectJoinRequestWithRoot(
       from: rootAddress,
-      client: daoCtx.chainClient,
-      daoId: daoCtx.org.daoId,
+      client: workCtx.chainClient,
+      daoId: workCtx.org.daoId,
       projectId: 1,
-      user: daoCtx.user.address,
+      user: workCtx.user.address,
     );
     await Future.delayed(const Duration(seconds: 5));
 

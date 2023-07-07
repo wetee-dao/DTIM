@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-export 'router/pop_router.dart';
+export 'package:dtim/infra/router/pop_router.dart';
 
 // 是否是测试环境
 bool runInTest = false;
