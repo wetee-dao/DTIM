@@ -16,3 +16,9 @@ flutter build macos --release
 # mv build/macos/Build/Products/Release/DTIM.app/Contents/Frameworks/libolm.3.2.15.dylib build/macos/Build/Products/Release/DTIM.app/Contents/Frameworks/libolm.3.dylib
 
 # echo "Build build/macos/Build/Products/Release/DTIM.app"
+cd build/macos/Build/Products/Release/
+zip -r macos.zip DTIM.app
+cd "$DIR/../"
+mv build/macos/Build/Products/Release/macos.zip macos.zip
+ossutil64 -c ./hacks/.config -f --recursive cp macos.zip oss://wetee-dtim/download
+rm -rf macos.zip
