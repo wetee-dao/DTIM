@@ -10,12 +10,7 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
 
 cd "$DIR/../"
-current=`date "+%Y%m%d-%H_%M_%S"`
-ENV=`git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3`
-TAG="$ENV.$current"
 
-if [ $# -gt 0 ]; then
-  TAG="$1.$current"
-fi
+flutter build web --release
 
 ossutil64 -c ./hacks/.config -f --recursive cp build/web/ oss://wetee-dtim

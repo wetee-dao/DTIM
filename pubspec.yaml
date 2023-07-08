@@ -62,7 +62,7 @@ dependencies:
   # 缩略图
   flutter_blurhash: ^0.7.0
   # 视频播放器
-  video_player: ^2.6.0
+  video_player: ^2.7.0
   # html
   universal_html: ^2.2.1
   # 文字动画
@@ -71,7 +71,7 @@ dependencies:
   flutter_svg: ^2.0.5
   # webrtc
   flutter_webrtc: ^0.9.35
-  webrtc_interface: ^1.0.13
+  webrtc_interface: ^1.1.0
   # 托盘管理
   tray_manager: ^0.2.0
   # 视频播放

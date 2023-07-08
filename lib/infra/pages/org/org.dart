@@ -84,12 +84,12 @@ class _OrgPageState extends State<OrgPage> {
                           child: Column(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(top:10.w,right: 7.w),
+                                padding: EdgeInsets.only(top: 10.w, right: 7.w),
                                 child: CloseBar(color: constTheme.centerChannelColor),
                               ),
                               const Spacer(),
                               Text(
-                                "Use DTIM and work in web3",
+                                "work in web3 with DTIM",
                                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
                               ),
                               const Spacer(),
