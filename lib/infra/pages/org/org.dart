@@ -89,7 +89,7 @@ class _OrgPageState extends State<OrgPage> {
                               ),
                               const Spacer(),
                               Text(
-                                "work in web3 with DTIM",
+                                "Work in web3 with DTIM",
                                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
                               ),
                               const Spacer(),

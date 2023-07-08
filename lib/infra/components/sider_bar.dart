@@ -54,7 +54,14 @@ class SiderBarItem extends StatelessWidget {
                               borderRadius: BorderRadius.all(Radius.circular(5.w)),
                             ),
                             child: Center(
-                              child: Text(name[0], style: TextStyle(fontSize: 12.w, color: constTheme.sidebarText)),
+                              child: Text(
+                                name[0],
+                                style: TextStyle(
+                                  fontSize: 12.w,
+                                  color: constTheme.sidebarText,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           );
                         },

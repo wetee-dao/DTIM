@@ -20,5 +20,5 @@ cd build/macos/Build/Products/Release/
 zip -r macos.zip DTIM.app
 cd "$DIR/../"
 mv build/macos/Build/Products/Release/macos.zip macos.zip
-ossutil64 -c ./hacks/.config -f --recursive cp macos.zip oss://wetee-dtim/download
+ossutil64 -c ./hacks/.config -f --recursive cp macos.zip oss://wetee-dtim/download/macos.zip
 rm -rf macos.zip
