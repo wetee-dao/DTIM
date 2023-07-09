@@ -74,6 +74,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   stream: menuStreamController.stream,
                   initialData: false,
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    final imc = context.watch<AppCubit>();
                     return Container(
                       height: 35.w,
                       width: widget.width - 79.w,
@@ -88,7 +89,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              org.orgName ?? "",
+                              imc.currentState!.org.orgName ?? "",
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -277,7 +278,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   print("voip.calls: ${voip.calls.toString()}");
                   print("voip.groupCalls: ${voip.groupCalls.toString()}");
                   List<Widget> calls = [];
-                  
+
                   if (voip.calls.isNotEmpty || voip.groupCalls.isNotEmpty) {
                     calls.add(Padding(
                       // decoration: BoxDecoration(
@@ -304,7 +305,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
                   for (var k in voip.calls.keys) {
                     final call = voip.calls[k]!;
-                    if(call.isGroupCall) continue;
+                    if (call.isGroupCall) continue;
                     calls.add(
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(

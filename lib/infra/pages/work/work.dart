@@ -28,7 +28,6 @@ class WorkPage extends StatefulWidget {
 class _WorkPageState extends State<WorkPage> {
   late final AppCubit im;
   String pageStr = "RoadMap";
-  String title = "";
   Timer? _timer;
   int? c;
 
@@ -36,7 +35,6 @@ class _WorkPageState extends State<WorkPage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    title = workCtx.dao.name;
     workCtx.setOrg(im.currentState!.org, im.me!);
     workCtx.connectChain(() {
       getData();
@@ -135,7 +133,7 @@ class _WorkPageState extends State<WorkPage> {
     if (pageStr.contains("Projects")) {
       final ids = pageStr.split(" ");
       final project = workCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
-     return  ProjectPage(info: project);
+      return ProjectPage(info: project);
     }
 
     return const RoadMapPage();

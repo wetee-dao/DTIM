@@ -238,10 +238,12 @@ class _PCPageState extends State<PCPage> {
                                   im.currentState!.client.dispose(closeDatabase: false);
                                   await im.connect(aorgs![i]);
                                   im.setCurrent(aorgs![i]);
-                                  await getData();
                                 },
                               );
                               await loadThemeFromOrg(aorgs![i]);
+                              pageRouter.setActiveIndex(0);
+                              onSelect(0);
+                              await getData();
                             },
                             child: Container(
                               width: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,

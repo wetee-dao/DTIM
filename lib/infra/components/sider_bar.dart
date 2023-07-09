@@ -47,18 +47,18 @@ class SiderBarItem extends StatelessWidget {
                         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Container(
-                            width: 22.w,
-                            height: 22.w,
+                            width: 20.w,
+                            height: 20.w,
                             decoration: BoxDecoration(
-                              color: constTheme.sidebarText.withOpacity(0.1),
-                              borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                              color: constTheme.sidebarText,
+                              borderRadius: BorderRadius.all(Radius.circular(3.w)),
                             ),
                             child: Center(
                               child: Text(
                                 name[0],
                                 style: TextStyle(
                                   fontSize: 12.w,
-                                  color: constTheme.sidebarText,
+                                  color: constTheme.sidebarBg,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -67,14 +67,21 @@ class SiderBarItem extends StatelessWidget {
                         },
                         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                           return Container(
-                            width: 22.w,
-                            height: 22.w,
+                            width: 20.w,
+                            height: 20.w,
                             decoration: BoxDecoration(
-                              color: constTheme.sidebarText.withOpacity(0.1),
-                              borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                              color: constTheme.sidebarText,
+                              borderRadius: BorderRadius.all(Radius.circular(3.w)),
                             ),
                             child: Center(
-                              child: Text(name[0], style: TextStyle(fontSize: 12.w, color: constTheme.sidebarText)),
+                              child: Text(
+                                name[0],
+                                style: TextStyle(
+                                  fontSize: 12.w,
+                                  color: constTheme.sidebarBg,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           );
                         },
