@@ -150,6 +150,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
             ],
           ),
         );
+
         buttons.add(
           TextButton(
             child: Text(
@@ -340,6 +341,8 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
           ),
         );
         break;
+      default:
+        body = Container();
     }
     return Scaffold(
       appBar: AppBar(
@@ -348,7 +351,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(12.0),
-        children: [],
+        children: [body],
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(

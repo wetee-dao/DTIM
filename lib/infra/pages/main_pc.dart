@@ -21,12 +21,16 @@ import 'package:dtim/application/store/theme.dart';
 
 @RoutePage(name: "pc")
 class PCPage extends StatefulWidget {
-  final String t;
-  const PCPage({Key? key, @pathParam required this.t}) : super(key: key);
+  const PCPage({
+    Key? key,
+    // @pathParam required this.t,
+  }) : super(key: key);
 
   @override
   State<PCPage> createState() => _PCPageState();
 }
+
+const url = ["im", "gov", "work", "integrate"];
 
 class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
@@ -46,10 +50,9 @@ class _PCPageState extends State<PCPage> {
 
   @override
   void initState() {
-    print("PCPagePCPage");
     super.initState();
     im = context.read<AppCubit>();
-    currentId.add(pcpages.indexOf(widget.t));
+    currentId.add(url.indexOf(context.router.currentPath.replaceAll("/pc/", "")));
     getData();
   }
 
@@ -169,27 +172,6 @@ class _PCPageState extends State<PCPage> {
                                       }
                                     },
                                   ),
-                                // SiderBarItem(
-                                //   "Gov",
-                                //   icon: AppIcons.sxgl,
-                                //   key: const Key("Gov"),
-                                //   selected: id.data == 1,
-                                //   onTap: () {
-                                //     pageRouter.setActiveIndex(1);
-                                //     onSelect(1);
-                                //   },
-                                // ),
-                                // // 任务管理
-                                // SiderBarItem(
-                                //   "Kanban",
-                                //   img: "https://wetee.app/icons/kanban.png",
-                                //   key: const Key("KANBAN"),
-                                //   selected: id.data == 2,
-                                //   onTap: () {
-                                //     pageRouter.setActiveIndex(2);
-                                //     onSelect(2);
-                                //   },
-                                // ),
                                 // DAO管理
                                 SiderBarItem(
                                   "Apps",
@@ -243,7 +225,9 @@ class _PCPageState extends State<PCPage> {
                                 return;
                               }
                               if (im.sign == "") {
-                                await im.login(im.me!);
+                                if (!await im.login(im.me!)) {
+                                  return;
+                                }
                               }
                               // ignore: use_build_context_synchronously
                               final org = globalCtx().read<OrgCubit>();
@@ -306,6 +290,25 @@ class _PCPageState extends State<PCPage> {
                                             aorgs![i].orgAvater!,
                                             width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
                                             height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                            loadingBuilder:
+                                                (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return Center(
+                                                child: Text(
+                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                                ),
+                                              );
+                                            },
+                                            errorBuilder:
+                                                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Center(
+                                                child: Text(
+                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
                                       ),

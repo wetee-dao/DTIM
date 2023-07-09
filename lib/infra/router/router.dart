@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
 import 'package:dtim/infra/pages/org/create_org.dart';
-import 'package:dtim/infra/pages/work/gov.dart';
+import 'package:dtim/infra/pages/opengov/gov.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
@@ -14,7 +14,9 @@ import 'package:dtim/infra/pages/org/org.dart';
 import 'package:dtim/infra/pages/preloader.dart';
 
 part 'router.gr.dart';
+
 const List<String> pcpages = ["im", "dao", "integrate"];
+
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends _$AppRouter implements AutoRouteGuard {
   AppCubit authService;
@@ -42,7 +44,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   List<AutoRoute> get routes {
     return [
       AutoRoute(path: '/', page: Preloader.page),
-      AutoRoute(path: '/pc/:t', page: Pc.page, children: [
+      AutoRoute(path: '/pc', page: Pc.page, children: [
         AutoRoute(path: 'im', page: OrgRoute.page),
         AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
         AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),

@@ -24,6 +24,7 @@ class AppCard extends StatelessWidget {
   final Color? background;
   final String? label;
   final String? amount;
+  final double width;
   const AppCard({
     Key? key,
     required this.icon,
@@ -33,6 +34,7 @@ class AppCard extends StatelessWidget {
     required this.id,
     required this.disable,
     required this.isActive,
+    required this.width,
   }) : super(key: key);
 
   @override
@@ -178,7 +180,7 @@ class AppCard extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              constraints: BoxConstraints(minWidth: 350.w, maxWidth: 350.w, minHeight: 99.w, maxHeight: 99.w),
+              constraints: BoxConstraints(minWidth: width, maxWidth: width, minHeight: 99.w, maxHeight: 99.w),
               padding: EdgeInsets.fromLTRB(15.w, 10.w, 15.w, 10.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.w),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
-import 'package:dtim/infra/pages/work/referendum.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +12,10 @@ import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';
 
-import 'guild.dart';
 import 'member.dart';
 import 'overview.dart';
-import 'project.dart';
 import 'gov_menu.dart';
+import 'referendum.dart';
 
 @RoutePage(name: "govRoute")
 class GovPage extends StatefulWidget {
@@ -32,10 +30,6 @@ class _GovPageState extends State<GovPage> {
     const Overviewpage(),
     const MemberPage(),
     const ReferendumPage(),
-    // const CombindBoardPage(),
-    // Container(),
-    // Guildpage(key: guildKey),
-    // ProjectPage(key: projectKey)
   ];
   late PageController pageController = PageController();
   late final AppCubit im;
@@ -50,6 +44,7 @@ class _GovPageState extends State<GovPage> {
     super.initState();
     currentId.add(pageStr);
     im = context.read<AppCubit>();
+    workCtx.setOrg(im.currentState!.org, im.me!);
     workCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
@@ -134,9 +129,7 @@ class _GovPageState extends State<GovPage> {
                             pageController
                                 .animateToPage(index,
                                     duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
-                                .then((v) {
-                              pageHook();
-                            });
+                                .then((v) {});
 
                             currentId.add(id);
                             if (c != null) {}
@@ -158,22 +151,6 @@ class _GovPageState extends State<GovPage> {
             )
           : Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w)),
     );
-  }
-
-  pageHook() {
-    if (pageStr.contains("Guilds")) {
-      final ids = pageStr.split(" ");
-      final guildState = guildKey.currentState as GuildpageState;
-      final guild = workCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
-      guildState.init(guild);
-    }
-    if (pageStr.contains("Projects")) {
-      final ids = pageStr.split(" ");
-      final projectState = projectKey.currentState as ProjectPageState;
-      final project = workCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
-      // guildKey.currentState?.getData();
-      projectState.init(project);
-    }
   }
 
   int getPageIndex(str) {

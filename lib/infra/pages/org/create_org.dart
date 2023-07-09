@@ -432,6 +432,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 _formKey.currentState!.save();
                 final im = context.read<AppCubit>();
 
+                workCtx.setOrg(im.currentState!.org, im.me!);
                 workCtx.connectChain(() async {
                   printInfo("workCtx.connectChain2");
                   if (!await inputPasswordg(im.me!)) {

@@ -14,11 +14,5 @@
 	<true/>
 	<key>com.apple.security.network.server</key>
 	<true/>
-	<key>com.apple.security.personal-information.location</key>
-	<true/>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>$(AppIdentifierPrefix)app.wetee.dtim</string>
-	</array>
 </dict>
 </plist>

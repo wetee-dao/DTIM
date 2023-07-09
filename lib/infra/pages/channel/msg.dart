@@ -108,7 +108,7 @@ class _MsgState extends State<Msg> {
                   if (showAvatar)
                     RichText(
                       text: TextSpan(
-                        text: event.senderId == widget.client.userID ? "我" : user.displayName,
+                        text: event.senderId == widget.client.userID ? "Me" : user.displayName,
                         style: TextStyle(
                           color: constTheme.centerChannelColor,
                           fontWeight: FontWeight.bold,

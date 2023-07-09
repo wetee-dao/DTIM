@@ -28,8 +28,6 @@ class _IntegratePageState extends State<IntegratePage> {
   late final AppCubit im;
   List<native.App> apps = [];
   List<OrgApp> oapps = [];
-  String pageStr = "Overview";
-  String title = "";
   bool loding = true;
   String searchText = "";
 
@@ -37,6 +35,7 @@ class _IntegratePageState extends State<IntegratePage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
+    workCtx.setOrg(im.currentState!.org, im.me!);
     workCtx.connectChain(() {
       getData();
     });
@@ -124,68 +123,73 @@ class _IntegratePageState extends State<IntegratePage> {
             ),
             SizedBox(height: 15.w),
             SizedBox(
-              width: double.maxFinite,
-              child: Wrap(
-                runSpacing: 20.w,
-                spacing: 20.w,
-                alignment: WrapAlignment.start,
-                children: [
-                  for (var app in fapps)
-                    AppCard(
-                      id: app.id,
-                      icon: app.icon,
-                      disable: false,
-                      isActive: getActive(app),
-                      // background: constTheme.buttonBg,
-                      background: const Color.fromARGB(255, 4, 18, 53),
-                      label: app.name,
-                      amount: app.desc,
-                    ),
-                  // AppCard(
-                  //   icon: "https://wetee.app/icons/sxgl.png",
-                  //   background: Color.fromARGB(255, 1, 18, 57),
-                  //   label: "Gov&Asset",
-                  //   amount: 'Implementing more democratic, transparent and inclusive decision making processes through smart contracts',
-                  // ),
-                  // dtim:///gov
-                  // AppCard(
-                  //   icon: "https://wetee.app/icons/kanban.png",
-                  //   background: Color.fromARGB(255, 48, 1, 57),
-                  //   label: "Kanban",
-                  //   amount: 'The decentralization characteristic of blockchains and the real-time mind mapping function of collaborative whiteboards can realize a more trustworthy, open and intelligent way of team collaboration by mapping thoughts in real time.',
-                  // ),
-                  // dtim:///work
-                  const AppCard(
-                    id: 5000,
-                    disable: true,
-                    isActive: false,
-                    icon: "https://wetee.app/icons/bifrost.png",
-                    background: Colors.black,
-                    label: "Bifrost",
-                    amount:
-                        'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
-                  ),
-                  const AppCard(
-                    id: 5000,
-                    disable: true,
-                    isActive: false,
-                    icon: "https://wetee.app/icons/54881907.png",
-                    background: Colors.black,
-                    label: "Acala",
-                    amount: 'Cross-chain DeFi Hub for Polkadot, Kusama and beyond',
-                  ),
-                  const AppCard(
-                    id: 5000,
-                    disable: true,
-                    isActive: false,
-                    icon: "https://wetee.app/icons/astar.png",
-                    background: Colors.black,
-                    label: "Astar",
-                    amount: 'The Future of Multichain Smart Contracts',
-                  ),
-                ],
-              ),
-            ),
+                width: double.maxFinite,
+                child: LayoutBuilder(builder: (context, constraints) {
+                  var row = (constraints.maxWidth + 20.w - (constraints.maxWidth + 20.w) % 350.w) ~/ 350.w;
+                  return Wrap(
+                    runSpacing: 20.w,
+                    spacing: 20.w,
+                    alignment: WrapAlignment.start,
+                    children: [
+                      for (var app in fapps)
+                        AppCard(
+                          id: app.id,
+                          icon: app.icon,
+                          disable: false,
+                          isActive: getActive(app),
+                          width: ((constraints.maxWidth + 20.w) / row) - 20.w,
+                          background: const Color.fromARGB(255, 4, 18, 53),
+                          label: app.name,
+                          amount: app.desc,
+                        ),
+                      // AppCard(
+                      //   icon: "https://wetee.app/icons/sxgl.png",
+                      //   background: Color.fromARGB(255, 1, 18, 57),
+                      //   label: "Gov&Asset",
+                      //   amount: 'Implementing more democratic, transparent and inclusive decision making processes through smart contracts',
+                      // ),
+                      // dtim:///gov
+                      // AppCard(
+                      //   icon: "https://wetee.app/icons/kanban.png",
+                      //   background: Color.fromARGB(255, 48, 1, 57),
+                      //   label: "Kanban",
+                      //   amount: 'The decentralization characteristic of blockchains and the real-time mind mapping function of collaborative whiteboards can realize a more trustworthy, open and intelligent way of team collaboration by mapping thoughts in real time.',
+                      // ),
+                      // dtim:///work
+                      AppCard(
+                        id: 5000,
+                        disable: true,
+                        isActive: false,
+                        width: ((constraints.maxWidth + 20.w) / row) - 20.w,
+                        icon: "https://wetee.app/icons/bifrost.png",
+                        background: Colors.black,
+                        label: "Bifrost",
+                        amount:
+                            'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
+                      ),
+                      AppCard(
+                        id: 5000,
+                        disable: true,
+                        isActive: false,
+                        width: ((constraints.maxWidth + 20.w) / row) - 20.w,
+                        icon: "https://wetee.app/icons/54881907.png",
+                        background: Colors.black,
+                        label: "Acala",
+                        amount: 'Cross-chain DeFi Hub for Polkadot, Kusama and beyond',
+                      ),
+                      AppCard(
+                        id: 5000,
+                        disable: true,
+                        isActive: false,
+                        width: ((constraints.maxWidth + 20.w) / row) - 20.w,
+                        icon: "https://wetee.app/icons/astar.png",
+                        background: Colors.black,
+                        label: "Astar",
+                        amount: 'The Future of Multichain Smart Contracts',
+                      ),
+                    ],
+                  );
+                })),
           ],
         ),
       ),

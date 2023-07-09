@@ -1,5 +1,4 @@
 import 'package:dtim/domain/utils/screen/screen.dart';
-import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +9,7 @@ import 'package:dtim/infra/components/dao/payments_detail_list.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
+import 'sub/referendum.dart';
 
 class Overviewpage extends StatelessWidget {
   const Overviewpage({Key? key}) : super(key: key);

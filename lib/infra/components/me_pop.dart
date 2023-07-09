@@ -101,7 +101,7 @@ class _MePopState extends State<MePop> {
                       Expanded(
                         child: RichText(
                           text: TextSpan(
-                            text: widget.id,
+                            text: "${widget.id} ",
                             style: TextStyle(fontSize: 12.w, height: 1.2, color: constTheme.centerChannelColor),
                             children: [
                               WidgetSpan(
@@ -118,7 +118,7 @@ class _MePopState extends State<MePop> {
                                   child: Icon(
                                     Icons.copy_rounded,
                                     size: 13.w,
-                                    color: constTheme.centerChannelColor,
+                                    color: constTheme.buttonBg,
                                   ),
                                 ),
                               ),

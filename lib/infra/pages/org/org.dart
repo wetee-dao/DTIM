@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/infra/components/close_bar.dart';
 import 'package:dtim/infra/pages/webrtc/group_calling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +68,7 @@ class _OrgPageState extends State<OrgPage> {
           Flexible(
             child: BlocBuilder<OrgCubit, OrgState>(
               builder: (context, state) {
+                printSuccess("channelId => ${state.channelId}");
                 if (state.channelId.contains("meeting||")) {
                   return GroupWebRTCalling(callId: state.channelId.replaceAll("meeting||", ""));
                 }
@@ -78,11 +81,19 @@ class _OrgPageState extends State<OrgPage> {
                         Container(
                           color: constTheme.centerChannelBg,
                           padding: EdgeInsets.only(bottom: 100.h),
-                          child: Center(
-                            child: Text(
-                              "Use DTIM and work in web3",
-                              style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
-                            ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 10.w, right: 7.w),
+                                child: CloseBar(color: constTheme.centerChannelColor),
+                              ),
+                              const Spacer(),
+                              Text(
+                                "Work in web3 with DTIM",
+                                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
+                              ),
+                              const Spacer(),
+                            ],
                           ),
                         ),
                       );
