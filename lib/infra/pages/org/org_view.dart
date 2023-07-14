@@ -1,18 +1,19 @@
 import 'dart:async';
-import 'package:asyou_app/infra/router/pop_router.dart';
+import 'package:dtim/application/store/app/org.dart';
+import 'package:dtim/infra/router/pop_router.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/application/store/app/webrtc.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/popup.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/webrtc/action.dart';
+import 'package:dtim/application/store/app/webrtc.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/popup.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
+// import 'package:dtim/domain/utils/webrtc/action.dart';
 import 'org_menu.dart';
 
 class OrgViewPage extends StatefulWidget {
@@ -25,7 +26,6 @@ class OrgViewPage extends StatefulWidget {
 
 class _OrgViewPageState extends State<OrgViewPage> {
   late ExpandableController _controllerChannels;
-  late ExpandableController _controllerStarred;
   late ExpandableController _controllerUsers;
 
   final BasePopupMenuController menuController = BasePopupMenuController();
@@ -37,7 +37,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   void initState() {
     super.initState();
     _controllerChannels = ExpandableController(initialExpanded: true);
-    _controllerStarred = ExpandableController(initialExpanded: true);
     _controllerUsers = ExpandableController(initialExpanded: true);
     menuController.addListener(() {
       menuStreamController.add(menuController.menuIsShowing);
@@ -51,7 +50,6 @@ class _OrgViewPageState extends State<OrgViewPage> {
   void dispose() {
     super.dispose();
     _controllerChannels.dispose();
-    _controllerStarred.dispose();
     _controllerUsers.dispose();
   }
 
@@ -76,6 +74,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   stream: menuStreamController.stream,
                   initialData: false,
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    final imc = context.watch<AppCubit>();
                     return Container(
                       height: 35.w,
                       width: widget.width - 79.w,
@@ -90,7 +89,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              org.orgName ?? "",
+                              imc.currentState!.org.orgName ?? "",
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -111,12 +110,13 @@ class _OrgViewPageState extends State<OrgViewPage> {
                     );
                   },
                 ),
-                menuBuilder: () => orgMenuRender(menuController, widget.width - 30.w),
+                menuBuilder: () => orgMenuRender(menuController, widget.width - 30.w, im),
               ),
               SizedBox(width: 10.w),
               InkWell(
                 onTap: () {
-                  showModelOrPage(context, "/search");
+                  var w = 0.8.sw > 700.w ? 700.w : 0.8.sw;
+                  showModelOrPage(context, "/search", width: w, top: 5.w);
                 },
                 child: Container(
                   height: 35.w,
@@ -128,7 +128,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                     borderRadius: BorderRadius.all(Radius.circular(3.w)),
                   ),
                   alignment: Alignment.center,
-                  child: Icon(Icons.search, size: 20.w, color: constTheme.sidebarText),
+                  child: Icon(AppIcons.search, size: 16.w, color: constTheme.sidebarText),
                 ),
               ),
             ],
@@ -226,10 +226,12 @@ class _OrgViewPageState extends State<OrgViewPage> {
                           GestureDetector(
                             key: const Key("create_private"),
                             onTap: () async {
+                              var w = 0.8.sw > 700.w ? 700.w : 0.8.sw;
                               showModelOrPage(
                                 context,
                                 "/create_private",
-                                width: 550.w,
+                                width: w,
+                                top: 5.w,
                                 height: 0.7.sh,
                               );
                             },
@@ -270,88 +272,208 @@ class _OrgViewPageState extends State<OrgViewPage> {
                   height: 1,
                   color: constTheme.sidebarText.withOpacity(0.05),
                 ),
+                BlocBuilder<WebRTCCubit, WebRTCState>(builder: (context, state) {
+                  final voip = im.currentState!.webrtcTool!.voip;
+                  print("voip.calls.length: ${voip.calls.length}");
+                  print("voip.calls: ${voip.calls.toString()}");
+                  print("voip.groupCalls: ${voip.groupCalls.toString()}");
+                  List<Widget> calls = [];
+
+                  if (voip.calls.isNotEmpty || voip.groupCalls.isNotEmpty) {
+                    calls.add(Padding(
+                      // decoration: BoxDecoration(
+                      //   border: Border(bottom: BorderSide(color: constTheme.sidebarText.withOpacity(0.1))),
+                      // ),
+                      padding: EdgeInsets.only(left: 15.w, right: 8.w, top: 10.w, bottom: 5.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              L10n.of(context)!.mediaChats,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 14.w,
+                                color: constTheme.sidebarText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
+                  }
+
+                  for (var k in voip.calls.keys) {
+                    final call = voip.calls[k]!;
+                    if (call.isGroupCall) continue;
+                    calls.add(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: constTheme.sidebarBg,
+                          surfaceTintColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: EdgeInsets.zero,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                            side: BorderSide.none,
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          im.currentState!.webrtcTool!.addCallingPopup(call.callId, call);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12.w, right: 0.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(width: 2.w),
+                              Icon(Icons.headphones_rounded, size: 16.w, color: constTheme.sidebarText),
+                              SizedBox(width: 7.w),
+                              Expanded(
+                                child: Text(
+                                  call.room.getLocalizedDisplayname(),
+                                  style: TextStyle(
+                                    fontSize: 14.w,
+                                    color: constTheme.sidebarText,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => im.currentState!.webrtcTool!.addCallingPopup(call.callId, call),
+                                tooltip: 'open window',
+                                icon: Icon(
+                                  AppIcons.fangda,
+                                  size: 16.w,
+                                  color: constTheme.sidebarText,
+                                ),
+                              ),
+                            ],
+                          ),
+                          //   Row(
+                          //     mainAxisAlignment: MainAxisAlignment.start,
+                          //     children: [
+                          //       for (var i = 0; i < actions.length; i++)
+                          //         Container(
+                          //           decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                          //               color: actions[i].backgroundColor),
+                          //           margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
+                          //           child: IconButton(
+                          //             iconSize: 18.w,
+                          //             constraints: BoxConstraints(
+                          //                 minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                          //             style: IconButton.styleFrom(
+                          //               shape: RoundedRectangleBorder(
+                          //                 borderRadius: BorderRadius.circular(8.w),
+                          //               ),
+                          //             ),
+                          //             padding: EdgeInsets.zero,
+                          //             icon: actions[i].child,
+                          //             color: Colors.white,
+                          //             onPressed: () async {
+                          //               actions[i].onPressed();
+                          //             },
+                          //           ),
+                          //         ),
+                          //     ],
+                          //   ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  for (var k in voip.groupCalls.keys) {
+                    final call = voip.groupCalls[k]!;
+                    if (k.contains(":")) continue;
+                    // final callActions = CallAction(call);
+                    // final actions = callActions.buildActionButtons();
+                    calls.add(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: constTheme.sidebarBg,
+                          surfaceTintColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: EdgeInsets.zero,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                            side: BorderSide.none,
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          final org = context.read<OrgCubit>();
+                          org.setChannelId("meeting||$k");
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(width: 2.w),
+                              Icon(AppIcons.meeting_board, size: 19.w, color: constTheme.sidebarText),
+                              SizedBox(width: 7.w),
+                              Expanded(
+                                child: Text(
+                                  call.room.getLocalizedDisplayname(),
+                                  style: TextStyle(
+                                    fontSize: 14.w,
+                                    color: constTheme.sidebarText,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  // im.currentState!.webrtcTool!.addCallingPopup(call.callId, call)
+                                },
+                                tooltip: 'open window',
+                                icon: Icon(
+                                  AppIcons.fangda,
+                                  size: 16.w,
+                                  color: constTheme.sidebarText,
+                                ),
+                              ),
+                            ],
+                          ),
+                          //   Row(
+                          //     mainAxisAlignment: MainAxisAlignment.start,
+                          //     children: [
+                          //       for (var i = 0; i < actions.length; i++)
+                          //         Container(
+                          //           decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.all(Radius.circular(8.w)),
+                          //               color: actions[i].backgroundColor),
+                          //           margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
+                          //           child: IconButton(
+                          //             iconSize: 18.w,
+                          //             constraints: BoxConstraints(
+                          //                 minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
+                          //             style: IconButton.styleFrom(
+                          //               shape: RoundedRectangleBorder(
+                          //                 borderRadius: BorderRadius.circular(8.w),
+                          //               ),
+                          //             ),
+                          //             padding: EdgeInsets.zero,
+                          //             icon: actions[i].child,
+                          //             color: Colors.white,
+                          //             onPressed: () async {
+                          //               actions[i].onPressed();
+                          //             },
+                          //           ),
+                          //         ),
+                          //     ],
+                          //   ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  return Column(children: calls);
+                })
               ],
             ),
           ),
         ),
-        BlocBuilder<WebRTCCubit, WebRTCState>(builder: (context, state) {
-          final voip = im.currentState!.webrtcTool!.voip;
-
-          List<Widget> calls = [];
-
-          for (var k in voip.calls.keys) {
-            final call = voip.calls[k]!;
-            final callActions = CallAction(call);
-            final actions = callActions.buildActionButtons();
-
-            calls.add(
-              Container(
-                decoration:
-                    BoxDecoration(border: Border(top: BorderSide(color: constTheme.sidebarText.withOpacity(0.1)))),
-                padding: EdgeInsets.only(left: 12.w, right: 10.w, top: 5.w, bottom: 10.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "${call.room.isDirectChat ? "" : "Channel: "}${call.room.getLocalizedDisplayname()}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14.w,
-                              color: constTheme.sidebarText,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () => im.currentState!.webrtcTool!.addCallingPopup(call.callId, call),
-                          tooltip: 'open window',
-                          icon: Icon(
-                            AppIcons.fangda,
-                            size: 16.w,
-                            color: constTheme.sidebarText,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 5.w),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        for (var i = 0; i < actions.length; i++)
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(8.w)),
-                                color: actions[i].backgroundColor),
-                            margin: EdgeInsets.only(right: i != actions.length - 1 ? 5.w : 0),
-                            child: IconButton(
-                              iconSize: 18.w,
-                              constraints:
-                                  BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
-                              style: IconButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.w),
-                                ),
-                              ),
-                              padding: EdgeInsets.zero,
-                              icon: actions[i].child,
-                              color: Colors.white,
-                              onPressed: () async {
-                                actions[i].onPressed();
-                              },
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          return Column(children: calls);
-        })
       ],
     );
   }

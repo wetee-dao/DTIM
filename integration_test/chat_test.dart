@@ -1,9 +1,9 @@
-import 'package:asyou_app/router.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'package:asyou_app/main.dart' as app;
+import 'package:dtim/main.dart' as app;
 
 import 'base.dart';
 import 'extensions/wait_for.dart';

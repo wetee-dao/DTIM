@@ -21,16 +21,19 @@ class OrgAdapter extends TypeAdapter<Org> {
       daoId: fields[2] as int,
       name: fields[3] as String?,
       desc: fields[4] as String?,
-      metaData: fields[6] as OrgMetaData?,
-      chainUrl: fields[5] as String?,
-      apps: (fields[7] as List).cast<OrgApp>(),
+      purpose: fields[8] as String?,
+      imApi: fields[10] as String?,
+      bg: fields[11] as String?,
+      logo: fields[12] as String?,
+      img: fields[13] as String?,
+      homeUrl: fields[14] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Org obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(10)
       ..writeByte(1)
       ..write(obj.hash)
       ..writeByte(2)
@@ -39,57 +42,17 @@ class OrgAdapter extends TypeAdapter<Org> {
       ..write(obj.name)
       ..writeByte(4)
       ..write(obj.desc)
-      ..writeByte(5)
-      ..write(obj.chainUrl)
-      ..writeByte(6)
-      ..write(obj.metaData)
-      ..writeByte(7)
-      ..write(obj.apps);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is OrgAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class OrgMetaDataAdapter extends TypeAdapter<OrgMetaData> {
-  @override
-  final int typeId = 4;
-
-  @override
-  OrgMetaData read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return OrgMetaData(
-      domain: fields[1] as String?,
-      avater: fields[2] as String?,
-      homeUrl: fields[5] as String?,
-      img: fields[3] as String?,
-      color: fields[4] as String?,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, OrgMetaData obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(1)
-      ..write(obj.domain)
-      ..writeByte(2)
-      ..write(obj.avater)
-      ..writeByte(3)
+      ..writeByte(8)
+      ..write(obj.purpose)
+      ..writeByte(10)
+      ..write(obj.imApi)
+      ..writeByte(11)
+      ..write(obj.bg)
+      ..writeByte(12)
+      ..write(obj.logo)
+      ..writeByte(13)
       ..write(obj.img)
-      ..writeByte(4)
-      ..write(obj.color)
-      ..writeByte(5)
+      ..writeByte(14)
       ..write(obj.homeUrl);
   }
 
@@ -99,7 +62,7 @@ class OrgMetaDataAdapter extends TypeAdapter<OrgMetaData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is OrgMetaDataAdapter &&
+      other is OrgAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -114,21 +77,22 @@ class OrgAppAdapter extends TypeAdapter<OrgApp> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return OrgApp()
-      ..appId = fields[1] as int
-      ..hash = fields[2] as String
-      ..type = fields[3] as int
-      ..url = fields[4] as String?
-      ..name = fields[5] as String?
-      ..desc = fields[6] as String?;
+    return OrgApp(
+      hash: fields[2] as String,
+      type: fields[3] as int,
+      url: fields[4] as String?,
+      name: fields[5] as String?,
+      desc: fields[6] as String?,
+      meta: (fields[7] as Map?)?.cast<String, String>(),
+      icon: fields[8] as String?,
+      appId: fields[9] as int?,
+    );
   }
 
   @override
   void write(BinaryWriter writer, OrgApp obj) {
     writer
-      ..writeByte(6)
-      ..writeByte(1)
-      ..write(obj.appId)
+      ..writeByte(8)
       ..writeByte(2)
       ..write(obj.hash)
       ..writeByte(3)
@@ -138,7 +102,13 @@ class OrgAppAdapter extends TypeAdapter<OrgApp> {
       ..writeByte(5)
       ..write(obj.name)
       ..writeByte(6)
-      ..write(obj.desc);
+      ..write(obj.desc)
+      ..writeByte(8)
+      ..write(obj.icon)
+      ..writeByte(9)
+      ..write(obj.appId)
+      ..writeByte(7)
+      ..write(obj.meta);
   }
 
   @override

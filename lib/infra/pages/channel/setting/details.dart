@@ -15,13 +15,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/domain/utils/matrix_sdk_extensions/matrix_locals.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_locals.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 
 enum AliasActions { copy, delete, setCanonical }
 
@@ -30,10 +30,10 @@ class ChatDetails extends StatefulWidget {
   const ChatDetails({Key? key, required this.id}) : super(key: key);
 
   @override
-  ChatDetailsController createState() => ChatDetailsController();
+  State<ChatDetails> createState() => ChatDetailState();
 }
 
-class ChatDetailsController extends State<ChatDetails> {
+class ChatDetailState extends State<ChatDetails> {
   List<User>? members;
   bool displaySettings = true;
   late Client client;
@@ -96,7 +96,8 @@ class ChatDetailsController extends State<ChatDetails> {
             RequestType.GET,
             '/client/unstable/org.matrix.msc2432/rooms/${Uri.encodeComponent(room.id)}/aliases',
           )
-          .then((response) => List<String>.from(response['aliases'])),
+          .then((response) => []),
+          // .then((response) => List<String>.from(response['aliases'])),
     );
     // Switch to the stable api once it is implemented.
 

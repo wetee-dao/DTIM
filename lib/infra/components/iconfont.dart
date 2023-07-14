@@ -8,16 +8,22 @@ class AppIcons {
   
   AppIcons._();
   
+  static const IconData sxgl = IconData(0xe60b, fontFamily: _family); // sxgl
+  static const IconData houtaiguanli_houtaiguanli = IconData(0xe636, fontFamily: _family); // 后台管理-后台管理
+  static const IconData discovery = IconData(0xe605, fontFamily: _family); // discovery
+  static const IconData discovery_2 = IconData(0xe63b, fontFamily: _family); // Discovery
+  static const IconData discoverfill = IconData(0xe650, fontFamily: _family); // discoverfill
+  static const IconData chatbot = IconData(0xe61c, fontFamily: _family); // Chatbot
+  static const IconData meeting_board = IconData(0xe6f9, fontFamily: _family); // meeting-board
+  static const IconData chat = IconData(0xe61e, fontFamily: _family); // Chat#4
+  static const IconData shujujicheng = IconData(0xe862, fontFamily: _family); // 数据集成
+  static const IconData si_glyph_bubble_chat = IconData(0xe615, fontFamily: _family); // si-glyph-bubble-chat
+  static const IconData kanban = IconData(0xe603, fontFamily: _family); // kanban
+  static const IconData kanban_1 = IconData(0xe742, fontFamily: _family); // kanban
+  static const IconData search = IconData(0xe652, fontFamily: _family); // search
   static const IconData jinrudaobo = IconData(0xe616, fontFamily: _family); // 进入导播
-  static const IconData we_chat = IconData(0xe641, fontFamily: _family); // WeChat
-  static const IconData blockchain = IconData(0xe837, fontFamily: _family); // blockchain
-  static const IconData cloud_communication_meeting = IconData(0xe751, fontFamily: _family); // Cloud Communication-Meeting
-  static const IconData chain = IconData(0xe615, fontFamily: _family); // chain
-  static const IconData meetingover = IconData(0xe6eb, fontFamily: _family); // meeting over
-  static const IconData icon_meeting_manage = IconData(0xe627, fontFamily: _family); // icon_meeting_manage
   static const IconData icon_meeting = IconData(0xe637, fontFamily: _family); // icon_meeting
   static const IconData meetvideo_endmeet = IconData(0xe63a, fontFamily: _family); // Meetvideo_endmeet
-  static const IconData meeting_2 = IconData(0xe669, fontFamily: _family); // meeting
   static const IconData fangda = IconData(0xe614, fontFamily: _family); // 放大
   static const IconData suoxiao = IconData(0xe613, fontFamily: _family); // 缩小
   static const IconData share = IconData(0xe60e, fontFamily: _family); // 分享/share
@@ -45,7 +51,6 @@ class AppIcons {
   static const IconData organization = IconData(0xe97b, fontFamily: _family); // organization
   static const IconData wangye = IconData(0xe706, fontFamily: _family); // 网页
   static const IconData shebei = IconData(0xe720, fontFamily: _family); // 设备
-  static const IconData wode_4 = IconData(0xe772, fontFamily: _family); // 我的_4
 }
 
 class _PreviewIcon {
@@ -60,16 +65,22 @@ class AppIconsPreview extends StatelessWidget {
   const AppIconsPreview({Key? key}) : super(key: key);
 
   static const iconList = <_PreviewIcon>[
+    _PreviewIcon(AppIcons.sxgl, "sxgl", "sxgl"),
+    _PreviewIcon(AppIcons.houtaiguanli_houtaiguanli, "houtaiguanli_houtaiguanli", "后台管理-后台管理"),
+    _PreviewIcon(AppIcons.discovery, "discovery", "discovery"),
+    _PreviewIcon(AppIcons.discovery_2, "discovery_2", "Discovery"),
+    _PreviewIcon(AppIcons.discoverfill, "discoverfill", "discoverfill"),
+    _PreviewIcon(AppIcons.chatbot, "chatbot", "Chatbot"),
+    _PreviewIcon(AppIcons.meeting_board, "meeting_board", "meeting-board"),
+    _PreviewIcon(AppIcons.chat, "chat", "Chat#4"),
+    _PreviewIcon(AppIcons.shujujicheng, "shujujicheng", "数据集成"),
+    _PreviewIcon(AppIcons.si_glyph_bubble_chat, "si_glyph_bubble_chat", "si-glyph-bubble-chat"),
+    _PreviewIcon(AppIcons.kanban, "kanban", "kanban"),
+    _PreviewIcon(AppIcons.kanban_1, "kanban_1", "kanban"),
+    _PreviewIcon(AppIcons.search, "search", "search"),
     _PreviewIcon(AppIcons.jinrudaobo, "jinrudaobo", "进入导播"),
-    _PreviewIcon(AppIcons.we_chat, "we_chat", "WeChat"),
-    _PreviewIcon(AppIcons.blockchain, "blockchain", "blockchain"),
-    _PreviewIcon(AppIcons.cloud_communication_meeting, "cloud_communication_meeting", "Cloud Communication-Meeting"),
-    _PreviewIcon(AppIcons.chain, "chain", "chain"),
-    _PreviewIcon(AppIcons.meetingover, "meetingover", "meeting over"),
-    _PreviewIcon(AppIcons.icon_meeting_manage, "icon_meeting_manage", "icon_meeting_manage"),
     _PreviewIcon(AppIcons.icon_meeting, "icon_meeting", "icon_meeting"),
     _PreviewIcon(AppIcons.meetvideo_endmeet, "meetvideo_endmeet", "Meetvideo_endmeet"),
-    _PreviewIcon(AppIcons.meeting_2, "meeting_2", "meeting"),
     _PreviewIcon(AppIcons.fangda, "fangda", "放大"),
     _PreviewIcon(AppIcons.suoxiao, "suoxiao", "缩小"),
     _PreviewIcon(AppIcons.share, "share", "分享/share"),
@@ -97,7 +108,6 @@ class AppIconsPreview extends StatelessWidget {
     _PreviewIcon(AppIcons.organization, "organization", "organization"),
     _PreviewIcon(AppIcons.wangye, "wangye", "网页"),
     _PreviewIcon(AppIcons.shebei, "shebei", "设备"),
-    _PreviewIcon(AppIcons.wode_4, "wode_4", "我的_4"),
   ];
 
   @override

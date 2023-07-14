@@ -1,5 +1,6 @@
-import 'package:asyou_app/domain/models/account.dart';
-import 'package:asyou_app/domain/models/org.dart';
+import 'package:dtim/domain/models/account.dart';
+import 'package:dtim/domain/models/org.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:hive/hive.dart';
 
 class AccountOrgApi {
@@ -24,14 +25,58 @@ class AccountOrgApi {
 
   Future<List<AccountOrg>> listByAccount(String userId) async {
     final values = storeBox.values.toList();
-    return values
-        .where((a) => a.account.address == userId)
-        .map((v) => v)
-        .toList();
+    return values.where((a) => a.account.address == userId).map((v) => v).toList();
+  }
+
+  saveOrgTheme(String id, String theme) async {
+    var org = storeBox.get(id);
+    org!.theme = theme;
+    await storeBox.put(id, org);
+  }
+
+  deleteOrg(String userId, String orgHash) async {
+    await storeBox.delete(userId + orgHash);
+  }
+
+  AccountOrg? getOrg(String userId, String orgHash) {
+    return storeBox.get(userId + orgHash);
+  }
+
+
+  saveApp(String userId, String orgHash, List<OrgApp> apps) async {
+    var org = storeBox.get(userId + orgHash);
+    if (org != null) {
+      org.apps = apps;
+      await storeBox.put(userId + orgHash, org);
+    }
+  }
+
+  addOrg(String address, Org org) async {
+    final accountStoreBox = await Hive.openBox<Account>('Account');
+    final account = accountStoreBox.get(address);
+    final at = AccountOrg(org.hash);
+    printError(org.imApi ?? "xxxxxx");
+    var img = "";
+    if (org.img != null && org.img != "") {
+      img = org.img!;
+    } else if (org.logo != null && org.logo != "") {
+      img = org.logo!;
+    }
+    at.orgName = org.name;
+    at.orgDesc = org.desc;
+    at.orgAvater = org.logo;
+    at.orgImg = img;
+    at.orgColor = org.bg;
+    at.domain = org.imApi;
+    at.status = 1;
+    at.withAddr = address;
+    at.account = account!;
+    at.daoId = org.daoId;
+    await storeBox.put(address + org.hash, at);
   }
 
   Future<List<AccountOrg>> accountSyncOrgs(
-    String userId,
+    String address,
     List<String> fs,
     List<Org> orgs,
   ) async {
@@ -40,10 +85,10 @@ class AccountOrgApi {
     // final account = aquery.findUnique();
     // aquery.close();
     final accountStoreBox = await Hive.openBox<Account>('Account');
-    final account = accountStoreBox.get(userId);
+    final account = accountStoreBox.get(address);
 
     // 查询当前的团队
-    final storeOrgs = await listByAccount(userId);
+    final storeOrgs = await listByAccount(address);
 
     // 删除不需要的数据
     for (var j = 0; j < storeOrgs.length; j++) {
@@ -55,8 +100,7 @@ class AccountOrgApi {
       }
       // 删除
       if (storeIndex == -1) {
-        storeOrgs[storeIndex].status = 3;
-        storeBox.put(userId + storeOrgs[j].orgHash, storeOrgs[storeIndex]);
+        await storeBox.delete(address + storeOrgs[j].orgHash);
       }
     }
 
@@ -75,31 +119,31 @@ class AccountOrgApi {
         if (org != null) {
           final at = AccountOrg(org.hash);
           at.orgName = org.name;
-          at.orgAvater = org.metaData!.avater;
-          at.orgImg = org.metaData!.img;
-          at.orgColor = org.metaData!.color;
-          at.domain = org.metaData!.domain;
-          at.chainUrl = org.chainUrl;
+          at.orgDesc = org.desc;
+          at.orgAvater = org.logo;
+          at.orgImg = org.img;
+          at.orgColor = org.bg;
+          at.domain = org.imApi;
           at.status = 1;
-          at.withAddr = userId;
+          at.withAddr = address;
           at.account = account!;
           at.daoId = org.daoId;
-          storeBox.put(userId + org.hash, at);
+          await storeBox.put(address + org.hash, at);
         }
       } else {
         // 更新
         if (org != null) {
           storeOrgs[storeIndex].orgName = org.name;
-          storeOrgs[storeIndex].orgAvater = org.metaData!.avater;
-          storeOrgs[storeIndex].orgImg = org.metaData!.img;
-          storeOrgs[storeIndex].orgColor = org.metaData!.color;
-          storeOrgs[storeIndex].domain = org.metaData!.domain;
-          storeOrgs[storeIndex].chainUrl = org.chainUrl;
+          storeOrgs[storeIndex].orgDesc = org.desc;
+          storeOrgs[storeIndex].orgAvater = org.logo;
+          storeOrgs[storeIndex].orgImg = org.img;
+          storeOrgs[storeIndex].orgColor = org.bg;
+          storeOrgs[storeIndex].domain = org.imApi;
           storeOrgs[storeIndex].status = 1;
-          storeOrgs[storeIndex].withAddr = userId;
+          storeOrgs[storeIndex].withAddr = address;
           storeOrgs[storeIndex].account = account!;
           storeOrgs[storeIndex].daoId = org.daoId;
-          storeBox.put(userId + org.hash, storeOrgs[storeIndex]);
+          await storeBox.put(address + org.hash, storeOrgs[storeIndex]);
         }
       }
     }

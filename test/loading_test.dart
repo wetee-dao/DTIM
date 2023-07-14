@@ -1,10 +1,10 @@
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/infra/components/loading_dialog.dart';
+import 'package:dtim/infra/components/loading_dialog.dart';
 
 void main() {
   testWidgets("test loading", (WidgetTester tester) async {
@@ -12,7 +12,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: rootNavigatorKey,
-        theme: theme(),
+        theme: getDefaultTheme(),
         home: Scaffold(
           body: Column(
             children: [

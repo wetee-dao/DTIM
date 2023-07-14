@@ -1,38 +1,60 @@
-import 'package:asyou_app/infra/router/pop_router.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:auto_route/auto_route.dart';
-
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/router.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/infra/components/loading_dialog.dart';
+import 'package:dtim/router.dart';
 
 class ItemModel {
   String title;
 
-  Function(String id)? onTap;
+  Function(String id, AppCubit im)? onTap;
   ItemModel(this.title, {this.onTap});
 }
 
 List<List<ItemModel>> menuItems = [
   [
     // ItemModel('邀请人员'),
-    ItemModel('组织设置', onTap: (id) {
+    ItemModel('组织设置', onTap: (id, _) {
       showModelOrPage(globalCtx(), "/setting", width: 0.7.sw, height: 0.8.sh);
     }),
     // ItemModel('成员管理'),
-    ItemModel('离开组织', onTap: (id) {
-      // rootNavigatorKey.currentContext?.push("/select_org");
+    ItemModel('离开组织', onTap: (id, im) async {
+      final accountOrgApi = await AccountOrgApi.create();
+      final orgs = await accountOrgApi.listByAccount(im.me!.address);
+      orgs.removeWhere((o) => o.orgHash == im.currentState!.org.orgHash);
+      if (OkCancelResult.ok ==
+          await showOkCancelAlertDialog(
+            useRootNavigator: false,
+            title: "提示",
+            message: "确认离开",
+            context: globalCtx(),
+            okLabel: L10n.of(globalCtx())!.next,
+            cancelLabel: L10n.of(globalCtx())!.cancel,
+          )) {
+        waitFutureLoading(
+          title: "处理中...",
+          context: globalCtx(),
+          future: () async {
+            await accountOrgApi.deleteOrg(im.me!.address, im.currentState!.org.orgHash);
+            await im.logout();
+          },
+        );
+      }
     }),
   ],
-  [
-    ItemModel('创建或加入组织', onTap: (id) {
-      globalCtx().router.pushNamed("/select_org");
-    })
-  ]
+  // [
+  //   ItemModel('创建或加入组织', onTap: (id) {
+  //     globalCtx().router.pushNamed("/select_org");
+  //   })
+  // ]
 ];
 
-orgMenuRender(controller, width) {
+orgMenuRender(controller, width, AppCubit im) {
   final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
   return Container(
     width: width,
@@ -59,7 +81,7 @@ orgMenuRender(controller, width) {
                 onTap: () {
                   controller.hideMenu();
                   if (menuItems[i][j].onTap != null) {
-                    menuItems[i][j].onTap!.call("");
+                    menuItems[i][j].onTap!.call("", im);
                   }
                 },
                 child: Container(

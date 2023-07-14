@@ -4,13 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
 
 class CreatePrivatePage extends StatefulWidget {
   final Function? closeModel;
@@ -23,8 +24,9 @@ class CreatePrivatePage extends StatefulWidget {
 class _CreatePrivatePageState extends State<CreatePrivatePage> {
   String search = "";
   late AppCubit im;
-  List<link.Profile> userList = [];
+  List<link.Profile> allList = [];
   TextEditingController id = TextEditingController();
+  String searchText = "";
 
   @override
   void initState() {
@@ -45,13 +47,19 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
         await client.searchUserDirectory(search != "" ? "%$search" : "", limit: 1000000);
 
     setState(() {
-      userList = response.results.where((u) => u.userId != client.userID).toList();
+      allList = response.results.where((u) => u.userId != client.userID).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final userList = searchText == ""
+        ? allList
+        : allList
+            .where(
+                (v) => v.userId.contains(searchText) || (v.displayName != null && v.displayName!.contains(searchText)))
+            .toList();
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
@@ -62,9 +70,8 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                 context.router.pop();
               },
             ) as PreferredSizeWidget
-          : ModelBar(
-              title: "添加私信",
-              height: 50.w,
+          : TopSearchBar(
+              title: "搜索用户",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -72,48 +79,15 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                 }
                 context.router.pop();
               },
+              onInput: (String v) {
+                setState(() {
+                  searchText = v;
+                });
+              },
             ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: constTheme.centerChannelBg,
-            padding: EdgeInsets.only(top: 10.w,bottom: 10.w),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 15.w),
-                    child: Text(
-                      "ID：${getUserShortId(im.me!.address)}",
-                      style: TextStyle(
-                        color: constTheme.sidebarHeaderTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.w,
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // final client = im.currentState!.client;
-                    Clipboard.setData(ClipboardData(
-                      text: getUserShortId(im.me!.address),
-                    )).then((value) {
-                      BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
-                    });
-                  },
-                  icon: Icon(Icons.copy, size: 20.w, color: constTheme.sidebarHeaderTextColor),
-                ),
-                SizedBox(width: 15.w),
-              ],
-            ),
-          ),
-          Divider(
-            height: 1.w,
-            color: constTheme.centerChannelColor.withOpacity(0.08),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: userList.length,
@@ -128,10 +102,10 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                     Row(
                       children: [
                         SizedBox(width: 15.w),
-                        UserAvatar(
-                          getUserShortId(userList[index].userId),
-                          true,
-                          40.w,
+                        Avatar(
+                          id: getUserShortId(userList[index].userId),
+                          name: userList[index].displayName ?? "",
+                          mxContent: userList[index].avatarUrl,
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
@@ -166,6 +140,23 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
                           ),
                         ),
                         IconButton(
+                          key: Key("copyPrivate$index"),
+                          onPressed: () async {
+                            await waitFutureLoading(
+                              context: globalCtx(),
+                              future: () async {
+                                Clipboard.setData(ClipboardData(
+                                  text: getUserShortId(userList[index].userId),
+                                )).then((value) {
+                                  BotToast.showText(text: '用户id复制成功', duration: const Duration(seconds: 2));
+                                });
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.copy_rounded, size: 20.w),
+                          color: constTheme.centerChannelColor,
+                        ),
+                        IconButton(
                           key: Key("createPrivate$index"),
                           onPressed: () async {
                             final client = im.currentState!.client;
@@ -196,7 +187,6 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               },
             ),
           ),
-
           Container(
             height: 55.w,
             padding: EdgeInsets.only(left: 15.w, right: 15.w),
@@ -213,7 +203,7 @@ class _CreatePrivatePageState extends State<CreatePrivatePage> {
               style: TextStyle(color: constTheme.buttonColor.withAlpha(155), fontSize: 13.w),
               decoration: InputDecoration(
                 label: null,
-                hintText: '输入id邀请,如：@username',
+                hintText: '${L10n.of(context)!.enterUserID}：@username',
                 hintStyle: TextStyle(height: 1.5, color: constTheme.buttonColor),
                 contentPadding: const EdgeInsets.all(0),
                 border: const OutlineInputBorder(borderSide: BorderSide.none),

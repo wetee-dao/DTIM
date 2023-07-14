@@ -1,24 +1,25 @@
 import 'dart:async';
 
-import 'package:asyou_app/domain/utils/localized_extension.dart';
-import 'package:asyou_app/infra/router/pop_router.dart';
+import 'package:dtim/domain/utils/localized_extension.dart';
+import 'package:dtim/infra/router/pop_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:date_format/date_format.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/close_bar.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/close_bar.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'bar.dart';
 import 'input.dart';
 import 'msg.dart';
@@ -72,6 +73,13 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     _listController.addListener(scrollListener);
   }
 
+  @override
+  void dispose() {
+    _listController.removeListener(scrollListener);
+    _listController.dispose();
+    super.dispose();
+  }
+
   void scrollListener() {
     if (!mounted) {
       return;
@@ -87,13 +95,6 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     } else if (_listController.position.pixels == 0) {
       setReadMarker();
     }
-  }
-
-  @override
-  void dispose() {
-    _listController.removeListener(scrollListener);
-    _listController.dispose();
-    super.dispose();
   }
 
   Future<void>? _setReadMarkerFuture;
@@ -253,14 +254,14 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         future: () => voip.requestTurnServerCredentials(),
                       );
                       if (success.result == null) {
-                        BotToast.showText(text: "获取 turn 服务器失败");
+                        BotToast.showText(text: L10n.of(context)!.turnError);
                       }
                       try {
                         if (!room!.groupCallsEnabled) {
                           await room!.enableGroupCalls();
                         }
                         if (!room!.canCreateGroupCall) {
-                          BotToast.showText(text: "无法创建会议,请检查是否有权限");
+                          BotToast.showText(text: L10n.of(context)!.meetingNoPermission);
                           return;
                         }
                         if (voip.groupCalls[room!.id] != null) {
@@ -269,7 +270,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         }
                         await voip.newGroupCall(
                           room!.id,
-                          link.GroupCallType.Voice,
+                          link.GroupCallType.Video,
                           link.GroupCallIntent.Prompt,
                         );
                       } catch (e) {
@@ -282,7 +283,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
                     ),
                     tooltip: "meeting",
-                    icon: Icon(AppIcons.icon_meeting, color: constTheme.centerChannelColor, size: 22.w),
+                    icon: Icon(AppIcons.meeting_board, color: constTheme.centerChannelColor, size: 21.w),
                   ),
                 ),
               if (room!.isDirectChat)
@@ -296,7 +297,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         future: () => voip.requestTurnServerCredentials(),
                       );
                       if (success.result == null) {
-                        BotToast.showText(text: "获取 turn 服务器失败");
+                        BotToast.showText(text: L10n.of(context)!.turnError);
                       }
                       try {
                         await voip.inviteToCall(room!.id, link.CallType.kVoice);
@@ -354,9 +355,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       padding: EdgeInsets.zero,
                       constraints: size,
                       style: IconButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.w),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
                       ),
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
@@ -411,8 +410,9 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 initialData: "",
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                   List<link.Event> events = timeline != null ? timeline!.events : [];
+                  // events = events.where((e) => e.type != link.EventTypes.GroupCallMemberPrefix).toList();
                   return ListView.builder(
-                    cacheExtent: 800,
+                    cacheExtent: 100000,
                     key: Key("chat_list_${widget.channerlID}"),
                     itemCount: events.length + 2,
                     shrinkWrap: true,
@@ -444,10 +444,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         preEvent = events[index];
                       }
                       if (event.type == link.EventTypes.RoomCreate) {
-                        return renderCreate(event);
+                        return renderCreate(event, im.currentState!.client);
                       }
                       return Msg(
-                        key: GlobalObjectKey(event.eventId),
+                        key: kIsWeb ? Key(event.eventId) : GlobalObjectKey(event.eventId),
                         event: event,
                         preEvent: preEvent,
                         client: client!,
@@ -503,7 +503,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
     );
   }
 
-  renderCreate(link.Event event) {
+  renderCreate(link.Event event, client) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     if (event.type == link.EventTypes.RoomCreate) {
       return Container(
@@ -530,17 +530,23 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
             ),
             SizedBox(height: 5.w),
             Text(
-              "你于 ${formatDate(
-                event.originServerTs,
-                [
-                  yyyy,
-                  ' 年 ',
-                  mm,
-                  " 月 ",
-                  dd,
-                  " 日",
-                ],
-              )} 创建此频道，这是${room!.isDirectChat ? "聊天" : "频道"}的开头。",
+              L10n.of(context)!.msgCreate(
+                event.senderId == client.userID
+                    ? L10n.of(context)!.me
+                    : event.senderFromMemoryOrFallback.calcDisplayname(),
+                room!.isDirectChat ? "chat" : "channel",
+                formatDate(
+                  event.originServerTs,
+                  [
+                    yyyy,
+                    ' - ',
+                    mm,
+                    " - ",
+                    dd,
+                    " -",
+                  ],
+                ),
+              ),
               style: TextStyle(
                 color: constTheme.centerChannelColor,
                 fontWeight: FontWeight.w400,

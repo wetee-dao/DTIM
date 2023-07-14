@@ -1,7 +1,7 @@
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'text.dart';
 
 class InfoCard extends StatelessWidget {
@@ -14,7 +14,7 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
-      constraints: BoxConstraints(minWidth: isPc() ? 140.w : 100.w, maxWidth: double.maxFinite),
+      constraints: BoxConstraints(minWidth: 140.w, maxWidth: double.maxFinite),
       padding: EdgeInsets.fromLTRB(20.w, 20.w, 10.w, 20.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.w),

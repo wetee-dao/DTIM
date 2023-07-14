@@ -7,9 +7,9 @@ part 'org.freezed.dart';
 class OrgState with _$OrgState {
   const factory OrgState({
     @Default("") String channelId,
+    @Default(0) int lastSyncTime,
   }) = _OrgState;
 }
-
 
 class OrgCubit extends Cubit<OrgState> {
   OrgCubit({state = const OrgState()}) : super(state);
@@ -17,5 +17,9 @@ class OrgCubit extends Cubit<OrgState> {
   // 设置当前账户
   setChannelId(String id) {
     emit(state.copyWith(channelId: id));
+  }
+
+  update() {
+    emit(state.copyWith(lastSyncTime: DateTime.now().millisecondsSinceEpoch));
   }
 }

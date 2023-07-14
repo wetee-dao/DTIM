@@ -1,12 +1,13 @@
-import 'package:asyou_app/infra/components/popup.dart';
+import 'package:dtim/infra/components/popup.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/identicon.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/identicon.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'mxc_image.dart';
 import 'name_with_emoji.dart';
 
@@ -19,6 +20,8 @@ class Avatar extends StatelessWidget {
   static const double defaultSize = 44;
   final Client? client;
   final double fontSize;
+  final Color? bg;
+  final Color? color;
 
   const Avatar({
     required this.id,
@@ -29,6 +32,8 @@ class Avatar extends StatelessWidget {
     this.client,
     this.fontSize = 18,
     Key? key,
+    this.bg,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -57,29 +62,26 @@ class Avatar extends StatelessWidget {
     Widget container;
 
     if (!noPic) {
-      container = Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.w),
-          color: constTheme.centerChannelColor.withOpacity(0.1),
-        ),
-        padding: EdgeInsets.all(5.w),
-        alignment: Alignment.topLeft,
-        child: MxcImage(
-          key: Key(mxContent.toString()),
-          uri: mxContent,
-          fit: BoxFit.cover,
+      container = ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: SizedBox(
           width: size,
           height: size,
-          placeholder: (_) => textWidget,
-          cacheKey: mxContent.toString(),
+          child: MxcImage(
+            key: Key(mxContent.toString()),
+            uri: mxContent,
+            fit: BoxFit.cover,
+            width: size,
+            height: size,
+            placeholder: (_) => textWidget,
+            cacheKey: mxContent.toString(),
+          ),
         ),
       );
     } else {
       container = id == ""
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(5.w),
+          ? CircleAvatar(
+              radius: 3,
               child: Container(
                 width: size,
                 height: size,
@@ -87,11 +89,12 @@ class Avatar extends StatelessWidget {
                 child: textWidget,
               ),
             )
-          : UserAvatar(
+          : BaseAvatar(
               id,
               true,
               size,
-              color: constTheme.centerChannelColor,
+              color: color,
+              bg: bg,
             );
     }
 
@@ -103,20 +106,20 @@ class Avatar extends StatelessWidget {
   }
 }
 
-class UserAvatar extends StatefulWidget {
+class BaseAvatar extends StatefulWidget {
   final String avatarSrc;
   final bool online;
   final double avatarWidth;
   final Color? bg;
   final Color? color;
 
-  const UserAvatar(this.avatarSrc, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
+  const BaseAvatar(this.avatarSrc, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
 
   @override
-  State<UserAvatar> createState() => _UserAvatarState();
+  State<BaseAvatar> createState() => _BaseAvatarState();
 }
 
-class _UserAvatarState extends State<UserAvatar> {
+class _BaseAvatarState extends State<BaseAvatar> {
   Widget? ctx;
 
   buildCtx(BuildContext context) {
@@ -130,7 +133,7 @@ class _UserAvatarState extends State<UserAvatar> {
     );
 
     ctx = Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(widget.avatarWidth * 0.1), color: boxBg),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: boxBg),
       padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
       alignment: Alignment.topLeft,
       child: Image.memory(
@@ -144,7 +147,7 @@ class _UserAvatarState extends State<UserAvatar> {
   }
 
   @override
-  void didUpdateWidget(covariant UserAvatar oldWidget) {
+  void didUpdateWidget(covariant BaseAvatar oldWidget) {
     if (oldWidget.color != widget.color) {
       ctx = null;
     }
@@ -160,22 +163,31 @@ class _UserAvatarState extends State<UserAvatar> {
   }
 }
 
-class UserAvatarWithPop extends StatefulWidget {
+class BaseAvatarWithPop extends StatefulWidget {
   final String id;
   final String name;
   final bool online;
   final double avatarWidth;
   final Color? bg;
   final Color? color;
+  final Uri? mxContent;
 
-  const UserAvatarWithPop(this.id, this.name, this.online, this.avatarWidth, {Key? key, this.bg, this.color})
-      : super(key: key);
+  const BaseAvatarWithPop(
+    this.id,
+    this.name,
+    this.online,
+    this.avatarWidth, {
+    Key? key,
+    this.bg,
+    this.color,
+    this.mxContent,
+  }) : super(key: key);
 
   @override
-  State<UserAvatarWithPop> createState() => _UserAvatarWithPopState();
+  State<BaseAvatarWithPop> createState() => _BaseAvatarWithPopState();
 }
 
-class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
+class _BaseAvatarWithPopState extends State<BaseAvatarWithPop> {
   final BasePopupMenuController menuController = BasePopupMenuController();
 
   @override
@@ -187,17 +199,15 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
       showArrow: false,
       controller: menuController,
       position: PreferredPosition.bottomLeft,
-      pressType: PressType.mouseHover,
-      child: UserAvatar(
-        getUserShortId(widget.id),
-        widget.online,
-        widget.avatarWidth,
-        bg: widget.bg,
-        color: widget.color,
+      pressType: kIsWeb ? PressType.singleClick : PressType.mouseHover,
+      child: Avatar(
+        id: widget.id,
+        mxContent: widget.mxContent,
+        size: widget.avatarWidth,
       ),
       menuBuilder: () => Container(
         width: 320.w,
-        height: 170.w,
+        height: 150.w,
         padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(
           color: constTheme.centerChannelBg,
@@ -212,12 +222,10 @@ class _UserAvatarWithPopState extends State<UserAvatarWithPop> {
                   onTap: () {},
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.w, top: 2.w, bottom: 2.w),
-                    child: UserAvatar(
-                      getUserShortId(widget.id),
-                      true,
-                      65.w,
-                      bg: constTheme.centerChannelColor.withOpacity(0.1),
-                      color: constTheme.centerChannelColor,
+                    child: Avatar(
+                      id: widget.id,
+                      mxContent: widget.mxContent,
+                      size: 50.w,
                     ),
                   ),
                 ),

@@ -1,13 +1,13 @@
-import 'package:asyou_app/router.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/time.dart';
-import 'content/content.dart';
-import 'content/verification_request.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/time.dart';
+import 'package:dtim/infra/components/content/content.dart';
+import 'package:dtim/infra/components/content/verification_request.dart';
 
 class Msg extends StatefulWidget {
   final link.Event event;
@@ -86,7 +86,7 @@ class _MsgState extends State<Msg> {
               Column(
                 children: [
                   SizedBox(height: 10.w),
-                  UserAvatarWithPop(
+                  BaseAvatarWithPop(
                     key: Key(user.id),
                     user.id,
                     user.displayName ?? "-",
@@ -94,6 +94,7 @@ class _MsgState extends State<Msg> {
                     40.w,
                     color: constTheme.centerChannelColor,
                     bg: constTheme.centerChannelDivider,
+                    mxContent: user.avatarUrl,
                   ),
                 ],
               ),
@@ -103,11 +104,11 @@ class _MsgState extends State<Msg> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (showAvatar) SizedBox(height: 10.w),
+                  if (showAvatar) SizedBox(height: 7.w),
                   if (showAvatar)
                     RichText(
                       text: TextSpan(
-                        text: event.senderId == widget.client.userID ? "我" : user.displayName,
+                        text: event.senderId == widget.client.userID ? "Me" : user.displayName,
                         style: TextStyle(
                           color: constTheme.centerChannelColor,
                           fontWeight: FontWeight.bold,
@@ -139,27 +140,6 @@ class _MsgState extends State<Msg> {
 
   renderBody(link.Event event) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    if (event.type == link.EventTypes.Encryption) {
-      return Container(
-        padding: EdgeInsets.all(8.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.w),
-          color: constTheme.centerChannelColor.withOpacity(0.1),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(Icons.lock_outline, color: constTheme.mentionBg, size: 19.w),
-            SizedBox(width: 5.w),
-            Text(
-              "启用了E2E加密",
-              style: TextStyle(fontSize: 16.w, color: constTheme.centerChannelColor),
-            )
-          ],
-        ),
-      );
-    }
     if (event.type == link.EventTypes.Message && event.messageType == link.EventTypes.KeyVerificationRequest) {
       return VerificationRequestContent(event: event, timeline: widget.timeline);
     }

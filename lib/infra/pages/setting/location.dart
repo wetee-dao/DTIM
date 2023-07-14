@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:asyou_app/infra/components/setting/settings_ui.dart';
+import 'package:dtim/infra/components/setting/settings_ui.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);

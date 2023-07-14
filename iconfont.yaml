@@ -1,7 +1,7 @@
 # iconfont.yaml
 - icons:
-  - url: //at.alicdn.com/t/c/font_3991708_945f1gbx73.css
+  - url: //at.alicdn.com/t/c/font_3991708_fzjkmz2iow8.css
     icon_name: iconfont
     icon_class: AppIcons
   font_assets_path: assets/fonts/
-  icon_class_path: lib/components/
+  icon_class_path: lib/infra/components/

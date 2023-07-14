@@ -1,7 +1,7 @@
-import 'package:asyou_app/infra/components/popup.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/popup.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,7 +10,7 @@ void main() {
     initScreen(1200);
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         navigatorKey: rootNavigatorKey,
         home: Scaffold(
           body: BasePopupMenu(

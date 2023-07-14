@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:animated_checkmark/animated_checkmark.dart';
 
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 class OrgCard extends StatelessWidget {
   final Org org;
@@ -23,6 +23,12 @@ class OrgCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    var img = "";
+    if (org.img != null && org.img != "") {
+      img = org.img!;
+    } else if (org.logo != null && org.logo != "") {
+      img = org.logo!;
+    }
     return AnimatedContainer(
       width: 150.w,
       height: 200.w,
@@ -54,22 +60,24 @@ class OrgCard extends StatelessWidget {
                     width: 206.w,
                     height: 130.w,
                     decoration: BoxDecoration(
-                      color: org.metaData!.color != null ? hexToColor(org.metaData!.color!) : Colors.transparent,
+                      color: org.bg != null ? hexToColor(org.bg!) : Colors.transparent,
                     ),
                     child: Image.network(
-                      org.metaData!.img ?? "",
+                      img,
                       width: 206.w,
-                      fit: BoxFit.contain,
-                      height: 150.w,
+                      fit: BoxFit.cover,
+                      height: 130.w,
                     ),
                   ),
-                  Padding(
+                  Container(
                     padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+                    width: 206.w,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          org.name ?? "",
+                          "#${org.name ?? ""}",
                           style: TextStyle(
                             color: constTheme.centerChannelColor,
                             fontSize: 16.w,

@@ -1,5 +1,5 @@
-
 import 'package:hive/hive.dart';
+import 'package:dtim/bridge_struct.dart' as native;
 
 part 'org.g.dart';
 
@@ -21,68 +21,42 @@ class Org {
   @HiveField(4)
   String? desc;
 
-  // 区块链连接点
-  @HiveField(5)
-  String? chainUrl;
+  // 团队目的
+  @HiveField(8)
+  String? purpose;
 
-  // 团队元数据
-  @HiveField(6)
-  OrgMetaData? metaData;
-
-  // 应用列表
-  @HiveField(7)
-  List<OrgApp> apps = [];
+  /// im api
+  @HiveField(10)
+  String? imApi;
+  /// org color
+  @HiveField(11)
+  String? bg;
+  /// org logo
+  @HiveField(12)
+  String? logo;
+  /// 组织大图
+  @HiveField(13)
+  String? img;
+  /// 组织主页
+  @HiveField(14)
+  String? homeUrl;
 
   Org(
     this.hash, {
     required this.daoId,
     this.name,
     this.desc,
-    this.metaData,
-    this.chainUrl,
-    this.apps = const [],
-  });
-}
-
-@HiveType(typeId: 4)
-class OrgMetaData {
-  // @Id()
-  // int id = 0;
-
-  // 团队授权网址
-  @HiveField(1)
-  String? domain;
-
-  // 团队图标
-  @HiveField(2)
-  String? avater;
-
-  // 团队大图
-  @HiveField(3)
-  String? img;
-
-  // 团队颜色
-  @HiveField(4)
-  String? color;
-
-  // 官网地址
-  @HiveField(5)
-  String? homeUrl;
-
-  OrgMetaData({
-    this.domain,
-    this.avater,
-    this.homeUrl,
+    this.purpose,
+    this.imApi,
+    this.bg,
+    this.logo,
     this.img,
-    this.color,
+    this.homeUrl,
   });
 }
 
 @HiveType(typeId: 5)
 class OrgApp {
-  @HiveField(1)
-  int appId = 0;
-
   // 应用hash
   @HiveField(2)
   String hash = "";
@@ -105,4 +79,42 @@ class OrgApp {
   // 应用
   @HiveField(6)
   String? desc;
+
+  // 应用图标
+  @HiveField(8)
+  String? icon;
+
+
+  @HiveField(9)
+  int? appId;
+
+  // 应用
+  @HiveField(7)
+  Map<String,String>? meta;
+
+  OrgApp({
+    required this.hash,
+    required this.type,
+    this.url,
+    this.name,
+    this.desc,
+    this.meta,
+    this.icon,
+    this.appId
+  });
+}
+
+
+List<OrgApp> trans(List<native.OrgApp> orgs) {
+  return orgs
+      .map((o) => OrgApp(
+            hash: o.id.toString(),
+            appId: o.appId,
+            type: 0,
+            name: o.name,
+            icon: o.icon,
+            desc: o.desc,
+            url: o.url,
+          ))
+      .toList();
 }

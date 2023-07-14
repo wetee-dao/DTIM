@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/application/store/theme.dart';
 import '../tiles/abstract_settings_tile.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'abstract_settings_section.dart';
 
 class SettingsSection extends AbstractSettingsSection {

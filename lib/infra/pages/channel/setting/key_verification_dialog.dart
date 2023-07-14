@@ -9,8 +9,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,8 +19,8 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/encryption.dart';
 import 'package:matrix/matrix.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/avatar.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/avatar.dart';
 
 class KeyVerificationDialog extends StatefulWidget {
   Future<void> show(BuildContext context) => showDialog(
@@ -150,6 +150,7 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
             ],
           ),
         );
+
         buttons.add(
           TextButton(
             child: Text(
@@ -340,6 +341,8 @@ class KeyVerificationPageState extends State<KeyVerificationDialog> {
           ),
         );
         break;
+      default:
+        body = Container();
     }
     return Scaffold(
       appBar: AppBar(

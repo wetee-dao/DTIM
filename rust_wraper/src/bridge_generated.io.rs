@@ -12,6 +12,16 @@ pub extern "C" fn wire_connect(port_: i64, url: *mut wire_uint_8_list) {
 }
 
 #[no_mangle]
+pub extern "C" fn wire_start_client(port_: i64, client: u32) {
+    wire_start_client_impl(port_, client)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_stop_client(port_: i64, client: u32) {
+    wire_stop_client_impl(port_, client)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_seed_generate(port_: i64) {
     wire_seed_generate_impl(port_)
 }
@@ -50,11 +60,6 @@ pub extern "C" fn wire_sign_from_address(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_start_client(port_: i64, client: u32) {
-    wire_start_client_impl(port_, client)
-}
-
-#[no_mangle]
 pub extern "C" fn wire_create_dao(
     port_: i64,
     client: u32,
@@ -62,8 +67,80 @@ pub extern "C" fn wire_create_dao(
     name: *mut wire_uint_8_list,
     purpose: *mut wire_uint_8_list,
     meta_data: *mut wire_uint_8_list,
+    desc: *mut wire_uint_8_list,
+    im_api: *mut wire_uint_8_list,
+    bg: *mut wire_uint_8_list,
+    logo: *mut wire_uint_8_list,
+    img: *mut wire_uint_8_list,
+    home_url: *mut wire_uint_8_list,
 ) {
-    wire_create_dao_impl(port_, client, from, name, purpose, meta_data)
+    wire_create_dao_impl(
+        port_, client, from, name, purpose, meta_data, desc, im_api, bg, logo, img, home_url,
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn wire_orgs(port_: i64, client: u32) {
+    wire_orgs_impl(port_, client)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_create_app(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    name: *mut wire_uint_8_list,
+    desc: *mut wire_uint_8_list,
+    icon: *mut wire_uint_8_list,
+    url: *mut wire_uint_8_list,
+) {
+    wire_create_app_impl(port_, client, from, name, desc, icon, url)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_update_app_status(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    app_id: u64,
+    status: u8,
+) {
+    wire_update_app_status_impl(port_, client, from, app_id, status)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_org_integrate_app(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    org_id: u64,
+    app_id: u64,
+    ext: *mut wire_WithGovPs,
+) {
+    wire_org_integrate_app_impl(port_, client, from, org_id, app_id, ext)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_app_hubs(port_: i64, client: u32) {
+    wire_app_hubs_impl(port_, client)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_org_apps(port_: i64, client: u32, org_id: u64) {
+    wire_org_apps_impl(port_, client, org_id)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_update_org_app_status(
+    port_: i64,
+    client: u32,
+    from: *mut wire_uint_8_list,
+    org_id: u64,
+    app_id: u64,
+    status: u8,
+    ext: *mut wire_WithGovPs,
+) {
+    wire_update_org_app_status_impl(port_, client, from, org_id, app_id, status, ext)
 }
 
 #[no_mangle]

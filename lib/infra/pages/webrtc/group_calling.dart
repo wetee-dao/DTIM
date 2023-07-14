@@ -1,26 +1,29 @@
 import 'dart:async';
 
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/pages/webrtc/steam_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/application/store/theme.dart';
+import '../../../application/store/app/app.dart';
+import '../../../domain/utils/webrtc/action.dart';
 import 'img_painter.dart';
 
 class GroupWebRTCalling extends StatefulWidget {
   final VoidCallback? onClear;
-  final BuildContext context;
   final String callId;
-  final link.GroupCall call;
-  final link.Client client;
+  // final link.GroupCall call;
+  // final link.Client client;
 
   const GroupWebRTCalling({
-    required this.context,
-    required this.call,
-    required this.client,
+    // required this.context,
+    // required this.call,
+    // required this.client,
     required this.callId,
     this.onClear,
     Key? key,
@@ -32,20 +35,25 @@ class GroupWebRTCalling extends StatefulWidget {
 
 class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   String? _state;
+  late AppCubit im;
+  late link.GroupCall gcall;
   late AnimationController _controller;
 
-  // bool get speakerOn => widget.call.speakerOn;
-  bool get isMicrophoneMuted => widget.call.isMicrophoneMuted;
-  bool get isLocalVideoMuted => widget.call.isLocalVideoMuted;
-  bool get isScreensharingEnabled => widget.call.screensharingEnabled;
-  // bool get isRemoteOnHold => widget.call.remoteOnHold;
-  bool get voiceonly => widget.call.type == link.GroupCallType.Voice;
-  bool get connecting => widget.call.state == link.GroupCallState.Entering;
-  bool get connected => widget.call.state == link.GroupCallState.Entered;
+  // bool get speakerOn => gcall.speakerOn;
+  bool get isMicrophoneMuted => gcall.isMicrophoneMuted;
+  bool get isLocalVideoMuted => gcall.isLocalVideoMuted;
+  bool get isScreensharingEnabled => gcall.screensharingEnabled;
+  // bool get isRemoteOnHold => gcall.remoteOnHold;
+  bool get voiceonly => gcall.type == link.GroupCallType.Voice;
+  bool get connecting => gcall.state == link.GroupCallState.Entering;
+  bool get connected => gcall.state == link.GroupCallState.Entered;
 
   @override
   void initState() {
     super.initState();
+    im = context.read<AppCubit>();
+    final voip = im.currentState!.webrtcTool!.voip;
+    gcall = voip.groupCalls[widget.callId]!;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -60,10 +68,9 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   }
 
   void initialize() async {
-    final call = widget.call;
-    call.onGroupCallFeedsChanged.stream.listen(_handleCallState);
-    call.onGroupCallEvent.stream.listen((event) {});
-    _state = call.state;
+    gcall.onGroupCallFeedsChanged.stream.listen(_handleCallState);
+    gcall.onGroupCallEvent.stream.listen((event) {});
+    _state = gcall.state;
   }
 
   void _handleCallState(link.GroupCall session) {
@@ -89,7 +96,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
       const Duration(seconds: 2),
       () => widget.onClear?.call(),
     );
-    if (widget.call.type == link.CallType.kVideo) {
+    if (gcall.type == link.CallType.kVideo) {
       try {
         // unawaited(Wakelock.disable());
       } catch (_) {}
@@ -99,53 +106,154 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    // final callActions = CallAction(widget.call);
-    // final actions = callActions.buildActionButtons();
-    print("_state_state_state" + (_state ?? ""));
+    link.CallSession? call = gcall.calls.isNotEmpty ? gcall.calls[0] : null;
+    final actions = call != null
+        ? GCallAction(gcall, onChange: () {
+            setState(() {});
+          }).buildActionButtons()
+        : [];
+
     return Scaffold(
-      backgroundColor: Colors.black.withOpacity(0.8),
-      body: Center(
-        child: Container(
-          alignment: Alignment.center,
-          width: 0.9.sw,
-          height: 0.8.sh,
-          decoration: BoxDecoration(
-            color: constTheme.centerChannelBg.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(20.w),
-          ),
-          child: _state == link.GroupCallState.Entered
-              ? Column(
+      backgroundColor: constTheme.centerChannelBg,
+      body: _state == link.GroupCallState.Entered
+          ? Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(10.w),
-                          child: IconButton(
-                            onPressed: () {
-                              widget.onClear?.call();
-                            },
-                            icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
-                            constraints:
-                                BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),
-                            padding: EdgeInsets.zero,
-                            tooltip: L10n.of(context)!.close,
-                            style: IconButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.w),
-                              ),
-                              hoverColor: constTheme.errorTextColor.withOpacity(0.2),
-                            ),
+                    Padding(
+                      padding: EdgeInsets.all(10.w),
+                      child: IconButton(
+                        onPressed: () {
+                          widget.onClear?.call();
+                        },
+                        icon: Icon(AppIcons.suoxiao, color: constTheme.sidebarHeaderTextColor, size: 24.w),
+                        constraints: BoxConstraints(minWidth: 40.w, maxWidth: 40.w, minHeight: 40.w, maxHeight: 40.w),
+                        padding: EdgeInsets.zero,
+                        tooltip: L10n.of(context)!.close,
+                        style: IconButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.w),
+                          ),
+                          hoverColor: constTheme.errorTextColor.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Center(
+                    child: Wrap(runSpacing: 20.w, spacing: 20.w, alignment: WrapAlignment.start, children: [
+                      // SizedBox(
+                      //   width: 140.w,
+                      //   height: 100.w,
+                      //   child: MStreamView(
+                      //     gcall.localUserMediaStream!,
+                      //     mainView: true,
+                      //     matrixClient: im.currentState!.client,
+                      //   ),
+                      // ),
+                      for (var i = 0; i < gcall.userMediaStreams.length; i++)
+                        SizedBox(
+                          width: 200.w,
+                          height: 160.w,
+                          child: MStreamView(
+                            gcall.userMediaStreams[i],
+                            mainView: true,
+                            matrixClient: im.currentState!.client,
                           ),
                         ),
-                      ],
-                    ),
-                    const Spacer(),
-                  ],
-                )
-              : renderLoading(),
-        ),
-      ),
+                      //   child: CustomPaint(
+                      //     painter: ImgPainter(
+                      //       _controller,
+                      //       color: constTheme.buttonBg,
+                      //     ),
+                      //     child: Center(
+                      //       child: ClipRRect(
+                      //         borderRadius: BorderRadius.circular(200.0),
+                      //         child: Container(
+                      //           color: constTheme.centerChannelBg,
+                      //           width: 90.w,
+                      //           height: 90.w,
+                      //           padding: EdgeInsets.all(15.w),
+                      //           child: gcall.room.isDirectChat
+                      //               ? BaseAvatar(
+                      //                   key: Key(gcall.room.directChatMatrixID ?? "-"),
+                      //                   gcall.room.directChatMatrixID ?? "-",
+                      //                   true,
+                      //                   60.w,
+                      //                   bg: Colors.transparent,
+                      //                   color: constTheme.centerChannelColor,
+                      //                 )
+                      //               : Container(
+                      //                   width: 60.w,
+                      //                   height: 60.w,
+                      //                   padding: EdgeInsets.only(top: 2.w),
+                      //                   child: Center(
+                      //                     child: Icon(gcall.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                      //                         size: 45.w, color: constTheme.centerChannelColor),
+                      //                   ),
+                      //                 ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ]),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(15.w),
+                  decoration: BoxDecoration(
+                    border: Border(top: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08), width: 1.w)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (var i = 0; i < actions.length; i++)
+                        Container(
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: actions[i].backgroundColor),
+                          margin: EdgeInsets.only(right: i != actions.length - 1 ? 15.w : 0),
+                          child: IconButton(
+                            padding: EdgeInsets.all(8.w),
+                            iconSize: 22.w,
+                            icon: actions[i].child,
+                            color: Colors.white,
+                            onPressed: () async {
+                              actions[i].onPressed();
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                // Column(
+                //   children: [
+                //     Container(
+                //       decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                //       margin: EdgeInsets.only(bottom: 15.w),
+                //       child: IconButton(
+                //         padding: EdgeInsets.all(18.w),
+                //         icon: Icon(Icons.close, size: 30.w),
+                //         color: Colors.white,
+                //         onPressed: () async {
+                //           gcall.terminate();
+                //         },
+                //       ),
+                //     ),
+                //     Text(
+                //       "terminate",
+                //       style: TextStyle(
+                //         fontSize: 15.w,
+                //         color: constTheme.centerChannelColor,
+                //         fontWeight: FontWeight.w300,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              ],
+            )
+          : renderLoading(),
     );
   }
 
@@ -193,10 +301,10 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                   width: 90.w,
                   height: 90.w,
                   padding: EdgeInsets.all(15.w),
-                  child: widget.call.room.isDirectChat
-                      ? UserAvatar(
-                          key: Key(widget.call.room.directChatMatrixID ?? "-"),
-                          widget.call.room.directChatMatrixID ?? "-",
+                  child: gcall.room.isDirectChat
+                      ? BaseAvatar(
+                          key: Key(gcall.room.directChatMatrixID ?? "-"),
+                          gcall.room.directChatMatrixID ?? "-",
                           true,
                           60.w,
                           bg: Colors.transparent,
@@ -207,10 +315,8 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                           height: 60.w,
                           padding: EdgeInsets.only(top: 2.w),
                           child: Center(
-                            child: Icon(
-                                widget.call.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                                size: 45.w,
-                                color: constTheme.centerChannelColor),
+                            child: Icon(gcall.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
+                                size: 45.w, color: constTheme.centerChannelColor),
                           ),
                         ),
                 ),
@@ -233,7 +339,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 70.w),
           child: Text(
-            widget.call.groupCallId,
+            gcall.groupCallId,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -256,8 +362,8 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     icon: Icon(AppIcons.jinrudaobo, size: 30.w),
                     color: Colors.white,
                     onPressed: () async {
-                      final stream = await widget.call.initLocalStream();
-                      widget.call.enter(stream: stream);
+                      final stream = await gcall.initLocalStream();
+                      gcall.enter(stream: stream);
                     },
                   ),
                 ),
@@ -297,7 +403,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
               ],
             ),
             SizedBox(width: 30.w),
-            // if(widget.call)
+            // if(call)
             Column(
               children: [
                 Container(
@@ -308,7 +414,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     icon: Icon(Icons.close, size: 30.w),
                     color: Colors.white,
                     onPressed: () async {
-                      widget.call.terminate();
+                      gcall.terminate();
                     },
                   ),
                 ),

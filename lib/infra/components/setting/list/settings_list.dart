@@ -1,5 +1,5 @@
-import 'package:asyou_app/infra/components/setting/utils/platform_utils.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/setting/utils/platform_utils.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../sections/abstract_settings_section.dart';

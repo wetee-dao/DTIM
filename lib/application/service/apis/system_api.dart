@@ -1,10 +1,9 @@
 import 'dart:ui';
 
-import 'package:asyou_app/domain/models/system.dart';
-import 'package:asyou_app/domain/utils/screen/size_extension.dart';
+import 'package:dtim/domain/models/system.dart';
+import 'package:dtim/domain/utils/screen/size_extension.dart';
 import 'package:hive/hive.dart';
 import 'package:window_manager/window_manager.dart';
-
 
 class SystemApi {
   late final Box<System> storeBox;

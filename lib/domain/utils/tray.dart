@@ -1,10 +1,11 @@
+import 'dart:io';
 import 'dart:ui';
 
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:asyou_app/application/service/apis/system_api.dart';
+import 'package:dtim/application/service/apis/system_api.dart';
 
 showtray() async {
   // print("window.platformBrightness => " + window.platformBrightness.toString());
@@ -31,6 +32,10 @@ showtray() async {
 
   await trayManager.setContextMenu(Menu(items: items));
   trayManager.addListener(TrayManagerListener());
+  if (Platform.isMacOS) {
+    trayManager.setToolTip("DTIM");
+  }
+
   await windowManager.setPreventClose(true);
   windowManager.addListener(WindowManagerListener());
 }
@@ -45,15 +50,15 @@ class TrayManagerListener implements TrayListener {
   void onTrayIconMouseUp() {}
 
   @override
-  void onTrayIconRightMouseDown() {}
+  void onTrayIconRightMouseDown() {
+    trayManager.popUpContextMenu();
+  }
 
   @override
   void onTrayIconRightMouseUp() {}
 
   @override
-  void onTrayMenuItemClick(MenuItem menuItem) {
-    print("onTrayMenuItemClickonTrayMenuItemClick");
-  }
+  void onTrayMenuItemClick(MenuItem menuItem) {}
 }
 
 class WindowManagerListener implements WindowListener {
@@ -104,4 +109,14 @@ class WindowManagerListener implements WindowListener {
 
   @override
   void onWindowUnmaximize() {}
+  
+  @override
+  void onWindowDocked() {
+    // TODO: implement onWindowDocked
+  }
+  
+  @override
+  void onWindowUndocked() {
+    // TODO: implement onWindowUndocked
+  }
 }

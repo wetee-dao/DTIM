@@ -1,65 +1,97 @@
 import 'dart:async';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/app/org.dart';
+import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:dtim/domain/utils/theme.dart';
+import 'package:dtim/infra/router/router.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/sider_bar.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/service/apis/apis.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import './dao/dao.dart';
-import 'org/org.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/sider_bar.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/service/apis/apis.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/application/store/theme.dart';
 
 @RoutePage(name: "pc")
 class PCPage extends StatefulWidget {
-  const PCPage({Key? key}) : super(key: key);
+  const PCPage({
+    Key? key,
+    // @pathParam required this.t,
+  }) : super(key: key);
 
   @override
   State<PCPage> createState() => _PCPageState();
 }
 
+const url = ["im", "gov", "work", "integrate"];
+
 class _PCPageState extends State<PCPage> {
   final StreamController<int> currentId = StreamController<int>();
   List<AccountOrg>? aorgs;
   late AppCubit im;
-  late PageController pageController;
   double rightWidth = 200.w;
   String rightUrl = "";
+  Uri? avatar;
+  List<OrgApp> apps = [];
 
   final mainPages = [
-    const OrgPage(),
-    const DaoPage(),
+    const OrgRoute(),
+    const GovRoute(),
+    const DaoRoute(),
+    const IntegrateRoute(),
   ];
 
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
     im = context.read<AppCubit>();
-    currentId.add(0);
+    currentId.add(url.indexOf(context.router.currentPath.replaceAll("/pc/", "")));
     getData();
+    final org = context.read<OrgCubit>();
+    org.stream.listen((event) async {
+      await getData();
+    });
   }
 
   getData() async {
-    final os =
-        await (await AccountOrgApi.create()).listByAccount(im.me!.address);
+    final accountOrgApi = await AccountOrgApi.create();
+    final os = await (await AccountOrgApi.create()).listByAccount(im.me!.address);
     setState(() {
       aorgs = os;
     });
+    if (im.currentState != null) {
+      var u = await im.currentState!.client.getAvatarUrl(im.currentState!.client.userID ?? "");
+      AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.orgHash);
+      if (org != null) {
+        apps = org.apps ?? [];
+      }
+      setState(() {
+        avatar = u;
+      });
+
+      workCtx.setOrg(im.currentState!.org, im.me!);
+      workCtx.connectChain(() async {
+        apps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
+        await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
+        setState(() {});
+      });
+    }
   }
 
   @override
   void dispose() {
+    printDebug("PCPage dispose");
     super.dispose();
   }
 
   onSelect(index) {
-    pageController.jumpToPage(index);
     currentId.add(index);
   }
 
@@ -68,191 +100,258 @@ class _PCPageState extends State<PCPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       backgroundColor: constTheme.sidebarHeaderBg,
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          moveWindow(
-            Container(
-              width: 65.w,
-              height: double.maxFinite,
-              decoration: BoxDecoration(
-                color: constTheme.sidebarHeaderBg,
-                border: Border(
-                    right: BorderSide(
-                        color: constTheme.sidebarHeaderBg.lighter(0.08),
-                        width: 1)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  if (PlatformInfos.isMacOS) SizedBox(height: 20.w),
-                  SizedBox(height: 12.w),
-                  // 用户
-                  SizedBox(
-                    width: 40.w,
-                    height: 40.w,
-                    child: UserAvatar(
-                      key: Key(im.currentState!.user.id.toString()),
-                      im.me!.address,
-                      true,
-                      40.w,
-                      bg: constTheme.sidebarText.withOpacity(0.1),
-                      color: constTheme.sidebarText,
-                    ),
+      body: AutoTabsRouter.pageView(
+        routes: mainPages,
+        scrollDirection: Axis.vertical,
+        physics: const NeverScrollableScrollPhysics(),
+        builder: (context, child, _) {
+          if (im.currentState == null) {
+            return Center(child: CircularProgressIndicator.adaptive(strokeWidth: 4.w));
+          }
+          final pageRouter = AutoTabsRouter.of(context);
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              moveWindow(
+                Container(
+                  width: 65.w,
+                  height: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: constTheme.sidebarHeaderBg,
+                    border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
                   ),
-                  Container(
-                    width: 6.w,
-                    height: 4.w,
-                    margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
-                    decoration: BoxDecoration(
-                        color: constTheme.sidebarText,
-                        borderRadius: BorderRadius.circular(2.w)),
-                  ),
-                  Flexible(
-                    child: StreamBuilder(
-                      stream: currentId.stream,
-                      builder: (BuildContext context, AsyncSnapshot<int> id) {
-                        return Column(
-                          children: [
-                            SiderBarItem(AppIcons.we_chat, "Chat",
-                                key: const Key("MES"),
-                                selected: id.data == 0, onTap: () {
-                              onSelect(0);
-                            }),
-                            // DAO管理
-                            SiderBarItem(AppIcons.chain, "DAO",
-                                key: const Key("DAO"),
-                                selected: id.data == 1, onTap: () {
-                              onSelect(1);
-                            }),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      const storage = FlutterSecureStorage();
-                      await storage.delete(key: "login_state");
-                      im.logout();
-                    },
-                    child: SizedBox(
-                      width: 40.w,
-                      height: 40.w,
-                      child: Icon(
-                        Icons.logout_rounded,
-                        size: 22.w,
-                        color:
-                            constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
-                  // InkWell(
-                  //   onTap: () {
-                  //     context.go("/select_org");
-                  //   },
-                  //   child: Container(
-                  //     width: 40.w,
-                  //     height: 40.w,
-                  //     margin: EdgeInsets.fromLTRB(0, 6.w, 0, 12.w),
-                  //     child: Icon(
-                  //       Icons.add,
-                  //       size: 22.w,
-                  //       color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
-                  //     ),
-                  //   ),
-                  // ),
-                  if (aorgs != null)
-                    for (var i = 0; i < aorgs!.length; i++)
-                      Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      if (PlatformInfos.isMacOS) SizedBox(height: 20.w),
+                      SizedBox(height: 12.w),
+                      // 用户
+                      SizedBox(
                         width: 40.w,
                         height: 40.w,
-                        padding: EdgeInsets.all(2.w),
-                        margin: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
-                        decoration: BoxDecoration(
-                          color: constTheme.sidebarHeaderTextColor
-                              .withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8.w),
-                          border: Border.all(
-                            color: constTheme.sidebarTextActiveBorder
-                                .withOpacity(0.7),
-                            width: 2.w,
-                          ),
-                        ),
-                        child: Container(
-                          width: 36.w,
-                          height: 36.w,
-                          decoration: BoxDecoration(
-                            color: aorgs![i].orgColor != null
-                                ? hexToColor(aorgs![i].orgColor!)
-                                : constTheme.sidebarText.withOpacity(0.02),
-                            borderRadius: BorderRadius.circular(4.w),
-                          ),
-                          child: aorgs![i].orgAvater == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    if (aorgs![i].orgAvater == null)
-                                      Text(
-                                        aorgs![i].orgName ?? "",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: constTheme
-                                              .sidebarHeaderTextColor
-                                              .withOpacity(0.8),
-                                          fontSize: 14.w,
-                                        ),
-                                      ),
-                                  ],
-                                )
-                              : Center(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(2.w),
-                                    child: Image.network(
-                                      fit: BoxFit.cover,
-                                      aorgs![i].orgAvater!,
-                                      width: 36.w,
-                                      height: 36.w,
-                                    ),
-                                  ),
-                                ),
+                        child: MePop(
+                          im.me!.address,
+                          im.me!.name ?? "-",
+                          mxContent: avatar,
+                          true,
+                          40.w,
+                          bg: constTheme.sidebarText.withOpacity(0.1),
+                          color: constTheme.sidebarText,
                         ),
                       ),
-                  SizedBox(height: 15.w),
-                ],
+                      Container(
+                        width: 6.w,
+                        height: 4.w,
+                        margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
+                        decoration: BoxDecoration(
+                          color: constTheme.sidebarText,
+                          borderRadius: BorderRadius.circular(2.w),
+                        ),
+                      ),
+                      Flexible(
+                        child: StreamBuilder(
+                          stream: currentId.stream,
+                          builder: (BuildContext context, AsyncSnapshot<int> id) {
+                            print("SiderBar: ${id.data}");
+                            return Column(
+                              children: [
+                                SiderBarItem(
+                                  "Chat",
+                                  icon: AppIcons.chat,
+                                  key: const Key("Chat"),
+                                  selected: id.data == 0,
+                                  onTap: () {
+                                    pageRouter.setActiveIndex(0);
+                                    onSelect(0);
+                                  },
+                                ),
+                                for (var app in apps)
+                                  SiderBarItem(
+                                    app.name ?? "",
+                                    img: app.icon,
+                                    key: Key("app_${app.hash}"),
+                                    selected: id.data == app.appId! + 1,
+                                    onTap: () {
+                                      if (app.appId! < 2) {
+                                        pageRouter.setActiveIndex(app.appId! + 1);
+                                        onSelect(app.appId! + 1);
+                                      }
+                                    },
+                                  ),
+                                // DAO管理
+                                SiderBarItem(
+                                  "Apps",
+                                  icon: AppIcons.shujujicheng,
+                                  key: const Key("Integrate"),
+                                  selected: id.data == 3,
+                                  onTap: () {
+                                    pageRouter.setActiveIndex(3);
+                                    onSelect(3);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: "discover and join",
+                        onPressed: () {
+                          printDebug("discover and join");
+                          context.router.pushNamed("/select_org?t=back").then((value) {
+                            getData();
+                          });
+                        },
+                        icon: SizedBox(
+                          width: 36.w,
+                          height: 36.w,
+                          child: Center(
+                            child: Icon(
+                              AppIcons.discoverfill,
+                              size: 23.w,
+                              color: constTheme.sidebarText,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 6.w,
+                        height: 4.w,
+                        margin: EdgeInsets.only(top: 0.w, bottom: 5.w),
+                        decoration: BoxDecoration(
+                          color: constTheme.sidebarText,
+                          borderRadius: BorderRadius.circular(2.w),
+                        ),
+                      ),
+                      if (aorgs != null)
+                        for (var i = 0; i < aorgs!.length; i++)
+                          GestureDetector(
+                            onTap: () async {
+                              if (im.currentState!.org.daoId == aorgs![i].daoId) {
+                                return;
+                              }
+                              if (im.sign == "") {
+                                if (!await im.login(im.me!)) {
+                                  return;
+                                }
+                              }
+                              // ignore: use_build_context_synchronously
+                              final org = globalCtx().read<OrgCubit>();
+                              org.setChannelId("");
+                              await waitFutureLoading(
+                                context: globalCtx(),
+                                future: () async {
+                                  im.currentState!.client.dispose(closeDatabase: false);
+                                  await im.connect(aorgs![i]);
+                                  im.setCurrent(aorgs![i]);
+                                },
+                              );
+                              await loadThemeFromOrg(aorgs![i]);
+                              pageRouter.setActiveIndex(0);
+                              onSelect(0);
+                              await getData();
+                            },
+                            child: Container(
+                              width: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,
+                              height: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,
+                              padding: im.currentState!.org.daoId == aorgs![i].daoId ? EdgeInsets.all(2.w) : null,
+                              margin: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
+                              decoration: BoxDecoration(
+                                color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8.w),
+                                border: Border.all(
+                                  color: im.currentState!.org.daoId == aorgs![i].daoId
+                                      ? constTheme.sidebarTextActiveBorder.withOpacity(0.7)
+                                      : constTheme.sidebarBg,
+                                  width: 2.w,
+                                ),
+                              ),
+                              child: Container(
+                                width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                decoration: BoxDecoration(
+                                  color: aorgs![i].orgColor != null
+                                      ? hexToColor(aorgs![i].orgColor!)
+                                      : constTheme.sidebarText.withOpacity(0.02),
+                                  borderRadius: BorderRadius.circular(4.w),
+                                ),
+                                child: aorgs![i].orgAvater == null
+                                    ? Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          if (aorgs![i].orgAvater == null)
+                                            Text(
+                                              aorgs![i].orgName ?? "",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
+                                                fontSize: 14.w,
+                                              ),
+                                            ),
+                                        ],
+                                      )
+                                    : Center(
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(6.w),
+                                          child: Image.network(
+                                            fit: BoxFit.cover,
+                                            aorgs![i].orgAvater!,
+                                            width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                            height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                            loadingBuilder:
+                                                (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return Center(
+                                                child: Text(
+                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                                ),
+                                              );
+                                            },
+                                            errorBuilder:
+                                                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Center(
+                                                child: Text(
+                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ),
+                      SizedBox(height: 15.w),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-          Flexible(
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: pageController,
-              // onPageChanged: onPageChanged,
-              children: mainPages,
-            ),
-          ),
-          // GestureDetector(
-          //   child: MouseRegion(
-          //     cursor: SystemMouseCursors.resizeColumn,
-          //     child: SizedBox(
-          //       width: 1.w,
-          //       height: double.infinity,
-          //       child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
-          //     ),
-          //   ),
-          //   onPanUpdate: (details) {
-          //     setState(() {
-          //       if (rightWidth - details.delta.dx < 180.w || rightWidth - details.delta.dx > 350.w) {
-          //         return;
-          //       }
-
-          //       rightWidth = rightWidth - details.delta.dx;
-          //     });
-          //   },
-          // ),
-          // if (rightUrl != "") Container(width: rightWidth, height: double.maxFinite, color: Colors.red),
-        ],
+              Flexible(child: child),
+              // GestureDetector(
+              //   child: MouseRegion(
+              //     cursor: SystemMouseCursors.resizeColumn,
+              //     child: SizedBox(
+              //       width: 1.w,
+              //       height: double.infinity,
+              //       child: Container(color: constTheme.sidebarText.withOpacity(0.08)),
+              //     ),
+              //   ),
+              //   onPanUpdate: (details) {
+              //     setState(() {
+              //       if (rightWidth - details.delta.dx < 180.w || rightWidth - details.delta.dx > 350.w) {
+              //         return;
+              //       }
+              //       rightWidth = rightWidth - details.delta.dx;
+              //     });
+              //   },
+              // ),
+              // if (rightUrl != "") Container(width: rightWidth, height: double.maxFinite, color: Colors.red),
+            ],
+          );
+        },
       ),
     );
   }

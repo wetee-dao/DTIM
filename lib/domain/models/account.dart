@@ -1,16 +1,22 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import 'org.dart';
+
 part 'account.g.dart';
 
 @HiveType(typeId: 1)
-class Account extends HiveObject  {
+class Account extends HiveObject {
   @HiveField(0)
   int id = 0;
 
   // 用户昵称
   @HiveField(1)
   String? name;
+
+  // 用户昵称
+  @HiveField(6)
+  Uri? avatar;
 
   // 团队授权网址
   @HiveField(2)
@@ -40,6 +46,10 @@ class AccountOrg {
   @HiveField(3)
   String? orgName;
 
+  // 组织名
+  @HiveField(14)
+  String? orgDesc;
+
   // 组织主颜色
   @HiveField(4)
   String? orgColor;
@@ -56,13 +66,13 @@ class AccountOrg {
   @HiveField(7)
   String? domain;
 
-  // 组织区块链
-  @HiveField(8)
-  String? chainUrl;
-
   // 组织Id
   @HiveField(9)
   int daoId = 0;
+
+  // 区块链连接点
+  @HiveField(13)
+  String? theme;
 
   // 组织状态 1=>激活 2=>暂停 3=>删除
   @HiveField(10)
@@ -74,6 +84,10 @@ class AccountOrg {
 
   @HiveField(12)
   late Account account;
+
+  // 应用列表
+  @HiveField(15)
+  List<OrgApp>? apps = [];
 
   AccountOrg(this.orgHash);
 }

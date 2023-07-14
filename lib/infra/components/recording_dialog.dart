@@ -8,8 +8,8 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:asyou_app/infra/pages/channel/content/audio_player.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/infra/components/content/audio_player.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
@@ -17,10 +17,10 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 class RecordingDialog extends StatefulWidget {
   static const String recordingFileType = 'm4a';

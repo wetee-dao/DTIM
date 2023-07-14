@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 // ignore: must_be_immutable
 class WidgetUserNameEmoji extends StatelessWidget {
@@ -20,6 +20,8 @@ class WidgetUserNameEmoji extends StatelessWidget {
     final constTheme = Theme.of(ctx).extension<ExtColors>()!;
 
     return RichText(
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       text: TextSpan(
         text: name,
         style: TextStyle(

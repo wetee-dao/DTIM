@@ -7,7 +7,7 @@
 //
 
 import 'dart:io';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +18,9 @@ import '../platform_infos.dart';
 import '../string.dart';
 
 Future<File> getLocalSupportFile(String name) async {
-  if(isPc()){
+  if (isPc()) {
     final dir = await getDownloadsDirectory();
-    if(dir!=null){
+    if (dir != null) {
       return File('${dir.path}/$name');
     }
   }

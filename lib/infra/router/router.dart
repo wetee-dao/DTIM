@@ -1,14 +1,21 @@
-import 'package:asyou_app/infra/pages/preloader.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:dtim/infra/pages/integrate/integrate.dart';
+import 'package:dtim/infra/pages/org/create_org.dart';
+import 'package:dtim/infra/pages/opengov/gov.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/infra/pages/chain/import_sr25519_key.dart';
-import 'package:asyou_app/infra/pages/chain/sr25519_key.dart';
-import 'package:asyou_app/infra/pages/main_pc.dart';
-import 'package:asyou_app/infra/pages/select_org.dart';
-import 'package:asyou_app/application/store/app/app.dart';
+import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
+import 'package:dtim/infra/pages/chain/sr25519_key.dart';
+import 'package:dtim/infra/pages/main_pc.dart';
+import 'package:dtim/infra/pages/select_org.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/infra/pages/work/work.dart';
+import 'package:dtim/infra/pages/org/org.dart';
+import 'package:dtim/infra/pages/preloader.dart';
 
 part 'router.gr.dart';
+
+const List<String> pcpages = ["im", "dao", "integrate"];
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends _$AppRouter implements AutoRouteGuard {
@@ -18,10 +25,10 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    print(authService.state.me);
     if (authService.state.me != null ||
         resolver.routeName == Preloader.name ||
         resolver.routeName == Sr25519key.name ||
+        resolver.routeName == SelectOrg.name ||
         resolver.routeName == ImportSr25519key.name) {
       resolver.next();
     } else {
@@ -37,10 +44,16 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   List<AutoRoute> get routes {
     return [
       AutoRoute(path: '/', page: Preloader.page),
-      AutoRoute(path: '/pc/:app', page: Pc.page),
+      AutoRoute(path: '/pc', page: Pc.page, children: [
+        AutoRoute(path: 'im', page: OrgRoute.page),
+        AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
+        AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
+        AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
+      ]),
       AutoRoute(path: '/sr25519key', page: Sr25519key.page),
       AutoRoute(path: '/importSr25519key', page: ImportSr25519key.page),
       AutoRoute(path: '/select_org', page: SelectOrg.page),
+      AutoRoute(path: '/create_org', page: CreateOrg.page),
     ];
   }
 }
@@ -132,7 +145,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
 //     GoRoute(
 //       path: '/join_dao',
 //       builder: (BuildContext context, GoRouterState state) {
-//         return const JoinDaoPage();
+//         return const JoinWorkPage();
 //       },
 //     ),
 //     GoRoute(

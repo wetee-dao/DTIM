@@ -6,15 +6,15 @@
 // https://gitlab.com/famedly/fluffychat
 //
 
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:asyou_app/infra/components/app_bar.dart';
-import 'package:asyou_app/infra/components/mxc_image.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/infra/components/app_bar.dart';
+import 'package:dtim/infra/components/mxc_image.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'image_viewer.dart';
 
 class ImageViewerView extends StatelessWidget {

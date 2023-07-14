@@ -7,11 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/components/setting/settings_ui.dart';
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/im.dart';
-// import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/components/setting/settings_ui.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/im.dart';
+// import 'package:dtim/domain/utils/screen/screen.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);

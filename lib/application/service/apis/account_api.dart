@@ -1,6 +1,5 @@
-import 'package:asyou_app/domain/models/account.dart';
+import 'package:dtim/domain/models/account.dart';
 import 'package:hive/hive.dart';
-
 
 class AccountApi {
   late final Box<Account> storeBox;
@@ -19,7 +18,7 @@ class AccountApi {
   }
 
   addUser(Account u) async {
-    await storeBox.put(u.address,u);
+    await storeBox.put(u.address, u);
     return u;
   }
 
@@ -42,11 +41,11 @@ class AccountApi {
           storeIndex = j;
         }
       }
-      
+
       if (storeIndex == -1) {
         // 添加
         // await addUser(users[i]);
-        await storeBox.put(users[i].address,users[i]);
+        await storeBox.put(users[i].address, users[i]);
       } else {
         // 更新
         oldUsers[storeIndex].name = users[i].name;

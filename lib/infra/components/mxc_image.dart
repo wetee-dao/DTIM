@@ -9,12 +9,13 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:http/http.dart' as http;
 import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:asyou_app/domain/utils/matrix_sdk_extensions/matrix_file_extension.dart';
-import 'package:asyou_app/application/store/im.dart';
+import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_file_extension.dart';
+import 'package:dtim/application/store/im.dart';
 
 class MxcImage extends StatefulWidget {
   final Uri? uri;
@@ -40,7 +41,7 @@ class MxcImage extends StatefulWidget {
     this.placeholder,
     this.isThumbnail = true,
     this.animated = false,
-    this.animationDuration = const Duration(seconds: 2),
+    this.animationDuration = const Duration(milliseconds: 500),
     this.retryDuration = const Duration(seconds: 2),
     this.animationCurve = Curves.easeInOut,
     this.thumbnailMethod = ThumbnailMethod.scale,
@@ -162,7 +163,23 @@ class _MxcImageState extends State<MxcImage> {
   @override
   Widget build(BuildContext context) {
     final data = _imageData;
-
+    if (kIsWeb) {
+      return data == null || data.isEmpty
+          ? placeholder(context)
+          : Image.memory(
+              data,
+              width: widget.width,
+              height: widget.height,
+              fit: widget.fit,
+              filterQuality: FilterQuality.medium,
+              errorBuilder: (context, __, ___) {
+                _isCached = false;
+                _imageData = null;
+                WidgetsBinding.instance.addPostFrameCallback(_tryLoad);
+                return placeholder(context);
+              },
+            );
+    }
     return AnimatedCrossFade(
       duration: widget.animationDuration,
       crossFadeState: data == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,

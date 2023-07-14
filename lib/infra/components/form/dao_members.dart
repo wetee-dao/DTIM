@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import '../components.dart';
 import '../dao/text.dart';
 
@@ -48,7 +48,7 @@ class DaoMemberList extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserAvatar(
+                  BaseAvatar(
                     members[i],
                     true,
                     35.w,

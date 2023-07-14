@@ -1,18 +1,18 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/infra/router/pop_router.dart';
-import 'package:asyou_app/application/store/app/org.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/infra/router/pop_router.dart';
+import 'package:dtim/application/store/app/org.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart' as link;
 import 'package:badges/badges.dart' as badges;
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/app/app.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'hover_list_item.dart';
 import 'loading_dialog.dart';
 
@@ -38,7 +38,8 @@ class _ChannelListState extends State<ChannelList> {
   Widget build(BuildContext context) {
     final org = context.watch<OrgCubit>();
     final app = context.watch<AppCubit>();
-    final channelsList = im.current!.rooms.where((e) => !e.isDirectChat).toList();
+    final List<link.Room> channelsList =
+        im.current != null ? im.current!.rooms.where((e) => !e.isDirectChat).toList() : [];
     final currentId = org.state.channelId;
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     printDebug("频道数据更新 => ${app.state.lastSyncTime}");
@@ -191,6 +192,8 @@ class _ChannelListState extends State<ChannelList> {
                 Expanded(
                   child: Text(
                     chat.getLocalizedDisplayname(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 15.w,
                       fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,

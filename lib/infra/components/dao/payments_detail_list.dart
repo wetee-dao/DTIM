@@ -1,10 +1,10 @@
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:asyou_app/bridge_struct.dart';
-import 'package:asyou_app/application/store/dao_ctx.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'payment_list_tile.dart';
 import 'text.dart';
 
@@ -13,7 +13,7 @@ class PaymentsDetailList extends StatelessWidget {
   final AssetAccountData share;
   final String address;
   final int userPoint;
-  final DaoInfo dao;
+  final OrgInfo dao;
   const PaymentsDetailList({
     Key? key,
     required this.address,
@@ -63,7 +63,7 @@ class PaymentsDetailList extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20.w),
-        Consumer<DAOCTX>(builder: (_, dao, child) {
+        Consumer<WorkCTX>(builder: (_, dao, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -75,7 +75,7 @@ class PaymentsDetailList extends StatelessWidget {
             ],
           );
         }),
-        Consumer<DAOCTX>(builder: (_, dao, child) {
+        Consumer<WorkCTX>(builder: (_, dao, child) {
           return Column(
             children: List.generate(
               dao.votes.length,

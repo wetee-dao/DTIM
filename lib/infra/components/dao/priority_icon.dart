@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class PriorityIcon extends StatelessWidget {
   final double size;

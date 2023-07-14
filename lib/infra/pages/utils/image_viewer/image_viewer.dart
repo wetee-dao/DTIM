@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 
 import 'image_viewer_view.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/matrix_sdk_extensions/event_extension.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/matrix_sdk_extensions/event_extension.dart';
 
 class ImageViewer extends StatefulWidget {
   final Event event;

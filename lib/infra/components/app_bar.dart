@@ -1,9 +1,9 @@
-import 'package:asyou_app/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'move_window.dart';
 
 class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {

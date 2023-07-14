@@ -23,17 +23,20 @@ class AccountAdapter extends TypeAdapter<Account> {
     )
       ..id = fields[0] as int
       ..name = fields[1] as String?
+      ..avatar = fields[6] as Uri?
       ..domain = fields[2] as String;
   }
 
   @override
   void write(BinaryWriter writer, Account obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
+      ..writeByte(6)
+      ..write(obj.avatar)
       ..writeByte(2)
       ..write(obj.domain)
       ..writeByte(3)
@@ -69,25 +72,29 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       fields[2] as String,
     )
       ..orgName = fields[3] as String?
+      ..orgDesc = fields[14] as String?
       ..orgColor = fields[4] as String?
       ..orgAvater = fields[5] as String?
       ..orgImg = fields[6] as String?
       ..domain = fields[7] as String?
-      ..chainUrl = fields[8] as String?
       ..daoId = fields[9] as int
+      ..theme = fields[13] as String?
       ..status = fields[10] as int
       ..withAddr = fields[11] as String
-      ..account = fields[12] as Account;
+      ..account = fields[12] as Account
+      ..apps = (fields[15] as List?)?.cast<OrgApp>();
   }
 
   @override
   void write(BinaryWriter writer, AccountOrg obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(2)
       ..write(obj.orgHash)
       ..writeByte(3)
       ..write(obj.orgName)
+      ..writeByte(14)
+      ..write(obj.orgDesc)
       ..writeByte(4)
       ..write(obj.orgColor)
       ..writeByte(5)
@@ -96,16 +103,18 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..write(obj.orgImg)
       ..writeByte(7)
       ..write(obj.domain)
-      ..writeByte(8)
-      ..write(obj.chainUrl)
       ..writeByte(9)
       ..write(obj.daoId)
+      ..writeByte(13)
+      ..write(obj.theme)
       ..writeByte(10)
       ..write(obj.status)
       ..writeByte(11)
       ..write(obj.withAddr)
       ..writeByte(12)
-      ..write(obj.account);
+      ..write(obj.account)
+      ..writeByte(15)
+      ..write(obj.apps);
   }
 
   @override

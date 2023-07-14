@@ -1,23 +1,26 @@
-// import 'package:asyou_app/infra/pages/channel/create.dart';
+// import 'package:dtim/infra/pages/channel/create.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:dtim/infra/pages/user/kyc.dart';
+import 'package:dtim/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/infra/pages/channel/create_private.dart';
-import 'package:asyou_app/infra/pages/channel/setting/setting.dart';
-import 'package:asyou_app/infra/pages/dao/pop/apply_project_funding.dart';
-import 'package:asyou_app/infra/pages/dao/pop/create_project.dart';
-import 'package:asyou_app/infra/pages/dao/pop/create_roadmap.dart';
-import 'package:asyou_app/infra/pages/dao/pop/create_task.dart';
-import 'package:asyou_app/infra/pages/dao/pop/join_dao.dart';
-import 'package:asyou_app/infra/pages/dao/pop/make_review.dart';
-import 'package:asyou_app/infra/pages/dao/pop/referendum_vote.dart';
-import 'package:asyou_app/infra/pages/dao/pop/task_info.dart';
-import 'package:asyou_app/infra/pages/setting/setting.dart';
-import 'package:asyou_app/infra/pages/dao/pop/join_task.dart';
-import 'package:asyou_app/infra/pages/channel/create.dart';
-import 'package:asyou_app/infra/pages/search.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/pages/channel/create_private.dart';
+import 'package:dtim/infra/pages/channel/setting/setting.dart';
+import 'package:dtim/infra/pages/work/pop/apply_project_funding.dart';
+import 'package:dtim/infra/pages/work/pop/create_project.dart';
+import 'package:dtim/infra/pages/work/pop/create_roadmap.dart';
+import 'package:dtim/infra/pages/work/pop/create_task.dart';
+import 'package:dtim/infra/pages/work/pop/join_dao.dart';
+import 'package:dtim/infra/pages/work/pop/make_review.dart';
+import 'package:dtim/infra/pages/work/pop/referendum_vote.dart';
+import 'package:dtim/infra/pages/work/pop/task_info.dart';
+import 'package:dtim/infra/pages/setting/setting.dart';
+import 'package:dtim/infra/pages/work/pop/join_task.dart';
+import 'package:dtim/infra/pages/channel/create.dart';
+import 'package:dtim/infra/pages/search.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/theme.dart';
 
 getPage(String url, Function closeModel) {
   if (url == "/create_channel") {
@@ -50,7 +53,7 @@ getPage(String url, Function closeModel) {
     final pstr = url.replaceAll("/apply_project_funding/", "");
     return ApplyProjectFundingPage(projectId: pstr, closeModel: closeModel);
   } else if (url.indexOf("/join_dao") == 0) {
-    return JoinDaoPage(closeModel: closeModel);
+    return JoinWorkPage(closeModel: closeModel);
   } else if (url.indexOf("/create_dao_project") == 0) {
     return CreateProjectPage(closeModel: closeModel);
   } else if (url.indexOf("/referendum_vote") == 0) {
@@ -68,18 +71,24 @@ getPage(String url, Function closeModel) {
   } else if (url.indexOf("/invitation/") == 0) {
     // final pstr = url.replaceAll("/invitation/", "");
     // final ps = pstr.split("/");
+  } else if (url.indexOf("/kyc") == 0) {
+    return KycPage(closeModel: closeModel);
+  } else if (url.indexOf("/user_setting") == 0) {
+    return UserSettingPage(closeModel: closeModel);
   }
 
   return const Center(child: Text("404"));
 }
 
-showModelOrPage(context, url, {double width = 520, double height = 550}) {
+Future<T?> showModelOrPage<T>(context, url, {double width = 520, double height = 550, double top = 30}) async {
   final constTheme = Theme.of(context).extension<ExtColors>()!;
-  if (isPc()||PlatformInfos.isWeb) {
-    showDialog(
+  if (isPc() || PlatformInfos.isWeb) {
+   return showDialog<T>(
       context: context,
       useSafeArea: true,
-      barrierColor: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
+      barrierColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.white.withOpacity(0.1)
+          : Colors.black.withOpacity(0.7),
       builder: (context) {
         final media = MediaQuery.of(context);
         final bottom = media.size.height - 30.w - height.w;
@@ -87,29 +96,28 @@ showModelOrPage(context, url, {double width = 520, double height = 550}) {
           margin: EdgeInsets.only(
             left: (media.size.width - width.w) / 2,
             right: (media.size.width - width.w) / 2,
-            top: 30.w,
+            top: top.w,
             bottom: bottom > 0 ? bottom : 40.w,
           ),
           width: width.w,
           height: height.w,
-          // decoration: BoxDecoration(
-          //   // color: constTheme.centerChannelBg,
-          //   color: Colors.red,
-          //   borderRadius: BorderRadius.all(Radius.circular(4.w)),
-          //   boxShadow: <BoxShadow>[
-          //     BoxShadow(
-          //       color: constTheme.centerChannelBg.withOpacity(0.4),
-          //       blurRadius: 8.w,
-          //     ),
-          //   ],
-          // ),
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? constTheme.centerChannelBg.withOpacity(0.4)
+                    : Colors.black.withOpacity(0.2),
+                blurRadius: 8.w,
+              ),
+            ],
+          ),
           child: getPage(url, () {
-            Navigator.pop(context);
+            context.router.pop();
           }),
         );
       },
     );
   } else {
-    context.pushNamed(url);
+    return context.router.pushNamed(url);
   }
 }

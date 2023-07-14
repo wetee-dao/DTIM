@@ -1,10 +1,10 @@
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:asyou_app/infra/components/avatar.dart';
+import 'package:dtim/infra/components/avatar.dart';
 
 void main() {
   testWidgets("test user_avatar.dart", (WidgetTester tester) async {
@@ -12,10 +12,10 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         navigatorKey: rootNavigatorKey,
         home: const Scaffold(
-          body: UserAvatar(
+          body: BaseAvatar(
             "https://www.asyou.me/static/temp/images/icon-152x152.png",
             true,
             40,
@@ -30,10 +30,10 @@ void main() {
     initScreen(1200);
     await tester.pumpWidget(
       MaterialApp(
-        theme: theme(),
+        theme: getDefaultTheme(),
         navigatorKey: rootNavigatorKey,
         home: const Scaffold(
-          body: UserAvatarWithPop(
+          body: BaseAvatarWithPop(
             "1",
             "name",
             true,

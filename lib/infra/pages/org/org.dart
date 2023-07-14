@@ -1,13 +1,18 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/infra/components/close_bar.dart';
+import 'package:dtim/infra/pages/webrtc/group_calling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:asyou_app/application/store/app/org.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/application/store/app/org.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/application/store/theme.dart';
 import '../channel/chat.dart';
 import 'org_view.dart';
 
+@RoutePage(name: "orgRoute")
 class OrgPage extends StatefulWidget {
   const OrgPage({Key? key}) : super(key: key);
 
@@ -15,7 +20,7 @@ class OrgPage extends StatefulWidget {
   State<OrgPage> createState() => _OrgPageState();
 }
 
-class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
+class _OrgPageState extends State<OrgPage> {
   double leftWidth = 200.w;
 
   @override
@@ -25,7 +30,6 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -64,6 +68,10 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
           Flexible(
             child: BlocBuilder<OrgCubit, OrgState>(
               builder: (context, state) {
+                printSuccess("channelId => ${state.channelId}");
+                if (state.channelId.contains("meeting||")) {
+                  return GroupWebRTCalling(callId: state.channelId.replaceAll("meeting||", ""));
+                }
                 return state.channelId != ""
                     ? ChannelDetailPage(
                         key: Key("channel_$state.channelId"),
@@ -72,11 +80,20 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
                     : moveWindow(
                         Container(
                           color: constTheme.centerChannelBg,
-                          child: Center(
-                            child: Text(
-                              "Join DAO and run any app in web3",
-                              style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
-                            ),
+                          padding: EdgeInsets.only(bottom: 100.h),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 10.w, right: 7.w),
+                                child: CloseBar(color: constTheme.centerChannelColor),
+                              ),
+                              const Spacer(),
+                              Text(
+                                "Work in web3 with DTIM",
+                                style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w),
+                              ),
+                              const Spacer(),
+                            ],
                           ),
                         ),
                       );
@@ -87,7 +104,4 @@ class _OrgPageState extends State<OrgPage> with AutomaticKeepAliveClientMixin {
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

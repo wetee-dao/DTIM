@@ -1,10 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:asyou_app/application/store/im_state.dart';
-import 'package:asyou_app/native_wraper.io.dart';
-import 'package:asyou_app/router.dart';
+import 'package:dtim/application/store/im_state.dart';
+import 'package:dtim/native_wraper.dart';
+import 'package:dtim/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -12,12 +11,12 @@ import 'package:matrix/matrix.dart' show AuthenticationUserIdentifier, Client, H
 import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:asyou_app/application/service/apis/system_api.dart';
-import 'package:asyou_app/infra/components/loading_dialog.dart';
-import 'package:asyou_app/domain/models/models.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/platform_infos.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/application/service/apis/system_api.dart';
+import 'package:dtim/infra/components/loading_dialog.dart';
+import 'package:dtim/domain/models/models.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 
 part 'app.freezed.dart';
 
@@ -140,16 +139,29 @@ class AppCubit extends Cubit<AppState> {
     connectionStates.forEach((key, value) async {
       await value.dispose();
     });
-    const storage = FlutterSecureStorage();
-    await storage.delete(key: "login_state");
+    // const storage = FlutterSecureStorage();
+    // await storage.delete(key: "login_state");
+    final systemStore = await SystemApi.create();
+    systemStore.saveLogin("");
     emit(const AppState());
-    globalCtx().router.back();
+    for (var i = 0; i < 10; i++) {
+      if (globalCtx().router.canPop()) {
+        globalCtx().router.pop();
+      } else {
+        break;
+      }
+    }
   }
 
   // 连接账户
   Future<bool> connect(AccountOrg org) async {
+    if(org.domain!.contains("http://")){
+      org.domain = org.domain!.replaceFirst("http://", "https://");
+    }
+    final server = Uri.parse(org.domain ?? "");
+    final domain = server.host;
     // 构建账户密码
-    final userName = '${me!.address}@${org.domain}/${platformGet()}';
+    final userName = '${me!.address}@$domain/${platformGet()}';
 
     printInfo("connect => $userName");
 
@@ -179,16 +191,16 @@ class AppCubit extends Cubit<AppState> {
       databaseBuilder: (_) async {
         if (PlatformInfos.isWeb) {
           final db = HiveCollectionsDatabase(
-            org.domain!.replaceAll(".", "_"),
+            domain.replaceAll(".", "_"),
             me!.address,
           );
           await db.open();
           return db;
         }
         final dir = await getApplicationSupportDirectory();
-        printDebug("hlive ===> ${dir.path} ${org.domain!.replaceAll(".", "_")}");
+        printDebug("hlive ===> ${dir.path} ${domain.replaceAll(".", "_")}");
         final db = HiveCollectionsDatabase(
-          org.domain!.replaceAll(".", "_"),
+          domain.replaceAll(".", "_"),
           "${dir.path}/${me!.address}",
         );
         await db.open();
@@ -198,7 +210,7 @@ class AppCubit extends Cubit<AppState> {
 
     // 链接节点
     await client.init();
-    await client.checkHomeserver(Uri.http(org.domain!, ''));
+    await client.checkHomeserver(server);
 
     if (!client.isLogged()) {
       try {
@@ -254,7 +266,10 @@ class AppCubit extends Cubit<AppState> {
 
   // 设置当前账户
   setCurrent(AccountOrg org) {
-    final id = '${me!.address}@${org.domain}/${platformGet()}';
+    final server = Uri.parse(org.domain ?? "");
+    final domain = server.host;
+
+    final id = '${me!.address}@$domain/${platformGet()}';
     emit(state.copyWith(currentOrg: id));
     state.connectionStates[id]?.syncChannel();
   }

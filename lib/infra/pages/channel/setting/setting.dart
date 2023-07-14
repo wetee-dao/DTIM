@@ -1,11 +1,3 @@
-// Copyright 2023 FluffyChat.
-// This file is part of FluffyChat
-
-// Licensed under the AGPL;
-//
-// https://gitlab.com/famedly/fluffychat
-//
-
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +5,11 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:matrix/matrix.dart' as link;
 
-import 'package:asyou_app/infra/components/components.dart';
-import 'package:asyou_app/domain/utils/functions.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
-import 'package:asyou_app/application/store/im.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/infra/components/components.dart';
+import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/theme.dart';
 import 'details.dart';
 import 'encryption.dart';
 import 'members.dart';
@@ -75,7 +67,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final titleList = <String>[L10n.of(context)!.chatDetal, L10n.of(context)!.chatMemeber, L10n.of(context)!.chatE2e];
     return Scaffold(
-      backgroundColor: constTheme.sidebarHeaderBg,
+      backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
@@ -85,6 +77,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
             ) as PreferredSizeWidget
           : ModelBar(
               title: "# ${getUserShortName(room!.getLocalizedDisplayname())}",
+              height: 45.w,
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -96,7 +89,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
       body: Column(
         children: [
           Container(
-            height: 35.w,
+            height: 30.w,
             width: double.maxFinite,
             color: constTheme.sidebarHeaderBg,
             child: TabBar(

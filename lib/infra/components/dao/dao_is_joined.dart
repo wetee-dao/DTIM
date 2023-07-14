@@ -1,11 +1,11 @@
-import 'package:asyou_app/infra/router/pop_router.dart';
-import 'package:asyou_app/application/store/dao_ctx.dart';
-import 'package:asyou_app/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/router/pop_router.dart';
+import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:asyou_app/router.dart';
-import 'package:asyou_app/application/store/theme.dart';
+import 'package:dtim/router.dart';
+import 'package:dtim/application/store/theme.dart';
 
 class DaoIsJoined extends StatelessWidget {
   final Widget child;
@@ -52,7 +52,7 @@ class DaoIsJoined extends StatelessWidget {
                     ),
                     SizedBox(height: 10.w),
                     Text(
-                      'You are not a member of this DAO',
+                      'You are not a member of this Work',
                       style: TextStyle(
                         color: constTheme.centerChannelColor,
                         fontSize: 15.w,
@@ -63,7 +63,7 @@ class DaoIsJoined extends StatelessWidget {
                     ElevatedButton(
                       key: const Key('joinDao'),
                       onPressed: () {
-                        if (daoCtx.nativeAmount.free < 100) {
+                        if (workCtx.nativeAmount.free < 100) {
                           BotToast.showText(
                               text: "The user's balance is not enough to pay the handling fee",
                               duration: const Duration(seconds: 2));
