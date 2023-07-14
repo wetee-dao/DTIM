@@ -1,7 +1,9 @@
+import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
@@ -285,7 +287,9 @@ class Referendums extends StatelessWidget {
               ),
             );
     }
-    if (going.status == 0 && going.end - workCtx.blockNumber <= 0 && going.end + going.delay - workCtx.blockNumber > 0) {
+    if (going.status == 0 &&
+        going.end - workCtx.blockNumber <= 0 &&
+        going.end + going.delay - workCtx.blockNumber > 0) {
       return renderBox(
         PrimaryText(
           text: "Delay time",
@@ -310,6 +314,10 @@ class Referendums extends StatelessWidget {
                   index: going.id,
                 );
                 await workCtx.daoRefresh();
+                if (going.proposal.toLowerCase().contains("integrate")) {
+                  final org = globalCtx().read<OrgCubit>();
+                  org.update();
+                }
               },
             );
           },

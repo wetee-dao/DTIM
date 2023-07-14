@@ -71,6 +71,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     if (winsystem != null && winsystem.loginAccount != null && winsystem.loginAccount != "") {
       final account = accounts.firstWhereOrNull((a) => a.address == winsystem.loginAccount);
       if (account == null) {
+        setState(() => _loading = false);
         return;
       }
       await waitFutureLoading(
@@ -84,6 +85,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         },
       );
     }
+    setState(() => _loading = false);
   }
 
   getList(Function? callback) async {

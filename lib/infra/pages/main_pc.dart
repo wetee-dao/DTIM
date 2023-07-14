@@ -54,6 +54,10 @@ class _PCPageState extends State<PCPage> {
     im = context.read<AppCubit>();
     currentId.add(url.indexOf(context.router.currentPath.replaceAll("/pc/", "")));
     getData();
+    final org = context.read<OrgCubit>();
+    org.stream.listen((event) async {
+      await getData();
+    });
   }
 
   getData() async {
@@ -140,13 +144,16 @@ class _PCPageState extends State<PCPage> {
                         width: 6.w,
                         height: 4.w,
                         margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
-                        decoration:
-                            BoxDecoration(color: constTheme.sidebarText, borderRadius: BorderRadius.circular(2.w)),
+                        decoration: BoxDecoration(
+                          color: constTheme.sidebarText,
+                          borderRadius: BorderRadius.circular(2.w),
+                        ),
                       ),
                       Flexible(
                         child: StreamBuilder(
                           stream: currentId.stream,
                           builder: (BuildContext context, AsyncSnapshot<int> id) {
+                            print("SiderBar: ${id.data}");
                             return Column(
                               children: [
                                 SiderBarItem(
