@@ -172,7 +172,7 @@ class AppCard extends StatelessWidget {
                   appId: id,
                   ext: gov,
                 );
-                BotToast.showText(text: "应用集成成功");
+                BotToast.showText(text: gov.runType == 0 ? "应用集成成功" : "应用集成提案将显示在治理中，请到治理插件中开启投票");
               },
             );
           }
