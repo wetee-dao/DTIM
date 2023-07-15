@@ -199,7 +199,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           SizedBox(height: 20.w),
           Padding(
             padding: EdgeInsets.only(left: 20.w, bottom: 10.w),
-            child: Text("joined organization", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+            child: Text("Joined organization", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
           ),
           Row(
             children: [
