@@ -14,6 +14,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   screen_retriever
   tray_manager
   url_launcher_windows
+  webview_cef
   window_manager
 )
 

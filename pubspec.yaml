@@ -111,7 +111,11 @@ dependencies:
   flutter_foreground_task: ^6.0.0+1
   # 储存
   hive_flutter: ^1.1.0
+  # 设备信息
   device_info_plus: ^9.0.2
+  # webview
+  webview_cef:
+    path: ./exts/webview_cef
 
 dev_dependencies:
   flutter_test:

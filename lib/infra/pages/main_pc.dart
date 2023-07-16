@@ -46,6 +46,7 @@ class _PCPageState extends State<PCPage> {
     const GovRoute(),
     const DaoRoute(),
     const IntegrateRoute(),
+    const WebviewRoute(),
   ];
 
   @override
@@ -190,6 +191,17 @@ class _PCPageState extends State<PCPage> {
                                     onSelect(3);
                                   },
                                 ),
+                                // DAO管理
+                                SiderBarItem(
+                                  "Dapps",
+                                  icon: AppIcons.shujujicheng,
+                                  key: const Key("Dapps"),
+                                  selected: id.data == 4,
+                                  onTap: () {
+                                    pageRouter.setActiveIndex(4);
+                                    onSelect(4);
+                                  },
+                                ),
                               ],
                             );
                           },
@@ -330,6 +342,7 @@ class _PCPageState extends State<PCPage> {
                 ),
               ),
               Flexible(child: child),
+              // Flexible(child: CefView())
               // GestureDetector(
               //   child: MouseRegion(
               //     cursor: SystemMouseCursors.resizeColumn,

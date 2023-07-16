@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
 import 'package:dtim/infra/pages/org/create_org.dart';
 import 'package:dtim/infra/pages/opengov/gov.dart';
+import 'package:dtim/infra/pages/webview/cef.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
@@ -49,6 +50,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
         AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
         AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
         AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
+        AutoRoute(path: 'webview', page: WebviewRoute.page, maintainState: false),
       ]),
       AutoRoute(path: '/sr25519key', page: Sr25519key.page),
       AutoRoute(path: '/importSr25519key', page: ImportSr25519key.page),

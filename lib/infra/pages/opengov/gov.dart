@@ -162,15 +162,6 @@ class _GovPageState extends State<GovPage> {
         return 1;
       case "Referendums":
         return 2;
-      // case "Combind Boards":
-      //   return 3;
-      default:
-        if (str.contains("Guilds")) {
-          return 4;
-        }
-        if (str.contains("Projects")) {
-          return 5;
-        }
     }
     return 0;
   }

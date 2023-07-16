@@ -39,6 +39,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CreateOrgPage(),
       );
     },
+    WebviewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CefView(),
+      );
+    },
     ImportSr25519key.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -58,8 +64,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     Preloader.name: (routeData) {
-      final args =
-          routeData.argsAs<PreloaderArgs>(orElse: () => const PreloaderArgs());
+      final args = routeData.argsAs<PreloaderArgs>(orElse: () => const PreloaderArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PreloaderPage(
@@ -135,6 +140,20 @@ class CreateOrg extends PageRouteInfo<void> {
         );
 
   static const String name = 'CreateOrg';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CefView]
+class WebviewRoute extends PageRouteInfo<void> {
+  const WebviewRoute({List<PageRouteInfo>? children})
+      : super(
+          WebviewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WebviewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

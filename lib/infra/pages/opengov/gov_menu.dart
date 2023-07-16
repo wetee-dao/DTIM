@@ -39,7 +39,7 @@ class SideMenu extends StatelessWidget {
             ),
             iconBuilder(
               key: const Key("Members"),
-              assetName: Icons.how_to_vote_rounded,
+              assetName: Icons.perm_contact_calendar_rounded,
               name: "Members",
               color: constTheme,
               selected: id == "Members",
@@ -60,7 +60,7 @@ class SideMenu extends StatelessWidget {
             //   selected: id == "Combind Boards",
             //   onTap: () => onTap("Combind Boards"),
             // ),
- ],
+          ],
         ),
       ),
     );
