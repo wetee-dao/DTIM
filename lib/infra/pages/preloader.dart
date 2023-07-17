@@ -57,6 +57,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       workCtx.connectChain(() async {
         setState(() => _loading = false);
       });
+      Timer(const Duration(seconds: 3), () {
+        setState(() => _loading = false);
+      });
     });
   }
 
