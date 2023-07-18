@@ -64,24 +64,30 @@ class _PCPageState extends State<PCPage> {
   getData() async {
     final accountOrgApi = await AccountOrgApi.create();
     final os = await (await AccountOrgApi.create()).listByAccount(im.me!.address);
-    setState(() {
-      aorgs = os;
-    });
+    if (mounted) {
+      setState(() {
+        aorgs = os;
+      });
+    }
     if (im.currentState != null) {
       var u = await im.currentState!.client.getAvatarUrl(im.currentState!.client.userID ?? "");
       AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.orgHash);
       if (org != null) {
         apps = org.apps ?? [];
       }
-      setState(() {
-        avatar = u;
-      });
+      if (mounted) {
+        setState(() {
+          avatar = u;
+        });
+      }
 
       workCtx.setOrg(im.currentState!.org, im.me!);
       workCtx.connectChain(() async {
         apps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
         await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       });
     }
   }
@@ -154,7 +160,6 @@ class _PCPageState extends State<PCPage> {
                         child: StreamBuilder(
                           stream: currentId.stream,
                           builder: (BuildContext context, AsyncSnapshot<int> id) {
-                            print("SiderBar: ${id.data}");
                             return Column(
                               children: [
                                 SiderBarItem(
@@ -192,16 +197,16 @@ class _PCPageState extends State<PCPage> {
                                   },
                                 ),
                                 // DAO管理
-                                SiderBarItem(
-                                  "Dapps",
-                                  icon: AppIcons.shujujicheng,
-                                  key: const Key("Dapps"),
-                                  selected: id.data == 4,
-                                  onTap: () {
-                                    pageRouter.setActiveIndex(4);
-                                    onSelect(4);
-                                  },
-                                ),
+                                // SiderBarItem(
+                                //   "Dapps",
+                                //   icon: AppIcons.shujujicheng,
+                                //   key: const Key("Dapps"),
+                                //   selected: id.data == 4,
+                                //   onTap: () {
+                                //     pageRouter.setActiveIndex(4);
+                                //     onSelect(4);
+                                //   },
+                                // ),
                               ],
                             );
                           },

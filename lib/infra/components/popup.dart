@@ -94,8 +94,8 @@ class BasePopupMenuState extends State<BasePopupMenu> {
     );
 
     //widget.horizontalMargin, widget.verticalMargin
-    print(
-        'widget.horizontalMargin: ${widget.horizontalMargin}, widget.verticalMargin: ${widget.verticalMargin}');
+    // print(
+    //     'widget.horizontalMargin: ${widget.horizontalMargin}, widget.verticalMargin: ${widget.verticalMargin}');
     _overlayEntry = OverlayEntry(
       builder: (context) {
         Widget menu = Center(
