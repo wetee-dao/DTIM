@@ -1,3 +1,4 @@
+import 'package:dtim/infra/components/hover_list_item.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart' as link;
@@ -23,6 +24,8 @@ class Msg extends StatefulWidget {
 }
 
 class _MsgState extends State<Msg> {
+  String hover = "";
+
   @override
   void didUpdateWidget(covariant Msg oldWidget) {
     if (oldWidget.event.eventId != widget.event.eventId) {
@@ -77,62 +80,76 @@ class _MsgState extends State<Msg> {
       future: event.fetchSenderUser(),
       builder: (context, snapshot) {
         final user = snapshot.data ?? event.senderFromMemoryOrFallback;
-        return Row(
+        return HoverListItem(
           key: Key(event.eventId),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(width: 15.w),
-            if (showAvatar)
-              Column(
-                children: [
-                  SizedBox(height: 10.w),
-                  BaseAvatarWithPop(
-                    key: Key(user.id),
-                    user.id,
-                    user.displayName ?? "-",
-                    true,
-                    40.w,
-                    color: constTheme.centerChannelColor,
-                    bg: constTheme.centerChannelDivider,
-                    mxContent: user.avatarUrl,
-                  ),
-                ],
-              ),
-            if (!showAvatar) SizedBox(width: 40.w),
-            SizedBox(width: 10.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (showAvatar) SizedBox(height: 7.w),
-                  if (showAvatar)
-                    RichText(
-                      text: TextSpan(
-                        text: event.senderId == widget.client.userID ? "Me" : user.displayName,
-                        style: TextStyle(
-                          color: constTheme.centerChannelColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.w,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "  ${getTime(event.originServerTs)}",
-                            style: TextStyle(
-                              color: constTheme.centerChannelColor.withAlpha(155),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.w,
-                            ),
-                          )
-                        ],
+          subkey: "DirectChat${event.eventId}",
+          ishover: event.eventId == hover,
+          color: Colors.transparent,
+          hoverColor: constTheme.centerChannelColor.withOpacity(0.02),
+          onPressed: () async {},
+          child: GestureDetector(
+            onTapDown: (e) async {
+              setState(() {
+                hover = event.eventId;
+              });
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: 15.w),
+                if (showAvatar)
+                  Column(
+                    children: [
+                      SizedBox(height: 10.w),
+                      BaseAvatarWithPop(
+                        key: Key(user.id),
+                        user.id,
+                        user.displayName ?? "-",
+                        true,
+                        40.w,
+                        color: constTheme.centerChannelColor,
+                        bg: constTheme.centerChannelDivider,
+                        mxContent: user.avatarUrl,
                       ),
-                    ),
-                  if (showAvatar) SizedBox(height: 5.w),
-                  renderBody(event),
-                  SizedBox(height: 5.w),
-                ],
-              ),
+                    ],
+                  ),
+                if (!showAvatar) SizedBox(width: 40.w),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (showAvatar) SizedBox(height: 7.w),
+                      if (showAvatar)
+                        RichText(
+                          text: TextSpan(
+                            text: event.senderId == widget.client.userID ? "Me" : user.displayName,
+                            style: TextStyle(
+                              color: constTheme.centerChannelColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.w,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "  ${getTime(event.originServerTs)}",
+                                style: TextStyle(
+                                  color: constTheme.centerChannelColor.withAlpha(155),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.w,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      SizedBox(height: 5.w),
+                      renderBody(event),
+                      SizedBox(height: 5.w),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

@@ -105,7 +105,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: workCtx.dao.purpose,
+                  text: "Using Referendums to Achieve Decentralized Voting",
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),

@@ -30,7 +30,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   List<String> members = [];
   late TabController _tabController;
   late PageController pageController = PageController();
-  final titleList = <String>["Members", "Referendums"];
+  final titleList = <String>["Referendums", "Members"];
   List<GovProps> pending = [];
   List<GovReferendum> going = [];
 
@@ -185,8 +185,8 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
               scrollDirection: Axis.vertical,
               onPageChanged: (page) {},
               children: [
-                Members(members: members),
                 Referendums(pending: pending, going: going),
+                Members(members: members),
               ],
             ),
           ),

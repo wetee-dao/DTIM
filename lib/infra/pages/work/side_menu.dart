@@ -31,7 +31,7 @@ class SideMenu extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 20.w,
+              height: 15.w,
               alignment: Alignment.topCenter,
             ),
             // iconBuilder(
