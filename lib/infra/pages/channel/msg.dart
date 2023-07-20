@@ -1,6 +1,7 @@
 import 'package:dtim/infra/components/hover_list_item.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import 'package:dtim/infra/components/components.dart';
@@ -24,7 +25,8 @@ class Msg extends StatefulWidget {
 }
 
 class _MsgState extends State<Msg> {
-  String hover = "";
+  bool showDate = false;
+  OverlayEntry? overlayEntry;
 
   @override
   void didUpdateWidget(covariant Msg oldWidget) {
@@ -39,7 +41,6 @@ class _MsgState extends State<Msg> {
     final event = widget.event;
     final preEvent = widget.preEvent;
     final showAvatar = isShowAvatar(event, preEvent);
-    var showDate = false;
     // if (event.type == link.EventTypes.RoomMember ||
     //     event.type == link.EventTypes.RoomPowerLevels ||
     //     event.type == link.EventTypes.RoomJoinRules ||
@@ -83,72 +84,68 @@ class _MsgState extends State<Msg> {
         return HoverListItem(
           key: Key(event.eventId),
           subkey: "DirectChat${event.eventId}",
-          ishover: event.eventId == hover,
+          ishover: overlayEntry != null,
           color: Colors.transparent,
           hoverColor: constTheme.centerChannelColor.withOpacity(0.02),
           onPressed: () async {},
-          child: GestureDetector(
-            onTapDown: (e) async {
-              setState(() {
-                hover = event.eventId;
-              });
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(width: 15.w),
-                if (showAvatar)
-                  Column(
-                    children: [
-                      SizedBox(height: 10.w),
-                      BaseAvatarWithPop(
-                        key: Key(user.id),
-                        user.id,
-                        user.displayName ?? "-",
-                        true,
-                        40.w,
-                        color: constTheme.centerChannelColor,
-                        bg: constTheme.centerChannelDivider,
-                        mxContent: user.avatarUrl,
-                      ),
-                    ],
-                  ),
-                if (!showAvatar) SizedBox(width: 40.w),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (showAvatar) SizedBox(height: 7.w),
-                      if (showAvatar)
-                        RichText(
-                          text: TextSpan(
-                            text: event.senderId == widget.client.userID ? "Me" : user.displayName,
-                            style: TextStyle(
-                              color: constTheme.centerChannelColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.w,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "  ${getTime(event.originServerTs)}",
-                                style: TextStyle(
-                                  color: constTheme.centerChannelColor.withAlpha(155),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12.w,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      SizedBox(height: 5.w),
-                      renderBody(event),
-                      SizedBox(height: 5.w),
-                    ],
-                  ),
+          onHover: (hover) {
+            buildTip(hover);
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(width: 15.w),
+              if (showAvatar)
+                Column(
+                  children: [
+                    SizedBox(height: 10.w),
+                    BaseAvatarWithPop(
+                      key: Key(user.id),
+                      user.id,
+                      user.displayName ?? "-",
+                      true,
+                      40.w,
+                      color: constTheme.centerChannelColor,
+                      bg: constTheme.centerChannelDivider,
+                      mxContent: user.avatarUrl,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              if (!showAvatar) SizedBox(width: 40.w),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (showAvatar) SizedBox(height: 7.w),
+                    if (showAvatar)
+                      RichText(
+                        text: TextSpan(
+                          text: event.senderId == widget.client.userID ? "Me" : user.displayName,
+                          style: TextStyle(
+                            color: constTheme.centerChannelColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.w,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "  ${getTime(event.originServerTs)}",
+                              style: TextStyle(
+                                color: constTheme.centerChannelColor.withAlpha(155),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.w,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    SizedBox(height: 5.w),
+                    renderBody(event),
+                    SizedBox(height: 5.w),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -208,5 +205,73 @@ class _MsgState extends State<Msg> {
         ],
       ),
     );
+  }
+
+  buildTip(bool hover) {
+    if (overlayEntry != null) return;
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+    final offset = renderBox.localToGlobal(Offset.zero);
+
+    overlayEntry = OverlayEntry(
+      maintainState: true,
+      builder: (context) => Listener(
+        behavior: HitTestBehavior.opaque,
+        onPointerDown: (PointerDownEvent event) {},
+        onPointerHover: (PointerHoverEvent event) {
+          Offset poffset = event.localPosition;
+          if (poffset.dy < offset.dy || poffset.dy > offset.dy + size.height || poffset.dx < offset.dx) {
+            if (overlayEntry != null) {
+              overlayEntry!.remove();
+              overlayEntry = null;
+              setState(() {});
+            }
+            return;
+          }
+        },
+        child: Column(
+          // width: 200.w,
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                left: offset.dx + size.width - 210.w,
+                top: offset.dy + (showDate ? 38.w : 0),
+              ),
+              decoration: BoxDecoration(
+                color: constTheme.centerChannelBg,
+                border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
+                borderRadius: BorderRadius.circular(4.w),
+              ),
+              width: 200.w,
+              height: 32.w,
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.email_rounded,
+                      color: constTheme.centerChannelColor,
+                      size: 18.w,
+                    ),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.reply_rounded,
+                      color: constTheme.centerChannelColor,
+                      size: 18.w,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry!);
+    setState(() {});
   }
 }

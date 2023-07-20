@@ -5,6 +5,7 @@ class HoverListItem extends StatefulWidget {
   final Color? color;
   final Color? hoverColor;
   final VoidCallback onPressed;
+  final Function(bool)? onHover;
   final Widget? trailing;
   final Widget child;
   final String subkey;
@@ -18,6 +19,7 @@ class HoverListItem extends StatefulWidget {
     this.hoverColor,
     this.ishover,
     required this.subkey,
+    this.onHover,
   }) : super(key: key);
 
   @override
@@ -32,11 +34,13 @@ class HoverListItemState extends State<HoverListItem> {
     bool calcHover = _isHover || (widget.ishover != null && widget.ishover!);
     return MouseRegion(
       onEnter: (event) {
+        widget.onHover?.call(true);
         setState(() {
           _isHover = true;
         });
       },
       onExit: (event) {
+        widget.onHover?.call(false);
         setState(() {
           _isHover = false;
         });
