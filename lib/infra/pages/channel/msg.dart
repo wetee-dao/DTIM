@@ -27,6 +27,7 @@ class Msg extends StatefulWidget {
 class _MsgState extends State<Msg> {
   bool showDate = false;
   OverlayEntry? overlayEntry;
+  bool hover = false;
 
   @override
   void didUpdateWidget(covariant Msg oldWidget) {
@@ -77,6 +78,8 @@ class _MsgState extends State<Msg> {
 
   buildMsg(link.Event event, bool showAvatar) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    final iconSize = BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w);
+    final w = 3 * 30.w + 10.w;
     return FutureBuilder<link.User?>(
       future: event.fetchSenderUser(),
       builder: (context, snapshot) {
@@ -88,67 +91,166 @@ class _MsgState extends State<Msg> {
           color: Colors.transparent,
           hoverColor: constTheme.centerChannelColor.withOpacity(0.02),
           onPressed: () async {},
-          onHover: (hover) {
-            buildTip(hover);
+          onHover: (v) {
+            setState(() {
+              hover = v;
+            });
           },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(width: 15.w),
-              if (showAvatar)
-                Column(
+          child: hover
+              ? Stack(
                   children: [
-                    SizedBox(height: 10.w),
-                    BaseAvatarWithPop(
-                      key: Key(user.id),
-                      user.id,
-                      user.displayName ?? "-",
-                      true,
-                      40.w,
-                      color: constTheme.centerChannelColor,
-                      bg: constTheme.centerChannelDivider,
-                      mxContent: user.avatarUrl,
-                    ),
-                  ],
-                ),
-              if (!showAvatar) SizedBox(width: 40.w),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (showAvatar) SizedBox(height: 7.w),
-                    if (showAvatar)
-                      RichText(
-                        text: TextSpan(
-                          text: event.senderId == widget.client.userID ? "Me" : user.displayName,
-                          style: TextStyle(
-                            color: constTheme.centerChannelColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.w,
+                    renderRow(event, showAvatar, user),
+                    Positioned(
+                      top: 3.w,
+                      right: 10.w,
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 3.w),
+                            decoration: BoxDecoration(
+                              color: constTheme.centerChannelBg,
+                              border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
+                              borderRadius: BorderRadius.circular(4.w),
+                            ),
+                            width: w,
+                            height: 32.w,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  tooltip: "emoji",
+                                  padding: EdgeInsets.zero,
+                                  constraints: iconSize,
+                                  style: IconButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  icon: Icon(
+                                    Icons.mood_rounded,
+                                    color: constTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                  onPressed: () async {
+                                    await widget.event.room.sendTextEvent('/react 🦊', inReplyTo: widget.event);
+                                  },
+                                ),
+                                IconButton(
+                                  tooltip: "replay",
+                                  padding: EdgeInsets.zero,
+                                  constraints: iconSize,
+                                  style: IconButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  icon: Icon(
+                                    Icons.reply_rounded,
+                                    color: constTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  tooltip: "view code",
+                                  padding: EdgeInsets.zero,
+                                  constraints: iconSize,
+                                  style: IconButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  icon: Icon(
+                                    Icons.code_rounded,
+                                    color: constTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(
+                                          "消息内容",
+                                          style: TextStyle(fontSize: 18.w),
+                                        ),
+                                        content: Text(
+                                          event.toJson().toString(),
+                                          style: TextStyle(color: constTheme.centerChannelColor),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text("确定"),
+                                            onPressed: () => Navigator.pop(context),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          children: [
-                            TextSpan(
-                              text: "  ${getTime(event.originServerTs)}",
-                              style: TextStyle(
-                                color: constTheme.centerChannelColor.withAlpha(155),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.w,
-                              ),
-                            )
-                          ],
-                        ),
+                        ],
                       ),
-                    SizedBox(height: 5.w),
-                    renderBody(event),
-                    SizedBox(height: 5.w),
+                    )
                   ],
-                ),
+                )
+              : renderRow(event, showAvatar, user),
+        );
+      },
+    );
+  }
+
+  renderRow(link.Event event, bool showAvatar, link.User user) {
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(width: 15.w),
+        if (showAvatar)
+          Column(
+            children: [
+              SizedBox(height: 10.w),
+              BaseAvatarWithPop(
+                key: Key(user.id),
+                user.id,
+                user.displayName ?? "-",
+                true,
+                40.w,
+                color: constTheme.centerChannelColor,
+                bg: constTheme.centerChannelDivider,
+                mxContent: user.avatarUrl,
               ),
             ],
           ),
-        );
-      },
+        if (!showAvatar) SizedBox(width: 40.w),
+        SizedBox(width: 10.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (showAvatar) SizedBox(height: 7.w),
+              if (showAvatar)
+                RichText(
+                  text: TextSpan(
+                    text: event.senderId == widget.client.userID ? "Me" : user.displayName,
+                    style: TextStyle(
+                      color: constTheme.centerChannelColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.w,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "  ${getTime(event.originServerTs)}",
+                        style: TextStyle(
+                          color: constTheme.centerChannelColor.withAlpha(155),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.w,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              SizedBox(height: 5.w),
+              renderBody(event),
+              SizedBox(height: 5.w),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -207,71 +309,85 @@ class _MsgState extends State<Msg> {
     );
   }
 
-  buildTip(bool hover) {
-    if (overlayEntry != null) return;
-    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    final renderBox = context.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    final offset = renderBox.localToGlobal(Offset.zero);
-
-    overlayEntry = OverlayEntry(
-      maintainState: true,
-      builder: (context) => Listener(
-        behavior: HitTestBehavior.opaque,
-        onPointerDown: (PointerDownEvent event) {},
-        onPointerHover: (PointerHoverEvent event) {
-          Offset poffset = event.localPosition;
-          if (poffset.dy < offset.dy || poffset.dy > offset.dy + size.height || poffset.dx < offset.dx) {
-            if (overlayEntry != null) {
-              overlayEntry!.remove();
-              overlayEntry = null;
-              setState(() {});
-            }
-            return;
-          }
-        },
-        child: Column(
-          // width: 200.w,
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                left: offset.dx + size.width - 210.w,
-                top: offset.dy + (showDate ? 38.w : 0),
-              ),
-              decoration: BoxDecoration(
-                color: constTheme.centerChannelBg,
-                border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
-                borderRadius: BorderRadius.circular(4.w),
-              ),
-              width: 200.w,
-              height: 32.w,
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.email_rounded,
-                      color: constTheme.centerChannelColor,
-                      size: 18.w,
-                    ),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.reply_rounded,
-                      color: constTheme.centerChannelColor,
-                      size: 18.w,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    Overlay.of(context).insert(overlayEntry!);
-    setState(() {});
-  }
+  // buildTip(bool hover) {
+  //   if (overlayEntry != null) return;
+  //   final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+  //   final renderBox = context.findRenderObject() as RenderBox;
+  //   final size = renderBox.size;
+  //   final offset = renderBox.localToGlobal(Offset.zero);
+  //   final iconSize = BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w);
+  //   final w = 60.w + 10.w;
+  //   overlayEntry = OverlayEntry(
+  //     maintainState: true,
+  //     builder: (context) => Listener(
+  //       behavior: HitTestBehavior.opaque,
+  //       onPointerDown: (PointerDownEvent event) {},
+  //       onPointerHover: (PointerHoverEvent event) {
+  //         Offset poffset = event.localPosition;
+  //         if (poffset.dy < offset.dy || poffset.dy > offset.dy + size.height || poffset.dx < offset.dx) {
+  //           if (overlayEntry != null) {
+  //             overlayEntry!.remove();
+  //             overlayEntry = null;
+  //             setState(() {});
+  //           }
+  //           return;
+  //         }
+  //       },
+  //       child: Column(
+  //         // width: 200.w,
+  //         children: [
+  //           Container(
+  //             margin: EdgeInsets.only(
+  //               left: offset.dx + size.width - w - 10.w,
+  //               top: offset.dy + (showDate ? 43.w : 5.w),
+  //             ),
+  //             padding: EdgeInsets.symmetric(horizontal: 3.w),
+  //             decoration: BoxDecoration(
+  //               color: constTheme.centerChannelBg,
+  //               border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
+  //               borderRadius: BorderRadius.circular(4.w),
+  //             ),
+  //             width: w,
+  //             height: 32.w,
+  //             child: Row(
+  //               children: [
+  //                 IconButton(
+  //                   tooltip: "emoji",
+  //                   padding: EdgeInsets.zero,
+  //                   constraints: iconSize,
+  //                   style: IconButton.styleFrom(
+  //                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+  //                   ),
+  //                   icon: Icon(
+  //                     Icons.mood_rounded,
+  //                     color: constTheme.centerChannelColor,
+  //                     size: 18.w,
+  //                   ),
+  //                   onPressed: () async {
+  //                     await widget.event.room.sendTextEvent('/react 🦊', inReplyTo: widget.event);
+  //                   },
+  //                 ),
+  //                 IconButton(
+  //                   padding: EdgeInsets.zero,
+  //                   constraints: iconSize,
+  //                   style: IconButton.styleFrom(
+  //                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+  //                   ),
+  //                   icon: Icon(
+  //                     Icons.reply_rounded,
+  //                     color: constTheme.centerChannelColor,
+  //                     size: 18.w,
+  //                   ),
+  //                   onPressed: () {},
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  //   // Overlay.of(context).insert(overlayEntry!);
+  //   setState(() {});
+  // }
 }
