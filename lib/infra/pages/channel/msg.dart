@@ -1,3 +1,4 @@
+import 'package:dtim/infra/components/content/reactions.dart';
 import 'package:dtim/infra/components/hover_list_item.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
@@ -246,6 +247,7 @@ class _MsgState extends State<Msg> {
                 ),
               SizedBox(height: 5.w),
               renderBody(event),
+              Reactions(event, widget.timeline, client: widget.client),
               SizedBox(height: 5.w),
             ],
           ),
