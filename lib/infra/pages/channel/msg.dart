@@ -27,16 +27,15 @@ class Msg extends StatefulWidget {
 
 class _MsgState extends State<Msg> {
   bool showDate = false;
-  OverlayEntry? overlayEntry;
   bool hover = false;
 
-  @override
-  void didUpdateWidget(covariant Msg oldWidget) {
-    if (oldWidget.event.eventId != widget.event.eventId) {
-      // ctx = null;
-    }
-    super.didUpdateWidget(oldWidget);
-  }
+  // @override
+  // void didUpdateWidget(covariant Msg oldWidget) {
+  //   if (oldWidget.event.eventId != widget.event.eventId) {
+  //     // ctx = null;
+  //   }
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +87,7 @@ class _MsgState extends State<Msg> {
         return HoverListItem(
           key: Key(event.eventId),
           subkey: "DirectChat${event.eventId}",
-          ishover: overlayEntry != null,
+          ishover: hover,
           color: Colors.transparent,
           hoverColor: constTheme.centerChannelColor.withOpacity(0.02),
           onPressed: () async {},
@@ -206,7 +205,7 @@ class _MsgState extends State<Msg> {
             children: [
               SizedBox(height: 10.w),
               BaseAvatarWithPop(
-                key: Key(user.id),
+                key: Key("${user.id}wrap"),
                 user.id,
                 user.displayName ?? "-",
                 true,
@@ -223,7 +222,7 @@ class _MsgState extends State<Msg> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (showAvatar) SizedBox(height: 7.w),
+              if (showAvatar) SizedBox(height: 8.w),
               if (showAvatar)
                 RichText(
                   text: TextSpan(
@@ -245,7 +244,7 @@ class _MsgState extends State<Msg> {
                     ],
                   ),
                 ),
-              SizedBox(height: 5.w),
+              SizedBox(height: 3.w),
               renderBody(event),
               Reactions(event, widget.timeline, client: widget.client),
               SizedBox(height: 5.w),
