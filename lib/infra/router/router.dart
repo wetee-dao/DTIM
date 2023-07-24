@@ -27,14 +27,14 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     if (authService.state.me != null ||
-        resolver.routeName == Preloader.name ||
-        resolver.routeName == Sr25519key.name ||
-        resolver.routeName == SelectOrg.name ||
-        resolver.routeName == ImportSr25519key.name) {
+        resolver.routeName == PreloaderRoute.name ||
+        resolver.routeName == Sr25519keyRoute.name ||
+        resolver.routeName == SelectOrgRoute.name ||
+        resolver.routeName == ImportSr25519keyRoute.name) {
       resolver.next();
     } else {
       resolver.redirect(
-        Preloader(onResult: (didLogin) {
+        PreloaderRoute(onResult: (didLogin) {
           resolver.resolveNext(didLogin, reevaluateNext: false);
         }),
       );
@@ -44,18 +44,18 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   @override
   List<AutoRoute> get routes {
     return [
-      AutoRoute(path: '/', page: Preloader.page),
-      AutoRoute(path: '/pc', page: Pc.page, children: [
+      AutoRoute(path: '/', page: PreloaderRoute.page),
+      AutoRoute(path: '/pc', page: PcRoute.page, children: [
         AutoRoute(path: 'im', page: OrgRoute.page),
         AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
         AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
         AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
         AutoRoute(path: 'webview', page: WebviewRoute.page, maintainState: false),
       ]),
-      AutoRoute(path: '/sr25519key', page: Sr25519key.page),
-      AutoRoute(path: '/importSr25519key', page: ImportSr25519key.page),
-      AutoRoute(path: '/select_org', page: SelectOrg.page),
-      AutoRoute(path: '/create_org', page: CreateOrg.page),
+      AutoRoute(path: '/sr25519key', page: Sr25519keyRoute.page),
+      AutoRoute(path: '/importSr25519key', page: ImportSr25519keyRoute.page),
+      AutoRoute(path: '/select_org', page: SelectOrgRoute.page),
+      AutoRoute(path: '/create_org', page: CreateOrgRoute.page),
     ];
   }
 }

@@ -13,7 +13,7 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/domain/models/account.dart';
 import 'package:dtim/infra/components/app_bar.dart';
 
-@RoutePage(name: "importSr25519key")
+@RoutePage(name: "importSr25519keyRoute")
 class ImportSr25519KeyPage extends StatefulWidget {
   const ImportSr25519KeyPage({Key? key}) : super(key: key);
 

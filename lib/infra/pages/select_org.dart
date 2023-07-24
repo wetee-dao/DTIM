@@ -20,7 +20,7 @@ import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';
 
-@RoutePage(name: "selectOrg")
+@RoutePage(name: "selectOrgRoute")
 class SelectOrgPage extends StatefulWidget {
   const SelectOrgPage({Key? key}) : super(key: key);
 

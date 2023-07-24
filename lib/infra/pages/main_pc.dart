@@ -19,7 +19,7 @@ import 'package:dtim/application/service/apis/apis.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/application/store/theme.dart';
 
-@RoutePage(name: "pc")
+@RoutePage(name: "pcRoute")
 class PCPage extends StatefulWidget {
   const PCPage({
     Key? key,

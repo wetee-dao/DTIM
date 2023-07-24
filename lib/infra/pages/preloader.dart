@@ -25,7 +25,7 @@ import 'package:lottie/lottie.dart';
 import 'package:dtim/application/service/apis/apis.dart';
 import 'package:dtim/domain/models/account.dart';
 
-@RoutePage(name: "preloader")
+@RoutePage(name: "preloaderRoute")
 class PreloaderPage extends StatefulWidget {
   final ValueChanged<bool>? onResult;
 

@@ -72,7 +72,48 @@ void wire_create_dao(int64_t port_,
                      struct wire_uint_8_list *from,
                      struct wire_uint_8_list *name,
                      struct wire_uint_8_list *purpose,
-                     struct wire_uint_8_list *meta_data);
+                     struct wire_uint_8_list *meta_data,
+                     struct wire_uint_8_list *desc,
+                     struct wire_uint_8_list *im_api,
+                     struct wire_uint_8_list *bg,
+                     struct wire_uint_8_list *logo,
+                     struct wire_uint_8_list *img,
+                     struct wire_uint_8_list *home_url);
+
+void wire_orgs(int64_t port_, uint32_t client);
+
+void wire_create_app(int64_t port_,
+                     uint32_t client,
+                     struct wire_uint_8_list *from,
+                     struct wire_uint_8_list *name,
+                     struct wire_uint_8_list *desc,
+                     struct wire_uint_8_list *icon,
+                     struct wire_uint_8_list *url);
+
+void wire_update_app_status(int64_t port_,
+                            uint32_t client,
+                            struct wire_uint_8_list *from,
+                            uint64_t app_id,
+                            uint8_t status);
+
+void wire_org_integrate_app(int64_t port_,
+                            uint32_t client,
+                            struct wire_uint_8_list *from,
+                            uint64_t org_id,
+                            uint64_t app_id,
+                            struct wire_WithGovPs *ext);
+
+void wire_app_hubs(int64_t port_, uint32_t client);
+
+void wire_org_apps(int64_t port_, uint32_t client, uint64_t org_id);
+
+void wire_update_org_app_status(int64_t port_,
+                                uint32_t client,
+                                struct wire_uint_8_list *from,
+                                uint64_t org_id,
+                                uint64_t app_id,
+                                uint8_t status,
+                                struct wire_WithGovPs *ext);
 
 void wire_create_asset(int64_t port_,
                        uint32_t client,
@@ -324,6 +365,13 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_add_seed);
     dummy_var ^= ((int64_t) (void*) wire_sign_from_address);
     dummy_var ^= ((int64_t) (void*) wire_create_dao);
+    dummy_var ^= ((int64_t) (void*) wire_orgs);
+    dummy_var ^= ((int64_t) (void*) wire_create_app);
+    dummy_var ^= ((int64_t) (void*) wire_update_app_status);
+    dummy_var ^= ((int64_t) (void*) wire_org_integrate_app);
+    dummy_var ^= ((int64_t) (void*) wire_app_hubs);
+    dummy_var ^= ((int64_t) (void*) wire_org_apps);
+    dummy_var ^= ((int64_t) (void*) wire_update_org_app_status);
     dummy_var ^= ((int64_t) (void*) wire_create_asset);
     dummy_var ^= ((int64_t) (void*) wire_get_block_number);
     dummy_var ^= ((int64_t) (void*) wire_native_balance);
