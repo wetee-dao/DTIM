@@ -22,7 +22,7 @@ class RoomEvent extends StatelessWidget {
                 width: 20.w,
                 height: 20.w,
                 padding: EdgeInsets.all(4.w),
-                margin: EdgeInsets.symmetric(vertical: 2.w),
+                margin: EdgeInsets.symmetric(vertical: 4.w),
                 decoration: BoxDecoration(
                   color: constTheme.centerChannelColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20.w),
@@ -32,6 +32,7 @@ class RoomEvent extends StatelessWidget {
             : Container(
                 transform: Matrix4.translationValues(-1.w, 0, 0),
                 padding: EdgeInsets.symmetric(vertical: 2.w),
+                margin: EdgeInsets.symmetric(vertical: 2.w),
                 child: Icon(icon ?? Icons.task_rounded, color: constTheme.centerChannelColor, size: 19.w),
               ),
         SizedBox(width: 2.w),

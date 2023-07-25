@@ -246,7 +246,7 @@ class _MsgState extends State<Msg> {
                 ),
               SizedBox(height: 3.w),
               renderBody(event),
-              Reactions(event, widget.timeline, client: widget.client),
+              Reacs(event, widget.timeline, client: widget.client),
               SizedBox(height: 5.w),
             ],
           ),

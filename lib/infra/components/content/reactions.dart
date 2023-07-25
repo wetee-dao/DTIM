@@ -7,23 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:matrix/matrix.dart' as link;
 
-class Reactions extends StatelessWidget {
+class Reacs extends StatelessWidget {
   final link.Client client;
   final link.Event event;
   final link.Timeline timeline;
 
-  const Reactions(this.event, this.timeline, {Key? key, required this.client}) : super(key: key);
+  const Reacs(this.event, this.timeline, {Key? key, required this.client}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final allReactionEvents = event.aggregatedEvents(timeline, link.RelationshipTypes.reaction);
-    final reactionMap = <String, _ReactionItem>{};
+    final allReacEvents = event.aggregatedEvents(timeline, link.RelationshipTypes.reaction);
+    final reactionMap = <String, _ReacItem>{};
 
-    for (final e in allReactionEvents) {
+    for (final e in allReacEvents) {
       final key = e.content.tryGetMap<String, dynamic>('m.relates_to')?.tryGet<String>('key');
       if (key != null) {
         if (!reactionMap.containsKey(key)) {
-          reactionMap[key] = _ReactionItem(
+          reactionMap[key] = _ReacItem(
             key: key,
             count: 0,
             reacted: false,
@@ -48,13 +48,13 @@ class Reactions extends StatelessWidget {
         children: [
           ...reactionList
               .map(
-                (r) => _Reaction(
+                (r) => _Reac(
                   reactionKey: r.key,
                   count: r.count,
                   reacted: r.reacted,
                   onTap: () {
                     if (r.reacted) {
-                      final evt = allReactionEvents.firstWhereOrNull(
+                      final evt = allReacEvents.firstWhereOrNull(
                         (e) =>
                             e.senderId == e.room.client.userID && e.content.tryGetMap('m.relates_to')?['key'] == r.key,
                       );
@@ -71,7 +71,7 @@ class Reactions extends StatelessWidget {
                 ),
               )
               .toList(),
-          if (allReactionEvents.any((e) => e.status.isSending))
+          if (allReacEvents.any((e) => e.status.isSending))
             const SizedBox(
               width: 28,
               height: 28,
@@ -86,14 +86,14 @@ class Reactions extends StatelessWidget {
   }
 }
 
-class _Reaction extends StatelessWidget {
+class _Reac extends StatelessWidget {
   final String? reactionKey;
   final int? count;
   final bool? reacted;
   final void Function()? onTap;
   final void Function()? onLongPress;
 
-  const _Reaction({
+  const _Reac({
     this.reactionKey,
     this.count,
     this.reacted,
@@ -154,13 +154,13 @@ class _Reaction extends StatelessWidget {
   }
 }
 
-class _ReactionItem {
+class _ReacItem {
   String? key;
   int count;
   bool reacted;
   List<link.User>? reactors;
 
-  _ReactionItem({
+  _ReacItem({
     this.key,
     required this.count,
     required this.reacted,
