@@ -1,3 +1,6 @@
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/infra/pages/main_mobile.dart';
+import 'package:dtim/infra/pages/org/org_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
@@ -45,8 +48,8 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   List<AutoRoute> get routes {
     return [
       AutoRoute(path: '/', page: PreloaderRoute.page),
-      AutoRoute(path: '/pc', page: PcRoute.page, children: [
-        AutoRoute(path: 'im', page: OrgRoute.page),
+      AutoRoute(path: '/app', page: PlatformInfos.isMobile ? MobileRoute.page : PcRoute.page, children: [
+        AutoRoute(path: 'im', page: PlatformInfos.isMobile ? OrgMobileRoute.page : OrgRoute.page),
         AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
         AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
         AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
@@ -75,7 +78,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
 //       },
 //     ),
 //     GoRoute(
-//       path: '/pc/:app',
+//       path: '/app/:app',
 //       builder: (BuildContext context, GoRouterState state) {
 //         return const PCPage();
 //       },

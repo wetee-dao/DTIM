@@ -117,9 +117,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
             BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
             if (isPc()) {
               globalCtx().router.root.back();
-              globalCtx().router.root.replaceNamed("/pc/im");
+              globalCtx().router.root.replaceNamed("/app/im");
             } else if (PlatformInfos.isWeb) {
-              globalCtx().router.root.replaceNamed("/pc/im");
+              globalCtx().router.root.replaceNamed("/app/im");
             }
           },
         );

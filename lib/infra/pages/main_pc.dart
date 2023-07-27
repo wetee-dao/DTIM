@@ -53,7 +53,7 @@ class _PCPageState extends State<PCPage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    currentId.add(url.indexOf(context.router.currentPath.replaceAll("/pc/", "")));
+    currentId.add(url.indexOf(context.router.currentPath.replaceAll("/app/", "")));
     getData();
     final org = context.read<OrgCubit>();
     org.stream.listen((event) async {

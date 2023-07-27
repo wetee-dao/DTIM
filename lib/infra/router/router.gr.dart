@@ -63,6 +63,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const WorkPage(),
       );
     },
+    MobileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MobilePage(),
+      );
+    },
     PreloaderRoute.name: (routeData) {
       final args = routeData.argsAs<PreloaderRouteArgs>(orElse: () => const PreloaderRouteArgs());
       return AutoRoutePage<dynamic>(
@@ -83,6 +89,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SelectOrgPage(),
+      );
+    },
+    OrgMobileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrgMobilePage(),
       );
     },
   };
@@ -201,6 +213,20 @@ class DaoRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MobilePage]
+class MobileRoute extends PageRouteInfo<void> {
+  const MobileRoute({List<PageRouteInfo>? children})
+      : super(
+          MobileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MobileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [PreloaderPage]
 class PreloaderRoute extends PageRouteInfo<PreloaderRouteArgs> {
   PreloaderRoute({
@@ -261,6 +287,20 @@ class SelectOrgRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SelectOrgRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OrgMobilePage]
+class OrgMobileRoute extends PageRouteInfo<void> {
+  const OrgMobileRoute({List<PageRouteInfo>? children})
+      : super(
+          OrgMobileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrgMobileRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -105,9 +105,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           if (isPc()) {
             globalCtx().router.root.back();
             printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
-            globalCtx().router.root.replaceNamed("/pc/im");
+            globalCtx().router.root.replaceNamed("/app/im");
           } else if (PlatformInfos.isWeb) {
-            globalCtx().router.root.replaceNamed("/pc/im");
+            globalCtx().router.root.replaceNamed("/app/im");
             // globalCtx().router.root.replaceNamed("/mobile");
           }
         },
