@@ -1,14 +1,8 @@
 import 'package:dtim/domain/utils/functions.dart';
-import 'package:dtim/infra/components/close_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 
-import 'package:dtim/infra/components/components.dart';
-import 'package:dtim/domain/utils/screen/screen.dart';
-import 'package:dtim/application/store/theme.dart';
 import 'package:webview_cef/webview_cef.dart';
 
-@RoutePage(name: "webviewRoute")
 class CefView extends StatefulWidget {
   const CefView({Key? key}) : super(key: key);
 
@@ -75,32 +69,12 @@ class _CefViewState extends State<CefView> {
 
   @override
   Future<void> dispose() async {
-    await _controller.dispose();
+    // await _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
-    return Scaffold(
-      appBar: SideBarAppBar(
-        height: 45.w,
-        title: title,
-        showMacosTop: false,
-        leading: InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: EdgeInsets.all(8.w),
-            child: Icon(
-              AppIcons.sxgl,
-              color: constTheme.sidebarHeaderTextColor,
-              size: 22.w,
-            ),
-          ),
-        ),
-        tools: CloseBar(color: constTheme.sidebarText),
-      ),
-      body: WebView(_controller),
-    );
+    return WebView(_controller);
   }
 }

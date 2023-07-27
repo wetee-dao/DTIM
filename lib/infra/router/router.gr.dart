@@ -42,7 +42,7 @@ abstract class _$AppRouter extends RootStackRouter {
     WebviewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const CefView(),
+        child: const LWebView(),
       );
     },
     ImportSr25519keyRoute.name: (routeData) {
@@ -64,8 +64,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     PreloaderRoute.name: (routeData) {
-      final args = routeData.argsAs<PreloaderRouteArgs>(
-          orElse: () => const PreloaderRouteArgs());
+      final args = routeData.argsAs<PreloaderRouteArgs>(orElse: () => const PreloaderRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PreloaderPage(
@@ -146,7 +145,7 @@ class CreateOrgRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [CefView]
+/// [LWebView]
 class WebviewRoute extends PageRouteInfo<void> {
   const WebviewRoute({List<PageRouteInfo>? children})
       : super(
@@ -219,8 +218,7 @@ class PreloaderRoute extends PageRouteInfo<PreloaderRouteArgs> {
 
   static const String name = 'PreloaderRoute';
 
-  static const PageInfo<PreloaderRouteArgs> page =
-      PageInfo<PreloaderRouteArgs>(name);
+  static const PageInfo<PreloaderRouteArgs> page = PageInfo<PreloaderRouteArgs>(name);
 }
 
 class PreloaderRouteArgs {

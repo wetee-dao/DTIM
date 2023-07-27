@@ -92,7 +92,7 @@ class SiderBarItem extends StatelessWidget {
                       )),
             SizedBox(height: 3.w),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
               height: 14.w,
               child: Text(
                 name.split("&").first,

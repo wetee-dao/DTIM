@@ -99,7 +99,7 @@ class _MsgState extends State<Msg> {
           child: hover
               ? Stack(
                   children: [
-                    renderRow(event, showAvatar, user),
+                    renderRow(event, showAvatar, user, hover),
                     Positioned(
                       top: 3.w,
                       right: 10.w,
@@ -188,16 +188,16 @@ class _MsgState extends State<Msg> {
                     )
                   ],
                 )
-              : renderRow(event, showAvatar, user),
+              : renderRow(event, showAvatar, user, hover),
         );
       },
     );
   }
 
-  renderRow(link.Event event, bool showAvatar, link.User user) {
+  renderRow(link.Event event, bool showAvatar, link.User user, bool hover) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: hover && !showAvatar ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         SizedBox(width: 15.w),
         if (showAvatar)
@@ -216,7 +216,19 @@ class _MsgState extends State<Msg> {
               ),
             ],
           ),
-        if (!showAvatar) SizedBox(width: 40.w),
+        if (!showAvatar)
+          SizedBox(
+            width: 40.w,
+            child: hover
+                ? Text(
+                    getTime(event.originServerTs),
+                    style: TextStyle(
+                      color: constTheme.centerChannelColor,
+                      fontSize: 12.w,
+                    ),
+                  )
+                : null,
+          ),
         SizedBox(width: 10.w),
         Expanded(
           child: Column(

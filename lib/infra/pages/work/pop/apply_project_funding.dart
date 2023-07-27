@@ -76,7 +76,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "Apply for funding for task #${widget.projectId}",
+              title: "Apply for funding for project #${widget.projectId}",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -86,7 +86,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "Apply for funding for task #${widget.projectId}",
+              title: "Apply for funding for project #${widget.projectId}",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();

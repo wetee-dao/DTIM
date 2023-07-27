@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
 import 'package:dtim/infra/pages/org/create_org.dart';
 import 'package:dtim/infra/pages/opengov/gov.dart';
-import 'package:dtim/infra/pages/webview/cef.dart';
-import 'package:flutter/material.dart';
+import 'package:dtim/infra/pages/webview/webview.dart';
 
 import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
 import 'package:dtim/infra/pages/chain/sr25519_key.dart';

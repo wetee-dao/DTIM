@@ -113,10 +113,10 @@ dependencies:
   hive_flutter: ^1.1.0
   # 设备信息
   device_info_plus: ^9.0.2
-  flutter_inappwebview: ^6.0.0-beta.24+1
   # webview
   webview_cef:
     path: ./exts/webview_cef
+  flutter_inappwebview: ^6.0.0-beta.24+1
 
 dev_dependencies:
   flutter_test:
