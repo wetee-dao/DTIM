@@ -46,8 +46,6 @@ PODS:
   - wakelock_plus (0.0.1):
     - FlutterMacOS
   - WebRTC-SDK (114.5735.02)
-  - webview_cef (0.0.1):
-    - FlutterMacOS
   - window_manager (0.2.0):
     - FlutterMacOS
 
@@ -73,7 +71,6 @@ DEPENDENCIES:
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
   - video_compress (from `Flutter/ephemeral/.symlinks/plugins/video_compress/macos`)
   - wakelock_plus (from `Flutter/ephemeral/.symlinks/plugins/wakelock_plus/macos`)
-  - webview_cef (from `Flutter/ephemeral/.symlinks/plugins/webview_cef/macos`)
   - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
 
 SPEC REPOS:
@@ -124,8 +121,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/video_compress/macos
   wakelock_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/wakelock_plus/macos
-  webview_cef:
-    :path: Flutter/ephemeral/.symlinks/plugins/webview_cef/macos
   window_manager:
     :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
 
@@ -153,7 +148,6 @@ SPEC CHECKSUMS:
   video_compress: c896234f100791b5fef7f049afa38f6d2ef7b42f
   wakelock_plus: 4783562c9a43d209c458cb9b30692134af456269
   WebRTC-SDK: dd913fd31cfbf1d43b9a22d83f4c6354c960c623
-  webview_cef: 47aca83086a165573c2cda24715a441763c03e5e
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
 
 PODFILE CHECKSUM: dac0ddf03d136db544afc27b87cc6c08492e67b9

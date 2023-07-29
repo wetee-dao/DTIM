@@ -1969,13 +1969,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0"
-  webview_cef:
-    dependency: "direct main"
-    description:
-      path: "exts/webview_cef"
-      relative: true
-    source: path
-    version: "0.1.0"
   widget_event:
     dependency: transitive
     description:

@@ -1,7 +1,7 @@
-import 'package:dtim/domain/utils/functions.dart';
+// import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
 
-import 'package:webview_cef/webview_cef.dart';
+// import 'package:webview_cef/webview_cef.dart';
 
 class CefView extends StatefulWidget {
   const CefView({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class CefView extends StatefulWidget {
 }
 
 class _CefViewState extends State<CefView> {
-  final _controller = WebViewController();
+  // final _controller = WebViewController();
   String title = "Loading...";
 
   @override
@@ -21,50 +21,50 @@ class _CefViewState extends State<CefView> {
   }
 
   Future<void> initPlatformState() async {
-    String url = "https://apps.acala.network/";
-    await _controller.initialize();
-    await _controller.loadUrl(url);
-    _controller.setWebviewListener(WebviewEventsListener(
-      onTitleChanged: (t) {
-        setState(() {
-          title = t;
-        });
-      },
-      onUrlChanged: (url) {
-        // _textController.text = url;
-      },
-      onAllCookiesVisited: (cookies) {
-        // allCookies = cookies;
-      },
-      onUrlCookiesVisited: (cookies) {
-        for (final key in cookies.keys) {
-          printInfo(key);
-          // allCookies[key] = cookies[key];
-        }
-      },
-    ));
+    // String url = "https://apps.acala.network/";
+    // await _controller.initialize();
+    // await _controller.loadUrl(url);
+    // _controller.setWebviewListener(WebviewEventsListener(
+    //   onTitleChanged: (t) {
+    //     setState(() {
+    //       title = t;
+    //     });
+    //   },
+    //   onUrlChanged: (url) {
+    //     // _textController.text = url;
+    //   },
+    //   onAllCookiesVisited: (cookies) {
+    //     // allCookies = cookies;
+    //   },
+    //   onUrlCookiesVisited: (cookies) {
+    //     for (final key in cookies.keys) {
+    //       printInfo(key);
+    //       // allCookies[key] = cookies[key];
+    //     }
+    //   },
+    // ));
 
-    // 设置js to flutter 桥接
-    final Set<JavascriptChannel> jsChannels = {
-      JavascriptChannel(
-        name: 'Print',
-        onMessageReceived: (JavascriptMessage message) {
-          _controller.sendJavaScriptChannelCallBack(
-            false,
-            "{'code':'200','message':'print succeed!'}",
-            message.callbackId,
-            message.frameId,
-          );
-        },
-      ),
-    };
-    await _controller.setJavaScriptChannels(jsChannels);
+    // // 设置js to flutter 桥接
+    // final Set<JavascriptChannel> jsChannels = {
+    //   JavascriptChannel(
+    //     name: 'Print',
+    //     onMessageReceived: (JavascriptMessage message) {
+    //       _controller.sendJavaScriptChannelCallBack(
+    //         false,
+    //         "{'code':'200','message':'print succeed!'}",
+    //         message.callbackId,
+    //         message.frameId,
+    //       );
+    //     },
+    //   ),
+    // };
+    // await _controller.setJavaScriptChannels(jsChannels);
 
-    // 调用js代码
-    await _controller.executeJavaScript("function abc(e){console.log(e)}");
+    // // 调用js代码
+    // await _controller.executeJavaScript("function abc(e){console.log(e)}");
 
-    if (!mounted) return;
-    setState(() {});
+    // if (!mounted) return;
+    // setState(() {});
   }
 
   @override
@@ -75,6 +75,7 @@ class _CefViewState extends State<CefView> {
 
   @override
   Widget build(BuildContext context) {
-    return WebView(_controller);
+    return Container();
+    // return WebView(_controller);
   }
 }

@@ -9,7 +9,7 @@ import 'package:dtim/application/store/theme.dart';
 import "inapp.dart";
 import "cef.dart";
 
-StatefulWidget wview = PlatformInfos.isDesktop ? const CefView() : const InappView();
+StatefulWidget wview = PlatformInfos.isMobile || PlatformInfos.isMacOS ? InappView() : const CefView();
 
 @RoutePage(name: "webviewRoute")
 class LWebView extends StatefulWidget {
