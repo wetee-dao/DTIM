@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:dtim/domain/utils/localized_extension.dart';
-import 'package:dtim/infra/router/pop_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:date_format/date_format.dart';
 import 'package:easy_debounce/easy_debounce.dart';

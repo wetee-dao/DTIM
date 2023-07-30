@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dtim/infra/components/command_palette.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/localized_extension.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   final StreamController<bool> emojiStreamController = StreamController<bool>();
   link.Event? replyEvent;
 
-  late final _msgNode = FocusNode();
+  final _msgNode = FocusNode();
   late Account me;
   String msg = "";
   String srcAvatar = "";
@@ -386,6 +387,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
                 label: null,
               ),
               onChanged: (e) {
+                buildCommandPalette(e);
                 setState(() {
                   msg = e;
                 });
@@ -513,5 +515,89 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
         ],
       ),
     );
+  }
+
+  OverlayEntry? overlayEntry;
+  buildCommandPalette(String msg) {
+    if (!msg.startsWith("/")) {
+      if (overlayEntry != null) {
+        overlayEntry!.remove();
+        setState(() {
+          overlayEntry = null;
+        });
+      }
+      return;
+    } else {
+      if (overlayEntry != null) {
+        return;
+      }
+    }
+
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+    final offset = renderBox.localToGlobal(Offset.zero);
+
+    overlayEntry = OverlayEntry(
+      maintainState: true,
+      builder: (context) => Listener(
+        behavior: HitTestBehavior.opaque,
+        onPointerDown: (PointerDownEvent event) {
+          Offset poffset = event.localPosition;
+          if (poffset.dy < offset.dy - 200.w || poffset.dx < offset.dx) {
+            if (overlayEntry != null) {
+              overlayEntry!.remove();
+              setState(() {
+                overlayEntry = null;
+              });
+            }
+          }
+        },
+        // onPointerHover: (PointerHoverEvent event) {
+        //   Offset poffset = event.localPosition;
+        //   if (poffset.dy < offset.dy || poffset.dy > offset.dy + size.height || poffset.dx < offset.dx) {
+        //     if (overlayEntry != null) {
+        //       overlayEntry!.remove();
+        //       setState(() {
+        //         overlayEntry = null;
+        //       });
+        //     }
+        //     return;
+        //   }
+        // },
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              const Spacer(),
+              Container(
+                width: size.width - 30.w,
+                margin: EdgeInsets.only(
+                  left: offset.dx - 2.w,
+                  // top: offset.dy - size.height,
+                ),
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelBg.darker(0.05),
+                  // borderRadius: BorderRadius.circular(10.w),
+                ),
+                child: CommandPalette(
+                  room: widget.room,
+                  msgController: _msgController,
+                  onChanged: (e) {
+                    buildCommandPalette(e);
+                  },
+                ),
+              ),
+              SizedBox(height: 15.w),
+            ],
+          ),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(overlayEntry!);
+    setState(() {});
+    // Timer(const Duration(milliseconds: 100), () {
+    //   FocusScope.of(context).requestFocus(_commandNode);
+    // });
   }
 }
