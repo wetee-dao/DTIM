@@ -160,7 +160,7 @@ class _GovPageState extends State<GovPage> {
         return 0;
       case "Members":
         return 1;
-      case "Referendums":
+      case "Referenda":
         return 2;
     }
     return 0;

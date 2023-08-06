@@ -56,7 +56,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: 'Referendums',
+                      text: 'Referenda',
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
@@ -105,7 +105,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: "Using Referendums to Achieve Decentralized Voting",
+                  text: "Using Referenda to Achieve Decentralized Voting",
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),
