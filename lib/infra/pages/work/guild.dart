@@ -115,6 +115,8 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                                     scope: 2,
                                     id: info.id,
                                   ),
+                                  // TODO
+                                  periodIndex: 0,
                                 ),
                               );
                               await workCtx.daoRefresh();

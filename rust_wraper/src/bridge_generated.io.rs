@@ -297,8 +297,9 @@ pub extern "C" fn wire_dao_gov_start_referendum(
     client: u32,
     dao_id: u64,
     index: u32,
+    deposit: u64,
 ) {
-    wire_dao_gov_start_referendum_impl(port_, from, client, dao_id, index)
+    wire_dao_gov_start_referendum_impl(port_, from, client, dao_id, index, deposit)
 }
 
 #[no_mangle]
@@ -668,6 +669,7 @@ impl Wire2Api<WithGovPs> for wire_WithGovPs {
             run_type: self.run_type.wire2api(),
             amount: self.amount.wire2api(),
             member: self.member.wire2api(),
+            period_index: self.period_index.wire2api(),
         }
     }
 }
@@ -700,6 +702,7 @@ pub struct wire_WithGovPs {
     run_type: u8,
     amount: u64,
     member: wire_MemberGroup,
+    period_index: u32,
 }
 
 // Section: impl NewWithNullPtr
@@ -735,6 +738,7 @@ impl NewWithNullPtr for wire_WithGovPs {
             run_type: Default::default(),
             amount: Default::default(),
             member: Default::default(),
+            period_index: Default::default(),
         }
     }
 }

@@ -52,6 +52,8 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               runType: 1,
               amount: 100,
               member: MemberGroup(scope: 1, id: 0),
+              // TODO
+              periodIndex: 0,
             ),
           );
         } else {
@@ -65,6 +67,8 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
               runType: 1,
               amount: 100,
               member: MemberGroup(scope: 1, id: 0),
+              // TODO
+              periodIndex: 0,
             ),
           );
         }

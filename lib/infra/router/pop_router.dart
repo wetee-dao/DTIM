@@ -1,5 +1,6 @@
 // import 'package:dtim/infra/pages/channel/create.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:dtim/infra/pages/opengov/pop/create_treasury.dart';
 import 'package:dtim/infra/pages/user/kyc.dart';
 import 'package:dtim/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +76,8 @@ getPage(String url, Function closeModel) {
     return KycPage(closeModel: closeModel);
   } else if (url.indexOf("/user_setting") == 0) {
     return UserSettingPage(closeModel: closeModel);
+  } else if (url.indexOf("/create_treasury") == 0) {
+    return CreateTreasuryPage(closeModel: closeModel);
   }
 
   return const Center(child: Text("404"));
@@ -83,7 +86,7 @@ getPage(String url, Function closeModel) {
 Future<T?> showModelOrPage<T>(context, url, {double width = 520, double height = 550, double top = 30}) async {
   final constTheme = Theme.of(context).extension<ExtColors>()!;
   if (isPc() || PlatformInfos.isWeb) {
-   return showDialog<T>(
+    return showDialog<T>(
       context: context,
       useSafeArea: true,
       barrierColor: Theme.of(context).brightness == Brightness.dark

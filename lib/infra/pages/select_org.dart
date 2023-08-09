@@ -262,6 +262,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                                     color: constTheme.centerChannelColor,
                                     fontSize: 16.w,
                                   ),
+                                  maxLines: 1,
                                 ),
                                 Text(
                                   userOrgs[i].orgDesc ?? "",

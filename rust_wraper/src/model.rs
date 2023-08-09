@@ -1,4 +1,4 @@
-use wetee_rust_sdk::hander::wetee_gov::MemmberData;
+use wetee_rust_sdk::{hander::wetee_gov::MemmberData,model::{dao::WithGov}};
 
 /// roadmap 季度
 #[derive(Clone, PartialEq, Eq, Default, Debug)]
@@ -112,7 +112,23 @@ pub struct GovProps {
     pub member_group: MemberGroup,
     // 发起者
     pub account: String,
+    // 投票渠道
+    pub period: GovPeriod,
 }
+
+#[derive(PartialEq, Eq, Clone, Debug, Default)]
+pub struct GovPeriod {
+    name: String,
+    prepare_period: i64,
+    max_deciding: i64,
+    confirm_period: i64,
+    decision_period: i64,
+    min_enactment_period: i64,
+    decision_deposit: i64,
+    min_approval: i64,
+    min_support: i64,
+}
+
 
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
 pub struct GovReferendum {
@@ -121,13 +137,13 @@ pub struct GovReferendum {
     pub hash: String,
     /// When voting on this referendum will end.
     /// 投票结束事件
-    pub end: u64,
+    // pub end: u64,
+    /// The delay (in blocks) to wait after a successful referendum before deploying.
+    /// 投票完成后多久被允许执行
+    // pub delay: u64,
     /// The hash of the proposal being voted on.
     /// 投票后执行内容
     pub proposal: String,
-    /// The delay (in blocks) to wait after a successful referendum before deploying.
-    /// 投票完成后多久被允许执行
-    pub delay: u64,
     /// The current tally of votes in this referendum.
     /// 投票统计
     pub tally: Tally,
@@ -135,6 +151,8 @@ pub struct GovReferendum {
     pub member_group: MemberGroup,
     /// 投票状态
     pub status: u8,
+    // 投票渠道
+    pub period: GovPeriod,
 }
 
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
@@ -320,6 +338,20 @@ pub struct WithGovPs {
     pub run_type: u8,
     pub amount: u64,
     pub member: MemberGroup,
+    pub period_index: u32,
+}
+
+pub fn trans_gov_ps(ext: Option<WithGovPs>) -> Option<WithGov> {
+    if ext.is_some() {
+        let e = ext.unwrap();
+        return Some(WithGov {
+            run_type: e.run_type,
+            amount: e.amount.into(),
+            member: member_ps_trans(e.member),
+            period_index: e.period_index,
+        });
+    }
+    None
 }
 
 // 获取投票范围信息

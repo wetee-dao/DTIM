@@ -23,6 +23,7 @@ typedef struct wire_WithGovPs {
   uint8_t run_type;
   uint64_t amount;
   struct wire_MemberGroup member;
+  uint32_t period_index;
 } wire_WithGovPs;
 
 typedef struct wire_StringList {
@@ -189,7 +190,8 @@ void wire_dao_gov_start_referendum(int64_t port_,
                                    struct wire_uint_8_list *from,
                                    uint32_t client,
                                    uint64_t dao_id,
-                                   uint32_t index);
+                                   uint32_t index,
+                                   uint64_t deposit);
 
 void wire_dao_gov_vote_for_referendum(int64_t port_,
                                       struct wire_uint_8_list *from,

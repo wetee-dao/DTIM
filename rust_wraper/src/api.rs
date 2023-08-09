@@ -1,9 +1,9 @@
 use std::time::Duration;
 
 use crate::model::{
-    member_ps_trans, member_trans, App, AssetAccountData, GovProps, GovReferendum,
+    member_trans, App, AssetAccountData, GovProps,GovPeriod, GovReferendum,
     GovVote, GuildInfo, OrgApp, ProjectInfo, Quarter, QuarterTask, Reward, Tally, TaskInfo, U8Wrap,
-    WithGovPs, OrgInfo,
+    WithGovPs, OrgInfo, trans_gov_ps,
 };
 use anyhow::{self, Ok};
 use tokio::{runtime::Runtime, time::sleep};
@@ -18,7 +18,7 @@ use wetee_rust_sdk::{
         wetee_org::{Status, WeteeOrg},
         wetee_project::{TaskStatus, WeteeProject},
     },
-    model::{account::KeyringJSON, dao::WithGov},
+    model::{account::KeyringJSON},
     Client,
 };
 
@@ -226,16 +226,7 @@ pub fn org_integrate_app(
             from.clone(),
             org_id,
             app_id,
-            if ext.is_some() {
-                let e = ext.unwrap();
-                Some(WithGov {
-                    run_type: e.run_type,
-                    amount: e.amount.into(),
-                    member: member_ps_trans(e.member),
-                })
-            } else {
-                None
-            },
+            trans_gov_ps(ext),
         )
         .await
         .unwrap();
@@ -306,16 +297,7 @@ pub fn update_org_app_status(
             org_id,
             app_id,
             status,
-            if ext.is_some() {
-                let e = ext.unwrap();
-                Some(WithGov {
-                    run_type: e.run_type,
-                    amount: e.amount.into(),
-                    member: member_ps_trans(e.member),
-                })
-            } else {
-                None
-            },
+            trans_gov_ps(ext),
         )
         .await
         .unwrap();
@@ -605,16 +587,7 @@ pub fn create_project(
                 dao_id,
                 name.into(),
                 desc.into(),
-                if ext.is_some() {
-                    let e = ext.unwrap();
-                    Some(WithGov {
-                        run_type: e.run_type,
-                        amount: e.amount.into(),
-                        member: member_ps_trans(e.member),
-                    })
-                } else {
-                    None
-                },
+                trans_gov_ps(ext),
             )
             .await
             .unwrap();
@@ -643,16 +616,7 @@ pub fn create_guild(
                 name.into(),
                 desc.into(),
                 "{}".into(),
-                if ext.is_some() {
-                    let e = ext.unwrap();
-                    Some(WithGov {
-                        run_type: e.run_type,
-                        amount: e.amount.into(),
-                        member: member_ps_trans(e.member),
-                    })
-                } else {
-                    None
-                },
+                trans_gov_ps(ext),
             )
             .await
             .unwrap();
@@ -680,6 +644,17 @@ pub fn dao_gov_pending_referendum_list(client: u32, dao_id: u64) -> anyhow::Resu
                     runtime_call: call_str,
                     member_group: member_trans(member),
                     account: account::ss58_to_address(account.to_string()).unwrap(),
+                    period: GovPeriod {
+                        name: "",
+                        prepare_period: 10,
+                        max_deciding: 10,
+                        confirm_period: 10,
+                        decision_period: 10,
+                        min_enactment_period: 10,
+                        decision_deposit: 10,
+                        min_approval: 10,
+                        min_support: 10,
+                    }
                 };
             })
             .collect())
@@ -707,15 +682,26 @@ pub fn dao_gov_referendum_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<G
                 return GovReferendum {
                     id: referendum.id,
                     hash,
-                    end: referendum.end,
+                    // end: referendum.end,
                     proposal: call_str,
-                    delay: referendum.delay,
+                    // delay: referendum.delay,
                     tally: Tally {
                         yes: referendum.tally.yes.try_into().unwrap(),
                         no: referendum.tally.no.try_into().unwrap(),
                     },
                     member_group: member_trans(referendum.member_data),
                     status,
+                    period: GovPeriod {
+                        name: "",
+                        prepare_period: 10,
+                        max_deciding: 10,
+                        confirm_period: 10,
+                        decision_period: 10,
+                        min_enactment_period: 10,
+                        decision_deposit: 10,
+                        min_approval: 10,
+                        min_support: 10,
+                    }
                 };
             })
             .collect())
@@ -727,13 +713,14 @@ pub fn dao_gov_start_referendum(
     client: u32,
     dao_id: u64,
     index: u32,
+    deposit: u64,
 ) -> anyhow::Result<bool> {
     let c = Client::from_index(client)?;
     let mut gov = WeteeGov::new(c);
 
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
-        gov.start_referendum(from, dao_id, index).await.unwrap();
+        gov.start_referendum(from, dao_id, index, deposit.try_into().unwrap()).await.unwrap();
 
         Ok(true)
     })
@@ -1227,16 +1214,7 @@ pub fn dao_project_join_request(
                 from,
                 dao_id,
                 project_id,
-                if ext.is_some() {
-                    let e = ext.unwrap();
-                    Some(WithGov {
-                        run_type: e.run_type,
-                        amount: e.amount.into(),
-                        member: member_ps_trans(e.member),
-                    })
-                } else {
-                    None
-                },
+                trans_gov_ps(ext),
             )
             .await?;
 
@@ -1281,16 +1259,7 @@ pub fn dao_guild_join_request(
                 from,
                 dao_id,
                 guild_id,
-                if ext.is_some() {
-                    let e = ext.unwrap();
-                    Some(WithGov {
-                        run_type: e.run_type,
-                        amount: e.amount.into(),
-                        member: member_ps_trans(e.member),
-                    })
-                } else {
-                    None
-                },
+                trans_gov_ps(ext),
             )
             .await?;
 
@@ -1328,16 +1297,7 @@ pub fn dao_apply_project_funds(
             dao_id,
             project_id,
             amount,
-            if ext.is_some() {
-                let e = ext.unwrap();
-                Some(WithGov {
-                    run_type: e.run_type,
-                    amount: e.amount.into(),
-                    member: member_ps_trans(e.member),
-                })
-            } else {
-                None
-            },
+            trans_gov_ps(ext),
         )
         .await?;
 

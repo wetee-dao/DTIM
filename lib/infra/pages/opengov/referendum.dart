@@ -56,7 +56,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     ),
                     SizedBox(width: 10.w),
                     PrimaryText(
-                      text: 'Referenda',
+                      text: 'Referendums',
                       size: 25.w,
                       fontWeight: FontWeight.w800,
                     ),
@@ -117,6 +117,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
             height: 1,
             color: constTheme.centerChannelDivider,
           ),
+          SizedBox(height: 10.w),
           Expanded(
             child: Consumer<WorkCTX>(builder: (_, dao, child) {
               return Referendums(

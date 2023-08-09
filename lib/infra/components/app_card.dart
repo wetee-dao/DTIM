@@ -47,135 +47,137 @@ class AppCard extends StatelessWidget {
             return;
           }
           if (disable) return;
-          final ctx = globalCtx();
+          // final ctx = globalCtx();
           final im = context.read<AppCubit>();
-          if (id == 0) {
-            final input = await showTextInputDialog(
-              useRootNavigator: false,
-              context: ctx,
-              title: "引入 Gov 前必须初始化组织资产，请确认您是这个组织的创建者",
-              okLabel: L10n.of(ctx)!.ok,
-              cancelLabel: L10n.of(ctx)!.cancel,
-              textFields: [
-                DialogTextField(
-                  obscureText: false,
-                  hintText: "资产名称",
-                  initialText: "",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '不能为空';
-                    }
-                    return null;
-                  },
-                ),
-                DialogTextField(
-                  obscureText: false,
-                  hintText: "资产符号",
-                  initialText: "",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '不能为空';
-                    }
-                    return null;
-                  },
-                ),
-                DialogTextField(
-                  obscureText: false,
-                  hintText: "初始化资产",
-                  keyboardType: TextInputType.number,
-                  initialText: "",
-                  validator: (value) {
-                    final reg = RegExp(r"^[0-9_]+$");
-                    if (!reg.hasMatch(value ?? "")) {
-                      return '请输入数字';
-                    }
-                    if (value == null || value.isEmpty) {
-                      return '初始化资产不能为空';
-                    }
-                    if (int.parse(value) < 1000) {
-                      return '初始化资产不能少于1000';
-                    }
-                    return null;
-                  },
-                ),
-                DialogTextField(
-                  obscureText: false,
-                  hintText: "初始化股权",
-                  keyboardType: TextInputType.number,
-                  initialText: "",
-                  validator: (value) {
-                    final reg = RegExp(r"^[0-9_]+$");
-                    if (!reg.hasMatch(value ?? "")) {
-                      return '请输入数字';
-                    }
-                    if (value == null || value.isEmpty) {
-                      return '初始化股权不能为空';
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            );
-            if (input == null) return;
-            if (!await inputPasswordg(im.me!)) {
-              return;
-            }
-            globalCtx().router.pop();
-            await waitFutureLoading(
-              context: globalCtx(),
-              future: () async {
-                await rustApi.createAsset(
-                  client: workCtx.chainClient,
-                  from: im.me!.address,
-                  daoId: im.currentState!.org.daoId,
-                  name: input[0],
-                  decimals: int.parse(input[3]),
-                  totalSupply: int.parse(input[2]),
-                  symbol: input[1],
-                );
-                await rustApi.orgIntegrateApp(
-                  client: workCtx.chainClient,
-                  from: im.me!.address,
-                  orgId: im.currentState!.org.daoId,
-                  appId: id,
-                  ext: const WithGovPs(
-                    runType: 2,
-                    amount: 0,
-                    member: MemberGroup(
-                      scope: 1,
-                      id: 0,
-                    ),
-                  ),
-                );
-                BotToast.showText(text: "应用集成成功");
-              },
-            );
-          } else {
-            var gov = await showGovPop(const MemberGroup(
-              scope: 1,
-              id: 0,
-            ));
-            if (gov == null) {
-              BotToast.showText(text: "取消操作");
-              return;
-            }
-            if (!await inputPasswordg(im.me!)) {
-              return;
-            }
-            await waitFutureLoading(
-              context: globalCtx(),
-              future: () async {
-                await rustApi.orgIntegrateApp(
-                  client: workCtx.chainClient,
-                  from: im.me!.address,
-                  orgId: im.currentState!.org.daoId,
-                  appId: id,
-                  ext: gov,
-                );
-                BotToast.showText(text: gov.runType == 0 ? "应用集成成功" : "应用集成提案将显示在治理中，请到治理插件中开启投票");
-              },
-            );
+          // if (id == 0) {
+          // final input = await showTextInputDialog(
+          //   useRootNavigator: false,
+          //   context: ctx,
+          //   title: "引入 Gov 前必须初始化组织资产，请确认您是这个组织的创建者",
+          //   okLabel: L10n.of(ctx)!.ok,
+          //   cancelLabel: L10n.of(ctx)!.cancel,
+          //   textFields: [
+          //     DialogTextField(
+          //       obscureText: false,
+          //       hintText: "资产名称",
+          //       initialText: "",
+          //       validator: (value) {
+          //         if (value == null || value.isEmpty) {
+          //           return '不能为空';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     DialogTextField(
+          //       obscureText: false,
+          //       hintText: "资产符号",
+          //       initialText: "",
+          //       validator: (value) {
+          //         if (value == null || value.isEmpty) {
+          //           return '不能为空';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     DialogTextField(
+          //       obscureText: false,
+          //       hintText: "初始化资产",
+          //       keyboardType: TextInputType.number,
+          //       initialText: "",
+          //       validator: (value) {
+          //         final reg = RegExp(r"^[0-9_]+$");
+          //         if (!reg.hasMatch(value ?? "")) {
+          //           return '请输入数字';
+          //         }
+          //         if (value == null || value.isEmpty) {
+          //           return '初始化资产不能为空';
+          //         }
+          //         if (int.parse(value) < 1000) {
+          //           return '初始化资产不能少于1000';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //     DialogTextField(
+          //       obscureText: false,
+          //       hintText: "初始化股权",
+          //       keyboardType: TextInputType.number,
+          //       initialText: "",
+          //       validator: (value) {
+          //         final reg = RegExp(r"^[0-9_]+$");
+          //         if (!reg.hasMatch(value ?? "")) {
+          //           return '请输入数字';
+          //         }
+          //         if (value == null || value.isEmpty) {
+          //           return '初始化股权不能为空';
+          //         }
+          //         return null;
+          //       },
+          //     ),
+          //   ],
+          // );
+          // if (input == null) return;
+          // if (!await inputPasswordg(im.me!)) {
+          //   return;
+          // }
+          // globalCtx().router.pop();
+          // await waitFutureLoading(
+          //   context: globalCtx(),
+          //   future: () async {
+          // await rustApi.createAsset(
+          //   client: workCtx.chainClient,
+          //   from: im.me!.address,
+          //   daoId: im.currentState!.org.daoId,
+          //   name: input[0],
+          //   decimals: int.parse(input[3]),
+          //   totalSupply: int.parse(input[2]),
+          //   symbol: input[1],
+          // );
+          //     await rustApi.orgIntegrateApp(
+          //       client: workCtx.chainClient,
+          //       from: im.me!.address,
+          //       orgId: im.currentState!.org.daoId,
+          //       appId: id,
+          //       ext: const WithGovPs(
+          //         runType: 2,
+          //         amount: 0,
+          //         member: MemberGroup(
+          //           scope: 1,
+          //           id: 0,
+          //         ),
+          //         // TODO
+          //         periodIndex: 0,
+          //       ),
+          //     );
+          //     BotToast.showText(text: "应用集成成功");
+          //   },
+          // );
+          // } else {
+          var gov = await showGovPop(const MemberGroup(
+            scope: 1,
+            id: 0,
+          ));
+          if (gov == null) {
+            BotToast.showText(text: "取消操作");
+            return;
           }
+          if (!await inputPasswordg(im.me!)) {
+            return;
+          }
+          await waitFutureLoading(
+            context: globalCtx(),
+            future: () async {
+              await rustApi.orgIntegrateApp(
+                client: workCtx.chainClient,
+                from: im.me!.address,
+                orgId: im.currentState!.org.daoId,
+                appId: id,
+                ext: gov,
+              );
+              BotToast.showText(text: gov.runType == 2 ? "应用集成成功" : "应用集成提案将显示在治理中，请到治理插件中开启投票");
+            },
+          );
+          //}
         },
         child: Stack(
           children: [

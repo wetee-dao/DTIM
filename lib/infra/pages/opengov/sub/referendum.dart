@@ -1,9 +1,11 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
@@ -98,18 +100,30 @@ class Referendums extends StatelessWidget {
                   key: Key("referendumStart${pending[index].index}"),
                   onTap: () async {
                     if (!await workCtx.checkAfterTx()) return;
-                    await waitFutureLoading(
-                      context: globalCtx(),
-                      future: () async {
-                        await rustApi.daoGovStartReferendum(
-                          from: workCtx.user.address,
-                          client: workCtx.chainClient,
-                          daoId: workCtx.org.daoId,
-                          index: pending[index].index,
-                        );
-                        await workCtx.daoRefresh();
-                      },
-                    );
+
+                    if (OkCancelResult.ok ==
+                        await showOkCancelAlertDialog(
+                          useRootNavigator: false,
+                          title: "Notice",
+                          message: "开启提案需要质押${pending[index].period.decisionDeposit} WET,投票失败会导致惩罚?",
+                          context: globalCtx(),
+                          okLabel: L10n.of(globalCtx())!.next,
+                          cancelLabel: L10n.of(globalCtx())!.cancel,
+                        )) {
+                      await waitFutureLoading(
+                        context: globalCtx(),
+                        future: () async {
+                          await rustApi.daoGovStartReferendum(
+                            from: workCtx.user.address,
+                            client: workCtx.chainClient,
+                            daoId: workCtx.org.daoId,
+                            index: pending[index].index,
+                            deposit: pending[index].period.decisionDeposit,
+                          );
+                          await workCtx.daoRefresh();
+                        },
+                      );
+                    }
                   },
                   child: renderBox(
                     PrimaryText(
@@ -257,89 +271,115 @@ class Referendums extends StatelessWidget {
         disabled: true,
       );
     }
-    if (going.end - workCtx.blockNumber > 0) {
-      final cindex = workCtx.votes.indexWhere((v) => v.referendumIndex == going.id);
-      return cindex > -1
-          ? renderBox(
-              PrimaryText(
-                text: "Voted",
-                size: 13.w,
-                color: constTheme.centerChannelColor,
-              ),
-              disabled: true,
-            )
-          : InkWell(
-              key: Key("referendumDo${going.id}"),
-              onTap: () {
-                showModelOrPage(
-                  globalCtx(),
-                  "/referendum_vote/${going.id}",
-                  width: 450.w,
-                  height: 300.w,
-                );
-              },
-              child: renderBox(
-                PrimaryText(
-                  text: "Vote",
-                  size: 13.w,
-                  color: constTheme.buttonColor,
-                ),
-              ),
-            );
-    }
-    if (going.status == 0 &&
-        going.end - workCtx.blockNumber <= 0 &&
-        going.end + going.delay - workCtx.blockNumber > 0) {
-      return renderBox(
+
+    return InkWell(
+      key: Key("referendumDo${going.id}"),
+      onTap: () {
+        showModelOrPage(
+          globalCtx(),
+          "/referendum_vote/${going.id}",
+          width: 450.w,
+          height: 300.w,
+        );
+      },
+      child: renderBox(
         PrimaryText(
-          text: "Delay time",
+          text: "Vote",
           size: 13.w,
           color: constTheme.buttonColor,
         ),
-      );
-    }
-    if (going.status == 0 && going.end - workCtx.blockNumber < 0) {
-      if (going.tally.yes > 0) {
-        return InkWell(
-          key: Key("referendumExecute${going.id}"),
-          onTap: () async {
-            if (!await workCtx.checkAfterTx()) return;
-            await waitFutureLoading(
-              context: globalCtx(),
-              future: () async {
-                await rustApi.daoGovRunProposal(
-                  from: workCtx.user.address,
-                  client: workCtx.chainClient,
-                  daoId: workCtx.org.daoId,
-                  index: going.id,
-                );
-                await workCtx.daoRefresh();
-                if (going.proposal.toLowerCase().contains("integrate")) {
-                  final org = globalCtx().read<OrgCubit>();
-                  org.update();
-                }
-              },
-            );
-          },
-          child: renderBox(
-            PrimaryText(
-              text: "Execute",
-              size: 13.w,
-              color: constTheme.buttonColor,
-            ),
-          ),
-        );
-      } else {
-        return renderBox(
-          disabled: true,
-          PrimaryText(
-            text: "Rejected",
-            size: 13.w,
-            color: constTheme.buttonColor,
-          ),
-        );
-      }
-    }
+      ),
+    );
+
+    // if (going.end - workCtx.blockNumber > 0) {
+    //   final cindex = workCtx.votes.indexWhere((v) => v.referendumIndex == going.id);
+    //   return cindex > -1
+    //       ? renderBox(
+    //           PrimaryText(
+    //             text: "Voted",
+    //             size: 13.w,
+    //             color: constTheme.centerChannelColor,
+    //           ),
+    //           disabled: true,
+    //         )
+    //       : InkWell(
+    //           key: Key("referendumDo${going.id}"),
+    //           onTap: () {
+    //             showModelOrPage(
+    //               globalCtx(),
+    //               "/referendum_vote/${going.id}",
+    //               width: 450.w,
+    //               height: 300.w,
+    //             );
+    //           },
+    //           child: renderBox(
+    //             PrimaryText(
+    //               text: "Vote",
+    //               size: 13.w,
+    //               color: constTheme.buttonColor,
+    //             ),
+    //           ),
+    //         );
+    // }
+    // if (going.status == 0 &&
+    //     going.end - workCtx.blockNumber <= 0 &&
+    //     going.end + going.delay - workCtx.blockNumber > 0) {
+    //   return renderBox(
+    //     PrimaryText(
+    //       text: "Delay time",
+    //       size: 13.w,
+    //       color: constTheme.buttonColor,
+    //     ),
+    //   );
+    // }
+    // if (going.status == 0 && going.end - workCtx.blockNumber < 0) {
+    //   if (going.tally.yes > 0) {
+    //     return InkWell(
+    //       key: Key("referendumExecute${going.id}"),
+    //       onTap: () async {
+    //         if (!await workCtx.checkAfterTx()) return;
+    //         await waitFutureLoading(
+    //           context: globalCtx(),
+    //           future: () async {
+    //             await rustApi.daoGovRunProposal(
+    //               from: workCtx.user.address,
+    //               client: workCtx.chainClient,
+    //               daoId: workCtx.org.daoId,
+    //               index: going.id,
+    //             );
+    //             await workCtx.daoRefresh();
+    //             if (going.proposal.toLowerCase().contains("integrate")) {
+    //               final org = globalCtx().read<OrgCubit>();
+    //               org.update();
+    //             }
+    //           },
+    //         );
+    //       },
+    //       child: renderBox(
+    //         PrimaryText(
+    //           text: "Execute",
+    //           size: 13.w,
+    //           color: constTheme.buttonColor,
+    //         ),
+    //       ),
+    //     );
+    //   } else {
+    //     return renderBox(
+    //       disabled: true,
+    //       PrimaryText(
+    //         text: "Rejected",
+    //         size: 13.w,
+    //         color: constTheme.buttonColor,
+    //       ),
+    //     );
+    //   }
+    // }
+
+    return Container(
+      width: 20.w,
+      height: 40.w,
+      color: Colors.yellow,
+    );
   }
 
   renderBox(box, {disabled = false}) {
@@ -355,9 +395,9 @@ class Referendums extends StatelessWidget {
     );
   }
 
-  renderTime(going, dao) {
+  renderTime(GovReferendum going, dao) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    if (going.end - dao.blockNumber > 0) {
+    if (going.period.confirmPeriod - dao.blockNumber > 0) {
       return SizedBox(
         width: 100.w,
         child: Row(
@@ -365,7 +405,7 @@ class Referendums extends StatelessWidget {
             SizedBox(width: 5.w),
             Expanded(
               child: PrimaryText(
-                text: "${going.end - dao.blockNumber} block left until the end of voting",
+                text: "${going.period.confirmPeriod - dao.blockNumber} block left until the end of voting",
                 size: 13.w,
                 color: constTheme.centerChannelColor,
                 textAlign: TextAlign.center,
@@ -376,7 +416,8 @@ class Referendums extends StatelessWidget {
         ),
       );
     }
-    if (going.end - dao.blockNumber <= 0 && going.end + going.delay - dao.blockNumber > 0) {
+    if (going.period.confirmPeriod - dao.blockNumber <= 0 &&
+        going.period.confirmPeriod + going.period.confirmPeriod - dao.blockNumber > 0) {
       return SizedBox(
         width: 100.w,
         child: Row(
@@ -384,7 +425,8 @@ class Referendums extends StatelessWidget {
             SizedBox(width: 5.w),
             Expanded(
               child: PrimaryText(
-                text: "${going.end + going.delay - dao.blockNumber} block left until execution ",
+                text:
+                    "${going.period.confirmPeriod + going.period.confirmPeriod - dao.blockNumber} block left until execution ",
                 size: 13.w,
                 color: constTheme.centerChannelColor,
                 textAlign: TextAlign.center,

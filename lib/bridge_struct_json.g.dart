@@ -106,6 +106,7 @@ GovPropsJ _$GovPropsJFromJson(Map<String, dynamic> json) => GovPropsJ(
       memberGroup:
           MemberGroupJ.fromJson(json['memberGroup'] as Map<String, dynamic>),
       account: json['account'] as String,
+      period: GovPeriodJ.fromJson(json['period'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$GovPropsJToJson(GovPropsJ instance) => <String, dynamic>{
@@ -114,6 +115,32 @@ Map<String, dynamic> _$GovPropsJToJson(GovPropsJ instance) => <String, dynamic>{
       'runtimeCall': instance.runtimeCall,
       'account': instance.account,
       'memberGroup': instance.memberGroup,
+      'period': instance.period,
+    };
+
+GovPeriodJ _$GovPeriodJFromJson(Map<String, dynamic> json) => GovPeriodJ(
+      name: json['name'] as String,
+      preparePeriod: json['preparePeriod'] as int,
+      maxDeciding: json['maxDeciding'] as int,
+      confirmPeriod: json['confirmPeriod'] as int,
+      decisionPeriod: json['decisionPeriod'] as int,
+      minEnactmentPeriod: json['minEnactmentPeriod'] as int,
+      decisionDeposit: json['decisionDeposit'] as int,
+      minApproval: json['minApproval'] as int,
+      minSupport: json['minSupport'] as int,
+    );
+
+Map<String, dynamic> _$GovPeriodJToJson(GovPeriodJ instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'preparePeriod': instance.preparePeriod,
+      'maxDeciding': instance.maxDeciding,
+      'confirmPeriod': instance.confirmPeriod,
+      'decisionPeriod': instance.decisionPeriod,
+      'minEnactmentPeriod': instance.minEnactmentPeriod,
+      'decisionDeposit': instance.decisionDeposit,
+      'minApproval': instance.minApproval,
+      'minSupport': instance.minSupport,
     };
 
 MemberGroupJ _$MemberGroupJFromJson(Map<String, dynamic> json) => MemberGroupJ(
@@ -173,12 +200,11 @@ GovReferendumJ _$GovReferendumJFromJson(Map<String, dynamic> json) =>
     GovReferendumJ(
       id: json['id'] as int,
       hash: json['hash'] as String,
-      end: json['end'] as int,
       proposal: json['proposal'] as String,
-      delay: json['delay'] as int,
       tally: TallyJ.fromJson(json['tally'] as Map<String, dynamic>),
       memberGroup:
           MemberGroupJ.fromJson(json['memberGroup'] as Map<String, dynamic>),
+      period: GovPeriodJ.fromJson(json['period'] as Map<String, dynamic>),
       status: json['status'] as int,
     );
 
@@ -186,12 +212,11 @@ Map<String, dynamic> _$GovReferendumJToJson(GovReferendumJ instance) =>
     <String, dynamic>{
       'id': instance.id,
       'hash': instance.hash,
-      'end': instance.end,
       'proposal': instance.proposal,
-      'delay': instance.delay,
       'status': instance.status,
       'tally': instance.tally,
       'memberGroup': instance.memberGroup,
+      'period': instance.period,
     };
 
 TallyJ _$TallyJFromJson(Map<String, dynamic> json) => TallyJ(

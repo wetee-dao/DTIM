@@ -33,6 +33,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OrgPage(),
       );
     },
+    OrgMobileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrgMobilePage(),
+      );
+    },
     CreateOrgRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -70,7 +76,8 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     PreloaderRoute.name: (routeData) {
-      final args = routeData.argsAs<PreloaderRouteArgs>(orElse: () => const PreloaderRouteArgs());
+      final args = routeData.argsAs<PreloaderRouteArgs>(
+          orElse: () => const PreloaderRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PreloaderPage(
@@ -89,12 +96,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SelectOrgPage(),
-      );
-    },
-    OrgMobileRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const OrgMobilePage(),
       );
     },
   };
@@ -138,6 +139,20 @@ class OrgRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'OrgRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OrgMobilePage]
+class OrgMobileRoute extends PageRouteInfo<void> {
+  const OrgMobileRoute({List<PageRouteInfo>? children})
+      : super(
+          OrgMobileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrgMobileRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -244,7 +259,8 @@ class PreloaderRoute extends PageRouteInfo<PreloaderRouteArgs> {
 
   static const String name = 'PreloaderRoute';
 
-  static const PageInfo<PreloaderRouteArgs> page = PageInfo<PreloaderRouteArgs>(name);
+  static const PageInfo<PreloaderRouteArgs> page =
+      PageInfo<PreloaderRouteArgs>(name);
 }
 
 class PreloaderRouteArgs {
@@ -287,20 +303,6 @@ class SelectOrgRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SelectOrgRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [OrgMobilePage]
-class OrgMobileRoute extends PageRouteInfo<void> {
-  const OrgMobileRoute({List<PageRouteInfo>? children})
-      : super(
-          OrgMobileRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'OrgMobileRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -1,28 +1,30 @@
-import 'package:dtim/native_wraper.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/infra/components/gov_pop.dart';
+import 'package:dtim/x_bridge.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ApplyProjectFundingPage extends StatefulWidget {
+class CreateTreasuryPage extends StatefulWidget {
   final Function? closeModel;
-  final String projectId;
-  const ApplyProjectFundingPage({Key? key, this.closeModel, required this.projectId}) : super(key: key);
+  const CreateTreasuryPage({Key? key, this.closeModel}) : super(key: key);
 
   @override
-  State<ApplyProjectFundingPage> createState() => _ApplyProjectFundingPageState();
+  State<CreateTreasuryPage> createState() => _CreateTreasuryPageState();
 }
 
-class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
+class _CreateTreasuryPageState extends State<CreateTreasuryPage> {
   bool publicGroup = false;
   final SubmitData _data = SubmitData(
-    amount: 0,
+    amount: 10,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -36,49 +38,54 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (_data.amount <= 0) {
-      BotToast.showText(text: 'The application amount is not less than 0.', duration: const Duration(seconds: 2));
+
+    var gov = await showGovPop(const MemberGroup(
+      scope: 1,
+      id: 0,
+    ));
+    if (gov == null) {
+      BotToast.showText(text: "取消操作");
       return;
     }
-    if (!await workCtx.checkAfterTx()) return;
+    print(gov);
+    final im = globalCtx().read<AppCubit>();
+    if (!await inputPasswordg(im.me!)) {
+      return;
+    }
+
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoApplyProjectFunds(
+        var pid = await XXXXcreateTreasuryProposal(
           from: workCtx.user.address,
           client: workCtx.chainClient,
           daoId: workCtx.org.daoId,
-          projectId: int.parse(widget.projectId),
-          amount: _data.amount,
-          ext: const WithGovPs(
-            runType: 1,
-            amount: 10,
-            member: MemberGroup(scope: 1, id: 0),
-            // TODO
-            periodIndex: 0,
-          ),
+          value: _data.amount,
+          beneficiary: workCtx.user.address,
         );
-        await workCtx.daoRefresh();
+
+        await XXXXgovProposal(
+          from: workCtx.user.address,
+          client: workCtx.chainClient,
+          daoId: workCtx.org.daoId,
+          proposalId: pid,
+          ext: gov,
+        );
+
+        BotToast.showText(text: gov.runType == 2 ? "国库申请成功" : "国库申请成功，请到治理插件中开启投票");
       },
     );
-
-    //跳转到组织列表
-    if (!mounted) return;
-    if (widget.closeModel != null) {
-      widget.closeModel!.call();
-      return;
-    }
-    globalCtx().router.pop();
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
+      key: const Key("createTaskView"),
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
           ? LocalAppBar(
-              title: "Apply for funding for project #${widget.projectId}",
+              title: "Create a treasury proposal",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -88,7 +95,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
               },
             ) as PreferredSizeWidget
           : ModelBar(
-              title: "Apply for funding for project #${widget.projectId}",
+              title: "Create a treasury proposal",
               onBack: () {
                 if (widget.closeModel != null) {
                   widget.closeModel!.call();
@@ -105,18 +112,18 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
             children: [
               SizedBox(height: 15.w),
               TextFormField(
-                initialValue: _data.amount.toString(),
+                key: const Key("Amount"),
                 style: TextStyle(color: constTheme.centerChannelColor),
-                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  hintText: 'Amount',
+                  hintText: 'Amount value',
                   hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
                   filled: true,
                   fillColor: constTheme.centerChannelColor.withOpacity(0.1),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
-                  prefixIcon: Icon(Icons.payment_rounded, color: constTheme.centerChannelColor, size: 18.w),
-                  suffixText: "WTE",
+                    borderRadius: BorderRadius.circular(6.w),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: Icon(Icons.money_rounded, color: constTheme.centerChannelColor),
                 ),
                 onSaved: (v) {
                   var i = 0;
@@ -131,13 +138,20 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
                     return '请输入数字';
                   }
                   if (value == null || value.isEmpty) {
-                    return '任务奖励不能为空';
+                    return '金额不能为空';
+                  }
+                  if (value == "0") {
+                    return '金额不能为空';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 10.w),
+
               Expanded(child: Container()),
+              // SizedBox(height: 50.w),
               InkWell(
+                key: const Key("createProposal"),
                 onTap: submitAction,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 30.w),
@@ -151,7 +165,7 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            'Start applying',
+                            'Create proposal',
                             style: TextStyle(
                               color: constTheme.buttonColor,
                               fontWeight: FontWeight.bold,
@@ -173,50 +187,6 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
           ),
         ),
       ),
-    );
-  }
-
-  renderType(icon, title, desc, select) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final titleStyle = TextStyle(
-      fontSize: 14.w,
-      color: constTheme.centerChannelColor,
-      decorationColor: constTheme.centerChannelColor,
-    );
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 13.w, left: 0.w),
-          child: Icon(
-            select ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-            color: select ? constTheme.buttonBg : constTheme.centerChannelColor,
-            size: 20.w,
-          ),
-        ),
-        Container(
-          width: 220.w,
-          padding: EdgeInsets.all(10.w),
-          // margin: EdgeInsets.only(right: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(icon, color: constTheme.centerChannelColor, size: 17.w),
-                  SizedBox(width: 7.w),
-                  Text(title, style: titleStyle.copyWith(fontSize: 17.w)),
-                ],
-              ),
-              SizedBox(height: 5.w),
-              Text(
-                desc,
-                style: titleStyle,
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

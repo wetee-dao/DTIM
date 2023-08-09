@@ -82,6 +82,7 @@ class OrgCard extends StatelessWidget {
                             color: constTheme.centerChannelColor,
                             fontSize: 16.w,
                           ),
+                          maxLines: 1,
                         ),
                         Text(
                           org.desc ?? "",

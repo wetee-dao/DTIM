@@ -1,4 +1,5 @@
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/iconfont.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dtim/application/store/theme.dart';
@@ -46,21 +47,29 @@ class SideMenu extends StatelessWidget {
               onTap: () => onTap("Members"),
             ),
             iconBuilder(
-              key: const Key("Referenda"),
+              key: const Key("Referendums"),
               assetName: Icons.how_to_vote_rounded,
-              name: "Referenda",
+              name: "Referendums",
               color: constTheme,
               selected: id == "Referenda",
               onTap: () => onTap("Referenda"),
             ),
             iconBuilder(
               key: const Key("Treasury"),
-              assetName: Icons.card_travel_rounded,
+              assetName: AppIcons.zichan,
               name: "Treasury",
               color: constTheme,
               selected: id == "Treasury",
               onTap: () => onTap("Treasury"),
             ),
+            // iconBuilder(
+            //   key: const Key("Sudo"),
+            //   assetName: Icons.admin_panel_settings_rounded,
+            //   name: "Sudo",
+            //   color: constTheme,
+            //   selected: id == "Sudo",
+            //   onTap: () => onTap("Sudo"),
+            // ),
           ],
         ),
       ),

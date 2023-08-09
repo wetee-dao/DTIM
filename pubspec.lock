@@ -369,14 +369,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.17.1"
-  colorize:
-    dependency: transitive
-    description:
-      name: colorize
-      sha256: "584746cd6ba1cba0633b6720f494fe6f9601c4170f0666c1579d2aa2a61071ba"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.0.0"
   convert:
     dependency: transitive
     description:
@@ -565,10 +557,10 @@ packages:
     dependency: "direct dev"
     description:
       name: ffigen
-      sha256: "4bbf1fa19723a90578e991b9a95afca43bea856809890a26609618fa29087427"
+      sha256: d3e76c2ad48a4e7f93a29a162006f00eba46ce7c08194a77bb5c5e97d1b5ff0a
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "7.2.11"
+    version: "8.0.2"
   file:
     dependency: transitive
     description:
@@ -740,10 +732,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_rust_bridge
-      sha256: "6960d0843f6f7b4eac28f2531eb0024f01c49bf9eec798327fbbafa084c1f535"
+      sha256: "76eb2c40e2040d8acfcc3e1a72d77551b2b89b4c1afda38fa963b604d19677b5"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.78.0"
+    version: "1.80.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
