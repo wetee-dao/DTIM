@@ -19,7 +19,7 @@ import 'package:dtim/infra/components/app_bar.dart';
 
 import '../../../application/store/work_ctx.dart';
 
-@RoutePage(name: "createOrg")
+@RoutePage(name: "createOrgRoute")
 class CreateOrgPage extends StatefulWidget {
   const CreateOrgPage({Key? key}) : super(key: key);
 

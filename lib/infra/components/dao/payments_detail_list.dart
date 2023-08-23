@@ -39,7 +39,18 @@ class PaymentsDetailList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.wallet_rounded, color: constTheme.centerChannelColor.withOpacity(0.5), size: 30.w),
+              Row(
+                children: [
+                  Icon(Icons.wallet_rounded, color: constTheme.centerChannelColor.withOpacity(0.5), size: 30.w),
+                  SizedBox(width: 5.w),
+                  Expanded(
+                    child: Text(
+                      "My wallet",
+                      style: TextStyle(color: constTheme.centerChannelColor.withOpacity(0.5), fontSize: 18.w),
+                    ),
+                  )
+                ],
+              ),
               SizedBox(height: 5.w),
               Text(address, style: TextStyle(color: constTheme.centerChannelColor, fontSize: 15.w)),
               SizedBox(height: 12.w),

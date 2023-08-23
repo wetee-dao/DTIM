@@ -20,7 +20,7 @@ import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';
 
-@RoutePage(name: "selectOrg")
+@RoutePage(name: "selectOrgRoute")
 class SelectOrgPage extends StatefulWidget {
   const SelectOrgPage({Key? key}) : super(key: key);
 
@@ -105,9 +105,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           if (isPc()) {
             globalCtx().router.root.back();
             printInfo("页面数量 ==> ${globalCtx().router.navigationHistory.length}");
-            globalCtx().router.root.replaceNamed("/pc/im");
+            globalCtx().router.root.replaceNamed("/app/im");
           } else if (PlatformInfos.isWeb) {
-            globalCtx().router.root.replaceNamed("/pc/im");
+            globalCtx().router.root.replaceNamed("/app/im");
             // globalCtx().router.root.replaceNamed("/mobile");
           }
         },
@@ -199,7 +199,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
           SizedBox(height: 20.w),
           Padding(
             padding: EdgeInsets.only(left: 20.w, bottom: 10.w),
-            child: Text("joined organization", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
+            child: Text("Joined organization", style: TextStyle(color: constTheme.centerChannelColor, fontSize: 18.w)),
           ),
           Row(
             children: [
@@ -262,6 +262,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                                     color: constTheme.centerChannelColor,
                                     fontSize: 16.w,
                                   ),
+                                  maxLines: 1,
                                 ),
                                 Text(
                                   userOrgs[i].orgDesc ?? "",

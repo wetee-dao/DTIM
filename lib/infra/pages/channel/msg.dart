@@ -1,5 +1,8 @@
+import 'package:dtim/infra/components/content/reactions.dart';
+import 'package:dtim/infra/components/hover_list_item.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:matrix/matrix.dart' as link;
 
 import 'package:dtim/infra/components/components.dart';
@@ -23,20 +26,22 @@ class Msg extends StatefulWidget {
 }
 
 class _MsgState extends State<Msg> {
-  @override
-  void didUpdateWidget(covariant Msg oldWidget) {
-    if (oldWidget.event.eventId != widget.event.eventId) {
-      // ctx = null;
-    }
-    super.didUpdateWidget(oldWidget);
-  }
+  bool showDate = false;
+  bool hover = false;
+
+  // @override
+  // void didUpdateWidget(covariant Msg oldWidget) {
+  //   if (oldWidget.event.eventId != widget.event.eventId) {
+  //     // ctx = null;
+  //   }
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   @override
   Widget build(BuildContext context) {
     final event = widget.event;
     final preEvent = widget.preEvent;
     final showAvatar = isShowAvatar(event, preEvent);
-    var showDate = false;
     // if (event.type == link.EventTypes.RoomMember ||
     //     event.type == link.EventTypes.RoomPowerLevels ||
     //     event.type == link.EventTypes.RoomJoinRules ||
@@ -73,68 +78,192 @@ class _MsgState extends State<Msg> {
 
   buildMsg(link.Event event, bool showAvatar) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    final iconSize = BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w);
+    final w = 3 * 30.w + 10.w;
     return FutureBuilder<link.User?>(
       future: event.fetchSenderUser(),
       builder: (context, snapshot) {
         final user = snapshot.data ?? event.senderFromMemoryOrFallback;
-        return Row(
+        return HoverListItem(
           key: Key(event.eventId),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(width: 15.w),
-            if (showAvatar)
-              Column(
-                children: [
-                  SizedBox(height: 10.w),
-                  BaseAvatarWithPop(
-                    key: Key(user.id),
-                    user.id,
-                    user.displayName ?? "-",
-                    true,
-                    40.w,
-                    color: constTheme.centerChannelColor,
-                    bg: constTheme.centerChannelDivider,
-                    mxContent: user.avatarUrl,
-                  ),
-                ],
-              ),
-            if (!showAvatar) SizedBox(width: 40.w),
-            SizedBox(width: 10.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (showAvatar) SizedBox(height: 7.w),
-                  if (showAvatar)
-                    RichText(
-                      text: TextSpan(
-                        text: event.senderId == widget.client.userID ? "Me" : user.displayName,
-                        style: TextStyle(
-                          color: constTheme.centerChannelColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.w,
-                        ),
+          subkey: "DirectChat${event.eventId}",
+          ishover: hover,
+          color: Colors.transparent,
+          hoverColor: constTheme.centerChannelColor.withOpacity(0.02),
+          onPressed: () async {},
+          onHover: (v) {
+            setState(() {
+              hover = v;
+            });
+          },
+          child: hover
+              ? Stack(
+                  children: [
+                    renderRow(event, showAvatar, user, hover),
+                    Positioned(
+                      top: 3.w,
+                      right: 10.w,
+                      child: Column(
                         children: [
-                          TextSpan(
-                            text: "  ${getTime(event.originServerTs)}",
-                            style: TextStyle(
-                              color: constTheme.centerChannelColor.withAlpha(155),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.w,
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 3.w),
+                            decoration: BoxDecoration(
+                              color: constTheme.centerChannelBg,
+                              border: Border.all(color: constTheme.centerChannelColor.withOpacity(0.1)),
+                              borderRadius: BorderRadius.circular(4.w),
                             ),
-                          )
+                            width: w,
+                            height: 32.w,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  tooltip: "emoji",
+                                  padding: EdgeInsets.zero,
+                                  constraints: iconSize,
+                                  style: IconButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  icon: Icon(
+                                    Icons.mood_rounded,
+                                    color: constTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                  onPressed: () async {
+                                    await widget.event.room.sendTextEvent('/react 🦊', inReplyTo: widget.event);
+                                  },
+                                ),
+                                IconButton(
+                                  tooltip: "replay",
+                                  padding: EdgeInsets.zero,
+                                  constraints: iconSize,
+                                  style: IconButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  icon: Icon(
+                                    Icons.reply_rounded,
+                                    color: constTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  tooltip: "view code",
+                                  padding: EdgeInsets.zero,
+                                  constraints: iconSize,
+                                  style: IconButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  icon: Icon(
+                                    Icons.code_rounded,
+                                    color: constTheme.centerChannelColor,
+                                    size: 18.w,
+                                  ),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(
+                                          "消息内容",
+                                          style: TextStyle(fontSize: 18.w),
+                                        ),
+                                        content: Text(
+                                          event.toJson().toString(),
+                                          style: TextStyle(color: constTheme.centerChannelColor),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text("确定"),
+                                            onPressed: () => Navigator.pop(context),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  if (showAvatar) SizedBox(height: 5.w),
-                  renderBody(event),
-                  SizedBox(height: 5.w),
-                ],
-              ),
-            ),
-          ],
+                    )
+                  ],
+                )
+              : renderRow(event, showAvatar, user, hover),
         );
       },
+    );
+  }
+
+  renderRow(link.Event event, bool showAvatar, link.User user, bool hover) {
+    final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
+    return Row(
+      crossAxisAlignment: hover && !showAvatar ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        SizedBox(width: 15.w),
+        if (showAvatar)
+          Column(
+            children: [
+              SizedBox(height: 10.w),
+              BaseAvatarWithPop(
+                key: Key("${user.id}wrap"),
+                user.id,
+                user.displayName ?? "-",
+                true,
+                40.w,
+                color: constTheme.centerChannelColor,
+                bg: constTheme.centerChannelDivider,
+                mxContent: user.avatarUrl,
+              ),
+            ],
+          ),
+        if (!showAvatar)
+          SizedBox(
+            width: 40.w,
+            child: hover
+                ? Text(
+                    getTime(event.originServerTs),
+                    style: TextStyle(
+                      color: constTheme.centerChannelColor,
+                      fontSize: 12.w,
+                    ),
+                  )
+                : null,
+          ),
+        SizedBox(width: 10.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (showAvatar) SizedBox(height: 8.w),
+              if (showAvatar)
+                RichText(
+                  text: TextSpan(
+                    text: event.senderId == widget.client.userID ? "Me" : user.displayName,
+                    style: TextStyle(
+                      color: constTheme.centerChannelColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.w,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "  ${getTime(event.originServerTs)}",
+                        style: TextStyle(
+                          color: constTheme.centerChannelColor.withAlpha(155),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.w,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              SizedBox(height: 3.w),
+              renderBody(event),
+              Reacs(event, widget.timeline, client: widget.client),
+              SizedBox(height: 5.w),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

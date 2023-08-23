@@ -25,7 +25,7 @@ import 'package:lottie/lottie.dart';
 import 'package:dtim/application/service/apis/apis.dart';
 import 'package:dtim/domain/models/account.dart';
 
-@RoutePage(name: "preloader")
+@RoutePage(name: "preloaderRoute")
 class PreloaderPage extends StatefulWidget {
   final ValueChanged<bool>? onResult;
 
@@ -55,6 +55,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
       }
       workCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: []));
       workCtx.connectChain(() async {
+        setState(() => _loading = false);
+      });
+      Timer(const Duration(seconds: 3), () {
         setState(() => _loading = false);
       });
     });
@@ -114,9 +117,9 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
             BotToast.showText(text: L10n.of(globalCtx())!.selectOrgOk, duration: const Duration(seconds: 2));
             if (isPc()) {
               globalCtx().router.root.back();
-              globalCtx().router.root.replaceNamed("/pc/im");
+              globalCtx().router.root.replaceNamed("/app/im");
             } else if (PlatformInfos.isWeb) {
-              globalCtx().router.root.replaceNamed("/pc/im");
+              globalCtx().router.root.replaceNamed("/app/im");
             }
           },
         );

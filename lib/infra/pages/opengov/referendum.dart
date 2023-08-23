@@ -105,7 +105,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: workCtx.dao.purpose,
+                  text: "Using Referenda to Achieve Decentralized Voting",
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),
@@ -117,6 +117,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
             height: 1,
             color: constTheme.centerChannelDivider,
           ),
+          SizedBox(height: 10.w),
           Expanded(
             child: Consumer<WorkCTX>(builder: (_, dao, child) {
               return Referendums(

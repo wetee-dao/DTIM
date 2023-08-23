@@ -98,6 +98,7 @@ external bool daoGovStartReferendumFunc(
   int client,
   int daoId,
   int index,
+  int deposit,
 );
 @JS("daoGovVoteForReferendum")
 external bool daoGovVoteForReferendumFunc(
@@ -612,8 +613,11 @@ class rustApi {
     }
   }
 
-  static Future<List<GovReferendum>> daoGovReferendumList(
-      {required int client, required int daoId, dynamic hint}) async {
+  static Future<List<GovReferendum>> daoGovReferendumList({
+    required int client,
+    required int daoId,
+    dynamic hint,
+  }) async {
     try {
       final result = await promiseToFuture(daoGovReferendumListFunc(client, daoId));
       var data = convert.jsonDecode(result) as List<dynamic>;
@@ -628,10 +632,16 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoGovStartReferendum(
-      {required String from, required int client, required int daoId, required int index, dynamic hint}) async {
+  static Future<bool> daoGovStartReferendum({
+    required String from,
+    required int client,
+    required int daoId,
+    required int index,
+    required int deposit,
+    dynamic hint,
+  }) async {
     try {
-      await promiseToFuture(daoGovStartReferendumFunc(from, client, daoId, index));
+      await promiseToFuture(daoGovStartReferendumFunc(from, client, daoId, index, deposit));
       return true;
     } catch (e) {
       rethrow;
@@ -864,13 +874,14 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoProjectLeaveTask(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      required int taskId,
-      dynamic hint}) async {
+  static Future<bool> daoProjectLeaveTask({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    required int taskId,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoProjectLeaveTaskFunc(
         from,
@@ -885,13 +896,14 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoProjectJoinTaskReview(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      required int taskId,
-      dynamic hint}) async {
+  static Future<bool> daoProjectJoinTaskReview({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    required int taskId,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoProjectJoinTaskReviewFunc(
         from,
@@ -906,13 +918,14 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoProjectLeaveTaskReview(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      required int taskId,
-      dynamic hint}) async {
+  static Future<bool> daoProjectLeaveTaskReview({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    required int taskId,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoProjectLeaveTaskReviewFunc(
         from,
@@ -927,15 +940,16 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoProjectMakeReview(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      required int taskId,
-      required bool approve,
-      required String meta,
-      dynamic hint}) async {
+  static Future<bool> daoProjectMakeReview({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    required int taskId,
+    required bool approve,
+    required String meta,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoProjectMakeReviewFunc(
         from,
@@ -952,13 +966,14 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoProjectJoinRequest(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      WithGovPs? ext,
-      dynamic hint}) async {
+  static Future<bool> daoProjectJoinRequest({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    WithGovPs? ext,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoProjectJoinRequestFunc(from, client, daoId, projectId, ext));
       return true;
@@ -967,13 +982,14 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoProjectJoinRequestWithRoot(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      required String user,
-      dynamic hint}) async {
+  static Future<bool> daoProjectJoinRequestWithRoot({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    required String user,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoProjectJoinRequestWithRootFunc(from, client, daoId, projectId, user));
       return true;
@@ -982,13 +998,14 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoGuildJoinRequest(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int guildId,
-      WithGovPs? ext,
-      dynamic hint}) async {
+  static Future<bool> daoGuildJoinRequest({
+    required String from,
+    required int client,
+    required int daoId,
+    required int guildId,
+    WithGovPs? ext,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoGuildJoinRequestFunc(from, client, daoId, guildId, ext));
       return true;
@@ -1007,14 +1024,15 @@ class rustApi {
     }
   }
 
-  static Future<bool> daoApplyProjectFunds(
-      {required String from,
-      required int client,
-      required int daoId,
-      required int projectId,
-      required int amount,
-      WithGovPs? ext,
-      dynamic hint}) async {
+  static Future<bool> daoApplyProjectFunds({
+    required String from,
+    required int client,
+    required int daoId,
+    required int projectId,
+    required int amount,
+    WithGovPs? ext,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(daoApplyProjectFundsFunc(
         from,
@@ -1045,19 +1063,20 @@ class rustApi {
     }
   }
 
-  static Future<void> createDao(
-      {required int client,
-      required String from,
-      required String name,
-      required String purpose,
-      required String metaData,
-      required String desc,
-      required String imApi,
-      required String bg,
-      required String logo,
-      required String img,
-      required String homeUrl,
-      dynamic hint}) async {
+  static Future<void> createDao({
+    required int client,
+    required String from,
+    required String name,
+    required String purpose,
+    required String metaData,
+    required String desc,
+    required String imApi,
+    required String bg,
+    required String logo,
+    required String img,
+    required String homeUrl,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(createDaoFunc(
         client,
@@ -1107,13 +1126,14 @@ class rustApi {
     }
   }
 
-  static Future<void> orgIntegrateApp(
-      {required int client,
-      required String from,
-      required int orgId,
-      required int appId,
-      WithGovPs? ext,
-      dynamic hint}) async {
+  static Future<void> orgIntegrateApp({
+    required int client,
+    required String from,
+    required int orgId,
+    required int appId,
+    WithGovPs? ext,
+    dynamic hint,
+  }) async {
     try {
       await promiseToFuture(orgIntegrateAppFunc(
         client,

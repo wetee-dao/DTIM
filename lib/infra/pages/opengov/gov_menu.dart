@@ -1,4 +1,5 @@
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/infra/components/iconfont.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dtim/application/store/theme.dart';
@@ -26,7 +27,7 @@ class SideMenu extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 20.w,
+              height: 15.w,
               alignment: Alignment.topCenter,
             ),
             iconBuilder(
@@ -39,7 +40,7 @@ class SideMenu extends StatelessWidget {
             ),
             iconBuilder(
               key: const Key("Members"),
-              assetName: Icons.how_to_vote_rounded,
+              assetName: Icons.perm_contact_calendar_rounded,
               name: "Members",
               color: constTheme,
               selected: id == "Members",
@@ -50,17 +51,26 @@ class SideMenu extends StatelessWidget {
               assetName: Icons.how_to_vote_rounded,
               name: "Referendums",
               color: constTheme,
-              selected: id == "Referendums",
-              onTap: () => onTap("Referendums"),
+              selected: id == "Referenda",
+              onTap: () => onTap("Referenda"),
+            ),
+            iconBuilder(
+              key: const Key("Treasury"),
+              assetName: AppIcons.zichan,
+              name: "Treasury",
+              color: constTheme,
+              selected: id == "Treasury",
+              onTap: () => onTap("Treasury"),
             ),
             // iconBuilder(
-            //   assetName: Icons.library_add_rounded,
-            //   name: "Combind Boards",
+            //   key: const Key("Sudo"),
+            //   assetName: Icons.admin_panel_settings_rounded,
+            //   name: "Sudo",
             //   color: constTheme,
-            //   selected: id == "Combind Boards",
-            //   onTap: () => onTap("Combind Boards"),
+            //   selected: id == "Sudo",
+            //   onTap: () => onTap("Sudo"),
             // ),
- ],
+          ],
         ),
       ),
     );

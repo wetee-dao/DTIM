@@ -1,8 +1,12 @@
+import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:dtim/infra/pages/main_mobile.dart';
+import 'package:dtim/infra/pages/org/org_mobile.dart';
+import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
 import 'package:dtim/infra/pages/org/create_org.dart';
 import 'package:dtim/infra/pages/opengov/gov.dart';
-import 'package:flutter/material.dart';
+import 'package:dtim/infra/pages/webview/webview.dart';
 
 import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
 import 'package:dtim/infra/pages/chain/sr25519_key.dart';
@@ -26,14 +30,14 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     if (authService.state.me != null ||
-        resolver.routeName == Preloader.name ||
-        resolver.routeName == Sr25519key.name ||
-        resolver.routeName == SelectOrg.name ||
-        resolver.routeName == ImportSr25519key.name) {
+        resolver.routeName == PreloaderRoute.name ||
+        resolver.routeName == Sr25519keyRoute.name ||
+        resolver.routeName == SelectOrgRoute.name ||
+        resolver.routeName == ImportSr25519keyRoute.name) {
       resolver.next();
     } else {
       resolver.redirect(
-        Preloader(onResult: (didLogin) {
+        PreloaderRoute(onResult: (didLogin) {
           resolver.resolveNext(didLogin, reevaluateNext: false);
         }),
       );
@@ -43,17 +47,18 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   @override
   List<AutoRoute> get routes {
     return [
-      AutoRoute(path: '/', page: Preloader.page),
-      AutoRoute(path: '/pc', page: Pc.page, children: [
-        AutoRoute(path: 'im', page: OrgRoute.page),
+      AutoRoute(path: '/', page: PreloaderRoute.page),
+      AutoRoute(path: '/app', page: PlatformInfos.isMobile ? MobileRoute.page : PcRoute.page, children: [
+        AutoRoute(path: 'im', page: PlatformInfos.isMobile ? OrgMobileRoute.page : OrgRoute.page),
         AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
         AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
         AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
+        AutoRoute(path: 'webview', page: WebviewRoute.page, maintainState: false),
       ]),
-      AutoRoute(path: '/sr25519key', page: Sr25519key.page),
-      AutoRoute(path: '/importSr25519key', page: ImportSr25519key.page),
-      AutoRoute(path: '/select_org', page: SelectOrg.page),
-      AutoRoute(path: '/create_org', page: CreateOrg.page),
+      AutoRoute(path: '/sr25519key', page: Sr25519keyRoute.page),
+      AutoRoute(path: '/importSr25519key', page: ImportSr25519keyRoute.page),
+      AutoRoute(path: '/select_org', page: SelectOrgRoute.page),
+      AutoRoute(path: '/create_org', page: CreateOrgRoute.page),
     ];
   }
 }
@@ -73,7 +78,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
 //       },
 //     ),
 //     GoRoute(
-//       path: '/pc/:app',
+//       path: '/app/:app',
 //       builder: (BuildContext context, GoRouterState state) {
 //         return const PCPage();
 //       },

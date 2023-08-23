@@ -113,7 +113,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
               ),
               SizedBox(height: 8.w),
               PrimaryText(
-                text: workCtx.dao.purpose,
+                text: "A good roadmap is very important",
                 size: 14.w,
               ),
               SizedBox(height: 10.w),

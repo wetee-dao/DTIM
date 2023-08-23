@@ -14,7 +14,7 @@ import 'package:dtim/domain/models/account.dart';
 import 'package:dtim/application/service/apis/account_api.dart';
 import 'package:dtim/infra/components/app_bar.dart';
 
-@RoutePage(name: "sr25519key")
+@RoutePage(name: "sr25519keyRoute")
 class Sr25519KeyPage extends StatefulWidget {
   const Sr25519KeyPage({Key? key}) : super(key: key);
 

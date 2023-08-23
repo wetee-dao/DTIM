@@ -1,3 +1,5 @@
+import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/x_bridge.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -10,7 +12,8 @@ import 'package:dtim/application/store/theme.dart';
 class GovPop extends StatefulWidget {
   final Function(WithGovPs?)? closeModel;
   final MemberGroup member;
-  const GovPop({Key? key, this.closeModel, required this.member}) : super(key: key);
+  final int? initType;
+  const GovPop({Key? key, this.closeModel, required this.member, this.initType}) : super(key: key);
 
   @override
   State<GovPop> createState() => _GovPopState();
@@ -18,15 +21,28 @@ class GovPop extends StatefulWidget {
 
 class _GovPopState extends State<GovPop> {
   bool publicGroup = false;
-  final SubmitData _data = SubmitData(
-    type: 0,
-  );
+  late SubmitData _data;
   TextEditingController pledgeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<Period> periods = [];
 
   @override
   void initState() {
     super.initState();
+    _data = SubmitData(
+      type: widget.initType ?? 1,
+      periodIndex: 0,
+    );
+    getData();
+  }
+
+  getData() async {
+    periods = await XXXXdaoGovPeriods(
+      client: workCtx.chainClient,
+      orgId: workCtx.org.daoId,
+    );
+    print(periods);
+    setState(() {});
   }
 
   void submitAction() async {
@@ -37,8 +53,9 @@ class _GovPopState extends State<GovPop> {
     widget.closeModel!.call(
       WithGovPs(
         runType: _data.type,
-        amount: _data.type == 1 ? 10 : 0,
+        amount: 0,
         member: widget.member,
+        periodIndex: _data.periodIndex,
       ),
     );
   }
@@ -46,6 +63,13 @@ class _GovPopState extends State<GovPop> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final titleStyle = TextStyle(
+      fontSize: 14,
+      height: 1.3,
+      color: constTheme.centerChannelColor,
+      decorationColor: constTheme.centerChannelColor,
+    );
+
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
       appBar: widget.closeModel == null
@@ -78,6 +102,7 @@ class _GovPopState extends State<GovPop> {
               SizedBox(height: 15.w),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     key: const Key("selectGuild"),
@@ -112,21 +137,42 @@ class _GovPopState extends State<GovPop> {
                 ],
               ),
               SizedBox(height: 15.w),
-              TextFormField(
-                key: const Key("Pledge"),
-                style: TextStyle(color: constTheme.centerChannelColor),
-                readOnly: true,
-                controller: pledgeController,
-                decoration: InputDecoration(
-                  hintText: 'Proposal Pledge',
-                  hintStyle: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
-                  filled: true,
-                  fillColor: constTheme.centerChannelColor.withOpacity(0.1),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.money_rounded, color: constTheme.centerChannelColor),
+              Container(
+                width: 570.w,
+                height: 60.w,
+                decoration: BoxDecoration(
+                  color: constTheme.centerChannelColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(5.w),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 7.w),
+                child: PopupMenuButton(
+                  color: constTheme.centerChannelBg,
+                  onSelected: (int v) {
+                    _data.periodIndex = v;
+                    setState(() {});
+                  },
+                  position: PopupMenuPosition.under,
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                    for (var i = 0; i < periods.length; i++)
+                      PopupMenuItem<int>(
+                        value: i,
+                        child: Text(
+                          periods[i].name,
+                          style: titleStyle,
+                        ),
+                      ),
+                  ],
+                  // child: Text("xxxxxxx"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.fact_check_rounded, color: constTheme.centerChannelColor),
+                      SizedBox(width: 5.w),
+                      Text(periods[_data.periodIndex].name, style: titleStyle),
+                    ],
+                  ),
                 ),
               ),
-              // SizedBox(height: 50.w),
               const Spacer(),
               InkWell(
                 key: const Key("createSpace"),
@@ -175,55 +221,63 @@ class _GovPopState extends State<GovPop> {
       color: constTheme.centerChannelColor,
       decorationColor: constTheme.centerChannelColor,
     );
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 13.w, left: 0.w),
-          child: Icon(
-            select ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-            color: select ? constTheme.buttonBg : constTheme.centerChannelColor,
-            size: 20.w,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+        color: select ? constTheme.buttonBg.withOpacity(0.7) : constTheme.centerChannelColor.withOpacity(0.06),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 13.w, left: 10.w),
+            child: Icon(
+              select ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+              color: constTheme.centerChannelColor,
+              size: 20.w,
+            ),
           ),
-        ),
-        Container(
-          width: 250.w,
-          padding: EdgeInsets.all(10.w),
-          // margin: EdgeInsets.only(right: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(icon, color: constTheme.centerChannelColor, size: 17.w),
-                  SizedBox(width: 7.w),
-                  Text(title, style: titleStyle.copyWith(fontSize: 17.w)),
-                ],
-              ),
-              SizedBox(height: 5.w),
-              Text(
-                desc,
-                style: titleStyle,
-              ),
-            ],
+          Container(
+            width: 250.w,
+            padding: EdgeInsets.all(10.w),
+            // margin: EdgeInsets.only(right: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(icon, color: constTheme.centerChannelColor, size: 17.w),
+                    SizedBox(width: 7.w),
+                    Text(title, style: titleStyle.copyWith(fontSize: 17.w)),
+                  ],
+                ),
+                SizedBox(height: 5.w),
+                Text(
+                  desc,
+                  style: titleStyle,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class SubmitData {
   int type;
+  int periodIndex;
 
   SubmitData({
     required this.type,
+    required this.periodIndex,
   });
 }
 
 Future<WithGovPs?> showGovPop(MemberGroup member) async {
   var width = 600;
-  var height = 300;
+  var height = 400;
   return await showDialog(
     context: globalCtx(),
     useSafeArea: true,
@@ -250,9 +304,7 @@ Future<WithGovPs?> showGovPop(MemberGroup member) async {
             ),
           ],
         ),
-        child: GovPop(closeModel: (WithGovPs? ps) => {
-          context.router.pop(ps)
-        }, member:member),
+        child: GovPop(closeModel: (WithGovPs? ps) => {context.router.pop(ps)}, member: member),
       );
     },
   );

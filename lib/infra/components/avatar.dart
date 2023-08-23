@@ -90,6 +90,7 @@ class Avatar extends StatelessWidget {
               ),
             )
           : BaseAvatar(
+              key: Key("BASE$id"),
               id,
               true,
               size,
@@ -189,9 +190,17 @@ class BaseAvatarWithPop extends StatefulWidget {
 
 class _BaseAvatarWithPopState extends State<BaseAvatarWithPop> {
   final BasePopupMenuController menuController = BasePopupMenuController();
+  Widget? ctx;
 
   @override
-  Widget build(BuildContext context) {
+  void didUpdateWidget(covariant BaseAvatarWithPop oldWidget) {
+    if (oldWidget.color != widget.color) {
+      ctx = null;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  buildCtx(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return BasePopupMenu(
       verticalMargin: 5.w,
@@ -261,5 +270,13 @@ class _BaseAvatarWithPopState extends State<BaseAvatarWithPop> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (ctx != null) {
+      return ctx!;
+    }
+    return buildCtx(context);
   }
 }

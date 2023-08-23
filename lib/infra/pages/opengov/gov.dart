@@ -16,6 +16,7 @@ import 'member.dart';
 import 'overview.dart';
 import 'gov_menu.dart';
 import 'referendum.dart';
+import 'treasury.dart';
 
 @RoutePage(name: "govRoute")
 class GovPage extends StatefulWidget {
@@ -26,12 +27,8 @@ class GovPage extends StatefulWidget {
 }
 
 class _GovPageState extends State<GovPage> {
-  final mainPages = [
-    const Overviewpage(),
-    const MemberPage(),
-    const ReferendumPage(),
-  ];
-  late PageController pageController = PageController();
+  final PageController pageController = PageController();
+  List<Widget> mainPages = [];
   late final AppCubit im;
   final StreamController<String> currentId = StreamController<String>.broadcast();
   String pageStr = "Overview";
@@ -45,6 +42,12 @@ class _GovPageState extends State<GovPage> {
     currentId.add(pageStr);
     im = context.read<AppCubit>();
     workCtx.setOrg(im.currentState!.org, im.me!);
+    mainPages = [
+      const Overviewpage(),
+      const MemberPage(),
+      const ReferendumPage(),
+      TreasuryPage(toVote: gotoPage),
+    ];
     workCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
@@ -69,6 +72,18 @@ class _GovPageState extends State<GovPage> {
     _timer?.cancel();
   }
 
+  gotoPage(id) {
+    final index = getPageIndex(id);
+    pageController
+        .animateToPage(
+          index,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+        )
+        .then((v) {});
+    if (c != null) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey(debugLabel: "drawer");
@@ -84,8 +99,7 @@ class _GovPageState extends State<GovPage> {
                 stream: currentId.stream,
                 builder: (BuildContext context, AsyncSnapshot<String> id) {
                   return SideMenu(id.data ?? pageStr, (id) {
-                    pageController.jumpToPage(getPageIndex(id));
-                    currentId.add(id);
+                    gotoPage(id);
                   });
                 },
               ),
@@ -125,14 +139,7 @@ class _GovPageState extends State<GovPage> {
                         stream: currentId.stream,
                         builder: (BuildContext context, AsyncSnapshot<String> id) {
                           return SideMenu(id.data ?? pageStr, (id) {
-                            final index = getPageIndex(id);
-                            pageController
-                                .animateToPage(index,
-                                    duration: const Duration(milliseconds: 100), curve: Curves.easeInOut)
-                                .then((v) {});
-
-                            currentId.add(id);
-                            if (c != null) {}
+                            gotoPage(id);
                           });
                         },
                       ),
@@ -155,22 +162,16 @@ class _GovPageState extends State<GovPage> {
 
   int getPageIndex(str) {
     pageStr = str;
+    currentId.add(str);
     switch (str) {
       case "Overview":
         return 0;
       case "Members":
         return 1;
-      case "Referendums":
+      case "Referenda":
         return 2;
-      // case "Combind Boards":
-      //   return 3;
-      default:
-        if (str.contains("Guilds")) {
-          return 4;
-        }
-        if (str.contains("Projects")) {
-          return 5;
-        }
+      case "Treasury":
+        return 3;
     }
     return 0;
   }

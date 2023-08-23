@@ -48,7 +48,6 @@ app.*.map.json
 **/target/
 **/build/
 
-exts
 libolm.3.dylib
 libcrypto.1.1.dylib
 # rust_wraper/Cargo.lock

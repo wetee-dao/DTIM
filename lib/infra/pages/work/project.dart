@@ -149,6 +149,8 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                                   scope: 3,
                                   id: widget.info.id,
                                 ),
+                                // TODO
+                                periodIndex: 0,
                               ),
                             );
                             await workCtx.daoRefresh();

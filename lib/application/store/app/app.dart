@@ -95,6 +95,8 @@ class AppCubit extends Cubit<AppState> {
             return "密码错误";
           }
 
+          printDebug(user.address);
+          printDebug("$signCtx||$sign");
           emit(state.copyWith(
             me: user,
             signCtx: signCtx,
@@ -155,7 +157,7 @@ class AppCubit extends Cubit<AppState> {
 
   // 连接账户
   Future<bool> connect(AccountOrg org) async {
-    if(org.domain!.contains("http://")){
+    if (org.domain!.contains("http://")) {
       org.domain = org.domain!.replaceFirst("http://", "https://");
     }
     final server = Uri.parse(org.domain ?? "");

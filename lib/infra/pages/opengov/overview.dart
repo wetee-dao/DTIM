@@ -57,19 +57,19 @@ class Overviewpage extends StatelessWidget {
                           children: [
                             InfoCard(
                               icon: AppIcons.zichan,
-                              label: "Treasury",
-                              amount: 'WTE ${dao.daoAmount.free.toString()}',
+                              label: "Treasury TOKEN",
+                              amount: 'WTE ${dao.daoAmount.free / dao.dao.chainUnit}',
+                            ),
+                            InfoCard(
+                              icon: AppIcons.zuzhi_data_organization_6,
+                              label: "Treasury SHARE",
+                              amount: '${dao.guilds.length}',
                             ),
                             InfoCard(
                               icon: AppIcons.share,
                               label: "Issued SHARE",
                               amount: dao.totalIssuance.toString(),
                             ),
-                            // InfoCard(
-                            //   icon: AppIcons.zuzhi_data_organization_6,
-                            //   label: "Skilled Guild",
-                            //   amount: '${dao.guilds.length}',
-                            // ),
                             // InfoCard(
                             //   icon: AppIcons.xiangmu,
                             //   label: "Project",

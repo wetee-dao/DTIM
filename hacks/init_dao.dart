@@ -9,22 +9,28 @@ const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson mo
 void main() async {
   // 添加用户到项目
   var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);
-  var clientIndex = await rustApi.connect(url: "ws://127.0.0.1:3994");
-  print("Start INIT");
+  var clientIndex = await rustApi.connect(url: "ws://127.0.0.1:9944");
+  rustApi.startClient(client: clientIndex).then((e) {}).catchError((e) {});
+
+  await Future.delayed(const Duration(seconds: 5));
+
+  print("Start INIT " + clientIndex.toString());
   await rustApi.daoInitFromPair(client: clientIndex, address: rootAddress);
   await rustApi.createDao(
     client: clientIndex,
     from: rootAddress,
-    name: "TESTDAO",
+    name: "ProgrammingDAO",
     purpose: "For the freedom of programming",
     metaData: "{}",
     bg: '',
-    desc: '',
-    homeUrl: '',
-    imApi: '',
+    desc: 'For the freedom of programming',
+    homeUrl: 'https://wetee.app/',
+    imApi: 'https://im.tc.asyou.me/',
     img: '',
-    logo: '',
+    logo: 'https://wetee.app/static/web3/img/icon.png',
   );
+
+  // 初始化资产
   await rustApi.createAsset(
     client: clientIndex,
     from: rootAddress,
@@ -34,6 +40,7 @@ void main() async {
     totalSupply: 10000,
     symbol: 'T',
   );
+
   print("Project INIT");
   await rustApi.createProject(
     from: rootAddress,
@@ -45,8 +52,10 @@ void main() async {
       runType: 2,
       amount: 100,
       member: MemberGroup(scope: 1, id: 0),
+      periodIndex: 0,
     ),
   );
+
   print("INIT DONE");
   exit(0);
 }

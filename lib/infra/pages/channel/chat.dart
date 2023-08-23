@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:dtim/domain/utils/localized_extension.dart';
-import 'package:dtim/infra/router/pop_router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:date_format/date_format.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -409,7 +409,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                 stream: _msgController.stream,
                 initialData: "",
                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  List<link.Event> events = timeline != null ? timeline!.events : [];
+                  List<link.Event> events = timeline != null
+                      ? timeline!.events
+                          .whereNot((e) => [link.EventTypes.Reaction, link.EventTypes.Redaction].contains(e.type))
+                          .toList()
+                      : [];
                   // events = events.where((e) => e.type != link.EventTypes.GroupCallMemberPrefix).toList();
                   return ListView.builder(
                     cacheExtent: 100000,
@@ -426,8 +430,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                       if (index == events.length + 1) {
                         if (timeline != null && timeline!.canRequestHistory) {
                           return Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.w),
+                            child: Container(
+                              width: 15.w,
+                              height: 15.w,
+                              margin: EdgeInsets.all(8.w),
                               child: CircularProgressIndicator.adaptive(
                                 strokeWidth: 4.w,
                                 valueColor: AlwaysStoppedAnimation(constTheme.centerChannelColor),

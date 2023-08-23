@@ -103,24 +103,58 @@ class U8WrapJ extends U8Wrap {
 
 @JsonSerializable()
 class GovPropsJ extends GovProps {
-  GovPropsJ(
-      {required int index,
-      required String hash,
-      required String runtimeCall,
-      required this.memberGroup,
-      required String account})
-      : super(
+  GovPropsJ({
+    required int index,
+    required String hash,
+    required String runtimeCall,
+    required this.memberGroup,
+    required String account,
+    required this.period,
+  }) : super(
           index: index,
           hash: hash,
           runtimeCall: runtimeCall,
           memberGroup: memberGroup,
           account: account,
+          period: period,
         );
 
   @override
   final MemberGroupJ memberGroup;
+
+  @override
+  final GovPeriodJ period;
+
   factory GovPropsJ.fromJson(Map<String, dynamic> json) => _$GovPropsJFromJson(json);
   Map<String, dynamic> toJson() => _$GovPropsJToJson(this);
+}
+
+@JsonSerializable()
+class GovPeriodJ extends GovPeriod {
+  GovPeriodJ({
+    required String name,
+    required int preparePeriod,
+    required int maxDeciding,
+    required int confirmPeriod,
+    required int decisionPeriod,
+    required int minEnactmentPeriod,
+    required int decisionDeposit,
+    required int minApproval,
+    required int minSupport,
+  }) : super(
+          name: name,
+          preparePeriod: preparePeriod,
+          maxDeciding: maxDeciding,
+          confirmPeriod: confirmPeriod,
+          decisionPeriod: decisionPeriod,
+          minEnactmentPeriod: minEnactmentPeriod,
+          decisionDeposit: decisionDeposit,
+          minApproval: minApproval,
+          minSupport: minSupport,
+        );
+
+  factory GovPeriodJ.fromJson(Map<String, dynamic> json) => _$GovPeriodJFromJson(json);
+  Map<String, dynamic> toJson() => _$GovPeriodJToJson(this);
 }
 
 @JsonSerializable()
@@ -181,29 +215,36 @@ class GuildInfoJ extends GuildInfo {
 
 @JsonSerializable()
 class GovReferendumJ extends GovReferendum {
-  GovReferendumJ(
-      {required int id,
-      required String hash,
-      required int end,
-      required String proposal,
-      required int delay,
-      required this.tally,
-      required this.memberGroup,
-      required int status})
-      : super(
-            id: id,
-            hash: hash,
-            end: end,
-            proposal: proposal,
-            delay: delay,
-            tally: tally,
-            memberGroup: memberGroup,
-            status: status);
+  GovReferendumJ({
+    required int id,
+    required String hash,
+    // required int end,
+    required String proposal,
+    // required int delay,
+    required this.tally,
+    required this.memberGroup,
+    required this.period,
+    required int status,
+  }) : super(
+          id: id,
+          hash: hash,
+          // end: end,
+          proposal: proposal,
+          // delay: delay,
+          tally: tally,
+          period: period,
+          memberGroup: memberGroup,
+          status: status,
+        );
 
   @override
   final TallyJ tally;
   @override
   final MemberGroupJ memberGroup;
+
+  @override
+  final GovPeriodJ period;
+
   factory GovReferendumJ.fromJson(Map<String, dynamic> json) => _$GovReferendumJFromJson(json);
   Map<String, dynamic> toJson() => _$GovReferendumJToJson(this);
 }
@@ -298,23 +339,23 @@ class OrgAppJ extends OrgApp {
     required String icon,
     required String url,
     required int status,
-  }):super(
-    id: id,
-    appId: appId,
-    startBlock: startBlock,
-    name: name,
-    desc: desc,
-    icon: icon,
-    url: url,
-    status: status,
-  );
+  }) : super(
+          id: id,
+          appId: appId,
+          startBlock: startBlock,
+          name: name,
+          desc: desc,
+          icon: icon,
+          url: url,
+          status: status,
+        );
 
   factory OrgAppJ.fromJson(Map<String, dynamic> json) => _$OrgAppJFromJson(json);
   Map<String, dynamic> toJson() => _$OrgAppJToJson(this);
 }
 
 @JsonSerializable()
-class AppJ extends App{
+class AppJ extends App {
   const AppJ({
     required int id,
     required String name,
@@ -323,15 +364,7 @@ class AppJ extends App{
     required String url,
     required int status,
     required String creator,
-  }):super(
-    id: id,
-    name: name,
-    desc: desc,
-    icon: icon,
-    url: url,
-    status: status,
-    creator: creator
-  );
+  }) : super(id: id, name: name, desc: desc, icon: icon, url: url, status: status, creator: creator);
 
   factory AppJ.fromJson(Map<String, dynamic> json) => _$AppJFromJson(json);
   Map<String, dynamic> toJson() => _$AppJToJson(this);
