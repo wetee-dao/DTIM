@@ -645,7 +645,7 @@ pub fn dao_gov_pending_referendum_list(client: u32, dao_id: u64) -> anyhow::Resu
                     member_group: member_trans(member),
                     account: account::ss58_to_address(account.to_string()).unwrap(),
                     period: GovPeriod {
-                        name: "",
+                        name: "".to_string(),
                         prepare_period: 10,
                         max_deciding: 10,
                         confirm_period: 10,
@@ -692,7 +692,7 @@ pub fn dao_gov_referendum_list(client: u32, dao_id: u64) -> anyhow::Result<Vec<G
                     member_group: member_trans(referendum.member_data),
                     status,
                     period: GovPeriod {
-                        name: "",
+                        name: "".to_string(),
                         prepare_period: 10,
                         max_deciding: 10,
                         confirm_period: 10,

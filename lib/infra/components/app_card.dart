@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/gov_pop.dart';
 import 'package:dtim/native_wraper.dart';

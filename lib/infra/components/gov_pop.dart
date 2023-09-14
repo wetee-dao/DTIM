@@ -37,11 +37,11 @@ class _GovPopState extends State<GovPop> {
   }
 
   getData() async {
-    periods = await XXXXdaoGovPeriods(
-      client: workCtx.chainClient,
-      orgId: workCtx.org.daoId,
-    );
-    print(periods);
+    // periods = await XXXXdaoGovPeriods(
+    //   client: workCtx.chainClient,
+    //   orgId: workCtx.org.daoId,
+    // );
+    // print(periods);
     setState(() {});
   }
 
@@ -153,14 +153,14 @@ class _GovPopState extends State<GovPop> {
                   },
                   position: PopupMenuPosition.under,
                   itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-                    for (var i = 0; i < periods.length; i++)
-                      PopupMenuItem<int>(
-                        value: i,
-                        child: Text(
-                          periods[i].name,
-                          style: titleStyle,
-                        ),
-                      ),
+                    // for (var i = 0; i < periods.length; i++)
+                    //   PopupMenuItem<int>(
+                    //     value: i,
+                    //     child: Text(
+                    //       periods[i].name,
+                    //       style: titleStyle,
+                    //     ),
+                    //   ),
                   ],
                   // child: Text("xxxxxxx"),
                   child: Row(
@@ -168,7 +168,7 @@ class _GovPopState extends State<GovPop> {
                     children: [
                       Icon(Icons.fact_check_rounded, color: constTheme.centerChannelColor),
                       SizedBox(width: 5.w),
-                      Text(periods[_data.periodIndex].name, style: titleStyle),
+                      // Text(periods[_data.periodIndex].name, style: titleStyle),
                     ],
                   ),
                 ),

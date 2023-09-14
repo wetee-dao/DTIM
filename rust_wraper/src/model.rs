@@ -118,15 +118,15 @@ pub struct GovProps {
 
 #[derive(PartialEq, Eq, Clone, Debug, Default)]
 pub struct GovPeriod {
-    name: String,
-    prepare_period: i64,
-    max_deciding: i64,
-    confirm_period: i64,
-    decision_period: i64,
-    min_enactment_period: i64,
-    decision_deposit: i64,
-    min_approval: i64,
-    min_support: i64,
+    pub name: String,
+    pub prepare_period: i64,
+    pub max_deciding: i64,
+    pub confirm_period: i64,
+    pub decision_period: i64,
+    pub min_enactment_period: i64,
+    pub decision_deposit: i64,
+    pub min_approval: i64,
+    pub min_support: i64,
 }
 
 

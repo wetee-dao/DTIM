@@ -1,83 +1,83 @@
-import 'dart:typed_data';
-// ignore: depend_on_referenced_packages
-import 'package:js/js.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js_util';
+// import 'dart:typed_data';
+// // ignore: depend_on_referenced_packages
+// import 'package:js/js.dart';
+// // ignore: avoid_web_libraries_in_flutter
+// import 'dart:js_util';
 
 import 'dart:convert';
 
-import 'bridge_struct.dart';
+// import 'bridge_struct.dart';
 
-@JS("createTreasuryProposal")
-external int createTreasuryProposalFunc(
-  String from,
-  int client,
-  int daoId,
-  String beneficiary,
-  int value,
-);
+// @JS("createTreasuryProposal")
+// external int createTreasuryProposalFunc(
+//   String from,
+//   int client,
+//   int daoId,
+//   String beneficiary,
+//   int value,
+// );
 
-Future<int> XXXXcreateTreasuryProposal({
-  required String from,
-  required int client,
-  required int daoId,
-  required String beneficiary,
-  required int value,
-  dynamic hint,
-}) async {
-  try {
-    return await promiseToFuture(createTreasuryProposalFunc(from, client, daoId, beneficiary, value));
-  } catch (e) {
-    rethrow;
-  }
-}
+// Future<int> XXXXcreateTreasuryProposal({
+//   required String from,
+//   required int client,
+//   required int daoId,
+//   required String beneficiary,
+//   required int value,
+//   dynamic hint,
+// }) async {
+//   try {
+//     return await promiseToFuture(createTreasuryProposalFunc(from, client, daoId, beneficiary, value));
+//   } catch (e) {
+//     rethrow;
+//   }
+// }
 
-@JS("govProposal")
-external bool govProposalFunc(
-  String from,
-  int client,
-  int daoId,
-  int proposalId,
-  WithGovPs? ext,
-);
+// @JS("govProposal")
+// external bool govProposalFunc(
+//   String from,
+//   int client,
+//   int daoId,
+//   int proposalId,
+//   WithGovPs? ext,
+// );
 
-Future<bool> XXXXgovProposal({
-  required String from,
-  required int client,
-  required int daoId,
-  required int proposalId,
-  WithGovPs? ext,
-  dynamic hint,
-}) async {
-  try {
-    return await promiseToFuture(govProposalFunc(from, client, daoId, proposalId, ext));
-  } catch (e) {
-    rethrow;
-  }
-}
+// Future<bool> XXXXgovProposal({
+//   required String from,
+//   required int client,
+//   required int daoId,
+//   required int proposalId,
+//   WithGovPs? ext,
+//   dynamic hint,
+// }) async {
+//   try {
+//     return await promiseToFuture(govProposalFunc(from, client, daoId, proposalId, ext));
+//   } catch (e) {
+//     rethrow;
+//   }
+// }
 
-@JS("daoTreasuryProposals")
-external bool daoTreasuryProposalsFunc(int client, int daoId);
-Future<List<Treasury>> XXXXdaoTreasuryProposals({
-  required int client,
-  required int orgId,
-}) async {
-  try {
-    var result = await promiseToFuture(daoTreasuryProposalsFunc(
-      client,
-      orgId,
-    ));
-    var data = jsonDecode(result) as List<dynamic>;
-    List<Treasury> list = [];
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i] as Map<String, dynamic>;
-      list.add(Treasury.fromJson(item));
-    }
-    return list;
-  } catch (e) {
-    rethrow;
-  }
-}
+// @JS("daoTreasuryProposals")
+// external bool daoTreasuryProposalsFunc(int client, int daoId);
+// Future<List<Treasury>> XXXXdaoTreasuryProposals({
+//   required int client,
+//   required int orgId,
+// }) async {
+//   try {
+//     var result = await promiseToFuture(daoTreasuryProposalsFunc(
+//       client,
+//       orgId,
+//     ));
+//     var data = jsonDecode(result) as List<dynamic>;
+//     List<Treasury> list = [];
+//     for (var i = 0; i < data.length; i++) {
+//       var item = data[i] as Map<String, dynamic>;
+//       list.add(Treasury.fromJson(item));
+//     }
+//     return list;
+//   } catch (e) {
+//     rethrow;
+//   }
+// }
 
 class Treasury {
   String proposer;
@@ -123,28 +123,28 @@ class Treasury {
       };
 }
 
-@JS("daoGovPeriods")
-external bool daoGovPeriodsFunc(int client, int daoId);
-Future<List<Period>> XXXXdaoGovPeriods({
-  required int client,
-  required int orgId,
-}) async {
-  try {
-    var result = await promiseToFuture(daoGovPeriodsFunc(
-      client,
-      orgId,
-    ));
-    var data = jsonDecode(result) as List<dynamic>;
-    List<Period> list = [];
-    for (var i = 0; i < data.length; i++) {
-      var item = data[i] as Map<String, dynamic>;
-      list.add(Period.fromJson(item));
-    }
-    return list;
-  } catch (e) {
-    rethrow;
-  }
-}
+// @JS("daoGovPeriods")
+// external bool daoGovPeriodsFunc(int client, int daoId);
+// Future<List<Period>> XXXXdaoGovPeriods({
+//   required int client,
+//   required int orgId,
+// }) async {
+//   try {
+//     var result = await promiseToFuture(daoGovPeriodsFunc(
+//       client,
+//       orgId,
+//     ));
+//     var data = jsonDecode(result) as List<dynamic>;
+//     List<Period> list = [];
+//     for (var i = 0; i < data.length; i++) {
+//       var item = data[i] as Map<String, dynamic>;
+//       list.add(Period.fromJson(item));
+//     }
+//     return list;
+//   } catch (e) {
+//     rethrow;
+//   }
+// }
 
 class Period {
   String name;

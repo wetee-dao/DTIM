@@ -17,7 +17,7 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
-  flutter_rust_bridge: 1.80.0
+  flutter_rust_bridge: 1.80.1
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
@@ -116,7 +116,7 @@ dependencies:
   # webview
   # webview_cef:
   #   path: ./exts/webview_cef
-  flutter_inappwebview: ^6.0.0-beta.24+1
+  # flutter_inappwebview: ^6.0.0-beta.24+1
 
 dev_dependencies:
   flutter_test:

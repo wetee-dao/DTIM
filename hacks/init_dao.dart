@@ -26,7 +26,7 @@ void main() async {
     desc: 'For the freedom of programming',
     homeUrl: 'https://wetee.app/',
     imApi: 'https://im.tc.asyou.me/',
-    img: '',
+    img: 'https://wetee.app/static/web3/img/logo.png',
     logo: 'https://wetee.app/static/web3/img/icon.png',
   );
 

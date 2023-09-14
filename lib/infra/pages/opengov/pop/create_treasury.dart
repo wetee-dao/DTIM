@@ -56,21 +56,21 @@ class _CreateTreasuryPageState extends State<CreateTreasuryPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        var pid = await XXXXcreateTreasuryProposal(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
-          daoId: workCtx.org.daoId,
-          value: _data.amount,
-          beneficiary: workCtx.user.address,
-        );
+        // var pid = await XXXXcreateTreasuryProposal(
+        //   from: workCtx.user.address,
+        //   client: workCtx.chainClient,
+        //   daoId: workCtx.org.daoId,
+        //   value: _data.amount,
+        //   beneficiary: workCtx.user.address,
+        // );
 
-        await XXXXgovProposal(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
-          daoId: workCtx.org.daoId,
-          proposalId: pid,
-          ext: gov,
-        );
+        // await XXXXgovProposal(
+        //   from: workCtx.user.address,
+        //   client: workCtx.chainClient,
+        //   daoId: workCtx.org.daoId,
+        //   proposalId: pid,
+        //   ext: gov,
+        // );
 
         BotToast.showText(text: gov.runType == 2 ? "国库申请成功" : "国库申请成功，请到治理插件中开启投票");
       },

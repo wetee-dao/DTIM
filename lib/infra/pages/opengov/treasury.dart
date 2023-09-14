@@ -32,13 +32,13 @@ class _TreasuryPageState extends State<TreasuryPage> {
   }
 
   getData() async {
-    var ls = await XXXXdaoTreasuryProposals(client: dao.chainClient, orgId: dao.org.daoId);
-    print(ls);
-    if (mounted) {
-      setState(() {
-        list = ls;
-      });
-    }
+    // var ls = await XXXXdaoTreasuryProposals(client: dao.chainClient, orgId: dao.org.daoId);
+    // print(ls);
+    // if (mounted) {
+    //   setState(() {
+    //     list = ls;
+    //   });
+    // }
   }
 
   @override
