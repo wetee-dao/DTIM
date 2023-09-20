@@ -17,8 +17,6 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 
-import 'image_bubble.dart';
-
 class Sticker extends StatefulWidget {
   final Event event;
 

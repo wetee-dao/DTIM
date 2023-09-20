@@ -1,16 +1,12 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/bridge_struct.dart';
-import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/gov_pop.dart';
 import 'package:dtim/native_wraper.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:dtim/application/store/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
