@@ -1,3 +1,0 @@
-[submodule "exts/webview_cef"]
-	path = exts/webview_cef
-	url = https://github.com/hlwhl/webview_cef
