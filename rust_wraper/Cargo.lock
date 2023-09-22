@@ -141,12 +141,13 @@ dependencies = [
 
 [[package]]
 name = "allo-isolate"
-version = "0.1.18"
+version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71441b1911974f09ca413fc93fb2e3bfc60f4a284fdc7fd51e5a81b6afc61727"
+checksum = "c258c1a017ecaccfb34c8fa46ecbb2f5402584e31082c12b5caf0be82ac5ac44"
 dependencies = [
  "anyhow",
  "atomic",
+ "backtrace",
  "chrono",
 ]
 
@@ -1240,12 +1241,13 @@ dependencies = [
 
 [[package]]
 name = "flutter_rust_bridge"
-version = "1.80.1"
+version = "1.82.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd0305ebc9f097d9826530a55fc2acd63222e912c663f7adce3ab641ecc0f346"
+checksum = "d5b3f423054f2fbc74e3dcef394ef3fd7a4f8309265a6b9a6ccf9c0fb07bb14b"
 dependencies = [
  "allo-isolate",
  "anyhow",
+ "backtrace",
  "build-target",
  "bytemuck",
  "cc",
@@ -5802,6 +5804,7 @@ dependencies = [
 [[package]]
 name = "wetee_rust_sdk"
 version = "0.5.0"
+source = "git+https://github.com/WeteeDAO/wetee-rust-sdk.git#73f7f99542d11128c1ef06dc03792287f565736a"
 dependencies = [
  "anyhow",
  "base64 0.13.1",
