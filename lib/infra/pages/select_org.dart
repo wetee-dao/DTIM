@@ -257,12 +257,13 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "# ${userOrgs[i].orgName ?? ""}",
+                                  "# ${userOrgs[i].orgName ?? "-"}",
                                   style: TextStyle(
                                     color: constTheme.centerChannelColor,
                                     fontSize: 16.w,
                                   ),
                                   maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
                                   userOrgs[i].orgDesc ?? "",
