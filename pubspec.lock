@@ -17,6 +17,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.9.0+2"
+  adaptive_number:
+    dependency: transitive
+    description:
+      name: adaptive_number
+      sha256: "3a567544e9b5c9c803006f51140ad544aedc79604fd4f3f2c1380003f97c1d77"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   adaptive_theme:
     dependency: "direct main"
     description:
@@ -177,6 +185,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
+  base_x:
+    dependency: transitive
+    description:
+      name: base_x
+      sha256: "519abcdafd637d4b6bd7e72fabd8f9264935f804b9b9f6c5d8411c7d52cbf8fd"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.1"
+  bip39_mnemonic:
+    dependency: transitive
+    description:
+      name: bip39_mnemonic
+      sha256: "24855a62fb9dd930f697063a274e084b0a574e1cc55ec270ca4756f579ab512c"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.6"
   bloc:
     dependency: transitive
     description:
@@ -385,6 +409,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.3"
+  cryptography:
+    dependency: transitive
+    description:
+      name: cryptography
+      sha256: df156c5109286340817d21fa7b62f9140f17915077127dd70f8bd7a2a0997a35
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.5.0"
   csslib:
     dependency: transitive
     description:
@@ -481,6 +513,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.3"
+  ed25519_edwards:
+    dependency: transitive
+    description:
+      name: ed25519_edwards
+      sha256: "6ce0112d131327ec6d42beede1e5dfd526069b18ad45dcf654f15074ad9276cd"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.1"
   emoji_picker_flutter:
     dependency: "direct main"
     description:
@@ -630,6 +670,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.0"
+  flutter_curve25519:
+    dependency: transitive
+    description:
+      name: flutter_curve25519
+      sha256: d2d196e51de878f5f0289d2d7c5e93dc0c62ccda7ca98c7e47b5a58a6851b861
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.2"
   flutter_driver:
     dependency: transitive
     description: flutter
@@ -1340,6 +1388,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.2"
+  polkadart_keyring:
+    dependency: "direct main"
+    description:
+      name: polkadart_keyring
+      sha256: ba568c22f3ff2a77c35fe0d53845212c1a433f99645e286550d1889dbb437d3c
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.1"
   polkadart_scale_codec:
     dependency: transitive
     description:
@@ -1649,6 +1705,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.9.1"
+  ss58:
+    dependency: transitive
+    description:
+      name: ss58
+      sha256: b24d2713597b83708ef30daea5a565dba8bc9129031b30c025069e168301ae5e
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   stack_trace:
     dependency: transitive
     description:
@@ -1681,6 +1745,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  substrate_bip39:
+    dependency: transitive
+    description:
+      name: substrate_bip39
+      sha256: "78b45e9959c3394ecc9b56d9bfb07e11f93db70d273eccd93e3e4d84b28f11c0"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.0"
   substrate_metadata:
     dependency: transitive
     description:

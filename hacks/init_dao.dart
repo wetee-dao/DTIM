@@ -5,28 +5,40 @@
 
 import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
-import 'package:polkadart/apis/apis.dart';
-import 'package:polkadart/polkadart.dart' show Provider, StateApi;
+import 'package:dtim/generated/wetee/wetee.dart';
+import 'package:polkadart/polkadart.dart' show AuthorApi, Provider, StateApi;
+import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 // ignore: constant_identifier_names
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {
+  final api = Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
+  final wetee = Wetee(api);
+  final keyPair = await KeyPair.fromMnemonic(DAO_ROOT_SEED);
+  final author = AuthorApi(api);
 
-  final polkadart =
-      Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
-  final state = StateApi(polkadart);
-  final runtimeVersion = await state.getRuntimeVersion();
-  print(runtimeVersion.toJson());
+  wetee.query.weteeOrg.nextDaoId().then((e) {
+    print(e);
+  });
 
-  final author = AuthorApi(polkadart);
-  final extrinsic = hex.decode(
-      '350284004ea987928399dfe5b94bf7d37995850a21067bfa4549fa83b40250ee635fc06400036990f9642741b00d3484d2e5bd7cba6fa2eea682f6b6c612e47c204f09b0838c171ba42feae5bea1c48a48213cba42a5d590e1c07d1213d263a258f23f5102001c000a07004ea987928399dfe5b94bf7d37995850a21067bfa4549fa83b40250ee635fc064025a6202');
 
-  final submit = await author.submitAndWatchExtrinsic(extrinsic as Uint8List,
-      (data) => print('From here: ${data.type} - ${data.value}'));
-  print(submit);
+  var tx = wetee.tx.weteeOrg.createDao(
+    name: convertStringToUint8List("ProgrammingDAO"),
+    bg: convertStringToUint8List(''),
+    logo: convertStringToUint8List(''),
+    img: convertStringToUint8List('https://wetee.app/static/web3/img/logo.png'),
+    homeUrl: convertStringToUint8List('https://wetee.app/'),
+    imApi: convertStringToUint8List('https://im.tc.asyou.me/'),
+    desc: convertStringToUint8List('For the freedom of programming'),
+    purpose: convertStringToUint8List("For the freedom of programming"),
+    metaData: convertStringToUint8List("{}"),
+  );
+
+  print("xxxxxx");
+  
+
+  
 
   // 添加用户到项目
   // var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);
@@ -79,4 +91,15 @@ void main() async {
 
   // print("INIT DONE");
   // exit(0);
+}
+
+Uint8List convertStringToUint8List(String str) {
+  final List<int> codeUnits = str.codeUnits;
+  final Uint8List unit8List = Uint8List.fromList(codeUnits);
+
+  return unit8List;
+}
+
+String convertUint8ListToString(Uint8List uint8list) {
+  return String.fromCharCodes(uint8list);
 }

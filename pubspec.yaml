@@ -114,6 +114,7 @@ dependencies:
   # 设备信息
   device_info_plus: ^9.0.2
   polkadart: ^0.2.1
+  polkadart_keyring: ^0.2.1
   # webview
   # webview_cef:
   #   path: ./exts/webview_cef
@@ -139,6 +140,7 @@ dependency_overrides:
   # c库调用
   # ffi: ^2.0.1
   http: ^0.13.5
+  collection: ^1.17.1
 
 polkadart:
   output_dir: lib/generated # Optional. Sets the directory of generated files. Provided value should be a valid path on your system. Default: lib/generated
