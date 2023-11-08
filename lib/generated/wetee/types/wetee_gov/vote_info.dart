@@ -3,7 +3,7 @@ import 'dart:typed_data' as _i4;
 
 import 'package:polkadart/scale_codec.dart' as _i1;
 
-import '../wetee_runtime/pledge.dart' as _i2;
+import '../wetee_runtime/vote/pledge.dart' as _i2;
 import 'opinion.dart' as _i3;
 
 class VoteInfo {

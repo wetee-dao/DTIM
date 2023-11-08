@@ -47,12 +47,14 @@ class $Call {
   }
 
   ClusterMortgage clusterMortgage({
+    required BigInt id,
     required int cpu,
     required int mem,
     required int disk,
     required BigInt deposit,
   }) {
     return ClusterMortgage(
+      id: id,
       cpu: cpu,
       mem: mem,
       disk: disk,
@@ -60,8 +62,14 @@ class $Call {
     );
   }
 
-  ClusterUnmortgage clusterUnmortgage({required BigInt index}) {
-    return ClusterUnmortgage(index: index);
+  ClusterUnmortgage clusterUnmortgage({
+    required BigInt id,
+    required BigInt blockNum,
+  }) {
+    return ClusterUnmortgage(
+      id: id,
+      blockNum: blockNum,
+    );
   }
 
   ClusterProofUpload clusterProofUpload() {
@@ -275,6 +283,7 @@ class ClusterRegister extends Call {
 /// See [`Pallet::cluster_mortgage`].
 class ClusterMortgage extends Call {
   const ClusterMortgage({
+    required this.id,
     required this.cpu,
     required this.mem,
     required this.disk,
@@ -283,12 +292,16 @@ class ClusterMortgage extends Call {
 
   factory ClusterMortgage._decode(_i1.Input input) {
     return ClusterMortgage(
+      id: _i1.U64Codec.codec.decode(input),
       cpu: _i1.U16Codec.codec.decode(input),
       mem: _i1.U16Codec.codec.decode(input),
       disk: _i1.U16Codec.codec.decode(input),
       deposit: _i1.CompactBigIntCodec.codec.decode(input),
     );
   }
+
+  /// u64
+  final BigInt id;
 
   /// u16
   final int cpu;
@@ -305,6 +318,7 @@ class ClusterMortgage extends Call {
   @override
   Map<String, Map<String, dynamic>> toJson() => {
         'cluster_mortgage': {
+          'id': id,
           'cpu': cpu,
           'mem': mem,
           'disk': disk,
@@ -314,6 +328,7 @@ class ClusterMortgage extends Call {
 
   int _sizeHint() {
     int size = 1;
+    size = size + _i1.U64Codec.codec.sizeHint(id);
     size = size + _i1.U16Codec.codec.sizeHint(cpu);
     size = size + _i1.U16Codec.codec.sizeHint(mem);
     size = size + _i1.U16Codec.codec.sizeHint(disk);
@@ -324,6 +339,10 @@ class ClusterMortgage extends Call {
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
       2,
+      output,
+    );
+    _i1.U64Codec.codec.encodeTo(
+      id,
       output,
     );
     _i1.U16Codec.codec.encodeTo(
@@ -351,6 +370,7 @@ class ClusterMortgage extends Call {
         other,
       ) ||
       other is ClusterMortgage &&
+          other.id == id &&
           other.cpu == cpu &&
           other.mem == mem &&
           other.disk == disk &&
@@ -358,6 +378,7 @@ class ClusterMortgage extends Call {
 
   @override
   int get hashCode => Object.hash(
+        id,
         cpu,
         mem,
         disk,
@@ -367,23 +388,36 @@ class ClusterMortgage extends Call {
 
 /// See [`Pallet::cluster_unmortgage`].
 class ClusterUnmortgage extends Call {
-  const ClusterUnmortgage({required this.index});
+  const ClusterUnmortgage({
+    required this.id,
+    required this.blockNum,
+  });
 
   factory ClusterUnmortgage._decode(_i1.Input input) {
-    return ClusterUnmortgage(index: _i1.U64Codec.codec.decode(input));
+    return ClusterUnmortgage(
+      id: _i1.U64Codec.codec.decode(input),
+      blockNum: _i1.U64Codec.codec.decode(input),
+    );
   }
 
+  /// u64
+  final BigInt id;
+
   /// BlockNumberFor<T>
-  final BigInt index;
+  final BigInt blockNum;
 
   @override
   Map<String, Map<String, BigInt>> toJson() => {
-        'cluster_unmortgage': {'index': index}
+        'cluster_unmortgage': {
+          'id': id,
+          'blockNum': blockNum,
+        }
       };
 
   int _sizeHint() {
     int size = 1;
-    size = size + _i1.U64Codec.codec.sizeHint(index);
+    size = size + _i1.U64Codec.codec.sizeHint(id);
+    size = size + _i1.U64Codec.codec.sizeHint(blockNum);
     return size;
   }
 
@@ -393,7 +427,11 @@ class ClusterUnmortgage extends Call {
       output,
     );
     _i1.U64Codec.codec.encodeTo(
-      index,
+      id,
+      output,
+    );
+    _i1.U64Codec.codec.encodeTo(
+      blockNum,
       output,
     );
   }
@@ -404,10 +442,15 @@ class ClusterUnmortgage extends Call {
         this,
         other,
       ) ||
-      other is ClusterUnmortgage && other.index == index;
+      other is ClusterUnmortgage &&
+          other.id == id &&
+          other.blockNum == blockNum;
 
   @override
-  int get hashCode => index.hashCode;
+  int get hashCode => Object.hash(
+        id,
+        blockNum,
+      );
 }
 
 /// See [`Pallet::cluster_proof_upload`].

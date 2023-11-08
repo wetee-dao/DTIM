@@ -3,7 +3,7 @@ import 'dart:typed_data' as _i3;
 
 import 'package:polkadart/scale_codec.dart' as _i1;
 
-import '../wetee_primitives/traits/message_origin.dart' as _i2;
+import '../wetee_runtime/worker/message_origin.dart' as _i2;
 
 class Neighbours {
   const Neighbours({
@@ -27,7 +27,7 @@ class Neighbours {
     return codec.encode(this);
   }
 
-  Map<String, Map<String, dynamic>> toJson() => {
+  Map<String, Map<String, List<int>>> toJson() => {
         'prev': prev.toJson(),
         'next': next.toJson(),
       };

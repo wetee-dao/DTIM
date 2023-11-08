@@ -8,8 +8,8 @@ import '../types/pallet_message_queue/book_state.dart' as _i3;
 import '../types/pallet_message_queue/page.dart' as _i4;
 import '../types/pallet_message_queue/pallet/call.dart' as _i8;
 import '../types/sp_weights/weight_v2/weight.dart' as _i9;
-import '../types/wetee_primitives/traits/message_origin.dart' as _i2;
 import '../types/wetee_runtime/runtime_call.dart' as _i7;
+import '../types/wetee_runtime/worker/message_origin.dart' as _i2;
 
 class Queries {
   const Queries(this.__api);

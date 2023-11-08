@@ -8,7 +8,8 @@ enum Error {
   appStatusMismatch('AppStatusMismatch', 0),
   clusterIsExists('ClusterIsExists', 1),
   clusterNotExists('ClusterNotExists', 2),
-  tooManyApp('TooManyApp', 3);
+  tooManyApp('TooManyApp', 3),
+  noCluster('NoCluster', 4);
 
   const Error(
     this.variantName,
@@ -46,6 +47,8 @@ class $ErrorCodec with _i1.Codec<Error> {
         return Error.clusterNotExists;
       case 3:
         return Error.tooManyApp;
+      case 4:
+        return Error.noCluster;
       default:
         throw Exception('Error: Invalid variant index: "$index"');
     }

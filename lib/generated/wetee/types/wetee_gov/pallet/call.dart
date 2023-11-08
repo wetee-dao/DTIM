@@ -4,8 +4,8 @@ import 'dart:typed_data' as _i2;
 import 'package:polkadart/scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i8;
 
-import '../../wetee_runtime/pledge.dart' as _i5;
 import '../../wetee_runtime/runtime_call.dart' as _i4;
+import '../../wetee_runtime/vote/pledge.dart' as _i5;
 import '../memmber_data.dart' as _i3;
 import '../opinion.dart' as _i6;
 import '../period.dart' as _i7;

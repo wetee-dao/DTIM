@@ -7,7 +7,7 @@ import 'package:quiver/collection.dart' as _i7;
 import '../../primitive_types/h256.dart' as _i3;
 import '../../sp_core/crypto/account_id32.dart' as _i6;
 import '../../sp_runtime/dispatch_error.dart' as _i5;
-import '../../wetee_runtime/pledge.dart' as _i4;
+import '../../wetee_runtime/vote/pledge.dart' as _i4;
 
 /// The `Event` enum of this pallet
 abstract class Event {

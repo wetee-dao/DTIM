@@ -26,9 +26,10 @@ void main() async {
   });
 
   final account = await wetee.query.system.account(keyPair.publicKey.bytes);
-  print(account);
+  print(account.nonce);
+  print(keyPair.address);
 
-  var rcall = wetee.tx.weteeOrg.createDao(
+  var runcall = wetee.tx.weteeOrg.createDao(
     name: convertStringToUint8List("ProgrammingDAO"),
     bg: convertStringToUint8List(''),
     logo: convertStringToUint8List(''),
@@ -39,9 +40,11 @@ void main() async {
     purpose: convertStringToUint8List("For the freedom of programming"),
     metaData: convertStringToUint8List("{}"),
   );
-  final call = hex.encode(rcall.encode());
+  final call = hex.encode(runcall.encode());
   final blockHash = await wetee.query.system.blockHash(BigInt.from(0));
   final version =  wetee.constant.system.version;
+
+  print(call);
 
   // 构建签名体
   final payloadToSign = SigningPayload(
@@ -55,21 +58,21 @@ void main() async {
     transactionVersion: version.transactionVersion,
     tip: 0,
   );
-  final payload = payloadToSign.encode(wetee.registry);
 
   // 签名
+  final payload = payloadToSign.encode(wetee.registry);
   final signature = keyPair.sign(payload);
   final hexSignature = hex.encode(signature);
-  print(hexSignature);
+
 
   final extrinsic = Extrinsic(
     signer: publicKey,
     method: call,
     signature: hexSignature,
+    blockNumber: 0,
     eraPeriod: 0,
     tip: 0,
     nonce: account.nonce.toInt(),
-    blockNumber: 0
   ).encode(wetee.registry);
 
   // final hexExtrinsic = hex.encode(extrinsic);

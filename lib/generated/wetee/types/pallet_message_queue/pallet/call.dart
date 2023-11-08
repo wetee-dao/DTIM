@@ -4,7 +4,7 @@ import 'dart:typed_data' as _i2;
 import 'package:polkadart/scale_codec.dart' as _i1;
 
 import '../../sp_weights/weight_v2/weight.dart' as _i4;
-import '../../wetee_primitives/traits/message_origin.dart' as _i3;
+import '../../wetee_runtime/worker/message_origin.dart' as _i3;
 
 /// Contains a variant per dispatchable extrinsic that this pallet has.
 abstract class Call {

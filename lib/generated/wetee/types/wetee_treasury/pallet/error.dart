@@ -6,7 +6,8 @@ import 'package:polkadart/scale_codec.dart' as _i1;
 /// The `Error` enum of this pallet.
 enum Error {
   /// DAO id mismatch
-  maxBalanceExceeded('MaxBalanceExceeded', 0);
+  maxBalanceExceeded('MaxBalanceExceeded', 0),
+  badDaoOrigin('BadDaoOrigin', 1);
 
   const Error(
     this.variantName,
@@ -38,6 +39,8 @@ class $ErrorCodec with _i1.Codec<Error> {
     switch (index) {
       case 0:
         return Error.maxBalanceExceeded;
+      case 1:
+        return Error.badDaoOrigin;
       default:
         throw Exception('Error: Invalid variant index: "$index"');
     }

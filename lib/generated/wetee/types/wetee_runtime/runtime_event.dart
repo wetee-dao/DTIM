@@ -131,25 +131,25 @@ class $RuntimeEventCodec with _i1.Codec<RuntimeEvent> {
         return Sudo._decode(input);
       case 7:
         return Tokens._decode(input);
-      case 8:
-        return MessageQueue._decode(input);
       case 9:
-        return WeteeOrg._decode(input);
+        return MessageQueue._decode(input);
       case 10:
-        return WeteeAsset._decode(input);
+        return WeteeOrg._decode(input);
       case 11:
-        return WeteeSudo._decode(input);
+        return WeteeAsset._decode(input);
       case 12:
-        return WeteeGuild._decode(input);
+        return WeteeSudo._decode(input);
       case 13:
-        return WeteeProject._decode(input);
+        return WeteeGuild._decode(input);
       case 14:
-        return WeteeGov._decode(input);
+        return WeteeProject._decode(input);
       case 15:
-        return WeteeTreasury._decode(input);
+        return WeteeGov._decode(input);
       case 16:
-        return WeteeApp._decode(input);
+        return WeteeTreasury._decode(input);
       case 17:
+        return WeteeApp._decode(input);
+      case 18:
         return WeteeWorker._decode(input);
       default:
         throw Exception('RuntimeEvent: Invalid variant index: "$index"');
@@ -536,7 +536,7 @@ class MessageQueue extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      8,
+      9,
       output,
     );
     _i9.Event.codec.encodeTo(
@@ -578,7 +578,7 @@ class WeteeOrg extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      9,
+      10,
       output,
     );
     _i10.Event.codec.encodeTo(
@@ -620,7 +620,7 @@ class WeteeAsset extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      10,
+      11,
       output,
     );
     _i11.Event.codec.encodeTo(
@@ -663,7 +663,7 @@ class WeteeSudo extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      11,
+      12,
       output,
     );
     _i12.Event.codec.encodeTo(
@@ -706,7 +706,7 @@ class WeteeGuild extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      12,
+      13,
       output,
     );
     _i13.Event.codec.encodeTo(
@@ -749,7 +749,7 @@ class WeteeProject extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      13,
+      14,
       output,
     );
     _i14.Event.codec.encodeTo(
@@ -791,7 +791,7 @@ class WeteeGov extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      14,
+      15,
       output,
     );
     _i15.Event.codec.encodeTo(
@@ -834,7 +834,7 @@ class WeteeTreasury extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      15,
+      16,
       output,
     );
     _i16.Event.codec.encodeTo(
@@ -877,7 +877,7 @@ class WeteeApp extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      16,
+      17,
       output,
     );
     _i17.Event.codec.encodeTo(
@@ -920,7 +920,7 @@ class WeteeWorker extends RuntimeEvent {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      17,
+      18,
       output,
     );
     _i18.Event.codec.encodeTo(

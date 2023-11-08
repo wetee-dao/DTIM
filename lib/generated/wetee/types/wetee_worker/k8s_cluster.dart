@@ -8,7 +8,8 @@ import '../sp_core/crypto/account_id32.dart' as _i2;
 
 class K8sCluster {
   const K8sCluster({
-    required this.creator,
+    required this.id,
+    required this.account,
     required this.startBlock,
     required this.name,
     required this.image,
@@ -21,8 +22,11 @@ class K8sCluster {
     return codec.decode(input);
   }
 
+  /// u64
+  final BigInt id;
+
   /// AccountId
-  final _i2.AccountId32 creator;
+  final _i2.AccountId32 account;
 
   /// BlockNumber
   final BigInt startBlock;
@@ -49,7 +53,8 @@ class K8sCluster {
   }
 
   Map<String, dynamic> toJson() => {
-        'creator': creator.toList(),
+        'id': id,
+        'account': account.toList(),
         'startBlock': startBlock,
         'name': name,
         'image': image,
@@ -65,9 +70,10 @@ class K8sCluster {
         other,
       ) ||
       other is K8sCluster &&
+          other.id == id &&
           _i4.listsEqual(
-            other.creator,
-            creator,
+            other.account,
+            account,
           ) &&
           other.startBlock == startBlock &&
           _i4.listsEqual(
@@ -90,7 +96,8 @@ class K8sCluster {
 
   @override
   int get hashCode => Object.hash(
-        creator,
+        id,
+        account,
         startBlock,
         name,
         image,
@@ -108,8 +115,12 @@ class $K8sClusterCodec with _i1.Codec<K8sCluster> {
     K8sCluster obj,
     _i1.Output output,
   ) {
+    _i1.U64Codec.codec.encodeTo(
+      obj.id,
+      output,
+    );
     const _i1.U8ArrayCodec(32).encodeTo(
-      obj.creator,
+      obj.account,
       output,
     );
     _i1.U64Codec.codec.encodeTo(
@@ -141,7 +152,8 @@ class $K8sClusterCodec with _i1.Codec<K8sCluster> {
   @override
   K8sCluster decode(_i1.Input input) {
     return K8sCluster(
-      creator: const _i1.U8ArrayCodec(32).decode(input),
+      id: _i1.U64Codec.codec.decode(input),
+      account: const _i1.U8ArrayCodec(32).decode(input),
       startBlock: _i1.U64Codec.codec.decode(input),
       name: _i1.U8SequenceCodec.codec.decode(input),
       image: _i1.U8SequenceCodec.codec.decode(input),
@@ -155,7 +167,8 @@ class $K8sClusterCodec with _i1.Codec<K8sCluster> {
   @override
   int sizeHint(K8sCluster obj) {
     int size = 0;
-    size = size + const _i2.AccountId32Codec().sizeHint(obj.creator);
+    size = size + _i1.U64Codec.codec.sizeHint(obj.id);
+    size = size + const _i2.AccountId32Codec().sizeHint(obj.account);
     size = size + _i1.U64Codec.codec.sizeHint(obj.startBlock);
     size = size + _i1.U8SequenceCodec.codec.sizeHint(obj.name);
     size = size + _i1.U8SequenceCodec.codec.sizeHint(obj.image);

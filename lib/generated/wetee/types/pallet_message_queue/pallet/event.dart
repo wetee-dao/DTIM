@@ -6,7 +6,7 @@ import 'package:quiver/collection.dart' as _i6;
 
 import '../../frame_support/traits/messages/process_message_error.dart' as _i4;
 import '../../sp_weights/weight_v2/weight.dart' as _i5;
-import '../../wetee_primitives/traits/message_origin.dart' as _i3;
+import '../../wetee_runtime/worker/message_origin.dart' as _i3;
 
 /// The `Event` enum of this pallet
 abstract class Event {

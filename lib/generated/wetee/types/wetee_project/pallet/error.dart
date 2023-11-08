@@ -17,7 +17,8 @@ enum Error {
   taskIsStared('TaskIsStared', 9),
   noReviewer('NoReviewer', 10),
   repeatReview('RepeatReview', 11),
-  reviewPending('ReviewPending', 12);
+  reviewPending('ReviewPending', 12),
+  badDaoOrigin('BadDaoOrigin', 13);
 
   const Error(
     this.variantName,
@@ -73,6 +74,8 @@ class $ErrorCodec with _i1.Codec<Error> {
         return Error.repeatReview;
       case 12:
         return Error.reviewPending;
+      case 13:
+        return Error.badDaoOrigin;
       default:
         throw Exception('Error: Invalid variant index: "$index"');
     }

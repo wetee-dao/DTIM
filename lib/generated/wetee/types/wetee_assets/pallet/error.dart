@@ -22,7 +22,8 @@ enum Error {
   assetIdExisted('AssetIdExisted', 14),
   depositTooLow('DepositTooLow', 15),
   depositNotZero('DepositNotZero', 16),
-  depositRateError('DepositRateError', 17);
+  depositRateError('DepositRateError', 17),
+  badDaoOrigin('BadDaoOrigin', 18);
 
   const Error(
     this.variantName,
@@ -88,6 +89,8 @@ class $ErrorCodec with _i1.Codec<Error> {
         return Error.depositNotZero;
       case 17:
         return Error.depositRateError;
+      case 18:
+        return Error.badDaoOrigin;
       default:
         throw Exception('Error: Invalid variant index: "$index"');
     }

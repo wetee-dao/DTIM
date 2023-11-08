@@ -5,8 +5,13 @@ import 'package:polkadart/scale_codec.dart' as _i1;
 
 /// The `Error` enum of this pallet.
 enum Error {
+  /// App status mismatch.
   appStatusMismatch('AppStatusMismatch', 0),
+
+  /// Root not exists.
   rootNotExists('RootNotExists', 1),
+
+  /// Too many app.
   tooManyApp('TooManyApp', 2);
 
   const Error(
