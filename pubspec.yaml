@@ -115,6 +115,7 @@ dependencies:
   device_info_plus: ^9.0.2
   polkadart: ^0.2.1
   polkadart_keyring: ^0.2.1
+  substrate_bip39: ^0.2.1
   # webview
   # webview_cef:
   #   path: ./exts/webview_cef

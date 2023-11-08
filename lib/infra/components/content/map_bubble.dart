@@ -57,7 +57,7 @@ class MapBubble extends StatelessWidget {
                         point: LatLng(latitude, longitude),
                         width: 30,
                         height: 30,
-                        builder: (_) => Transform.translate(
+                        child: Transform.translate(
                           // No idea why the offset has to be like this, instead of -15
                           // It has been determined by trying out, though, that this yields
                           // the tip of the location pin to be static when zooming.

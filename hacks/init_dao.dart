@@ -10,7 +10,8 @@ import 'package:dtim/generated/wetee/wetee.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
-// ignore: constant_identifier_names
+// ignore: constant_identifier_names 
+// 5G2qTYr4mm6MHB5x1XwZde4YWDGGmN9sXYmpsdTWpg2EAfRT
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {

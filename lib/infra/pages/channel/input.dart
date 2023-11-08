@@ -195,7 +195,7 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
   void voiceMessageAction() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-    if (await Record().hasPermission() == false) return;
+    if (await AudioRecorder().hasPermission() == false) return;
     final result = await showDialog<RecordingResult>(
       context: globalCtx(),
       useRootNavigator: false,
