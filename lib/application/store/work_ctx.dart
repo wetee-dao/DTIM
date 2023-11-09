@@ -1,17 +1,22 @@
 // import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/native_wraper.dart';
+import 'package:dtim/chain/wetee/types/wetee_gov/vote_info.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
+import 'package:polkadart/polkadart.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee/types/wetee_org/guild_info.dart';
+import 'package:dtim/chain/wetee/types/wetee_org/org_info.dart';
+import 'package:dtim/chain/wetee/types/wetee_project/project_info.dart';
+import 'package:dtim/chain/wetee/types/orml_tokens/account_data.dart';
 
 var chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
 // const chainUrl = "ws://127.0.0.1:9944";
@@ -20,10 +25,10 @@ class WorkCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
   late OrgInfo dao;
-  late AssetAccountData daoAmount;
+  late AccountData daoAmount;
   late int userPoint;
-  late AssetAccountData nativeAmount;
-  late AssetAccountData share;
+  late AccountData nativeAmount;
+  late AccountData share;
 
   int chainClient = -1;
   int blockNumber = 0;
@@ -33,7 +38,7 @@ class WorkCTX with ChangeNotifier {
   List<ProjectInfo> projects = [];
   List<String> members = [];
   String ss58Address = "";
-  List<GovVote> votes = [];
+  List<VoteInfo> votes = [];
   List<GovProps> pending = [];
   List<GovReferendum> going = [];
 
@@ -48,17 +53,19 @@ class WorkCTX with ChangeNotifier {
       callback();
       return;
     }
-
-    rustApi.connect(url: chainUrl).then((clientIndex) async {
-      rustApi.startClient(client: clientIndex).then((e) {
-        chainClient = -1;
-        printSuccess("连接断开");
-        notifyListeners();
-      }).catchError((e) {
-        chainClient = -1;
-        printError("连接错误 => $e");
-        notifyListeners();
-      });
+    final provider = Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
+    final wetee = Wetee(provider);
+    wetee.connect().then((clientIndex) async {
+      // rustApi.startClient(client: clientIndex).then((e) {
+      //   chainClient = -1;
+      //   printSuccess("连接断开");
+      //   notifyListeners();
+      // }).catchError((e) {
+      //   chainClient = -1;
+      //   printError("连接错误 => $e");
+      //   notifyListeners();
+      // });
+      chainClient = 1;
 
       Future.delayed(const Duration(seconds: 1), () async {
         for (var i = 0; i < 20; i++) {

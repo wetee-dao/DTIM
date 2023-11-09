@@ -1,5 +1,5 @@
 import 'package:dtim/router.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -82,7 +82,7 @@ void main() {
 
     await tester.waitFor(find.byKey(const Key('daoView')), timeout: const Duration(seconds: 50));
 
-    await rustApi.daoInitFromPair(client: workCtx.chainClient, address: workCtx.user.address);
+    // await rustApi.daoInitFromPair(client: workCtx.chainClient, address: workCtx.user.address);
     await workCtx.getData();
     await Future.delayed(const Duration(seconds: 6));
 
@@ -208,14 +208,14 @@ void main() {
     await tester.waitFor(find.byKey(const Key('projectView')), timeout: const Duration(seconds: 50));
 
     // 添加用户到项目
-    var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);
-    await rustApi.daoProjectJoinRequestWithRoot(
-      from: rootAddress,
-      client: workCtx.chainClient,
-      daoId: workCtx.org.daoId,
-      projectId: 1,
-      user: workCtx.user.address,
-    );
+    // var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);
+    // await rustApi.daoProjectJoinRequestWithRoot(
+    //   from: rootAddress,
+    //   client: workCtx.chainClient,
+    //   daoId: workCtx.org.daoId,
+    //   projectId: 1,
+    //   user: workCtx.user.address,
+    // );
     await Future.delayed(const Duration(seconds: 5));
 
     await tester.tap(find.byKey(const Key('createTaskBtn')));

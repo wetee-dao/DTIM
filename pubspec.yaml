@@ -144,7 +144,7 @@ dependency_overrides:
   collection: ^1.17.1
 
 polkadart:
-  output_dir: lib/generated # Optional. Sets the directory of generated files. Provided value should be a valid path on your system. Default: lib/generated
+  output_dir: lib/chain # Optional. Sets the directory of generated files. Provided value should be a valid path on your system. Default: lib/generated
   chains: # Dictionary of chains and endpoints
     wetee: ws://127.0.0.1:9944
 
