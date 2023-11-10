@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart';
 
 import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:dtim/chain/wraper/tx.dart';
+import 'package:dtim/chain/wraper/ext.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
@@ -15,6 +15,9 @@ void main() async {
   final wetee = Wetee(provider);
   final keyPair = await KeyPair.fromMnemonic(DAO_ROOT_SEED);
 
+  await wetee.getBlockNumber(provider);
+
+  // 创建DAO
   var runcall = wetee.tx.weteeOrg.createDao(
     name: convertStringToUint8List("ProgrammingDAO"),
     bg: convertStringToUint8List(''),

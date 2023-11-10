@@ -27,3 +27,4 @@ Future<ChainData> getSeedPhrase({
 List<String> seedGenerate() {
   return SubstrateBip39.generate(words: 24).words;
 }
+

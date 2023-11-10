@@ -62,21 +62,22 @@ class _$OrgStateCopyWithImpl<$Res, $Val extends OrgState>
 }
 
 /// @nodoc
-abstract class _$$_OrgStateCopyWith<$Res> implements $OrgStateCopyWith<$Res> {
-  factory _$$_OrgStateCopyWith(
-          _$_OrgState value, $Res Function(_$_OrgState) then) =
-      __$$_OrgStateCopyWithImpl<$Res>;
+abstract class _$$OrgStateImplCopyWith<$Res>
+    implements $OrgStateCopyWith<$Res> {
+  factory _$$OrgStateImplCopyWith(
+          _$OrgStateImpl value, $Res Function(_$OrgStateImpl) then) =
+      __$$OrgStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String channelId, int lastSyncTime});
 }
 
 /// @nodoc
-class __$$_OrgStateCopyWithImpl<$Res>
-    extends _$OrgStateCopyWithImpl<$Res, _$_OrgState>
-    implements _$$_OrgStateCopyWith<$Res> {
-  __$$_OrgStateCopyWithImpl(
-      _$_OrgState _value, $Res Function(_$_OrgState) _then)
+class __$$OrgStateImplCopyWithImpl<$Res>
+    extends _$OrgStateCopyWithImpl<$Res, _$OrgStateImpl>
+    implements _$$OrgStateImplCopyWith<$Res> {
+  __$$OrgStateImplCopyWithImpl(
+      _$OrgStateImpl _value, $Res Function(_$OrgStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -85,7 +86,7 @@ class __$$_OrgStateCopyWithImpl<$Res>
     Object? channelId = null,
     Object? lastSyncTime = null,
   }) {
-    return _then(_$_OrgState(
+    return _then(_$OrgStateImpl(
       channelId: null == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
@@ -100,8 +101,8 @@ class __$$_OrgStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_OrgState implements _OrgState {
-  const _$_OrgState({this.channelId = "", this.lastSyncTime = 0});
+class _$OrgStateImpl implements _OrgState {
+  const _$OrgStateImpl({this.channelId = "", this.lastSyncTime = 0});
 
   @override
   @JsonKey()
@@ -119,7 +120,7 @@ class _$_OrgState implements _OrgState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_OrgState &&
+            other is _$OrgStateImpl &&
             (identical(other.channelId, channelId) ||
                 other.channelId == channelId) &&
             (identical(other.lastSyncTime, lastSyncTime) ||
@@ -132,13 +133,13 @@ class _$_OrgState implements _OrgState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_OrgStateCopyWith<_$_OrgState> get copyWith =>
-      __$$_OrgStateCopyWithImpl<_$_OrgState>(this, _$identity);
+  _$$OrgStateImplCopyWith<_$OrgStateImpl> get copyWith =>
+      __$$OrgStateImplCopyWithImpl<_$OrgStateImpl>(this, _$identity);
 }
 
 abstract class _OrgState implements OrgState {
   const factory _OrgState({final String channelId, final int lastSyncTime}) =
-      _$_OrgState;
+      _$OrgStateImpl;
 
   @override
   String get channelId;
@@ -146,6 +147,6 @@ abstract class _OrgState implements OrgState {
   int get lastSyncTime;
   @override
   @JsonKey(ignore: true)
-  _$$_OrgStateCopyWith<_$_OrgState> get copyWith =>
+  _$$OrgStateImplCopyWith<_$OrgStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

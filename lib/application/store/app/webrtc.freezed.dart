@@ -57,22 +57,22 @@ class _$WebRTCStateCopyWithImpl<$Res, $Val extends WebRTCState>
 }
 
 /// @nodoc
-abstract class _$$_WebRTCStateCopyWith<$Res>
+abstract class _$$WebRTCStateImplCopyWith<$Res>
     implements $WebRTCStateCopyWith<$Res> {
-  factory _$$_WebRTCStateCopyWith(
-          _$_WebRTCState value, $Res Function(_$_WebRTCState) then) =
-      __$$_WebRTCStateCopyWithImpl<$Res>;
+  factory _$$WebRTCStateImplCopyWith(
+          _$WebRTCStateImpl value, $Res Function(_$WebRTCStateImpl) then) =
+      __$$WebRTCStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int lastSyncTime});
 }
 
 /// @nodoc
-class __$$_WebRTCStateCopyWithImpl<$Res>
-    extends _$WebRTCStateCopyWithImpl<$Res, _$_WebRTCState>
-    implements _$$_WebRTCStateCopyWith<$Res> {
-  __$$_WebRTCStateCopyWithImpl(
-      _$_WebRTCState _value, $Res Function(_$_WebRTCState) _then)
+class __$$WebRTCStateImplCopyWithImpl<$Res>
+    extends _$WebRTCStateCopyWithImpl<$Res, _$WebRTCStateImpl>
+    implements _$$WebRTCStateImplCopyWith<$Res> {
+  __$$WebRTCStateImplCopyWithImpl(
+      _$WebRTCStateImpl _value, $Res Function(_$WebRTCStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_WebRTCStateCopyWithImpl<$Res>
   $Res call({
     Object? lastSyncTime = null,
   }) {
-    return _then(_$_WebRTCState(
+    return _then(_$WebRTCStateImpl(
       lastSyncTime: null == lastSyncTime
           ? _value.lastSyncTime
           : lastSyncTime // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_WebRTCStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WebRTCState implements _WebRTCState {
-  const _$_WebRTCState({this.lastSyncTime = 0});
+class _$WebRTCStateImpl implements _WebRTCState {
+  const _$WebRTCStateImpl({this.lastSyncTime = 0});
 
   @override
   @JsonKey()
@@ -107,7 +107,7 @@ class _$_WebRTCState implements _WebRTCState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WebRTCState &&
+            other is _$WebRTCStateImpl &&
             (identical(other.lastSyncTime, lastSyncTime) ||
                 other.lastSyncTime == lastSyncTime));
   }
@@ -118,17 +118,17 @@ class _$_WebRTCState implements _WebRTCState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WebRTCStateCopyWith<_$_WebRTCState> get copyWith =>
-      __$$_WebRTCStateCopyWithImpl<_$_WebRTCState>(this, _$identity);
+  _$$WebRTCStateImplCopyWith<_$WebRTCStateImpl> get copyWith =>
+      __$$WebRTCStateImplCopyWithImpl<_$WebRTCStateImpl>(this, _$identity);
 }
 
 abstract class _WebRTCState implements WebRTCState {
-  const factory _WebRTCState({final int lastSyncTime}) = _$_WebRTCState;
+  const factory _WebRTCState({final int lastSyncTime}) = _$WebRTCStateImpl;
 
   @override
   int get lastSyncTime;
   @override
   @JsonKey(ignore: true)
-  _$$_WebRTCStateCopyWith<_$_WebRTCState> get copyWith =>
+  _$$WebRTCStateImplCopyWith<_$WebRTCStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -15,16 +15,10 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    Sr25519keyRoute.name: (routeData) {
+    CreateOrgRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const Sr25519KeyPage(),
-      );
-    },
-    ImportSr25519keyRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ImportSr25519KeyPage(),
+        child: const CreateOrgPage(),
       );
     },
     GovRoute.name: (routeData) {
@@ -33,16 +27,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const GovPage(),
       );
     },
-    SelectOrgRoute.name: (routeData) {
+    ImportSr25519keyRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const SelectOrgPage(),
-      );
-    },
-    DaoRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WorkPage(),
+        child: const ImportSr25519KeyPage(),
       );
     },
     IntegrateRoute.name: (routeData) {
@@ -51,10 +39,34 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const IntegratePage(),
       );
     },
+    WebviewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LWebView(),
+      );
+    },
     MobileRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const MobilePage(),
+      );
+    },
+    OrgMobileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrgMobilePage(),
+      );
+    },
+    OrgRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrgPage(),
+      );
+    },
+    PcRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PCPage(),
       );
     },
     PreloaderRoute.name: (routeData) {
@@ -68,63 +80,37 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    OrgMobileRoute.name: (routeData) {
+    SelectOrgRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const OrgMobilePage(),
+        child: const SelectOrgPage(),
       );
     },
-    CreateOrgRoute.name: (routeData) {
+    Sr25519keyRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const CreateOrgPage(),
+        child: const Sr25519KeyPage(),
       );
     },
-    OrgRoute.name: (routeData) {
+    DaoRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const OrgPage(),
-      );
-    },
-    WebviewRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const LWebView(),
-      );
-    },
-    PcRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const PCPage(),
+        child: const WorkPage(),
       );
     },
   };
 }
 
 /// generated route for
-/// [Sr25519KeyPage]
-class Sr25519keyRoute extends PageRouteInfo<void> {
-  const Sr25519keyRoute({List<PageRouteInfo>? children})
+/// [CreateOrgPage]
+class CreateOrgRoute extends PageRouteInfo<void> {
+  const CreateOrgRoute({List<PageRouteInfo>? children})
       : super(
-          Sr25519keyRoute.name,
+          CreateOrgRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'Sr25519keyRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ImportSr25519KeyPage]
-class ImportSr25519keyRoute extends PageRouteInfo<void> {
-  const ImportSr25519keyRoute({List<PageRouteInfo>? children})
-      : super(
-          ImportSr25519keyRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ImportSr25519keyRoute';
+  static const String name = 'CreateOrgRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -144,29 +130,15 @@ class GovRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [SelectOrgPage]
-class SelectOrgRoute extends PageRouteInfo<void> {
-  const SelectOrgRoute({List<PageRouteInfo>? children})
+/// [ImportSr25519KeyPage]
+class ImportSr25519keyRoute extends PageRouteInfo<void> {
+  const ImportSr25519keyRoute({List<PageRouteInfo>? children})
       : super(
-          SelectOrgRoute.name,
+          ImportSr25519keyRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'SelectOrgRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WorkPage]
-class DaoRoute extends PageRouteInfo<void> {
-  const DaoRoute({List<PageRouteInfo>? children})
-      : super(
-          DaoRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DaoRoute';
+  static const String name = 'ImportSr25519keyRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -186,6 +158,20 @@ class IntegrateRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LWebView]
+class WebviewRoute extends PageRouteInfo<void> {
+  const WebviewRoute({List<PageRouteInfo>? children})
+      : super(
+          WebviewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WebviewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [MobilePage]
 class MobileRoute extends PageRouteInfo<void> {
   const MobileRoute({List<PageRouteInfo>? children})
@@ -195,6 +181,48 @@ class MobileRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MobileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OrgMobilePage]
+class OrgMobileRoute extends PageRouteInfo<void> {
+  const OrgMobileRoute({List<PageRouteInfo>? children})
+      : super(
+          OrgMobileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrgMobileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OrgPage]
+class OrgRoute extends PageRouteInfo<void> {
+  const OrgRoute({List<PageRouteInfo>? children})
+      : super(
+          OrgRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrgRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PCPage]
+class PcRoute extends PageRouteInfo<void> {
+  const PcRoute({List<PageRouteInfo>? children})
+      : super(
+          PcRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PcRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -238,71 +266,43 @@ class PreloaderRouteArgs {
 }
 
 /// generated route for
-/// [OrgMobilePage]
-class OrgMobileRoute extends PageRouteInfo<void> {
-  const OrgMobileRoute({List<PageRouteInfo>? children})
+/// [SelectOrgPage]
+class SelectOrgRoute extends PageRouteInfo<void> {
+  const SelectOrgRoute({List<PageRouteInfo>? children})
       : super(
-          OrgMobileRoute.name,
+          SelectOrgRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'OrgMobileRoute';
+  static const String name = 'SelectOrgRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [CreateOrgPage]
-class CreateOrgRoute extends PageRouteInfo<void> {
-  const CreateOrgRoute({List<PageRouteInfo>? children})
+/// [Sr25519KeyPage]
+class Sr25519keyRoute extends PageRouteInfo<void> {
+  const Sr25519keyRoute({List<PageRouteInfo>? children})
       : super(
-          CreateOrgRoute.name,
+          Sr25519keyRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'CreateOrgRoute';
+  static const String name = 'Sr25519keyRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [OrgPage]
-class OrgRoute extends PageRouteInfo<void> {
-  const OrgRoute({List<PageRouteInfo>? children})
+/// [WorkPage]
+class DaoRoute extends PageRouteInfo<void> {
+  const DaoRoute({List<PageRouteInfo>? children})
       : super(
-          OrgRoute.name,
+          DaoRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'OrgRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [LWebView]
-class WebviewRoute extends PageRouteInfo<void> {
-  const WebviewRoute({List<PageRouteInfo>? children})
-      : super(
-          WebviewRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WebviewRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [PCPage]
-class PcRoute extends PageRouteInfo<void> {
-  const PcRoute({List<PageRouteInfo>? children})
-      : super(
-          PcRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PcRoute';
+  static const String name = 'DaoRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

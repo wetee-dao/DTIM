@@ -1376,10 +1376,10 @@ packages:
     dependency: "direct main"
     description:
       name: polkadart
-      sha256: b7df9edef0ad425a519fd972cc1cb62191ac1d4df8ec8bdeba3c5b99042a1747
+      sha256: "85b3d88feaecba13318cd5080e22685936bf3aa845a4922353bbc26c4e4c995b"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.1"
+    version: "0.2.2"
   polkadart_cli:
     dependency: "direct dev"
     description:
@@ -1746,7 +1746,7 @@ packages:
     source: hosted
     version: "1.2.0"
   substrate_bip39:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: substrate_bip39
       sha256: "78b45e9959c3394ecc9b56d9bfb07e11f93db70d273eccd93e3e4d84b28f11c0"

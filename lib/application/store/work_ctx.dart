@@ -1,7 +1,7 @@
 // import 'dart:io';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/chain/wetee/types/wetee_gov/vote_info.dart';
+import 'package:dtim/chain/wraper/ext.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,8 @@ import 'package:dtim/chain/wetee/types/wetee_org/guild_info.dart';
 import 'package:dtim/chain/wetee/types/wetee_org/org_info.dart';
 import 'package:dtim/chain/wetee/types/wetee_project/project_info.dart';
 import 'package:dtim/chain/wetee/types/orml_tokens/account_data.dart';
+import 'package:dtim/chain/wetee/types/wetee_gov/pre_prop.dart';
+import 'package:dtim/chain/wetee/types/wetee_gov/prop.dart';
 
 var chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
 // const chainUrl = "ws://127.0.0.1:9944";
@@ -30,7 +32,9 @@ class WorkCTX with ChangeNotifier {
   late AccountData nativeAmount;
   late AccountData share;
 
-  int chainClient = -1;
+  Wetee? chainClient;
+  
+
   int blockNumber = 0;
   int totalIssuance = 0;
   int daoRefreshChannel = 0;
@@ -39,8 +43,8 @@ class WorkCTX with ChangeNotifier {
   List<String> members = [];
   String ss58Address = "";
   List<VoteInfo> votes = [];
-  List<GovProps> pending = [];
-  List<GovReferendum> going = [];
+  List<PreProp> pending = [];
+  List<Prop> going = [];
 
   setOrg(AccountOrg porg, Account puser) {
     user = puser;
@@ -48,56 +52,35 @@ class WorkCTX with ChangeNotifier {
   }
 
   connectChain(Function callback) async {
-    if (chainClient > -1) {
+    if (chainClient != null) {
       await getData();
       callback();
       return;
     }
     final provider = Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
-    final wetee = Wetee(provider);
-    wetee.connect().then((clientIndex) async {
-      // rustApi.startClient(client: clientIndex).then((e) {
-      //   chainClient = -1;
-      //   printSuccess("连接断开");
-      //   notifyListeners();
-      // }).catchError((e) {
-      //   chainClient = -1;
-      //   printError("连接错误 => $e");
-      //   notifyListeners();
-      // });
-      chainClient = 1;
+    chainClient = Wetee(provider);
+    chainClient!.connect().then((clientIndex) async {
+      blockNumber = await chainClient!.getBlockNumber(provider);
+      printSuccess("连接到区块链 ==> $chainUrl ===> $clientIndex");
+      notifyListeners();
 
-      Future.delayed(const Duration(seconds: 1), () async {
-        for (var i = 0; i < 20; i++) {
-          try {
-            await rustApi.getBlockNumber(client: clientIndex);
-            printSuccess("连接到区块链 ==> $chainUrl ===> $clientIndex");
-            chainClient = clientIndex;
-            // 成功后结束循环
-            i = 20;
-            notifyListeners();
-          } catch (e) {
-            printError("尝试获取区块连失败 ==> ${e.toString()}");
-          }
-          await Future.delayed(const Duration(seconds: 1));
-        }
-        await getData();
-        callback();
-      });
+      await getData();
+      callback();
     }).catchError((e) {
+      chainClient = null;
       printError("连接到区块链 ==> $chainUrl ===> 失败 ===> ${e.toString()}");
     });
   }
 
   disconnectChain() async {
-    if (chainClient == -1) return;
-    await rustApi.stopClient(client: chainClient);
-    chainClient = -1;
+    if (chainClient == null) return;
+    await chainClient!.disconnect();
+    chainClient = null;
   }
 
   getData({notify = true}) async {
     // 区块链代码
-    blockNumber = await rustApi.getBlockNumber(client: chainClient);
+    blockNumber = await chainClient!.getBlockNumber(client: chainClient);
 
     if (org.daoId == 0) return;
 
