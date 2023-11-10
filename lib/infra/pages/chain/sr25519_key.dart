@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/chain/wraper/wraper.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
@@ -348,6 +347,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                   final initUser = Account(
                     address: chainData.address,
                     chainData: json.encode(chainData.toJson()),
+                    ss58Address: chainData.meta["ss58Address"]!,
                     orgs: [],
                   );
                   initUser.name = chainData.meta["name"];

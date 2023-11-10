@@ -71,6 +71,17 @@ class Queries {
     hasher2: _i1.StorageHasher.identity(_i3.U64Codec.codec),
   );
 
+  final _i1.StorageMap<BigInt, _i5.Tuple2<int, int>> _matchContract =
+      const _i1.StorageMap<BigInt, _i5.Tuple2<int, int>>(
+    prefix: 'WeteeWorker',
+    storage: 'MatchContract',
+    valueCodec: _i5.Tuple2Codec<int, int>(
+      _i3.U8Codec.codec,
+      _i3.U8Codec.codec,
+    ),
+    hasher: _i1.StorageHasher.identity(_i3.U64Codec.codec),
+  );
+
   /// 用户对应集群的信息
   _i8.Future<BigInt?> k8sClusterAccounts(
     _i2.AccountId32 key1, {
@@ -168,6 +179,23 @@ class Queries {
     );
     if (bytes != null) {
       return _deposits.decodeValue(bytes);
+    }
+    return null; /* Nullable */
+  }
+
+  /// 程序使用的智能合同
+  /// smart contract
+  _i8.Future<_i5.Tuple2<int, int>?> matchContract(
+    BigInt key1, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKey = _matchContract.hashedKeyFor(key1);
+    final bytes = await __api.getStorage(
+      hashedKey,
+      at: at,
+    );
+    if (bytes != null) {
+      return _matchContract.decodeValue(bytes);
     }
     return null; /* Nullable */
   }

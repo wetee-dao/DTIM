@@ -7,7 +7,6 @@ import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/theme.dart';
 import 'package:dtim/infra/components/components.dart';
-import 'package:dtim/native_wraper.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:auto_route/auto_route.dart';
@@ -53,7 +52,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
         autoLogin();
         return;
       }
-      workCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: []));
+      workCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: [], ss58Address: ''));
       workCtx.connectChain(() async {
         setState(() => _loading = false);
       });
@@ -453,78 +452,79 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                               ),
                             ),
                           ),
-                        if (PlatformInfos.isWeb)
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 30.w),
-                            margin: EdgeInsets.only(bottom: 5.w),
-                            child: InkWell(
-                              key: const Key("connectWallet"),
-                              onTap: () async {
-                                String acount;
-                                try {
-                                  acount = await rustApi.connectWallet();
-                                } catch (e) {
-                                  await showOkAlertDialog(
-                                    title: "Notice",
-                                    context: globalCtx(),
-                                    message:
-                                        "The browser is missing the polkadot.{js} extension or plugin. Please install the plugin to continue.",
-                                    okLabel: L10n.of(globalCtx())!.ok,
-                                  );
-                                  return;
-                                }
-                                List<dynamic> accountJ = convert.jsonDecode(acount);
-                                if (accountJ.isEmpty) {
-                                  await showOkAlertDialog(
-                                    title: "Notice",
-                                    context: globalCtx(),
-                                    message:
-                                        "You have not created an account yet. Please create an account in the polkadot.js extension.",
-                                    okLabel: L10n.of(globalCtx())!.ok,
-                                  );
-                                  return;
-                                }
-                                List<Account> accounts = [];
-                                for (var i = 0; i < accountJ.length; i++) {
-                                  final chainData = accountJ[i] as Map<String, dynamic>;
-                                  final chainStr = convert.jsonEncode(accountJ[i]);
-                                  final initUser = Account(
-                                    address: chainData["address"] as String,
-                                    chainData: chainStr,
-                                    orgs: [],
-                                  );
-                                  initUser.domain = "";
-                                  initUser.chainData = chainStr;
-                                  initUser.name = (chainData["meta"] as Map<String, dynamic>)["name"] as String;
+                        // if (PlatformInfos.isWeb)
+                        //   Container(
+                        //     padding: EdgeInsets.symmetric(horizontal: 30.w),
+                        //     margin: EdgeInsets.only(bottom: 5.w),
+                        //     child: InkWell(
+                        //       key: const Key("connectWallet"),
+                        //       onTap: () async {
+                        //         String acount;
+                        //         try {
+                        //           acount = await rustApi.connectWallet();
+                        //         } catch (e) {
+                        //           await showOkAlertDialog(
+                        //             title: "Notice",
+                        //             context: globalCtx(),
+                        //             message:
+                        //                 "The browser is missing the polkadot.{js} extension or plugin. Please install the plugin to continue.",
+                        //             okLabel: L10n.of(globalCtx())!.ok,
+                        //           );
+                        //           return;
+                        //         }
+                        //         List<dynamic> accountJ = convert.jsonDecode(acount);
+                        //         if (accountJ.isEmpty) {
+                        //           await showOkAlertDialog(
+                        //             title: "Notice",
+                        //             context: globalCtx(),
+                        //             message:
+                        //                 "You have not created an account yet. Please create an account in the polkadot.js extension.",
+                        //             okLabel: L10n.of(globalCtx())!.ok,
+                        //           );
+                        //           return;
+                        //         }
+                        //         List<Account> accounts = [];
+                        //         for (var i = 0; i < accountJ.length; i++) {
+                        //           final chainData = accountJ[i] as Map<String, dynamic>;
+                        //           final chainStr = convert.jsonEncode(accountJ[i]);
+                        //           final initUser = Account(
+                        //             address: chainData["address"] as String,
+                        //             chainData: chainStr,
+                        //             orgs: [],
+                        //             ss58Address: '',
+                        //           );
+                        //           initUser.domain = "";
+                        //           initUser.chainData = chainStr;
+                        //           initUser.name = (chainData["meta"] as Map<String, dynamic>)["name"] as String;
 
-                                  accounts.add(initUser);
-                                }
-                                await accountStore.syncUsers(accounts);
-                                getList(null);
-                                BotToast.showText(
-                                  text: '账户创建成功，稍后您需要选择您的组织连接web3网络',
-                                  duration: const Duration(seconds: 2),
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
-                                width: double.maxFinite,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: constTheme.centerChannelColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  "Connect polkadot.{js} wallet",
-                                  style: TextStyle(
-                                    color: constTheme.centerChannelBg,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 19.w,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        //           accounts.add(initUser);
+                        //         }
+                        //         await accountStore.syncUsers(accounts);
+                        //         getList(null);
+                        //         BotToast.showText(
+                        //           text: '账户创建成功，稍后您需要选择您的组织连接web3网络',
+                        //           duration: const Duration(seconds: 2),
+                        //         );
+                        //       },
+                        //       child: Container(
+                        //         padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+                        //         width: double.maxFinite,
+                        //         alignment: Alignment.center,
+                        //         decoration: BoxDecoration(
+                        //           color: constTheme.centerChannelColor,
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //         child: Text(
+                        //           "Connect polkadot.{js} wallet",
+                        //           style: TextStyle(
+                        //             color: constTheme.centerChannelBg,
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 19.w,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
                         SizedBox(
                           height: 0.02.sh,
                         ),

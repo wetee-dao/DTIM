@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/application/store/work_ctx.dart';
-import 'package:dtim/bridge_struct.dart' as native;
 import 'package:dtim/domain/models/org.dart';
 import 'package:dtim/infra/components/app_card.dart';
 // import 'package:dtim/infra/components/dao/info_card.dart';
 // import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
-import 'package:dtim/native_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -71,10 +71,10 @@ class Queries {
     hasher2: _i1.StorageHasher.identity(_i2.U32Codec.codec),
   );
 
-  final _i1.StorageDoubleMap<BigInt, int, _i7.Prop> _propInfoOf =
+  final _i1.StorageDoubleMap<BigInt, int, _i7.Prop> _props =
       const _i1.StorageDoubleMap<BigInt, int, _i7.Prop>(
     prefix: 'WeteeGov',
-    storage: 'PropInfoOf',
+    storage: 'Props',
     valueCodec: _i7.Prop.codec,
     hasher1: _i1.StorageHasher.identity(_i2.U64Codec.codec),
     hasher2: _i1.StorageHasher.identity(_i2.U32Codec.codec),
@@ -220,12 +220,12 @@ class Queries {
 
   /// 全民投票
   /// Prop specific information.
-  _i9.Future<_i7.Prop?> propInfoOf(
+  _i9.Future<_i7.Prop?> props(
     BigInt key1,
     int key2, {
     _i1.BlockHash? at,
   }) async {
-    final hashedKey = _propInfoOf.hashedKeyFor(
+    final hashedKey = _props.hashedKeyFor(
       key1,
       key2,
     );
@@ -234,7 +234,7 @@ class Queries {
       at: at,
     );
     if (bytes != null) {
-      return _propInfoOf.decodeValue(bytes);
+      return _props.decodeValue(bytes);
     }
     return null; /* Nullable */
   }

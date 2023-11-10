@@ -6,7 +6,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 // import 'package:chips_choice/chips_choice.dart';
 import 'package:dtim/domain/utils/theme.dart';
-import 'package:dtim/native_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -67,7 +66,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
     workCtx.setOrg(AccountOrg(""), im.me!);
     workCtx.connectChain(() async {
-      final v = await rustApi.orgs(client: workCtx.chainClient);
+      final v = await wctx!.chainClient!.query.weteeOrg.daos();
       orgs = v
           .map((o) => Org(
                 o.id.toString(),

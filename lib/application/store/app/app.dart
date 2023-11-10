@@ -1,6 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/im_state.dart';
-import 'package:dtim/native_wraper.dart';
+import 'package:dtim/chain/wraper/wraper.dart';
 import 'package:dtim/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,13 +84,13 @@ class AppCubit extends Cubit<AppState> {
       final res = await waitFutureLoading<String>(
         context: globalCtx(),
         future: () async {
-          final pwd = input[0];
+          // final pwd = input[0];
           try {
-            await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
-            sign = await rustApi.signFromAddress(
-              address: user.address,
-              ctx: signCtx,
-            );
+            // await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
+            // sign = await rustApi.signFromAddress(
+            //   address: user.address,
+            //   ctx: signCtx,
+            // );
           } catch (e) {
             return "密码错误";
           }
@@ -115,10 +115,10 @@ class AppCubit extends Cubit<AppState> {
         duration: const Duration(seconds: 2),
       );
     } else {
-      await rustApi.addKeyring(keyringStr: user.chainData, password: "");
-      sign = await rustApi.signFromAddress(
-        address: user.address,
-        ctx: signCtx,
+      // await rustApi.addKeyring(keyringStr: user.chainData, password: "");
+      sign = await signFromAddress(
+        user,
+        signCtx,
       );
       emit(state.copyWith(
         me: user,

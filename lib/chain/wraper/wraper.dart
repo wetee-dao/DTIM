@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:convert/convert.dart';
 import 'package:dtim/domain/models/account.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:substrate_bip39/substrate_bip39.dart';
@@ -10,21 +14,32 @@ Future<ChainData> getSeedPhrase({
 }) async {
   final keyPair = await KeyPair.fromMnemonic(seedStr);
   return ChainData(
-    keyPair.address,
+    hex.encode(keyPair.publicKey.bytes),
     seedStr,
-   ChainDataEncoding(
+    ChainDataEncoding(
       seedStr.split(' '),
       'mnemonic',
       'bip39',
     ),
     {
+      'ss58Address': keyPair.address,
       'name': name,
       'password': password,
     },
-  ); 
+  );
 }
 
 List<String> seedGenerate() {
   return SubstrateBip39.generate(words: 24).words;
 }
 
+Future<String> signFromAddress(Account user, String ctx) async {
+  ChainData data = json.decode(user.chainData);
+
+  final keyPair = await KeyPair.fromMnemonic(data.encoded);
+  List<int> list = utf8.encode(ctx);
+  Uint8List bytes = Uint8List.fromList(list);
+  final signature = keyPair.sign(bytes);
+
+  return hex.encode(signature);
+}
