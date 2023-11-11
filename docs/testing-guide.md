@@ -1,7 +1,7 @@
 
 # DTIM Client Testing Guide
 
-## create a account
+## create an account
 
 - Open Client
 
@@ -70,22 +70,22 @@
 <img src="images/Screenshot from 2023-04-27 16-22-39.png" width="550" style="padding-left: 20px;">
 
 
-## start Regerendum
-- Click "Regerendums" to  Regerendums page
-- Click "start" button  to start Regerendum
+## start Referendum
+- Click "Referendums" to  Referendums page
+- Click "start" button  to start Referendum
 
 <img src="images/Screenshot from 2023-04-27 16-24-37.png" width="550" style="padding-left: 20px;">
 
 
 ## join Project
 - Click "test" to test Project page
-- Click "join" button  to start Regerendum
+- Click "join" button  to start Referendum
 - Wait for the referendum within the organization to be completed, then you can join the project (The script automatically agrees)
 
 <img src="images/Screenshot from 2023-04-27 16-29-10.png" width="550" style="padding-left: 20px;">
 
 ## add Task
 - Click "test" to test Project page
-- Click "Add Task" button  to start Regerendum
+- Click "Add Task" button  to start Referendum
 
 <img src="images/Screenshot from 2023-04-27 16-32-15.png" width="550" style="padding-left: 20px;">
