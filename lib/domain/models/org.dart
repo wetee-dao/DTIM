@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:dtim/bridge_struct.dart' as native;
+
+import 'package:dtim/chain/wetee/types/wetee_org/org_app.dart' as org_app;
 
 part 'org.g.dart';
 
@@ -28,15 +29,19 @@ class Org {
   /// im api
   @HiveField(10)
   String? imApi;
+
   /// org color
   @HiveField(11)
   String? bg;
+
   /// org logo
   @HiveField(12)
   String? logo;
+
   /// 组织大图
   @HiveField(13)
   String? img;
+
   /// 组织主页
   @HiveField(14)
   String? homeUrl;
@@ -84,37 +89,26 @@ class OrgApp {
   @HiveField(8)
   String? icon;
 
-
   @HiveField(9)
   int? appId;
 
   // 应用
   @HiveField(7)
-  Map<String,String>? meta;
+  Map<String, String>? meta;
 
-  OrgApp({
-    required this.hash,
-    required this.type,
-    this.url,
-    this.name,
-    this.desc,
-    this.meta,
-    this.icon,
-    this.appId
-  });
+  OrgApp({required this.hash, required this.type, this.url, this.name, this.desc, this.meta, this.icon, this.appId});
 }
 
-
-List<OrgApp> trans(List<native.OrgApp> orgs) {
+List<OrgApp> trans(List<org_app.OrgApp> orgs) {
   return orgs
       .map((o) => OrgApp(
             hash: o.id.toString(),
-            appId: o.appId,
+            appId: o.appId.toInt(),
             type: 0,
-            name: o.name,
-            icon: o.icon,
-            desc: o.desc,
-            url: o.url,
+            name: o.name.toString(),
+            icon: o.icon.toString(),
+            desc: o.desc.toString(),
+            url: o.url.toString(),
           ))
       .toList();
 }

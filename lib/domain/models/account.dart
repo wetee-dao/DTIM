@@ -33,7 +33,11 @@ class Account extends HiveObject {
   @HiveField(5)
   late List<AccountOrg> orgs;
 
-  Account({required this.address, required this.chainData, required this.orgs});
+  // 区块链地址
+  @HiveField(7)
+  late String ss58Address;
+
+  Account({required this.address, required this.chainData, required this.ss58Address, required this.orgs});
 }
 
 @HiveType(typeId: 2)

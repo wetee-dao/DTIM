@@ -2,6 +2,8 @@ import 'package:hive/hive.dart';
 
 import 'account.dart';
 
+part 'user.g.dart';
+
 @HiveType(typeId: 7)
 class User {
   // 用户地址

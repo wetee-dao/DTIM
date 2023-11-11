@@ -1,9 +1,10 @@
+import 'dart:convert';
+
 import 'package:dtim/application/service/apis/account_api.dart';
-import 'package:dtim/native_wraper.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dtim/chain/wraper/wraper.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -301,17 +302,12 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                 }
                 _formKey.currentState!.save();
 
-                rustApi.getSeedPhrase(seedStr: seed.text, name: _name, password: _password).then((accountStr) async {
-                  print(accountStr);
-                  // 解码区块链账户问题
-                  final chainData = ChainData.fromJson(
-                    convert.jsonDecode(accountStr),
-                  );
-
+                getSeedPhrase(seedStr: seed.text, name: _name, password: _password).then((chainData) async {
                   // 创建账户
                   final initUser = Account(
                     address: chainData.address,
-                    chainData: accountStr,
+                    ss58Address: chainData.meta["ss58Address"]!,
+                    chainData: json.encode(chainData.toJson()),
                     orgs: [],
                   );
                   initUser.name = chainData.meta["name"];

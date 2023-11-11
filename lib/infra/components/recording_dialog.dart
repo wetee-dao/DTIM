@@ -38,7 +38,7 @@ class RecordingDialogState extends State<RecordingDialog> {
 
   bool error = false;
   String? _recordedPath;
-  final _audioRecorder = Record();
+  final _audioRecorder = AudioRecorder();
   final List<double> amplitudeTimeline = [];
 
   static const int bitRate = 64000;
@@ -66,7 +66,7 @@ class RecordingDialogState extends State<RecordingDialog> {
         AudioEncoder.aacLc,
       );
       printDebug('${AudioEncoder.aacLc.name} supported: $isSupported');
-      await _audioRecorder.start(path: _recordedPath);
+      await _audioRecorder.start(const RecordConfig(), path: _recordedPath!);
 
       setState(() => _duration = Duration.zero);
 

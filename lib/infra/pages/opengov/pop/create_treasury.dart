@@ -47,7 +47,7 @@ class _CreateTreasuryPageState extends State<CreateTreasuryPage> {
       BotToast.showText(text: "取消操作");
       return;
     }
-    print(gov);
+   
     final im = globalCtx().read<AppCubit>();
     if (!await inputPasswordg(im.me!)) {
       return;

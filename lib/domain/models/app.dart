@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+part 'app.g.dart';
+
 @HiveType(typeId: 5)
 class App {
   // 应用hash
