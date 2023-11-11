@@ -50,10 +50,5 @@ app.*.map.json
 
 libolm.3.dylib
 libcrypto.1.1.dylib
-# rust_wraper/Cargo.lock
 /.fvm/flutter_sdk/
-hacks/.config
-ossutil_output
-
-**_back
 web/js
