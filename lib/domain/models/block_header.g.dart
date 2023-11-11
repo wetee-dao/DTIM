@@ -9,10 +9,11 @@ part of 'block_header.dart';
 BlockHeader _$BlockHeaderFromJson(Map<String, dynamic> json) => BlockHeader(
       json['parentHash'] as String,
       json['number'] as String,
-    );
+    )..blockNumber = json['blockNumber'] as int?;
 
 Map<String, dynamic> _$BlockHeaderToJson(BlockHeader instance) =>
     <String, dynamic>{
+      'blockNumber': instance.blockNumber,
       'parentHash': instance.parentHash,
       'number': instance.number,
     };

@@ -19,6 +19,7 @@ class AccountAdapter extends TypeAdapter<Account> {
     return Account(
       address: fields[3] as String,
       chainData: fields[4] as String,
+      ss58Address: fields[7] as String,
       orgs: (fields[5] as List).cast<AccountOrg>(),
     )
       ..id = fields[0] as int
@@ -30,7 +31,7 @@ class AccountAdapter extends TypeAdapter<Account> {
   @override
   void write(BinaryWriter writer, Account obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class AccountAdapter extends TypeAdapter<Account> {
       ..writeByte(4)
       ..write(obj.chainData)
       ..writeByte(5)
-      ..write(obj.orgs);
+      ..write(obj.orgs)
+      ..writeByte(7)
+      ..write(obj.ss58Address);
   }
 
   @override
