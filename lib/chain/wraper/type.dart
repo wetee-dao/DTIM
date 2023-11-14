@@ -152,8 +152,8 @@ class GuildInfoLocal extends GuildInfo {
     required super.status,
   });
 
-  factory GuildInfoJ.fromJson(Map<String, dynamic> json) => _$GuildInfoJFromJson(json);
-  Map<String, dynamic> toJson() => _$GuildInfoJToJson(this);
+  factory GuildInfoLocal.fromJson(Map<String, dynamic> json) => _$GuildInfoLocalFromJson(json);
+  Map<String, dynamic> toJson() => _$GuildInfoLocalToJson(this);
 }
 
 @JsonSerializable()
