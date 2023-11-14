@@ -7,7 +7,7 @@ import 'package:quiver/collection.dart' as _i7;
 import '../primitive_types/h256.dart' as _i2;
 import '../sp_core/crypto/account_id32.dart' as _i5;
 import '../wetee_runtime/runtime_call.dart' as _i3;
-import 'memmber_data.dart' as _i4;
+import 'member_data.dart' as _i4;
 
 class PreProp {
   const PreProp({
@@ -33,8 +33,8 @@ class PreProp {
   /// Call
   final _i3.RuntimeCall call;
 
-  /// MemmberData
-  final _i4.MemmberData memberData;
+  /// MemberData
+  final _i4.MemberData memberData;
 
   /// AccountId
   final _i5.AccountId32 creater;
@@ -114,7 +114,7 @@ class $PrePropCodec with _i1.Codec<PreProp> {
       obj.call,
       output,
     );
-    _i4.MemmberData.codec.encodeTo(
+    _i4.MemberData.codec.encodeTo(
       obj.memberData,
       output,
     );
@@ -138,7 +138,7 @@ class $PrePropCodec with _i1.Codec<PreProp> {
       id: _i1.U32Codec.codec.decode(input),
       hash: const _i1.U8ArrayCodec(32).decode(input),
       call: _i3.RuntimeCall.codec.decode(input),
-      memberData: _i4.MemmberData.codec.decode(input),
+      memberData: _i4.MemberData.codec.decode(input),
       creater: const _i1.U8ArrayCodec(32).decode(input),
       periodIndex: _i1.U32Codec.codec.decode(input),
       start: _i1.U64Codec.codec.decode(input),
@@ -151,7 +151,7 @@ class $PrePropCodec with _i1.Codec<PreProp> {
     size = size + _i1.U32Codec.codec.sizeHint(obj.id);
     size = size + const _i2.H256Codec().sizeHint(obj.hash);
     size = size + _i3.RuntimeCall.codec.sizeHint(obj.call);
-    size = size + _i4.MemmberData.codec.sizeHint(obj.memberData);
+    size = size + _i4.MemberData.codec.sizeHint(obj.memberData);
     size = size + const _i5.AccountId32Codec().sizeHint(obj.creater);
     size = size + _i1.U32Codec.codec.sizeHint(obj.periodIndex);
     size = size + _i1.U64Codec.codec.sizeHint(obj.start);

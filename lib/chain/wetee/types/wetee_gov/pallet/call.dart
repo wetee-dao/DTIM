@@ -6,7 +6,7 @@ import 'package:quiver/collection.dart' as _i8;
 
 import '../../wetee_runtime/runtime_call.dart' as _i4;
 import '../../wetee_runtime/vote/pledge.dart' as _i5;
-import '../memmber_data.dart' as _i3;
+import '../member_data.dart' as _i3;
 import '../opinion.dart' as _i6;
 import '../period.dart' as _i7;
 
@@ -40,7 +40,7 @@ class $Call {
 
   SubmitProposal submitProposal({
     required BigInt daoId,
-    required _i3.MemmberData memberData,
+    required _i3.MemberData memberData,
     required _i4.RuntimeCall proposal,
     required int periodIndex,
   }) {
@@ -242,7 +242,7 @@ class SubmitProposal extends Call {
   factory SubmitProposal._decode(_i1.Input input) {
     return SubmitProposal(
       daoId: _i1.U64Codec.codec.decode(input),
-      memberData: _i3.MemmberData.codec.decode(input),
+      memberData: _i3.MemberData.codec.decode(input),
       proposal: _i4.RuntimeCall.codec.decode(input),
       periodIndex: _i1.U32Codec.codec.decode(input),
     );
@@ -251,8 +251,8 @@ class SubmitProposal extends Call {
   /// DaoAssetId
   final BigInt daoId;
 
-  /// MemmberData
-  final _i3.MemmberData memberData;
+  /// MemberData
+  final _i3.MemberData memberData;
 
   /// Box<<T as wetee_org::Config>::RuntimeCall>
   final _i4.RuntimeCall proposal;
@@ -273,7 +273,7 @@ class SubmitProposal extends Call {
   int _sizeHint() {
     int size = 1;
     size = size + _i1.U64Codec.codec.sizeHint(daoId);
-    size = size + _i3.MemmberData.codec.sizeHint(memberData);
+    size = size + _i3.MemberData.codec.sizeHint(memberData);
     size = size + _i4.RuntimeCall.codec.sizeHint(proposal);
     size = size + _i1.U32Codec.codec.sizeHint(periodIndex);
     return size;
@@ -288,7 +288,7 @@ class SubmitProposal extends Call {
       daoId,
       output,
     );
-    _i3.MemmberData.codec.encodeTo(
+    _i3.MemberData.codec.encodeTo(
       memberData,
       output,
     );

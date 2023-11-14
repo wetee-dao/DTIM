@@ -182,7 +182,7 @@ void main() {
 
     if (workCtx.pending.isNotEmpty) {
       var pending = workCtx.pending[0];
-      await tester.tap(find.byKey(Key('referendumStart${pending.index}')));
+      await tester.tap(find.byKey(Key('referendumStart${pending.id}')));
       await Future.delayed(const Duration(seconds: 10));
       await tester.pumpAndSettle();
     }

@@ -4,7 +4,7 @@ import 'dart:typed_data' as _i6;
 import 'package:polkadart/scale_codec.dart' as _i1;
 
 import '../wetee_runtime/runtime_call.dart' as _i2;
-import 'memmber_data.dart' as _i4;
+import 'member_data.dart' as _i4;
 import 'prop_status.dart' as _i5;
 import 'tally.dart' as _i3;
 
@@ -38,8 +38,8 @@ class Prop {
   /// Tally<Balance>
   final _i3.Tally tally;
 
-  /// MemmberData
-  final _i4.MemmberData memberData;
+  /// MemberData
+  final _i4.MemberData memberData;
 
   /// PropStatus
   final _i5.PropStatus status;
@@ -115,7 +115,7 @@ class $PropCodec with _i1.Codec<Prop> {
       obj.tally,
       output,
     );
-    _i4.MemmberData.codec.encodeTo(
+    _i4.MemberData.codec.encodeTo(
       obj.memberData,
       output,
     );
@@ -133,7 +133,7 @@ class $PropCodec with _i1.Codec<Prop> {
       start: _i1.U64Codec.codec.decode(input),
       periodIndex: _i1.U32Codec.codec.decode(input),
       tally: _i3.Tally.codec.decode(input),
-      memberData: _i4.MemmberData.codec.decode(input),
+      memberData: _i4.MemberData.codec.decode(input),
       status: _i5.PropStatus.codec.decode(input),
     );
   }
@@ -146,7 +146,7 @@ class $PropCodec with _i1.Codec<Prop> {
     size = size + _i1.U64Codec.codec.sizeHint(obj.start);
     size = size + _i1.U32Codec.codec.sizeHint(obj.periodIndex);
     size = size + _i3.Tally.codec.sizeHint(obj.tally);
-    size = size + _i4.MemmberData.codec.sizeHint(obj.memberData);
+    size = size + _i4.MemberData.codec.sizeHint(obj.memberData);
     size = size + _i5.PropStatus.codec.sizeHint(obj.status);
     return size;
   }
