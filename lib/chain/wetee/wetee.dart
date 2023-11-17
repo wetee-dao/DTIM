@@ -1,13 +1,18 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_runtime/runtime_call.dart';
 import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
 import 'package:dtim/domain/models/block_header.dart';
+import 'package:dtim/domain/models/models.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
+import 'type.dart';
+
 export './key_pair.dart';
+export './type.dart';
 
 class Wetee {
   Wetee(
@@ -39,6 +44,10 @@ class Wetee {
 
   final Registry registry;
 
+  static final chainUnit = BigInt.from(1000000000000);
+
+  Map<String, KeyPair> keyPairs = <String, KeyPair>{};
+
   Future connect() async {
     return await provider.connect();
   }
@@ -47,15 +56,35 @@ class Wetee {
     return await provider.disconnect();
   }
 
-  Future<String> signAndSubmit(RuntimeCall rCall, KeyPair keyPair) async {
-    final call = hex.encode(rCall.encode());
+  Future<String> signAndSubmit(RuntimeCall rCall, String address, {WithGovPs? gov}) async {
     final blockHash = await query.system.blockHash(BigInt.from(0));
     final version = constant.system.version;
+    if(keyPairs[address]==null){
+      throw Exception('Address $address not found');
+    }
+    final KeyPair keyPair = keyPairs[address]!;
     final publicKey = hex.encode(keyPair.publicKey.bytes);
 
     // 获取用户信息
     final account = await query.system.account(keyPair.publicKey.bytes);
 
+    late RuntimeCall toCall;
+    if (gov != null) {
+      if (gov.runType == 2) {
+        toCall = tx.weteeSudo.sudo(daoId: gov.daoId, call: rCall);
+      } else {
+        toCall = tx.weteeGov.submitProposal(
+          daoId: gov.daoId,
+          memberData: gov.member,
+          proposal: rCall,
+          periodIndex: gov.periodIndex,
+        );
+      }
+    } else {
+      toCall = rCall;
+    }
+
+    final call = hex.encode(toCall.encode());
     // 构建签名体
     final payloadToSign = SigningPayload(
       method: call,
@@ -93,6 +122,14 @@ class Wetee {
     );
     submit.cancel();
     return "";
+  }
+
+  Future<bool> addKeyring({required String keyringStr,required String password}) async {
+    ChainData data = ChainData.fromJson(json.decode(keyringStr)) ;
+    final keyPair = await KeyPair.fromMnemonic(data.encoded);
+    final publicKey = hex.encode(keyPair.publicKey.bytes);
+    keyPairs[publicKey] = keyPair;
+    return true;
   }
 
   Future<int> getBlockNumber(Provider provider) async {

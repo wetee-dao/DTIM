@@ -4,12 +4,12 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dtim/bridge_struct.dart';
+
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/priority_icon.dart';
 import 'package:dtim/domain/models/tag.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/theme.dart';
 
 class Kanban extends StatelessWidget {

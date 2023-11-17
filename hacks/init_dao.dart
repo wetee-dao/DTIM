@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:convert/convert.dart';
 
-import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
 import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:polkadart/polkadart.dart';
-import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 // ignore: constant_identifier_names
 // 5G2qTYr4mm6MHB5x1XwZde4YWDGGmN9sXYmpsdTWpg2EAfRT
@@ -13,7 +9,9 @@ const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson mo
 
 void main() async {
   final wetee = Wetee.url('ws://127.0.0.1:9944');
-  final keyPair = await KeyPair.fromMnemonic(DAO_ROOT_SEED);
+
+  final chainAccount = await getSeedPhrase( seedStr: DAO_ROOT_SEED, name: '', password: '');
+  await wetee.addKeyring(keyringStr: json.encode(chainAccount.toJson()), password: "");
 
   // await wetee.getBlockNumber(provider);
 
@@ -31,7 +29,7 @@ void main() async {
   );
 
   // 提交
-  await wetee.signAndSubmit(runcall, keyPair);
+  await wetee.signAndSubmit(runcall, chainAccount.address);
 
   // final Uint8List hash2 = Uint8List(32);
   // print(utf8.encode("WeteeOr"));

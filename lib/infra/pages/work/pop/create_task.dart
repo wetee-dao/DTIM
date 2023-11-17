@@ -1,7 +1,5 @@
-import 'dart:typed_data';
-
-import 'package:dtim/native_wraper.dart';
 import 'package:chips_choice/chips_choice.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -18,7 +16,7 @@ import 'package:dtim/application/store/theme.dart';
 class CreateTaskPage extends StatefulWidget {
   final String projectId;
   final Function? closeModel;
-  const CreateTaskPage({Key? key, this.closeModel, required this.projectId}) : super(key: key);
+  const CreateTaskPage({super.key, this.closeModel, required this.projectId});
 
   @override
   State<CreateTaskPage> createState() => _CreateRoadMapPageState();
@@ -52,20 +50,21 @@ class _CreateRoadMapPageState extends State<CreateTaskPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoProjectCreateTask(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.createTask(
           daoId: workCtx.org.daoId,
-          name: _data.name,
-          priority: _data.priority,
-          skills: Uint8List.fromList(_data.tags),
-          desc: _data.desc,
+          projectId: BigInt.tryParse(widget.projectId)!,
+          name: strToChain(_data.name),
+          description: strToChain(_data.desc),
           point: _data.point,
-          projectId: int.parse(widget.projectId),
-          assignees: [],
-          // reviewers: [workCtx.user.address],
+          priority: _data.priority,
           amount: _data.amount,
         );
+
+        workCtx.client.signAndSubmit(
+          call,
+          workCtx.user.address,
+        );
+
         await workCtx.daoRefresh();
       },
     );

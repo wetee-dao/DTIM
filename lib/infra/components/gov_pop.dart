@@ -1,9 +1,10 @@
 import 'package:dtim/application/store/work_ctx.dart';
-import 'package:dtim/x_bridge.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/period.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
@@ -11,9 +12,9 @@ import 'package:dtim/application/store/theme.dart';
 
 class GovPop extends StatefulWidget {
   final Function(WithGovPs?)? closeModel;
-  final MemberGroup member;
+  final MemberData member;
   final int? initType;
-  const GovPop({Key? key, this.closeModel, required this.member, this.initType}) : super(key: key);
+  const GovPop({super.key, this.closeModel, required this.member, this.initType});
 
   @override
   State<GovPop> createState() => _GovPopState();
@@ -56,6 +57,7 @@ class _GovPopState extends State<GovPop> {
         amount: 0,
         member: widget.member,
         periodIndex: _data.periodIndex,
+        daoId: workCtx.dao.id,
       ),
     );
   }
@@ -63,12 +65,6 @@ class _GovPopState extends State<GovPop> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final titleStyle = TextStyle(
-      fontSize: 14,
-      height: 1.3,
-      color: constTheme.centerChannelColor,
-      decorationColor: constTheme.centerChannelColor,
-    );
 
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -275,7 +271,7 @@ class SubmitData {
   });
 }
 
-Future<WithGovPs?> showGovPop(MemberGroup member) async {
+Future<WithGovPs?> showGovPop(MemberData member) async {
   var width = 600;
   var height = 400;
   return await showDialog(

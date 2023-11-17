@@ -4,7 +4,7 @@ import 'package:dtim/infra/components/iconfont.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/infra/components/loading_dialog.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

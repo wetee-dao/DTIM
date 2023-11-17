@@ -1,10 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/work_ctx.dart';
-import 'package:dtim/bridge_struct.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/gov_pop.dart';
-import 'package:dtim/native_wraper.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +22,7 @@ class AppCard extends StatelessWidget {
   final String? amount;
   final double width;
   const AppCard({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.amount,
@@ -32,7 +31,7 @@ class AppCard extends StatelessWidget {
     required this.disable,
     required this.isActive,
     required this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -150,10 +149,11 @@ class AppCard extends StatelessWidget {
           //   },
           // );
           // } else {
-          var gov = await showGovPop(const MemberGroup(
-            scope: 1,
-            id: 0,
-          ));
+          // var gov = await showGovPop(const MemberGroup(
+          //   scope: 1,
+          //   id: 0,
+          // ));
+          var gov = await showGovPop(const Global());
           if (gov == null) {
             BotToast.showText(text: "取消操作");
             return;
@@ -164,13 +164,11 @@ class AppCard extends StatelessWidget {
           await waitFutureLoading(
             context: globalCtx(),
             future: () async {
-              await rustApi.orgIntegrateApp(
-                client: workCtx.chainClient,
-                from: im.me!.address,
-                orgId: im.currentState!.org.daoId,
+              final call = workCtx.client.tx.weteeOrg.orgIntegrateApp(
+                daoId: BigInt.from(im.currentState!.org.daoId),
                 appId: id,
-                ext: gov,
               );
+              await workCtx.client.signAndSubmit(call, workCtx.user.address, gov: gov);
               BotToast.showText(text: gov.runType == 2 ? "应用集成成功" : "应用集成提案将显示在治理中，请到治理插件中开启投票");
             },
           );

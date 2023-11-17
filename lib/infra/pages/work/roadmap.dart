@@ -4,12 +4,12 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:dtim/bridge_struct.dart';
+
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/priority_icon.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/domain/models/tag.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/im.dart';
 import 'package:dtim/application/store/theme.dart';

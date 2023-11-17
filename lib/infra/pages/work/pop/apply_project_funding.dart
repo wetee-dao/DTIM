@@ -1,9 +1,9 @@
-import 'package:dtim/native_wraper.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/application/store/work_ctx.dart';
@@ -13,7 +13,7 @@ import 'package:dtim/application/store/theme.dart';
 class ApplyProjectFundingPage extends StatefulWidget {
   final Function? closeModel;
   final String projectId;
-  const ApplyProjectFundingPage({Key? key, this.closeModel, required this.projectId}) : super(key: key);
+  const ApplyProjectFundingPage({super.key, this.closeModel, required this.projectId});
 
   @override
   State<ApplyProjectFundingPage> createState() => _ApplyProjectFundingPageState();
@@ -41,21 +41,24 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       return;
     }
     if (!await workCtx.checkAfterTx()) return;
+
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoApplyProjectFunds(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.applyProjectFunds(
           daoId: workCtx.org.daoId,
-          projectId: int.parse(widget.projectId),
-          amount: _data.amount,
-          ext: const WithGovPs(
+          projectId: BigInt.tryParse(widget.projectId)!,
+          amount: BigInt.from(_data.amount),
+        );
+        workCtx.client.signAndSubmit(
+          call,
+          workCtx.user.address,
+          gov: WithGovPs(
             runType: 1,
             amount: 10,
-            member: MemberGroup(scope: 1, id: 0),
-            // TODO
+            member: const Global(),
             periodIndex: 0,
+            daoId: BigInt.from(workCtx.org.daoId),
           ),
         );
         await workCtx.daoRefresh();

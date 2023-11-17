@@ -1,8 +1,12 @@
-import 'package:dtim/native_wraper.dart';
+import 'package:convert/convert.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_runtime/runtime_call.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:dtim/bridge_struct.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/application/store/work_ctx.dart';
@@ -11,7 +15,7 @@ import 'package:dtim/application/store/theme.dart';
 
 class CreateProjectPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateProjectPage({Key? key, this.closeModel}) : super(key: key);
+  const CreateProjectPage({super.key, this.closeModel});
 
   @override
   State<CreateProjectPage> createState() => _CreateProjectPageState();
@@ -41,37 +45,36 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
+        late RuntimeCall call;
         if (_data.type == 0) {
-          await rustApi.createGuild(
-            from: workCtx.user.address,
-            client: workCtx.chainClient,
+          call = workCtx.client.tx.weteeGuild.createGuild(
             daoId: workCtx.org.daoId,
-            name: _data.name,
-            desc: _data.desc,
-            ext: const WithGovPs(
-              runType: 1,
-              amount: 100,
-              member: MemberGroup(scope: 1, id: 0),
-              // TODO
-              periodIndex: 0,
-            ),
+            name: strToChain(_data.name),
+            desc: strToChain(_data.desc),
+            metaData: strToChain("{}"),
+            creator: hex.decode(workCtx.user.address),
           );
         } else {
-          await rustApi.createProject(
-            from: workCtx.user.address,
-            client: workCtx.chainClient,
+          call = workCtx.client.tx.weteeProject.createProject(
             daoId: workCtx.org.daoId,
-            name: _data.name,
-            desc: _data.desc,
-            ext: const WithGovPs(
-              runType: 1,
-              amount: 100,
-              member: MemberGroup(scope: 1, id: 0),
-              // TODO
-              periodIndex: 0,
-            ),
+            name: strToChain(_data.name),
+            description: strToChain(_data.desc),
+            creator: hex.decode(workCtx.user.address),
           );
         }
+
+        workCtx.client.signAndSubmit(
+          call,
+          workCtx.user.address,
+          gov: WithGovPs(
+            runType: 1,
+            amount: 10,
+            member: const Global(),
+            periodIndex: 0,
+            daoId: BigInt.from(workCtx.org.daoId),
+          ),
+        );
+
         await workCtx.daoRefresh();
       },
     );

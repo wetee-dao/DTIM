@@ -1,8 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/app/app.dart';
-import 'package:dtim/bridge_struct.dart';
+
 import 'package:dtim/infra/components/gov_pop.dart';
-import 'package:dtim/x_bridge.dart';
+
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 

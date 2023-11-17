@@ -1,7 +1,5 @@
-import 'dart:typed_data';
-
-import 'package:dtim/native_wraper.dart';
 import 'package:chips_choice/chips_choice.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -17,7 +15,7 @@ import 'package:dtim/application/store/theme.dart';
 
 class CreateRoadMapPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateRoadMapPage({Key? key, this.closeModel}) : super(key: key);
+  const CreateRoadMapPage({super.key, this.closeModel});
 
   @override
   State<CreateRoadMapPage> createState() => _CreateRoadMapPageState();
@@ -48,15 +46,18 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoCreateRoadmapTask(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeOrg.createRoadmapTask(
           daoId: workCtx.org.daoId,
           roadmapId: _data.roadmapId,
-          name: _data.name,
+          name: strToChain(_data.name),
           priority: _data.priority,
-          tags: Uint8List.fromList(_data.tags),
         );
+
+        workCtx.client.signAndSubmit(
+          call,
+          workCtx.user.address,
+        );
+
         await workCtx.daoRefresh();
       },
     );

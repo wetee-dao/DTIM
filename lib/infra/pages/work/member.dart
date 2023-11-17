@@ -1,6 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';

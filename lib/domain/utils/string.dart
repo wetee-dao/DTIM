@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 extension BeautifyStringExtension on String {
@@ -74,4 +76,11 @@ extension SizeString on num {
 
 String chainStr(List<int> data) {
   return String.fromCharCodes(data);
+}
+
+Uint8List strToChain(String str) {
+  final List<int> codeUnits = str.codeUnits;
+  final Uint8List unit8List = Uint8List.fromList(codeUnits);
+
+  return unit8List;
 }

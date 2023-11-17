@@ -1,5 +1,5 @@
 import 'package:dtim/domain/utils/screen/screen.dart';
-import 'package:dtim/x_bridge.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:dtim/infra/components/dao/text.dart';

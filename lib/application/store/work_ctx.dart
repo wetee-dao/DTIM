@@ -28,9 +28,9 @@ class WorkCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
   late OrgInfo dao;
-  late AccountInfo daoAmount;
+  late AccountData daoAmount;
   late int userPoint;
-  late AccountInfo nativeAmount;
+  late AccountData nativeAmount;
   late AccountData share;
 
   Wetee? chainClient;
@@ -89,7 +89,7 @@ class WorkCTX with ChangeNotifier {
 
     // DAO信息
     dao = (await chainClient!.query.weteeOrg.daos(daoId))!;
-    daoAmount = await chainClient!.query.system.account(dao.daoAccountId);
+    daoAmount = await chainClient!.query.tokens.accounts(dao.daoAccountId,BigInt.from(0));
     totalIssuance = (await chainClient!.query.tokens.totalIssuance(daoId)).toInt();
 
     // 工会&项目
@@ -99,7 +99,7 @@ class WorkCTX with ChangeNotifier {
     // 用户荣誉点 share 链上金额
     userPoint = await chainClient!.query.weteeOrg.memberPoint(daoId, publicKey);
     share = await chainClient!.query.tokens.accounts(publicKey, daoId);
-    nativeAmount = await chainClient!.query.system.account(publicKey);
+    nativeAmount = await chainClient!.query.tokens.accounts(publicKey,BigInt.from(0));
     ss58Address = user.ss58Address;
 
     // DAO 成员
@@ -129,7 +129,7 @@ class WorkCTX with ChangeNotifier {
       } else {
         if (user.address != '') {
           if (org.daoId == 0) return;
-          nativeAmount = await chainClient!.query.system.account(hex.decode(user.address));
+          nativeAmount = await chainClient!.query.tokens.accounts(hex.decode(user.address),BigInt.from(0));
           share = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.from(org.daoId));
         }
       }
@@ -142,7 +142,7 @@ class WorkCTX with ChangeNotifier {
       BotToast.showText(text: 'You are not a member of this Org workgroup', duration: const Duration(seconds: 2));
       return false;
     }
-    if (nativeAmount.data.free < BigInt.from(100)) {
+    if (nativeAmount.free < BigInt.from(100)) {
       BotToast.showText(
         text: "The user's balance is not enough to pay the handling fee",
         duration: const Duration(seconds: 2),
@@ -191,8 +191,9 @@ Future<bool> inputPasswordg(Account user) async {
     final res = await waitFutureLoading<String>(
       context: globalCtx(),
       future: () async {
-        // final pwd = input[0];
+        final pwd = input[0];
         try {
+          workCtx.client.addKeyring(keyringStr: user.chainData, password: pwd);
           // await addFromKeyring(keyringStr: user.chainData, password: pwd);
         } catch (e) {
           return "密码错误";

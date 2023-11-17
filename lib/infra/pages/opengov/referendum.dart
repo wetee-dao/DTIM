@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/infra/components/loading_dialog.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'sub/referendum.dart';

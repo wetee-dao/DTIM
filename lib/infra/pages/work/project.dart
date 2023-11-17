@@ -10,10 +10,10 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
-import 'package:dtim/bridge_struct.dart';
+
 import 'sub/kanban.dart';
 import 'sub/member.dart';
 

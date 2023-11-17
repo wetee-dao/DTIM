@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:dtim/bridge_struct.dart';
+
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/native_wraper.dart';
+
 import 'package:dtim/application/store/theme.dart';
 
 class Referendums extends StatelessWidget {
