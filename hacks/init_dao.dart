@@ -1,21 +1,22 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:convert/convert.dart';
 
-import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:dtim/chain/wraper/ext.dart';
+import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
+import 'package:dtim/chain/wetee/ext.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
-// ignore: constant_identifier_names 
+// ignore: constant_identifier_names
 // 5G2qTYr4mm6MHB5x1XwZde4YWDGGmN9sXYmpsdTWpg2EAfRT
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {
   final provider = Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
-  final wetee = Wetee(provider);
+  final wetee = WeteeGen(provider);
   final keyPair = await KeyPair.fromMnemonic(DAO_ROOT_SEED);
 
-  await wetee.getBlockNumber(provider);
+  // await wetee.getBlockNumber(provider);
 
   // 创建DAO
   var runcall = wetee.tx.weteeOrg.createDao(
@@ -29,9 +30,24 @@ void main() async {
     purpose: convertStringToUint8List("For the freedom of programming"),
     metaData: convertStringToUint8List("{}"),
   );
-  
+
   // 提交
-  wetee.signAndSubmit(runcall, keyPair, provider);
+  await wetee.signAndSubmit(runcall, keyPair, provider);
+  
+  // final Uint8List hash2 = Uint8List(32);
+  // print(utf8.encode("WeteeOr"));
+  // Hasher.twoxx128.hashTo(
+  //     data: Uint8List.fromList(utf8.encode("WeteeOr")), output: hash2.buffer.asUint8List(hash2.offsetInBytes, 16));
+  // print(hash2);
+
+  // final Uint8List hash = Uint8List(32);
+  // print(utf8.encode("WeteeOrg"));
+  // Hasher.twoxx128.hashTo(
+  //     data: Uint8List.fromList(utf8.encode("WeteeOrg")), output: hash.buffer.asUint8List(hash.offsetInBytes, 16));
+  // print(hash);
+
+  var d = await wetee.query.weteeOrg.daos(BigInt.from(5000));
+  print(d!.id.toString());
 
   // 添加用户到项目
   // var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);
@@ -85,6 +101,10 @@ void main() async {
   // print("INIT DONE");
   // exit(0);
 }
+// dui
+// [143, 224, 218, 130, 216, 29, 255, 164, 125, 212, 95, 86, 168, 19, 136, 96, 56, 178, 125, 25, 144, 142, 115, 184, 122, 113, 48, 67, 68, 58, 75, 43, 136, 19, 0, 0, 0, 0, 0, 0]
+// cuo
+// [221, 1, 231, 241, 61, 218, 100, 204, 231, 45, 243, 241, 149, 0, 125, 244, 56, 178, 125, 25, 144, 142, 115, 184, 122, 113, 48, 67, 68, 58, 75, 43, 136, 19, 0, 0, 0, 0, 0, 0]
 
 Uint8List convertStringToUint8List(String str) {
   final List<int> codeUnits = str.codeUnits;

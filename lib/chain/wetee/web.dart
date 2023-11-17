@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 // ignore: depend_on_referenced_packages
 import 'package:dtim/chain/wetee/types/frame_system/account_info.dart';
-import 'package:dtim/chain/wraper/type.dart';
+import 'package:dtim/chain/wetee/types.dart';
 import 'package:js/js.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';

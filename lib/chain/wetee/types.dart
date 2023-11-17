@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:dtim/chain/wetee/types/pallet_balances/types/account_data.dart';
+import 'package:dtim/chain/wetee/types/primitive_types/h256.dart';
 import 'package:dtim/chain/wetee/types/wetee_gov/member_data.dart';
 import 'package:dtim/chain/wetee/types/wetee_gov/pre_prop.dart';
+import 'package:dtim/chain/wetee/types/wetee_gov/tally.dart';
 import 'package:dtim/chain/wetee/types/wetee_org/guild_info.dart';
 import 'package:dtim/chain/wetee/types/wetee_org/org_info.dart';
 import 'package:dtim/chain/wetee/types/wetee_org/quarter_task.dart';
 import 'package:dtim/chain/wetee/types/wetee_project/project_info.dart';
+import 'package:dtim/chain/wetee/types/wetee_runtime/runtime_call.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /// vote yes or no
@@ -153,16 +156,17 @@ class GuildInfoLocal extends GuildInfo {
   });
 
   factory GuildInfoLocal.fromJson(Map<String, dynamic> json) => _$GuildInfoLocalFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$GuildInfoLocalToJson(this);
 }
 
 @JsonSerializable()
-class GovReferendumJ extends GovReferendum {
-  GovReferendumJ({
-    required int id,
-    required String hash,
+class PropLocal extends PreProp {
+  PropLocal({
+    required BigInt id,
+    required H256 hash,
     // required int end,
-    required String proposal,
+    required RuntimeCall proposal,
     // required int delay,
     required this.tally,
     required this.memberGroup,
@@ -171,33 +175,38 @@ class GovReferendumJ extends GovReferendum {
   }) : super(
           id: id,
           hash: hash,
-          // end: end,
           proposal: proposal,
-          // delay: delay,
           tally: tally,
           period: period,
           memberGroup: memberGroup,
           status: status,
+          start: start,
         );
 
   @override
-  final TallyJ tally;
-  @override
-  final MemberGroupJ memberGroup;
+  final TallyLocal tally;
 
   @override
-  final GovPeriodJ period;
+  final PropLocal memberGroup;
 
-  factory GovReferendumJ.fromJson(Map<String, dynamic> json) => _$GovReferendumJFromJson(json);
-  Map<String, dynamic> toJson() => _$GovReferendumJToJson(this);
+  @override
+  final PropLocal period;
+
+  factory PropLocal.fromJson(Map<String, dynamic> json) => _$PropLocalFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$PropLocalToJson(this);
 }
 
 @JsonSerializable()
-class TallyJ extends Tally {
-  TallyJ({required int yes, required int no}) : super(yes: yes, no: no);
+class TallyLocal extends Tally {
+  TallyLocal({
+    required super.yes,
+    required super.no,
+  });
 
-  factory TallyJ.fromJson(Map<String, dynamic> json) => _$TallyJFromJson(json);
-  Map<String, dynamic> toJson() => _$TallyJToJson(this);
+  factory TallyLocal.fromJson(Map<String, dynamic> json) => _$TallyLocalFromJson(json);
+  @override
+  Map<String, BigInt> toJson() => _$TallyLocalToJson(this);
 }
 
 @JsonSerializable()

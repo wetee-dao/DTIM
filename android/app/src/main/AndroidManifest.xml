@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.asyou.asyou_app">
+    package="me.asyou.dtim">
    <application
         android:label="asyou_app"
         android:name="${applicationName}"

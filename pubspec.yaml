@@ -40,8 +40,6 @@ dependencies:
   flutter_bloc: ^8.1.2
   # 表情包
   emoji_picker_flutter: ^1.5.2
-  # c库调用
-  ffi: ^2.0.1
   # 状态管理
   freezed_annotation: ^2.2.0
   # json
@@ -56,7 +54,7 @@ dependencies:
   # easy_localization: ^3.0.1
   path_provider: ^2.0.14
   # 音频
-  audioplayers: ^5.2.0
+  # audioplayers: ^5.2.0
   # 弹窗
   adaptive_dialog: ^1.9.0-0
   # 缩略图
@@ -117,10 +115,6 @@ dependencies:
   polkadart_keyring: ^0.2.1
   substrate_bip39: ^0.2.0
   convert: ^3.1.1
-  # webview
-  # webview_cef:
-  #   path: ./exts/webview_cef
-  # flutter_inappwebview: ^6.0.0-beta.24+1
 
 dev_dependencies:
   flutter_test:
@@ -132,22 +126,19 @@ dev_dependencies:
   hive_generator: ^2.0.0
   freezed: ^2.4.1
   build_runner: ^2.4.6
-  ffigen: ^8.0.0
   json_serializable: ^6.7.1
   polkadart_cli: ^0.2.2
   # dart_code_metrics: ^5.7.3
   # iconfont_convert: ^1.0.0
 
 dependency_overrides:
-  # c库调用
-  # ffi: ^2.0.1
   http: ^0.13.5
   collection: ^1.17.1
 
 polkadart:
-  output_dir: lib/chain # Optional. Sets the directory of generated files. Provided value should be a valid path on your system. Default: lib/generated
-  chains: # Dictionary of chains and endpoints
-    wetee: ws://127.0.0.1:9944
+  output_dir: lib/chain
+  chains:
+    wetee_gen: ws://127.0.0.1:9944
 
 flutter:
   generate: true

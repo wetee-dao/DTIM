@@ -1,4 +1,4 @@
-package me.asyou.asyou_app
+package me.asyou.dtim
 
 import io.flutter.embedding.android.FlutterActivity
 

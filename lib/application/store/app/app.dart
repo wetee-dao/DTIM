@@ -1,6 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/im_state.dart';
-import 'package:dtim/chain/wraper/wraper.dart';
+import 'package:dtim/chain/wetee/wraper.dart';
 import 'package:dtim/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

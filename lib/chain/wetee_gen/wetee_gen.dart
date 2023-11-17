@@ -164,8 +164,8 @@ class Registry {
   }
 }
 
-class Wetee {
-  Wetee._(
+class WeteeGen {
+  WeteeGen._(
     this._provider,
     this.rpc,
   )   : query = Queries(rpc.state),
@@ -173,20 +173,20 @@ class Wetee {
         tx = Extrinsics(),
         registry = Registry();
 
-  factory Wetee(_i1.Provider provider) {
+  factory WeteeGen(_i1.Provider provider) {
     final rpc = Rpc(
       state: _i1.StateApi(provider),
       system: _i1.SystemApi(provider),
     );
-    return Wetee._(
+    return WeteeGen._(
       provider,
       rpc,
     );
   }
 
-  factory Wetee.url(Uri url) {
+  factory WeteeGen.url(Uri url) {
     final provider = _i1.Provider.fromUri(url);
-    return Wetee(provider);
+    return WeteeGen(provider);
   }
 
   final _i1.Provider _provider;
