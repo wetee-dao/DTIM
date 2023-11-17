@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_org/app.dart';
 import 'package:dtim/domain/models/org.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:dtim/infra/components/app_card.dart';
 // import 'package:dtim/infra/components/dao/info_card.dart';
 // import 'package:dtim/infra/components/dao/text.dart';
@@ -24,7 +26,7 @@ class IntegratePage extends StatefulWidget {
 class _IntegratePageState extends State<IntegratePage> {
   TextEditingController searchController = TextEditingController();
   late final AppCubit im;
-  List<native.App> apps = [];
+  List<App> apps = [];
   List<OrgApp> oapps = [];
   bool loding = true;
   String searchText = "";
@@ -40,8 +42,10 @@ class _IntegratePageState extends State<IntegratePage> {
   }
 
   getData() async {
-    apps = await rustApi.appHubs(client: workCtx.chainClient);
-    oapps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
+    // apps = await rustApi.appHubs(client: workCtx.chainClient);
+    // TODO
+    apps = [];
+    oapps = trans(await workCtx.client.query.weteeOrg.orgApps(BigInt.from(im.currentState!.org.daoId)));
     loding = false;
     setState(() {});
   }
@@ -54,13 +58,13 @@ class _IntegratePageState extends State<IntegratePage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final fapps = searchText == ""
+    final List<App> fapps = searchText == ""
         ? apps.reversed.toList()
         : apps.reversed
             .toList()
             .where((a) =>
-                a.name.toLowerCase().contains(searchText.toLowerCase()) ||
-                a.desc.toLowerCase().contains(searchText.toLowerCase()))
+                chainStr(a.name).toLowerCase().contains(searchText.toLowerCase()) ||
+                chainStr(a.desc).toLowerCase().contains(searchText.toLowerCase()))
             .toList();
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
@@ -131,13 +135,13 @@ class _IntegratePageState extends State<IntegratePage> {
                             for (var app in fapps)
                               AppCard(
                                 id: app.id,
-                                icon: app.icon,
+                                icon: chainStr(app.icon),
                                 disable: false,
                                 isActive: getActive(app),
                                 width: ((constraints.maxWidth + 20.w) / row) - 20.w,
                                 background: const Color.fromARGB(255, 4, 18, 53),
-                                label: app.name,
-                                amount: app.desc,
+                                label: chainStr(app.name),
+                                amount: chainStr(app.desc),
                               ),
                             // AppCard(
                             //   icon: "https://wetee.app/icons/sxgl.png",
@@ -154,7 +158,7 @@ class _IntegratePageState extends State<IntegratePage> {
                             // ),
                             // dtim:///work
                             AppCard(
-                              id: 5000,
+                              id: BigInt.from(5000),
                               disable: true,
                               isActive: false,
                               width: ((constraints.maxWidth + 20.w) / row) - 20.w,
@@ -165,7 +169,7 @@ class _IntegratePageState extends State<IntegratePage> {
                                   'Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking',
                             ),
                             AppCard(
-                              id: 5000,
+                              id: BigInt.from(5000),
                               disable: true,
                               isActive: false,
                               width: ((constraints.maxWidth + 20.w) / row) - 20.w,
@@ -175,7 +179,7 @@ class _IntegratePageState extends State<IntegratePage> {
                               amount: 'Cross-chain DeFi Hub for Polkadot, Kusama and beyond',
                             ),
                             AppCard(
-                              id: 5000,
+                              id: BigInt.from(5000),
                               disable: true,
                               isActive: false,
                               width: ((constraints.maxWidth + 20.w) / row) - 20.w,
@@ -193,7 +197,7 @@ class _IntegratePageState extends State<IntegratePage> {
     );
   }
 
-  bool getActive(native.App org) {
-    return oapps.where((oa) => oa.appId == org.id).toList().isNotEmpty;
+  bool getActive(App org) {
+    return oapps.where((oa) => oa.appId.toString() == org.id.toString()).toList().isNotEmpty;
   }
 }

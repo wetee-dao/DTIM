@@ -7,8 +7,47 @@ import 'package:dtim/domain/models/block_header.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
-extension WeteeExt on WeteeGen {
-  Future<String> signAndSubmit(RuntimeCall rCall, KeyPair keyPair, Provider provider) async {
+export './key_pair.dart';
+
+class Wetee {
+  Wetee(
+    this.provider,
+    this.rpc,
+  )   : query = Queries(rpc.state),
+        constant = Constants(),
+        tx = Extrinsics(),
+        registry = Registry();
+
+  factory Wetee.url(String url) {
+    final provider = Provider.fromUri(Uri.parse(url));
+    final rpc = Rpc(
+      state: StateApi(provider),
+      system: SystemApi(provider),
+    );
+    return Wetee(provider, rpc);
+  }
+
+  final Provider provider;
+
+  final Queries query;
+
+  final Constants constant;
+
+  final Rpc rpc;
+
+  final Extrinsics tx;
+
+  final Registry registry;
+
+  Future connect() async {
+    return await provider.connect();
+  }
+
+  Future disconnect() async {
+    return await provider.disconnect();
+  }
+
+  Future<String> signAndSubmit(RuntimeCall rCall, KeyPair keyPair) async {
     final call = hex.encode(rCall.encode());
     final blockHash = await query.system.blockHash(BigInt.from(0));
     final version = constant.system.version;
@@ -67,7 +106,8 @@ extension WeteeExt on WeteeGen {
     return header;
   }
 
-  Future<StreamSubscription<BlockHeader>> subscribeFinalizedHeads(void Function(BlockHeader) onData, Provider provider) async {
+  Future<StreamSubscription<BlockHeader>> subscribeFinalizedHeads(
+      void Function(BlockHeader) onData, Provider provider) async {
     final subscription = await provider.subscribe(
       'chain_subscribeFinalizedHeads',
       [],
@@ -106,4 +146,3 @@ int hexToInt(String hex) {
   }
   return val;
 }
-

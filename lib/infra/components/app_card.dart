@@ -14,7 +14,7 @@ import 'dao/text.dart';
 import 'loading_dialog.dart';
 
 class AppCard extends StatelessWidget {
-  final int id;
+  final BigInt id;
   final String icon;
   final bool disable;
   final bool isActive;

@@ -66,7 +66,9 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
     workCtx.setOrg(AccountOrg(""), im.me!);
     workCtx.connectChain(() async {
-      final v = await wctx!.chainClient!.query.weteeOrg.daos();
+      // final v = await wctx!.chainClient!.query.weteeOrg.daos();
+      // TODO
+      final v = [];
       orgs = v
           .map((o) => Org(
                 o.id.toString(),

@@ -7,14 +7,13 @@ import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dtim/chain/wetee/ext.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:polkadart/polkadart.dart';
-import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_org/guild_info.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_project/project_info.dart';
@@ -59,8 +58,7 @@ class WorkCTX with ChangeNotifier {
       callback();
       return;
     }
-    provider = Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
-    chainClient = Wetee(provider!);
+    chainClient = Wetee.url('ws://127.0.0.1:9944');
     chainClient!.connect().then((clientIndex) async {
       blockNumber = await chainClient!.getBlockNumber(provider!);
       printSuccess("连接到区块链 ==> $chainUrl ===> $clientIndex");
@@ -99,7 +97,7 @@ class WorkCTX with ChangeNotifier {
     projects = await chainClient!.query.weteeProject.daoProjects(daoId);
 
     // 用户荣誉点 share 链上金额
-    userPoint = await chainClient!.query.weteeOrg.memberPoint(daoId,publicKey);
+    userPoint = await chainClient!.query.weteeOrg.memberPoint(daoId, publicKey);
     share = await chainClient!.query.tokens.accounts(publicKey, daoId);
     nativeAmount = await chainClient!.query.system.account(publicKey);
     ss58Address = user.ss58Address;
@@ -132,7 +130,7 @@ class WorkCTX with ChangeNotifier {
         if (user.address != '') {
           if (org.daoId == 0) return;
           nativeAmount = await chainClient!.query.system.account(hex.decode(user.address));
-          share = await chainClient!.query.tokens.accounts(hex.decode(user.address),BigInt.from(org.daoId));
+          share = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.from(org.daoId));
         }
       }
       notifyListeners();
@@ -166,6 +164,8 @@ class WorkCTX with ChangeNotifier {
   Future<bool> inputPassword() async {
     return await inputPasswordg(user);
   }
+
+  Wetee get client => chainClient!;
 }
 
 final workCtx = WorkCTX();

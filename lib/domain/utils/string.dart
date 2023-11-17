@@ -72,3 +72,6 @@ extension SizeString on num {
   }
 }
 
+String chainStr(List<int> data) {
+  return String.fromCharCodes(data);
+}

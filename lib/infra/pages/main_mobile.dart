@@ -5,7 +5,6 @@ import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/router/router.dart';
-import 'package:dtim/native_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -79,7 +78,7 @@ class _MobilePageState extends State<MobilePage> {
 
       workCtx.setOrg(im.currentState!.org, im.me!);
       workCtx.connectChain(() async {
-        apps = trans(await rustApi.orgApps(client: workCtx.chainClient, orgId: im.currentState!.org.daoId));
+        apps = trans(await workCtx.client.query.weteeOrg.orgApps(BigInt.from(im.currentState!.org.daoId)));
         await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
         if (mounted) {
           setState(() {});

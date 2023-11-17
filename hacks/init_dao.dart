@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart';
 
 import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
-import 'package:dtim/chain/wetee/ext.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
@@ -12,8 +12,7 @@ import 'package:polkadart_keyring/polkadart_keyring.dart';
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {
-  final provider = Provider.fromUri(Uri.parse('ws://127.0.0.1:9944'));
-  final wetee = WeteeGen(provider);
+  final wetee = Wetee.url('ws://127.0.0.1:9944');
   final keyPair = await KeyPair.fromMnemonic(DAO_ROOT_SEED);
 
   // await wetee.getBlockNumber(provider);
@@ -32,8 +31,8 @@ void main() async {
   );
 
   // 提交
-  await wetee.signAndSubmit(runcall, keyPair, provider);
-  
+  await wetee.signAndSubmit(runcall, keyPair);
+
   // final Uint8List hash2 = Uint8List(32);
   // print(utf8.encode("WeteeOr"));
   // Hasher.twoxx128.hashTo(

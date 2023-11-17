@@ -155,12 +155,7 @@ class Registry {
   }
 
   List getSignedExtensionExtra() {
-    return [
-      'CheckSpecVersion',
-      'CheckTxVersion',
-      'CheckGenesis',
-      'CheckMortality'
-    ];
+    return ['CheckSpecVersion', 'CheckTxVersion', 'CheckGenesis', 'CheckMortality'];
   }
 }
 

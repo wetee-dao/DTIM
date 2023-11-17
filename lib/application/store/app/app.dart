@@ -1,6 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/im_state.dart';
-import 'package:dtim/chain/wetee/wraper.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:dtim/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,6 +115,7 @@ class AppCubit extends Cubit<AppState> {
         duration: const Duration(seconds: 2),
       );
     } else {
+      // TODO
       // await rustApi.addKeyring(keyringStr: user.chainData, password: "");
       sign = await signFromAddress(
         user,
