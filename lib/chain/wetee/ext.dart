@@ -10,18 +10,14 @@ import 'package:polkadart_keyring/polkadart_keyring.dart';
 extension WeteeExt on WeteeGen {
   Future<String> signAndSubmit(RuntimeCall rCall, KeyPair keyPair, Provider provider) async {
     final call = hex.encode(rCall.encode());
-    // final blockHash = await query.system.blockHash(BigInt.from(0));
-    final blockHash = [29, 97, 94, 226, 173, 126, 29, 151, 142, 8, 12, 88, 94, 41, 20, 158, 178, 205, 130, 113, 184, 208, 213, 187, 142, 2, 201, 78, 150, 105, 4, 186];
-    print(blockHash);
+    final blockHash = await query.system.blockHash(BigInt.from(0));
     final version = constant.system.version;
     final publicKey = hex.encode(keyPair.publicKey.bytes);
 
     // 获取用户信息
     final account = await query.system.account(keyPair.publicKey.bytes);
-    print(keyPair.address);
 
     // 构建签名体
-    print(publicKey);
     final payloadToSign = SigningPayload(
       method: call,
       blockHash: hex.encode(blockHash),
@@ -33,7 +29,6 @@ extension WeteeExt on WeteeGen {
       transactionVersion: version.transactionVersion,
       tip: 0,
     );
-    print(payloadToSign.toEncodedMap());
 
     // 签名
     final payload = payloadToSign.encode(registry);
@@ -41,7 +36,6 @@ extension WeteeExt on WeteeGen {
     // print(signature);
     final hexSignature = hex.encode(signature);
     // final hexSignature = "0d168ee693a3451613b651b0bafc501a8729c5dbe25c611bf1176e544c7aea0af861553b470cde9327465610d23eb1efe915965cf4797368733353b84b467708";
-    print(hexSignature);
 
     final extrinsic = Extrinsic(
       signer: publicKey,
@@ -58,7 +52,7 @@ extension WeteeExt on WeteeGen {
       extrinsic,
       (data) => print('From here: ${data.type} - ${data.value}'),
     );
-    print(submit);
+    submit.cancel();
     return "";
   }
 

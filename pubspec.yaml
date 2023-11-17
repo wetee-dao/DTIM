@@ -54,7 +54,7 @@ dependencies:
   # easy_localization: ^3.0.1
   path_provider: ^2.0.14
   # 音频
-  # audioplayers: ^5.2.0
+  audioplayers: ^5.2.0
   # 弹窗
   adaptive_dialog: ^1.9.0-0
   # 缩略图
