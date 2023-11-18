@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/close_bar.dart';
-import 'package:dtim/application/store/work_ctx.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import 'guild.dart';
@@ -35,17 +35,17 @@ class _WorkPageState extends State<WorkPage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    workCtx.setOrg(im.currentState!.org, im.me!);
-    workCtx.connectChain(() {
+    weteeCtx.setOrg(im.currentState!.org, im.me!);
+    weteeCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-        workCtx.timeTick();
+        weteeCtx.timeTick();
       });
     });
   }
 
   getData() async {
-    workCtx.getVoteData();
+    weteeCtx.getVoteData();
   }
 
   @override
@@ -95,10 +95,10 @@ class _WorkPageState extends State<WorkPage> {
               tools: CloseBar(color: constTheme.sidebarText),
             )
           : null,
-      body: workCtx.chainClient != null
+      body: weteeCtx.chainClient != null
           ? ChangeNotifierProvider.value(
               key: const Key("workView"),
-              value: workCtx,
+              value: weteeCtx,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -127,12 +127,12 @@ class _WorkPageState extends State<WorkPage> {
   pageRender(id) {
     if (pageStr.contains("Guilds")) {
       final ids = pageStr.split(" ");
-      final guild = workCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
+      final guild = weteeCtx.guilds.firstWhere((element) => element.id.toString() == ids[1]);
       return Guildpage(guild: guild);
     }
     if (pageStr.contains("Projects")) {
       final ids = pageStr.split(" ");
-      final project = workCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
+      final project = weteeCtx.projects.firstWhere((element) => element.id.toString() == ids[1]);
       return ProjectPage(info: project);
     }
 

@@ -72,7 +72,7 @@ class AccountOrg {
 
   // 组织Id
   @HiveField(9)
-  int daoId = 0;
+  String daoId = "";
 
   // 区块链连接点
   @HiveField(13)
@@ -97,16 +97,16 @@ class AccountOrg {
 }
 
 @JsonSerializable()
-class ChainData {
+class ChainAccountData {
   late String encoded;
   late String address;
   late ChainDataEncoding encoding;
   late Map<String, String> meta;
 
-  ChainData(this.address, this.encoded, this.encoding, this.meta);
+  ChainAccountData(this.address, this.encoded, this.encoding, this.meta);
 
-  factory ChainData.fromJson(Map<String, dynamic> json) => _$ChainDataFromJson(json);
-  Map<String, dynamic> toJson() => _$ChainDataToJson(this);
+  factory ChainAccountData.fromJson(Map<String, dynamic> json) => _$ChainAccountDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ChainAccountDataToJson(this);
 }
 
 @JsonSerializable()

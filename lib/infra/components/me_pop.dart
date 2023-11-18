@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/popup.dart';
@@ -204,7 +204,7 @@ class _MePopState extends State<MePop> {
                   onTap: () async {
                     final im = context.read<AppCubit>();
                     menuController.hideMenu();
-                    workCtx.disconnectChain();
+                    weteeCtx.disconnectChain();
                     await im.logout();
                   },
                   child: Container(

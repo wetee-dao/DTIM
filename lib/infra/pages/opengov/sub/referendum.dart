@@ -1,7 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop_status.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
@@ -97,14 +97,14 @@ class Referendums extends StatelessWidget {
                 InkWell(
                   key: Key("referendumStart${pending[index].id}"),
                   onTap: () async {
-                    if (!await workCtx.checkAfterTx()) return;
+                    if (!await weteeCtx.checkAfterTx()) return;
 
                     if (OkCancelResult.ok ==
                         await showOkCancelAlertDialog(
                           useRootNavigator: false,
                           title: "Notice",
                           message:
-                              "开启提案需要质押${workCtx.periods[pending[index].periodIndex].decisionDeposit} WET,投票失败会导致惩罚?",
+                              "开启提案需要质押${weteeCtx.periods[pending[index].periodIndex].decisionDeposit} WET,投票失败会导致惩罚?",
                           context: globalCtx(),
                           okLabel: L10n.of(globalCtx())!.next,
                           cancelLabel: L10n.of(globalCtx())!.cancel,
@@ -112,15 +112,15 @@ class Referendums extends StatelessWidget {
                       await waitFutureLoading(
                         context: globalCtx(),
                         future: () async {
-                          final call = workCtx.client.tx.weteeGov.depositProposal(
-                            daoId: workCtx.org.daoId,
+                          final call = weteeCtx.client.tx.weteeGov.depositProposal(
+                            daoId: weteeCtx.org.daoId,
                             proposeId: pending[index].id,
-                            deposit: workCtx.periods[pending[index].periodIndex].decisionDeposit,
+                            deposit: weteeCtx.periods[pending[index].periodIndex].decisionDeposit,
                           );
 
                           // 提交
-                          await workCtx.client.signAndSubmit(call, workCtx.user.address);
-                          await workCtx.daoRefresh();
+                          await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
+                          await weteeCtx.daoRefresh();
                         },
                       );
                     }
@@ -195,7 +195,7 @@ class Referendums extends StatelessWidget {
                     size: 13.w,
                   ),
                 ),
-                renderTime(going[index], workCtx),
+                renderTime(going[index], weteeCtx),
                 Container(
                   width: 80.w,
                   height: 30.w,
@@ -291,8 +291,8 @@ class Referendums extends StatelessWidget {
       ),
     );
 
-    // if (going.end - workCtx.blockNumber > 0) {
-    //   final cindex = workCtx.votes.indexWhere((v) => v.referendumIndex == going.id);
+    // if (going.end - weteeCtx.blockNumber > 0) {
+    //   final cindex = weteeCtx.votes.indexWhere((v) => v.referendumIndex == going.id);
     //   return cindex > -1
     //       ? renderBox(
     //           PrimaryText(
@@ -322,8 +322,8 @@ class Referendums extends StatelessWidget {
     //         );
     // }
     // if (going.status == 0 &&
-    //     going.end - workCtx.blockNumber <= 0 &&
-    //     going.end + going.delay - workCtx.blockNumber > 0) {
+    //     going.end - weteeCtx.blockNumber <= 0 &&
+    //     going.end + going.delay - weteeCtx.blockNumber > 0) {
     //   return renderBox(
     //     PrimaryText(
     //       text: "Delay time",
@@ -332,22 +332,22 @@ class Referendums extends StatelessWidget {
     //     ),
     //   );
     // }
-    // if (going.status == 0 && going.end - workCtx.blockNumber < 0) {
+    // if (going.status == 0 && going.end - weteeCtx.blockNumber < 0) {
     //   if (going.tally.yes > 0) {
     //     return InkWell(
     //       key: Key("referendumExecute${going.id}"),
     //       onTap: () async {
-    //         if (!await workCtx.checkAfterTx()) return;
+    //         if (!await weteeCtx.checkAfterTx()) return;
     //         await waitFutureLoading(
     //           context: globalCtx(),
     //           future: () async {
     //             await rustApi.daoGovRunProposal(
-    //               from: workCtx.user.address,
-    //               client: workCtx.chainClient,
-    //               daoId: workCtx.org.daoId,
+    //               from: weteeCtx.user.address,
+    //               client: weteeCtx.chainClient,
+    //               daoId: weteeCtx.org.daoId,
     //               index: going.id,
     //             );
-    //             await workCtx.daoRefresh();
+    //             await weteeCtx.daoRefresh();
     //             if (going.proposal.toLowerCase().contains("integrate")) {
     //               final org = globalCtx().read<OrgCubit>();
     //               org.update();
@@ -389,9 +389,9 @@ class Referendums extends StatelessWidget {
     );
   }
 
-  renderTime(Prop going, WorkCTX dao) {
+  renderTime(Prop going, WeTEECTX dao) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    final period = workCtx.periods[going.periodIndex];
+    final period = weteeCtx.periods[going.periodIndex];
     final blockNumber = BigInt.from(dao.blockNumber);
     if (period.confirmPeriod - blockNumber > BigInt.zero) {
       return SizedBox(

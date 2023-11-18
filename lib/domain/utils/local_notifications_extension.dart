@@ -92,7 +92,7 @@ extension LocalNotificationsExtension on ImState {
         title,
         body: body,
         replacesId: linuxNotificationId ?? 0,
-        appName: "Wetee",
+        appName: "WeTEE",
         appIcon: appIconFile?.path ?? '',
         actions: [
           NotificationAction(

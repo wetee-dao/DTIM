@@ -12,8 +12,8 @@ import 'package:dtim/infra/components/dao/priority_icon.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/domain/models/tag.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 
 class RoadMapPage extends StatefulWidget {
@@ -25,7 +25,7 @@ class RoadMapPage extends StatefulWidget {
 
 class _RoadMapPageState extends State<RoadMapPage> {
   late final AppCubit im;
-  late final WorkCTX dao;
+  late final WeTEECTX dao;
   bool _loading = true;
   List<Quarter> quarters = [];
 
@@ -33,7 +33,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    dao = context.read<WorkCTX>();
+    dao = context.read<WeTEECTX>();
     getData();
   }
 
@@ -46,7 +46,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
     print("getData");
     List<Quarter> qs = [];
     for (var i = 1; i <= 4; i++) {
-      final qtasks = await workCtx.client.query.weteeOrg.roadMaps(BigInt.from(workCtx.org.daoId), 202301);
+      final qtasks = await weteeCtx.client.query.weteeOrg.roadMaps(BigInt.tryParse(weteeCtx.org.daoId)!, 202301);
       qs.add(Quarter(
         year: 2023 * 100 + i,
         quarter: i,

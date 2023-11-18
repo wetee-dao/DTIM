@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/components.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import '../../router/pop_router.dart';
@@ -59,7 +59,7 @@ class SideMenu extends StatelessWidget {
             //   onTap: () => onTap("Combind Boards"),
             // ),
             Divider(color: constTheme.sidebarText.withOpacity(0.18)),
-            Consumer<WorkCTX>(builder: (_, dao, child) {
+            Consumer<WeTEECTX>(builder: (_, dao, child) {
               return Column(
                 children: [
                   ...dao.guilds.map((e) => iconBuilder(

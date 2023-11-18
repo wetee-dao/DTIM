@@ -1,4 +1,4 @@
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/period.dart';
@@ -39,8 +39,8 @@ class _GovPopState extends State<GovPop> {
 
   getData() async {
     // periods = await XXXXdaoGovPeriods(
-    //   client: workCtx.chainClient,
-    //   orgId: workCtx.org.daoId,
+    //   client: weteeCtx.chainClient,
+    //   orgId: weteeCtx.org.daoId,
     // );
     // print(periods);
     setState(() {});
@@ -57,7 +57,7 @@ class _GovPopState extends State<GovPop> {
         amount: 0,
         member: widget.member,
         periodIndex: _data.periodIndex,
-        daoId: workCtx.dao.id,
+        daoId: weteeCtx.dao.id,
       ),
     );
   }

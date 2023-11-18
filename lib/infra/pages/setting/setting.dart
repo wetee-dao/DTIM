@@ -6,7 +6,7 @@ import 'package:matrix/matrix.dart' as link;
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/hover_list_item.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'notice.dart';
 import 'theme.dart';

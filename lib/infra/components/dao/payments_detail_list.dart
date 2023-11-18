@@ -5,7 +5,7 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'payment_list_tile.dart';
 import 'text.dart';
@@ -63,7 +63,7 @@ class PaymentsDetailList extends StatelessWidget {
               ),
               SizedBox(height: 3.w),
               Text(
-                "WTE:  ${(nativeAmount.free / Wetee.chainUnit).toStringAsFixed(2)} UNIT",
+                "WTE:  ${(nativeAmount.free / WeTEE.chainUnit).toStringAsFixed(2)} UNIT",
                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 13.w),
               ),
               SizedBox(height: 3.w),
@@ -76,7 +76,7 @@ class PaymentsDetailList extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20.w),
-        Consumer<WorkCTX>(builder: (_, dao, child) {
+        Consumer<WeTEECTX>(builder: (_, dao, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -88,7 +88,7 @@ class PaymentsDetailList extends StatelessWidget {
             ],
           );
         }),
-        Consumer<WorkCTX>(builder: (_, dao, child) {
+        Consumer<WeTEECTX>(builder: (_, dao, child) {
           return Column(
             children: List.generate(
               dao.votes.length,

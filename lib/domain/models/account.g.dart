@@ -80,7 +80,7 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..orgAvater = fields[5] as String?
       ..orgImg = fields[6] as String?
       ..domain = fields[7] as String?
-      ..daoId = fields[9] as int
+      ..daoId = fields[9] as String
       ..theme = fields[13] as String?
       ..status = fields[10] as int
       ..withAddr = fields[11] as String
@@ -135,14 +135,16 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChainData _$ChainDataFromJson(Map<String, dynamic> json) => ChainData(
+ChainAccountData _$ChainAccountDataFromJson(Map<String, dynamic> json) =>
+    ChainAccountData(
       json['address'] as String,
       json['encoded'] as String,
       ChainDataEncoding.fromJson(json['encoding'] as Map<String, dynamic>),
       Map<String, String>.from(json['meta'] as Map),
     );
 
-Map<String, dynamic> _$ChainDataToJson(ChainData instance) => <String, dynamic>{
+Map<String, dynamic> _$ChainAccountDataToJson(ChainAccountData instance) =>
+    <String, dynamic>{
       'encoded': instance.encoded,
       'address': instance.address,
       'encoding': instance.encoding,

@@ -9,7 +9,7 @@ import 'package:dtim/infra/components/dao/dao_is_joined.dart';
 import 'package:dtim/infra/components/dao/info_card.dart';
 import 'package:dtim/infra/components/dao/payments_detail_list.dart';
 import 'package:dtim/infra/components/dao/text.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'sub/referendum.dart';
 
@@ -48,7 +48,7 @@ class Overviewpage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 15.w),
-                  Consumer<WorkCTX>(
+                  Consumer<WeTEECTX>(
                     builder: (_, dao, child) {
                       return SizedBox(
                         width: double.maxFinite,
@@ -60,7 +60,7 @@ class Overviewpage extends StatelessWidget {
                             InfoCard(
                               icon: AppIcons.zichan,
                               label: "Treasury TOKEN",
-                              amount: 'WTE ${dao.daoAmount.free / Wetee.chainUnit}',
+                              amount: 'WTE ${dao.daoAmount.free / WeTEE.chainUnit}',
                             ),
                             InfoCard(
                               icon: AppIcons.zuzhi_data_organization_6,
@@ -105,7 +105,7 @@ class Overviewpage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 15.w),
-                  Consumer<WorkCTX>(builder: (_, dao, child) {
+                  Consumer<WeTEECTX>(builder: (_, dao, child) {
                     return Referendums(
                       wrap: false,
                       showTitle: false,
@@ -128,7 +128,7 @@ class Overviewpage extends StatelessWidget {
                 ),
               ),
             ),
-            child: Consumer<WorkCTX>(builder: (_,WorkCTX dao, child) {
+            child: Consumer<WeTEECTX>(builder: (_,WeTEECTX dao, child) {
               return DaoIsJoined(
                 isJoined: dao.members.contains(dao.user.address),
                 child: SingleChildScrollView(

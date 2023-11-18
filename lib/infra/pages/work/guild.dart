@@ -9,7 +9,7 @@ import 'package:dtim/domain/utils/string.dart';
 import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +32,7 @@ class Guildpage extends StatefulWidget {
 }
 
 class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
-  late final WorkCTX dao;
+  late final WeTEECTX dao;
   List<String> members = [];
   late TabController _tabController;
   late PageController pageController = PageController();
@@ -44,12 +44,12 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
-    dao = context.read<WorkCTX>();
+    dao = context.read<WeTEECTX>();
     getData();
   }
 
   getData() async {
-    members = (await workCtx.client.query.weteeOrg.guildMembers(BigInt.from(dao.org.daoId), widget.guild.id)).map((v)=>hex.encode(v)).toList();
+    members = (await weteeCtx.client.query.weteeOrg.guildMembers(BigInt.tryParse(dao.org.daoId)!, widget.guild.id)).map((v)=>hex.encode(v)).toList();
     if (mounted) setState(() {});
 
     await dao.getVoteData();
@@ -104,31 +104,31 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                               okLabel: L10n.of(globalCtx())!.next,
                               cancelLabel: L10n.of(globalCtx())!.cancel,
                             )) {
-                          if (!await workCtx.checkAfterTx()) return;
+                          if (!await weteeCtx.checkAfterTx()) return;
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
-                              final call = workCtx.client.tx.weteeGuild.guildJoin(
-                                daoId: BigInt.from(workCtx.org.daoId),
+                              final call = weteeCtx.client.tx.weteeGuild.guildJoin(
+                                daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
                                 guildId: info.id,
-                                who: hex.decode(workCtx.user.address),
+                                who: hex.decode(weteeCtx.user.address),
                               );
 
                               // 提交
-                              await workCtx.client.signAndSubmit(
+                              await weteeCtx.client.signAndSubmit(
                                 call,
-                                workCtx.user.address,
+                                weteeCtx.user.address,
                                 gov: WithGovPs(
                                   runType: 1,
                                   amount: 100,
                                   member: Guild(info.id),
                                   // TODO
                                   periodIndex: 0,
-                                  daoId: BigInt.from(workCtx.org.daoId),
+                                  daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
                                 ),
                               );
 
-                              await workCtx.daoRefresh();
+                              await weteeCtx.daoRefresh();
                               getData();
                             },
                           );

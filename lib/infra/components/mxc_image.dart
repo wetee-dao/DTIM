@@ -15,7 +15,7 @@ import 'package:matrix/matrix.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_file_extension.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 
 class MxcImage extends StatefulWidget {
   final Uri? uri;

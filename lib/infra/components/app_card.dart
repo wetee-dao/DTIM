@@ -1,6 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:dtim/application/store/im.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/gov_pop.dart';
@@ -121,7 +121,7 @@ class AppCard extends StatelessWidget {
           //   context: globalCtx(),
           //   future: () async {
           // await rustApi.createAsset(
-          //   client: workCtx.chainClient,
+          //   client: weteeCtx.chainClient,
           //   from: im.me!.address,
           //   daoId: im.currentState!.org.daoId,
           //   name: input[0],
@@ -130,7 +130,7 @@ class AppCard extends StatelessWidget {
           //   symbol: input[1],
           // );
           //     await rustApi.orgIntegrateApp(
-          //       client: workCtx.chainClient,
+          //       client: weteeCtx.chainClient,
           //       from: im.me!.address,
           //       orgId: im.currentState!.org.daoId,
           //       appId: id,
@@ -164,11 +164,11 @@ class AppCard extends StatelessWidget {
           await waitFutureLoading(
             context: globalCtx(),
             future: () async {
-              final call = workCtx.client.tx.weteeOrg.orgIntegrateApp(
-                daoId: BigInt.from(im.currentState!.org.daoId),
+              final call = weteeCtx.client.tx.weteeOrg.orgIntegrateApp(
+                daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
                 appId: id,
               );
-              await workCtx.client.signAndSubmit(call, workCtx.user.address, gov: gov);
+              await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address, gov: gov);
               BotToast.showText(text: gov.runType == 2 ? "应用集成成功" : "应用集成提案将显示在治理中，请到治理插件中开启投票");
             },
           );

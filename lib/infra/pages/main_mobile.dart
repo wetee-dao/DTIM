@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:dtim/application/store/app/org.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:auto_route/auto_route.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:dtim/infra/components/components.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/service/apis/apis.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/application/store/theme.dart';
@@ -76,9 +76,9 @@ class _MobilePageState extends State<MobilePage> {
         });
       }
 
-      workCtx.setOrg(im.currentState!.org, im.me!);
-      workCtx.connectChain(() async {
-        apps = trans(await workCtx.client.query.weteeOrg.orgApps(BigInt.from(im.currentState!.org.daoId)));
+      weteeCtx.setOrg(im.currentState!.org, im.me!);
+      weteeCtx.connectChain(() async {
+        apps = trans(await weteeCtx.client.query.weteeOrg.orgApps(BigInt.tryParse(im.currentState!.org.daoId)!));
         await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
         if (mounted) {
           setState(() {});

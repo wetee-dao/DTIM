@@ -9,7 +9,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
@@ -41,41 +41,41 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
     }
     _formKey.currentState!.save();
 
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
         late RuntimeCall call;
         if (_data.type == 0) {
-          call = workCtx.client.tx.weteeGuild.createGuild(
-            daoId: workCtx.org.daoId,
+          call = weteeCtx.client.tx.weteeGuild.createGuild(
+            daoId: weteeCtx.org.daoId,
             name: strToChain(_data.name),
             desc: strToChain(_data.desc),
             metaData: strToChain("{}"),
-            creator: hex.decode(workCtx.user.address),
+            creator: hex.decode(weteeCtx.user.address),
           );
         } else {
-          call = workCtx.client.tx.weteeProject.createProject(
-            daoId: workCtx.org.daoId,
+          call = weteeCtx.client.tx.weteeProject.createProject(
+            daoId: weteeCtx.org.daoId,
             name: strToChain(_data.name),
             description: strToChain(_data.desc),
-            creator: hex.decode(workCtx.user.address),
+            creator: hex.decode(weteeCtx.user.address),
           );
         }
 
-        workCtx.client.signAndSubmit(
+        weteeCtx.client.signAndSubmit(
           call,
-          workCtx.user.address,
+          weteeCtx.user.address,
           gov: WithGovPs(
             runType: 1,
             amount: 10,
             member: const Global(),
             periodIndex: 0,
-            daoId: BigInt.from(workCtx.org.daoId),
+            daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
           ),
         );
 
-        await workCtx.daoRefresh();
+        await weteeCtx.daoRefresh();
       },
     );
 

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/theme.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
@@ -28,7 +28,7 @@ import 'package:dtim/domain/models/account.dart';
 class PreloaderPage extends StatefulWidget {
   final ValueChanged<bool>? onResult;
 
-  const PreloaderPage({Key? key, this.onResult}) : super(key: key);
+  const PreloaderPage({super.key, this.onResult});
 
   @override
   State<PreloaderPage> createState() => _PreloaderPageState();
@@ -48,14 +48,14 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
 
     im = context.read();
     getList(() {
+      weteeCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: [], ss58Address: ''));
+      weteeCtx.connectChain(() async {
+        setState(() => _loading = false);
+      });
       if (accounts.isNotEmpty && !runInTest) {
         autoLogin();
         return;
       }
-      workCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: [], ss58Address: ''));
-      workCtx.connectChain(() async {
-        setState(() => _loading = false);
-      });
       Timer(const Duration(seconds: 3), () {
         setState(() => _loading = false);
       });

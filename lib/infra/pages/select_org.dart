@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dtim/domain/utils/string.dart';
 // import 'package:chips_choice/chips_choice.dart';
 import 'package:dtim/domain/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,9 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/service/apis/apis.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/domain/models/models.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
+import 'package:polkadart/scale_codec.dart';
 
 @RoutePage(name: "selectOrgRoute")
 class SelectOrgPage extends StatefulWidget {
@@ -32,7 +35,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   List<Account?> accounts = [];
   List<AccountOrg> userOrgs = [];
   List<Org> orgs = [];
-  WorkCTX? wctx;
+  WeTEECTX? wctx;
   late AppCubit im;
   late AccountOrgApi accountOrgApi;
 
@@ -64,21 +67,21 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
     selected = orgList;
     setState(() {});
 
-    workCtx.setOrg(AccountOrg(""), im.me!);
-    workCtx.connectChain(() async {
-      // final v = await wctx!.chainClient!.query.weteeOrg.daos();
-      // TODO
-      final v = [];
+    weteeCtx.setOrg(AccountOrg(""), im.me!);
+    weteeCtx.connectChain(() async {
+      final v = (await weteeCtx.client.queryMapList(module: 'WeteeOrg', storage: 'Daos')).map((b) {
+        return OrgInfo.decode(ByteInput(b));
+      }).toList();
       orgs = v
           .map((o) => Org(
                 o.id.toString(),
-                daoId: o.id,
-                name: o.name,
-                desc: o.desc,
-                logo: o.logo,
-                img: o.img,
-                imApi: o.imApi,
-                homeUrl: o.homeUrl,
+                daoId: o.id.toString(),
+                name: chainStr(o.name),
+                desc: chainStr(o.desc),
+                logo: chainStr(o.logo),
+                img: chainStr(o.img),
+                imApi: chainStr(o.imApi),
+                homeUrl: chainStr(o.homeUrl),
               ))
           .toList();
 

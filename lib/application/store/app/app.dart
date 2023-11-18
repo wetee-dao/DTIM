@@ -1,7 +1,4 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/application/store/im_state.dart';
-import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:dtim/router.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,6 +14,10 @@ import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/application/store/im_state.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/router.dart';
 
 part 'app.freezed.dart';
 
@@ -84,19 +85,14 @@ class AppCubit extends Cubit<AppState> {
       final res = await waitFutureLoading<String>(
         context: globalCtx(),
         future: () async {
-          // final pwd = input[0];
+          final pwd = input[0];
           try {
-            // await rustApi.addKeyring(keyringStr: user.chainData, password: pwd);
-            // sign = await rustApi.signFromAddress(
-            //   address: user.address,
-            //   ctx: signCtx,
-            // );
+            await WeTEE.addKeyring(keyringStr: user.chainData, password: pwd);
+            sign = await signFromAddress(user, signCtx);
           } catch (e) {
-            return "密码错误";
+            return "密码错误 => ${e.toString()}";
           }
 
-          printDebug(user.address);
-          printDebug("$signCtx||$sign");
           emit(state.copyWith(
             me: user,
             signCtx: signCtx,
@@ -115,8 +111,7 @@ class AppCubit extends Cubit<AppState> {
         duration: const Duration(seconds: 2),
       );
     } else {
-      // TODO
-      // await rustApi.addKeyring(keyringStr: user.chainData, password: "");
+      await WeTEE.addKeyring(keyringStr: user.chainData, password: "");
       sign = await signFromAddress(
         user,
         signCtx,

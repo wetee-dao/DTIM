@@ -18,7 +18,7 @@ import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/app_bar.dart';
 
-import '../../../application/store/work_ctx.dart';
+import '../../../application/store/chain_ctx.dart';
 
 @RoutePage(name: "createOrgRoute")
 class CreateOrgPage extends StatefulWidget {
@@ -433,9 +433,9 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 _formKey.currentState!.save();
                 final im = context.read<AppCubit>();
 
-                workCtx.setOrg(im.currentState!.org, im.me!);
-                workCtx.connectChain(() async {
-                  printInfo("workCtx.connectChain2");
+                weteeCtx.setOrg(im.currentState!.org, im.me!);
+                weteeCtx.connectChain(() async {
+                  printInfo("weteeCtx.connectChain2");
                   if (!await inputPasswordg(im.me!)) {
                     return;
                   }
@@ -444,7 +444,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                     future: () async {
                       printSuccess(_imController.text.replaceAll(RegExp(r"\s*"), ""));
                       try {
-                        final call = workCtx.client.tx.weteeOrg.createDao(
+                        final call = weteeCtx.client.tx.weteeOrg.createDao(
                           name: strToChain(_data.name),
                           purpose: strToChain(_data.purpose),
                           metaData: strToChain("{}"),
@@ -457,7 +457,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                         );
 
                         // 提交
-                        await workCtx.client.signAndSubmit(call, workCtx.user.address);
+                        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
                       } catch (e) {
                         return "The user's balance is not enough to pay the handling fee";
                       }

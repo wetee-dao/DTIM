@@ -21,7 +21,7 @@ import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/router.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import 'sub/kanban.dart';
@@ -39,7 +39,7 @@ class ProjectPage extends StatefulWidget {
 
 class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin {
   final boardScrollController = ScrollController();
-  late final WorkCTX dao;
+  late final WeTEECTX dao;
   late TabController _tabController;
   late PageController pageController = PageController();
   final titleList = <String>["Kanban", "Members", "Referendums"];
@@ -57,22 +57,22 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: titleList.length, initialIndex: 0);
-    dao = context.read<WorkCTX>();
+    dao = context.read<WeTEECTX>();
     getData();
   }
 
   getData() async {
-    members = (await workCtx.client.query.weteeOrg.projectMembers(BigInt.from(dao.org.daoId), widget.info.id))
+    members = (await weteeCtx.client.query.weteeOrg.projectMembers(BigInt.tryParse(dao.org.daoId)!, widget.info.id))
         .map((v) => hex.encode(v))
         .toList();
 
-    final ps = await workCtx.client.query.weteeProject.tasks(widget.info.id);
+    final ps = await weteeCtx.client.query.weteeProject.tasks(widget.info.id);
     todo = ps.where((p) => p.status == TaskStatus.toDo).toList();
     inProgress = ps.where((p) => p.status == TaskStatus.inProgress).toList();
     inReview = ps.where((p) => p.status == TaskStatus.inReview).toList();
     done = ps.where((p) => p.status == TaskStatus.done).toList();
 
-    share = await workCtx.client.query.tokens.accounts(hex.decode(workCtx.user.address), BigInt.from(dao.org.daoId));
+    share = await weteeCtx.client.query.tokens.accounts(hex.decode(weteeCtx.user.address), BigInt.tryParse(dao.org.daoId)!);
 
     pending = dao.pending.where((r) => r.memberData == Project(widget.info.id)).toList();
     going = dao.going.where((r) => r.memberData == Project(widget.info.id)).toList();
@@ -144,31 +144,31 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                             okLabel: L10n.of(globalCtx())!.next,
                             cancelLabel: L10n.of(globalCtx())!.cancel,
                           )) {
-                        if (!await workCtx.checkAfterTx()) return;
+                        if (!await weteeCtx.checkAfterTx()) return;
                         await waitFutureLoading(
                           context: globalCtx(),
                           future: () async {
-                            final call = workCtx.client.tx.weteeProject.projectJoinRequest(
-                              daoId: BigInt.from(workCtx.org.daoId),
+                            final call = weteeCtx.client.tx.weteeProject.projectJoinRequest(
+                              daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
                               projectId: widget.info.id,
-                              who: hex.decode(workCtx.user.address),
+                              who: hex.decode(weteeCtx.user.address),
                             );
 
                             // 提交
-                            await workCtx.client.signAndSubmit(
+                            await weteeCtx.client.signAndSubmit(
                               call,
-                              workCtx.user.address,
+                              weteeCtx.user.address,
                               gov: WithGovPs(
                                 runType: 1,
                                 amount: 100,
                                 member: Project(widget.info.id),
                                 // TODO
                                 periodIndex: 0,
-                                daoId: BigInt.from(workCtx.org.daoId),
+                                daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
                               ),
                             );
 
-                            await workCtx.daoRefresh();
+                            await weteeCtx.daoRefresh();
                             getData();
                           },
                         );

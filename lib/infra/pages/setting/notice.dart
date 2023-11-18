@@ -10,7 +10,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/setting/settings_ui.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 // import 'package:dtim/domain/utils/screen/screen.dart';
 
 class NoticePage extends StatefulWidget {

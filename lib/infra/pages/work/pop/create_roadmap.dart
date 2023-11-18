@@ -9,7 +9,7 @@ import 'package:dtim/infra/components/form/muti_select.dart';
 import 'package:dtim/infra/components/form/select.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
@@ -42,23 +42,23 @@ class _CreateRoadMapPageState extends State<CreateRoadMapPage> {
     }
     _formKey.currentState!.save();
 
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeOrg.createRoadmapTask(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeOrg.createRoadmapTask(
+          daoId: weteeCtx.org.daoId,
           roadmapId: _data.roadmapId,
           name: strToChain(_data.name),
           priority: _data.priority,
         );
 
-        workCtx.client.signAndSubmit(
+        weteeCtx.client.signAndSubmit(
           call,
-          workCtx.user.address,
+          weteeCtx.user.address,
         );
 
-        await workCtx.daoRefresh();
+        await weteeCtx.daoRefresh();
       },
     );
 

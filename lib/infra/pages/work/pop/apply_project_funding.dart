@@ -6,7 +6,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
@@ -40,28 +40,28 @@ class _ApplyProjectFundingPageState extends State<ApplyProjectFundingPage> {
       BotToast.showText(text: 'The application amount is not less than 0.', duration: const Duration(seconds: 2));
       return;
     }
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
 
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeProject.applyProjectFunds(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeProject.applyProjectFunds(
+          daoId: weteeCtx.org.daoId,
           projectId: BigInt.tryParse(widget.projectId)!,
           amount: BigInt.from(_data.amount),
         );
-        workCtx.client.signAndSubmit(
+        weteeCtx.client.signAndSubmit(
           call,
-          workCtx.user.address,
+          weteeCtx.user.address,
           gov: WithGovPs(
             runType: 1,
             amount: 10,
             member: const Global(),
             periodIndex: 0,
-            daoId: BigInt.from(workCtx.org.daoId),
+            daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
           ),
         );
-        await workCtx.daoRefresh();
+        await weteeCtx.daoRefresh();
       },
     );
 

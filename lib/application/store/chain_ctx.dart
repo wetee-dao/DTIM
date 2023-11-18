@@ -21,10 +21,10 @@ import 'package:dtim/chain/wetee_gen/types/wetee_project/project_info.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
 
-final chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
-// const chainUrl = "ws://127.0.0.1:9944";
+// final chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
+const chainUrl = "ws://127.0.0.1:9944";
 
-class WorkCTX with ChangeNotifier {
+class WeTEECTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
   late OrgInfo dao;
@@ -33,7 +33,7 @@ class WorkCTX with ChangeNotifier {
   late AccountData nativeAmount;
   late AccountData share;
 
-  Wetee? chainClient;
+  WeTEE? chainClient;
   Provider? provider;
 
   int blockNumber = 0;
@@ -55,13 +55,16 @@ class WorkCTX with ChangeNotifier {
 
   connectChain(Function callback) async {
     if (chainClient != null) {
+      if (org.daoId == "") {
+        callback();
+        return;
+      }
       await getData();
-      callback();
       return;
     }
-    chainClient = Wetee.url('ws://127.0.0.1:9944');
-    chainClient!.connect().then((clientIndex) async {
-      blockNumber = await chainClient!.getBlockNumber(provider!);
+    chainClient = WeTEE.url(chainUrl);
+    printDebug("准备连接到区块链 ==> $chainUrl");
+    chainClient!.getBlockNumber().then((clientIndex) async {
       printSuccess("连接到区块链 ==> $chainUrl ===> $clientIndex");
       notifyListeners();
 
@@ -82,15 +85,15 @@ class WorkCTX with ChangeNotifier {
 
   getData({notify = true}) async {
     // 区块链代码
-    blockNumber = await chainClient!.getBlockNumber(provider!);
+    blockNumber = await chainClient!.getBlockNumber();
 
-    if (org.daoId == 0) return;
-    final daoId = BigInt.from(org.daoId);
+    if (org.daoId == "") return;
+    final daoId = BigInt.tryParse(org.daoId)!;
     final publicKey = hex.decode(user.address);
 
     // DAO信息
     dao = (await chainClient!.query.weteeOrg.daos(daoId))!;
-    daoAmount = await chainClient!.query.tokens.accounts(dao.daoAccountId,BigInt.from(0));
+    daoAmount = await chainClient!.query.tokens.accounts(dao.daoAccountId, BigInt.from(0));
     totalIssuance = (await chainClient!.query.tokens.totalIssuance(daoId)).toInt();
 
     // 工会&项目
@@ -100,7 +103,7 @@ class WorkCTX with ChangeNotifier {
     // 用户荣誉点 share 链上金额
     userPoint = await chainClient!.query.weteeOrg.memberPoint(daoId, publicKey);
     share = await chainClient!.query.tokens.accounts(publicKey, daoId);
-    nativeAmount = await chainClient!.query.tokens.accounts(publicKey,BigInt.from(0));
+    nativeAmount = await chainClient!.query.tokens.accounts(publicKey, BigInt.from(0));
     ss58Address = user.ss58Address;
 
     // DAO 成员
@@ -114,7 +117,7 @@ class WorkCTX with ChangeNotifier {
 
   getVoteData({notify = true}) async {
     if (org.daoId == 0) return;
-    pending = await chainClient!.query.weteeGov.preProps(BigInt.from(org.daoId));
+    pending = await chainClient!.query.weteeGov.preProps(BigInt.tryParse(org.daoId)!);
     going = [];
     // await chainClient!.query.weteeGov.props(BigInt.from(org.daoId), key2);
 
@@ -122,7 +125,7 @@ class WorkCTX with ChangeNotifier {
   }
 
   timeTick() async {
-    int newBlockNumber = await chainClient!.getBlockNumber(provider!);
+    int newBlockNumber = await chainClient!.getBlockNumber();
     if (newBlockNumber != blockNumber) {
       blockNumber = newBlockNumber;
       if (daoRefreshChannel > 0) {
@@ -132,8 +135,8 @@ class WorkCTX with ChangeNotifier {
       } else {
         if (user.address != '') {
           if (org.daoId == 0) return;
-          nativeAmount = await chainClient!.query.tokens.accounts(hex.decode(user.address),BigInt.from(0));
-          share = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.from(org.daoId));
+          nativeAmount = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.from(0));
+          share = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.tryParse(org.daoId)!);
         }
       }
       notifyListeners();
@@ -168,10 +171,10 @@ class WorkCTX with ChangeNotifier {
     return await inputPasswordg(user);
   }
 
-  Wetee get client => chainClient!;
+  WeTEE get client => chainClient!;
 }
 
-final workCtx = WorkCTX();
+final weteeCtx = WeTEECTX();
 
 Future<bool> inputPasswordg(Account user) async {
   if (!PlatformInfos.isWeb) {
@@ -196,10 +199,9 @@ Future<bool> inputPasswordg(Account user) async {
       future: () async {
         final pwd = input[0];
         try {
-          workCtx.client.addKeyring(keyringStr: user.chainData, password: pwd);
-          // await addFromKeyring(keyringStr: user.chainData, password: pwd);
+          await WeTEE.addKeyring(keyringStr: user.chainData, password: pwd);
         } catch (e) {
-          return "密码错误";
+          return "密码错误 => ${e.toString()}";
         }
         return "ok";
       },

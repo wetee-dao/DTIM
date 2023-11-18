@@ -2,7 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:convert/convert.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,19 +21,19 @@ class MemberPage extends StatefulWidget {
 }
 
 class MemberPageState extends State<MemberPage> {
-  late final WorkCTX dao;
+  late final WeTEECTX dao;
   List<String> members = [];
 
   @override
   void initState() {
     super.initState();
-    dao = context.read<WorkCTX>();
+    dao = context.read<WeTEECTX>();
     getData();
   }
 
   getData() async {
     members =
-        (await workCtx.client.query.weteeOrg.members(BigInt.from(dao.org.daoId))).map((v) => hex.encode(v)).toList();
+        (await weteeCtx.client.query.weteeOrg.members(BigInt.tryParse(dao.org.daoId)!)).map((v) => hex.encode(v)).toList();
     print(members);
     if (mounted) setState(() {});
   }
@@ -84,7 +84,7 @@ class MemberPageState extends State<MemberPage> {
                               okLabel: L10n.of(globalCtx())!.next,
                               cancelLabel: L10n.of(globalCtx())!.cancel,
                             )) {
-                          if (!await workCtx.checkAfterTx()) return;
+                          if (!await weteeCtx.checkAfterTx()) return;
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
@@ -102,7 +102,7 @@ class MemberPageState extends State<MemberPage> {
                               //     ),
                               //   ),
                               // );
-                              await workCtx.daoRefresh();
+                              await weteeCtx.daoRefresh();
                               getData();
                             },
                           );

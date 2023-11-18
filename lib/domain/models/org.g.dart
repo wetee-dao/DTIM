@@ -18,7 +18,7 @@ class OrgAdapter extends TypeAdapter<Org> {
     };
     return Org(
       fields[1] as String,
-      daoId: fields[2] as int,
+      daoId: fields[2] as String,
       name: fields[3] as String?,
       desc: fields[4] as String?,
       purpose: fields[8] as String?,

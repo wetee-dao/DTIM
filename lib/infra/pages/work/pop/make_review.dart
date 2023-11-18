@@ -6,7 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/form/switch.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
@@ -39,12 +39,12 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
     }
     _formKey.currentState!.save();
 
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeProject.makeReview(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeProject.makeReview(
+          daoId: weteeCtx.org.daoId,
           projectId: BigInt.tryParse(widget.projectId),
           taskId: BigInt.tryParse(widget.id),
           opinion: _data.approve ? ReviewOpinion.yes : ReviewOpinion.no,
@@ -52,8 +52,8 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
         );
 
         // 提交
-        await workCtx.client.signAndSubmit(call, workCtx.user.address);
-        await workCtx.daoRefresh();
+        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
+        await weteeCtx.daoRefresh();
       },
     );
 

@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
+import 'package:polkadart/scale_codec.dart';
 
 // ignore: constant_identifier_names
-// 5G2qTYr4mm6MHB5x1XwZde4YWDGGmN9sXYmpsdTWpg2EAfRT
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {
-  final wetee = Wetee.url('ws://127.0.0.1:9944');
+  final wetee = WeTEE.url('ws://127.0.0.1:9944');
 
-  final chainAccount = await getSeedPhrase( seedStr: DAO_ROOT_SEED, name: '', password: '');
-  await wetee.addKeyring(keyringStr: json.encode(chainAccount.toJson()), password: "");
-
-  // await wetee.getBlockNumber(provider);
+  final chainAccount = await getSeedPhrase(seedStr: DAO_ROOT_SEED, name: '', password: '');
+  print(chainAccount.meta["ss58Address"]);
+  await WeTEE.addKeyring(keyringStr: json.encode(chainAccount.toJson()), password: "");
 
   // 创建DAO
   var runcall = wetee.tx.weteeOrg.createDao(
@@ -33,20 +33,13 @@ void main() async {
   // 提交
   await wetee.signAndSubmit(runcall, chainAccount.address);
 
-  // final Uint8List hash2 = Uint8List(32);
-  // print(utf8.encode("WeteeOr"));
-  // Hasher.twoxx128.hashTo(
-  //     data: Uint8List.fromList(utf8.encode("WeteeOr")), output: hash2.buffer.asUint8List(hash2.offsetInBytes, 16));
-  // print(hash2);
-
-  // final Uint8List hash = Uint8List(32);
-  // print(utf8.encode("WeteeOrg"));
-  // Hasher.twoxx128.hashTo(
-  //     data: Uint8List.fromList(utf8.encode("WeteeOrg")), output: hash.buffer.asUint8List(hash.offsetInBytes, 16));
-  // print(hash);
-
-  var d = await wetee.query.weteeOrg.daos(BigInt.from(5000));
+  final d = await wetee.query.weteeOrg.daos(BigInt.from(5000));
   print(d!.id.toString());
+
+  final orgs = (await wetee.queryMapList(module: 'WeteeOrg', storage: 'Daos')).map((b) {
+    return OrgInfo.decode(ByteInput(b));
+  }).toList();
+  print(orgs);
 
   // 添加用户到项目
   // var rootAddress = await rustApi.addSeed(seed: DAO_ROOT_SEED);

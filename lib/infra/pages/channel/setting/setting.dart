@@ -8,7 +8,7 @@ import 'package:matrix/matrix.dart' as link;
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'details.dart';
 import 'encryption.dart';

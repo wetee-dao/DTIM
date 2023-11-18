@@ -13,7 +13,7 @@ import 'package:dtim/infra/components/form/muti_select.dart';
 import 'package:dtim/infra/components/form/select.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
@@ -48,7 +48,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
   }
 
   getData() {
-    workCtx.client.query.weteeProject.tasks(BigInt.tryParse(widget.id)!).then((tasks) {
+    weteeCtx.client.query.weteeProject.tasks(BigInt.tryParse(widget.id)!).then((tasks) {
       final v = tasks.firstWhere((v) => v.id == BigInt.tryParse(widget.id));
       setState(() {
         _data.desc = chainStr(v.description);
@@ -64,13 +64,13 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     // ignore: use_build_context_synchronously
     await waitFutureLoading(
       context: context,
       future: () async {
-        final call = workCtx.client.tx.weteeProject.createTask(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeProject.createTask(
+          daoId: weteeCtx.org.daoId,
           projectId: BigInt.tryParse(widget.projectId)!,
           name: strToChain(_data.name),
           description: strToChain(_data.desc),
@@ -80,7 +80,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
         );
 
         // 提交
-        await workCtx.client.signAndSubmit(call, workCtx.user.address);
+        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
       },
     );
 

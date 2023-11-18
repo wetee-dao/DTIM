@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/infra/components/loading_dialog.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'sub/referendum.dart';
 
@@ -19,12 +19,12 @@ class ReferendumPage extends StatefulWidget {
 }
 
 class _ReferendumPageState extends State<ReferendumPage> {
-  late final WorkCTX dao;
+  late final WeTEECTX dao;
 
   @override
   void initState() {
     super.initState();
-    dao = context.read<WorkCTX>();
+    dao = context.read<WeTEECTX>();
     getData();
   }
 
@@ -65,13 +65,13 @@ class _ReferendumPageState extends State<ReferendumPage> {
                     if (dao.votes.isNotEmpty)
                       InkWell(
                         onTap: () async {
-                          if (!await workCtx.checkAfterTx()) return;
+                          if (!await weteeCtx.checkAfterTx()) return;
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
-                              final call = workCtx.client.tx.weteeGov.unlock(daoId: BigInt.from(dao.org.daoId));
-                              await workCtx.client.signAndSubmit(call, workCtx.user.address);
-                              await workCtx.daoRefresh();
+                              final call = weteeCtx.client.tx.weteeGov.unlock(daoId: BigInt.tryParse(dao.org.daoId)!);
+                              await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
+                              await weteeCtx.daoRefresh();
                             },
                           );
                         },
@@ -120,7 +120,7 @@ class _ReferendumPageState extends State<ReferendumPage> {
           ),
           SizedBox(height: 10.w),
           Expanded(
-            child: Consumer<WorkCTX>(builder: (_, dao, child) {
+            child: Consumer<WeTEECTX>(builder: (_, dao, child) {
               return Referendums(
                 pending: dao.pending.where((r) => r.memberData == const Global()).toList(),
                 going: dao.going.where((r) => r.memberData == const Global()).toList(),

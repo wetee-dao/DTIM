@@ -1,6 +1,6 @@
 import 'package:dtim/chain/wetee_gen/types/wetee_project/task_info.dart';
 import 'package:dtim/infra/router/pop_router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -394,59 +394,59 @@ class Kanban extends StatelessWidget {
       BotToast.showText(text: "验证者不能为空", duration: const Duration(seconds: 2));
       return;
     }
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeProject.startTask(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeProject.startTask(
+          daoId: weteeCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
 
         // 提交
-        await workCtx.client.signAndSubmit(call, workCtx.user.address);
+        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
       },
     );
   }
 
   requestReview(TaskInfo data) async {
     print(data.id);
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeProject.requestReview(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeProject.requestReview(
+          daoId: weteeCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
 
         // 提交
-        await workCtx.client.signAndSubmit(call, workCtx.user.address);
+        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
       },
     );
   }
 
   taskDone(TaskInfo data) async {
-    if (!await workCtx.checkAfterTx()) return;
+    if (!await weteeCtx.checkAfterTx()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeProject.taskDone(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeProject.taskDone(
+          daoId: weteeCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
 
         // 提交
-        await workCtx.client.signAndSubmit(call, workCtx.user.address);
+        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
       },
     );
   }
 
   makeReviwe(TaskInfo data) async {
-    if (!data.reviewers.contains(workCtx.user.address)) {
+    if (!data.reviewers.contains(weteeCtx.user.address)) {
       BotToast.showText(text: "You are not the reviewer of the task", duration: const Duration(seconds: 2));
       return;
     }

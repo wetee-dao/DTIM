@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'key_verification_dialog.dart';
 

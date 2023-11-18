@@ -1,21 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_runtime/runtime_call.dart';
-import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
-import 'package:dtim/domain/models/block_header.dart';
-import 'package:dtim/domain/models/models.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
+import 'package:polkadart/scale_codec.dart' as codec;
 
+import 'package:dtim/chain/wetee_gen/types/wetee_runtime/runtime_call.dart';
+import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
+import 'package:dtim/domain/models/models.dart';
+// import 'package:dtim/domain/utils/functions.dart';
 import 'type.dart';
+export 'type.dart';
+export 'key_pair.dart';
 
-export './key_pair.dart';
-export './type.dart';
-
-class Wetee {
-  Wetee(
+class WeTEE {
+  WeTEE(
     this.provider,
     this.rpc,
   )   : query = Queries(rpc.state),
@@ -23,13 +24,13 @@ class Wetee {
         tx = Extrinsics(),
         registry = Registry();
 
-  factory Wetee.url(String url) {
+  factory WeTEE.url(String url) {
     final provider = Provider.fromUri(Uri.parse(url));
     final rpc = Rpc(
       state: StateApi(provider),
       system: SystemApi(provider),
     );
-    return Wetee(provider, rpc);
+    return WeTEE(provider, rpc);
   }
 
   final Provider provider;
@@ -46,7 +47,7 @@ class Wetee {
 
   static final chainUnit = BigInt.from(1000000000000);
 
-  Map<String, KeyPair> keyPairs = <String, KeyPair>{};
+  static Map<String, KeyPair> keyPairs = <String, KeyPair>{};
 
   Future connect() async {
     return await provider.connect();
@@ -59,7 +60,7 @@ class Wetee {
   Future<String> signAndSubmit(RuntimeCall rCall, String address, {WithGovPs? gov}) async {
     final blockHash = await query.system.blockHash(BigInt.from(0));
     final version = constant.system.version;
-    if(keyPairs[address]==null){
+    if (keyPairs[address] == null) {
       throw Exception('Address $address not found');
     }
     final KeyPair keyPair = keyPairs[address]!;
@@ -101,9 +102,7 @@ class Wetee {
     // 签名
     final payload = payloadToSign.encode(registry);
     final signature = keyPair.sign(payload);
-    // print(signature);
     final hexSignature = hex.encode(signature);
-    // final hexSignature = "0d168ee693a3451613b651b0bafc501a8729c5dbe25c611bf1176e544c7aea0af861553b470cde9327465610d23eb1efe915965cf4797368733353b84b467708";
 
     final extrinsic = Extrinsic(
       signer: publicKey,
@@ -124,15 +123,15 @@ class Wetee {
     return "";
   }
 
-  Future<bool> addKeyring({required String keyringStr,required String password}) async {
-    ChainData data = ChainData.fromJson(json.decode(keyringStr)) ;
+  static Future<bool> addKeyring({required String keyringStr, required String password}) async {
+    ChainAccountData data = ChainAccountData.fromJson(json.decode(keyringStr));
     final keyPair = await KeyPair.fromMnemonic(data.encoded);
     final publicKey = hex.encode(keyPair.publicKey.bytes);
     keyPairs[publicKey] = keyPair;
     return true;
   }
 
-  Future<int> getBlockNumber(Provider provider) async {
+  Future<int> getBlockNumber() async {
     final completer = Completer<void>();
     var header = 0;
     final sub = await subscribeFinalizedHeads((s) {
@@ -141,6 +140,42 @@ class Wetee {
     }, provider);
     await completer.future.then((_) => sub.cancel());
     return header;
+  }
+
+  Future<List<StorageData>> queryMapList({
+    required String module,
+    required String storage,
+    BlockHash? at,
+  }) async {
+    final Uint8List hashedKey = Uint8List(32);
+    Hasher.twoxx128.hashTo(
+      data: Uint8List.fromList(utf8.encode(module)),
+      output: hashedKey.buffer.asUint8List(hashedKey.offsetInBytes, 16),
+    );
+    Hasher.twoxx128.hashTo(
+      data: Uint8List.fromList(utf8.encode(storage)),
+      output: hashedKey.buffer.asUint8List(hashedKey.offsetInBytes + 16, 16),
+    );
+
+    final api = StateApi(provider);
+    final keys = await api.getKeysPaged(key: hashedKey, count: 1000);
+
+    final values = await api.queryStorageAt(keys);
+
+    print(values);
+    List<StorageData> ks = [];
+    for (int i = 0; i < values.length; i++) {
+      final v = values[i];
+      print(v.changes);
+      // final item = v.changes[0];
+      for (int j = 0; j < v.changes.length; j++) {
+        final item = v.changes[j];
+        if (item.value != null) {
+          ks.add(item.value!);
+        }
+      }
+    }
+    return ks;
   }
 
   Future<StreamSubscription<BlockHeader>> subscribeFinalizedHeads(
@@ -163,6 +198,16 @@ class Wetee {
   }
 }
 
+class ChainStruct<T> {
+  ChainStruct();
+
+  factory ChainStruct.decode(codec.Input input) {
+    // 在这里根据输入 input 解码数据并返回一个 ChainStruct 对象
+    // 这里可以根据需要进行类型转换和处理
+    return ChainStruct();
+  }
+}
+
 int hexToInt(String hex) {
   hex = hex.replaceAll("0x", "");
   int val = 0;
@@ -178,7 +223,7 @@ int hexToInt(String hex) {
       // a..f
       val += (hexDigit - 87) * (1 << (4 * (len - 1 - i)));
     } else {
-      throw new FormatException("Invalid hexadecimal value");
+      throw const FormatException("Invalid hexadecimal value");
     }
   }
   return val;

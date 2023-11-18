@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/close_bar.dart';
-import 'package:dtim/application/store/work_ctx.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import 'member.dart';
@@ -42,27 +42,27 @@ class _GovPageState extends State<GovPage> {
     super.initState();
     currentId.add(pageStr);
     im = context.read<AppCubit>();
-    workCtx.setOrg(im.currentState!.org, im.me!);
+    weteeCtx.setOrg(im.currentState!.org, im.me!);
     mainPages = [
       const Overviewpage(),
       const MemberPage(),
       const ReferendumPage(),
       TreasuryPage(toVote: gotoPage),
     ];
-    workCtx.connectChain(() {
+    weteeCtx.connectChain(() {
       getData();
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
         // print("获取新的区块头");
-        workCtx.timeTick();
+        weteeCtx.timeTick();
       });
     });
   }
 
   getData() async {
-    workCtx.getVoteData();
+    weteeCtx.getVoteData();
     if (mounted) {
       setState(() {
-        title = chainStr(workCtx.dao.name);
+        title = chainStr(weteeCtx.dao.name);
       });
     }
   }
@@ -126,10 +126,10 @@ class _GovPageState extends State<GovPage> {
               tools: CloseBar(color: constTheme.sidebarText),
             )
           : null,
-      body: workCtx.chainClient != null
+      body: weteeCtx.chainClient != null
           ? ChangeNotifierProvider.value(
               key: const Key("daoView"),
-              value: workCtx,
+              value: weteeCtx,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

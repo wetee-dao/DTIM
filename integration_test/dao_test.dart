@@ -1,6 +1,6 @@
 import 'package:dtim/router.dart';
 
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -83,7 +83,7 @@ void main() {
     await tester.waitFor(find.byKey(const Key('daoView')), timeout: const Duration(seconds: 50));
 
     // await rustApi.daoInitFromPair(client: workCtx.chainClient, address: workCtx.user.address);
-    await workCtx.getData();
+    await weteeCtx.getData();
     await Future.delayed(const Duration(seconds: 6));
 
     await tester.waitFor(find.byKey(const Key('joinDao')), timeout: const Duration(seconds: 50));
@@ -180,8 +180,8 @@ void main() {
     await tester.tap(find.byKey(const Key('Referendums')));
     await tester.waitFor(find.byKey(const Key('ReferendumView')), timeout: const Duration(seconds: 50));
 
-    if (workCtx.pending.isNotEmpty) {
-      var pending = workCtx.pending[0];
+    if (weteeCtx.pending.isNotEmpty) {
+      var pending = weteeCtx.pending[0];
       await tester.tap(find.byKey(Key('referendumStart${pending.id}')));
       await Future.delayed(const Duration(seconds: 10));
       await tester.pumpAndSettle();

@@ -12,7 +12,7 @@ class Org {
 
   // 团队的区块链
   @HiveField(2)
-  int daoId = 0;
+  String daoId = "";
 
   // 团队名
   @HiveField(3)

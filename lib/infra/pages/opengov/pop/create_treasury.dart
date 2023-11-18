@@ -9,7 +9,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,17 +56,17 @@ class _CreateTreasuryPageState extends State<CreateTreasuryPage> {
       context: globalCtx(),
       future: () async {
         // var pid = await XXXXcreateTreasuryProposal(
-        //   from: workCtx.user.address,
-        //   client: workCtx.chainClient,
-        //   daoId: workCtx.org.daoId,
+        //   from: weteeCtx.user.address,
+        //   client: weteeCtx.chainClient,
+        //   daoId: weteeCtx.org.daoId,
         //   value: _data.amount,
-        //   beneficiary: workCtx.user.address,
+        //   beneficiary: weteeCtx.user.address,
         // );
 
         // await XXXXgovProposal(
-        //   from: workCtx.user.address,
-        //   client: workCtx.chainClient,
-        //   daoId: workCtx.org.daoId,
+        //   from: weteeCtx.user.address,
+        //   client: weteeCtx.chainClient,
+        //   daoId: weteeCtx.org.daoId,
         //   proposalId: pid,
         //   ext: gov,
         // );

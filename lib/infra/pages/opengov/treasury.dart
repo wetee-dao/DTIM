@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/dao/text.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 
 import 'sub/treasury.dart';
@@ -21,13 +21,13 @@ class TreasuryPage extends StatefulWidget {
 }
 
 class _TreasuryPageState extends State<TreasuryPage> {
-  late final WorkCTX dao;
+  late final WeTEECTX dao;
   List<Prop> list = [];
 
   @override
   void initState() {
     super.initState();
-    dao = context.read<WorkCTX>();
+    dao = context.read<WeTEECTX>();
     getData();
   }
 

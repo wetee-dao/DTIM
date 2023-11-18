@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_org/app.dart';
 import 'package:dtim/domain/models/org.dart';
 import 'package:dtim/domain/utils/string.dart';
@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/close_bar.dart';
-import 'package:dtim/application/store/im.dart';
+import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 
 @RoutePage(name: "integrateRoute")
@@ -35,17 +35,17 @@ class _IntegratePageState extends State<IntegratePage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    workCtx.setOrg(im.currentState!.org, im.me!);
-    workCtx.connectChain(() {
+    weteeCtx.setOrg(im.currentState!.org, im.me!);
+    weteeCtx.connectChain(() {
       getData();
     });
   }
 
   getData() async {
-    // apps = await rustApi.appHubs(client: workCtx.chainClient);
+    // apps = await rustApi.appHubs(client: weteeCtx.chainClient);
     // TODO
     apps = [];
-    oapps = trans(await workCtx.client.query.weteeOrg.orgApps(BigInt.from(im.currentState!.org.daoId)));
+    oapps = trans(await weteeCtx.client.query.weteeOrg.orgApps(BigInt.tryParse(weteeCtx.org.daoId)!));
     loding = false;
     setState(() {});
   }

@@ -6,7 +6,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/theme.dart';
 
@@ -31,7 +31,7 @@ class _JoinWorkPageState extends State<JoinWorkPage> {
   @override
   void initState() {
     super.initState();
-    ss58Address = workCtx.ss58Address;
+    ss58Address = weteeCtx.ss58Address;
   }
 
   void submitAction() async {
@@ -39,26 +39,26 @@ class _JoinWorkPageState extends State<JoinWorkPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (workCtx.nativeAmount.free < Wetee.chainUnit) {
+    if (weteeCtx.nativeAmount.free < WeTEE.chainUnit) {
       BotToast.showText(
         text: "The user's balance is not enough to pay the handling fee",
         duration: const Duration(seconds: 2),
       );
       return;
     }
-    if (!await workCtx.inputPassword()) return;
+    if (!await weteeCtx.inputPassword()) return;
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        final call = workCtx.client.tx.weteeAsset.join(
-          daoId: workCtx.org.daoId,
+        final call = weteeCtx.client.tx.weteeAsset.join(
+          daoId: weteeCtx.org.daoId,
           shareExpect: _data.share,
           existenialDeposit: _data.value,
         );
 
         // 提交
-        await workCtx.client.signAndSubmit(call, workCtx.user.address);
-        await workCtx.daoRefresh();
+        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
+        await weteeCtx.daoRefresh();
       },
     );
 

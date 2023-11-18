@@ -1,5 +1,5 @@
 import 'package:dtim/infra/router/pop_router.dart';
-import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class DaoIsJoined extends StatelessWidget {
                     ElevatedButton(
                       key: const Key('joinDao'),
                       onPressed: () {
-                        if (workCtx.nativeAmount.free < BigInt.from(100)) {
+                        if (weteeCtx.nativeAmount.free < BigInt.from(100)) {
                           BotToast.showText(
                               text: "The user's balance is not enough to pay the handling fee",
                               duration: const Duration(seconds: 2));
