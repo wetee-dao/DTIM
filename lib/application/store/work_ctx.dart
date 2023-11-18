@@ -2,6 +2,7 @@
 import 'package:convert/convert.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/chain/wetee_gen/types/orml_tokens/account_data.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/period.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/vote_info.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -19,9 +20,8 @@ import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_project/project_info.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
-import 'package:dtim/chain/wetee_gen/types/frame_system/account_info.dart';
 
-var chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
+final chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
 // const chainUrl = "ws://127.0.0.1:9944";
 
 class WorkCTX with ChangeNotifier {
@@ -46,6 +46,7 @@ class WorkCTX with ChangeNotifier {
   List<VoteInfo> votes = [];
   List<PreProp> pending = [];
   List<Prop> going = [];
+  List<Period> periods = [];
 
   setOrg(AccountOrg porg, Account puser) {
     user = puser;
@@ -105,6 +106,8 @@ class WorkCTX with ChangeNotifier {
     // DAO 成员
     members = (await chainClient!.query.weteeOrg.members(daoId)).map((e) => hex.encode(e)).toList();
     votes = await chainClient!.query.weteeGov.votesOf(publicKey);
+
+    periods = await chainClient!.query.weteeGov.periods(daoId);
 
     if (notify) notifyListeners();
   }

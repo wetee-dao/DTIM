@@ -1,5 +1,5 @@
-
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
@@ -12,7 +12,7 @@ import 'package:dtim/application/store/theme.dart';
 
 class JoinWorkPage extends StatefulWidget {
   final Function? closeModel;
-  const JoinWorkPage({Key? key, this.closeModel}) : super(key: key);
+  const JoinWorkPage({super.key, this.closeModel});
 
   @override
   State<JoinWorkPage> createState() => _JoinWorkPageState();
@@ -39,7 +39,7 @@ class _JoinWorkPageState extends State<JoinWorkPage> {
       return;
     }
     _formKey.currentState!.save();
-    if (workCtx.nativeAmount.free < workCtx.dao.chainUnit) {
+    if (workCtx.nativeAmount.free < Wetee.chainUnit) {
       BotToast.showText(
         text: "The user's balance is not enough to pay the handling fee",
         duration: const Duration(seconds: 2),
@@ -50,13 +50,14 @@ class _JoinWorkPageState extends State<JoinWorkPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.joinDao(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeAsset.join(
           daoId: workCtx.org.daoId,
           shareExpect: _data.share,
-          value: _data.value,
+          existenialDeposit: _data.value,
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
         await workCtx.daoRefresh();
       },
     );

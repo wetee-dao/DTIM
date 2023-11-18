@@ -1,11 +1,10 @@
-import 'dart:typed_data';
-
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:chips_choice/chips_choice.dart';
+import 'package:convert/convert.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_project/task_info.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
-
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/priority_icon.dart';
@@ -22,7 +21,7 @@ class TaskInfoPage extends StatefulWidget {
   final String id;
   final String projectId;
   final Function? closeModel;
-  const TaskInfoPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
+  const TaskInfoPage({super.key, this.closeModel, required this.id, required this.projectId});
 
   @override
   State<TaskInfoPage> createState() => _CreateRoadMapPageState();
@@ -49,16 +48,11 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
   }
 
   getData() {
-    rustApi
-        .daoProjectTaskInfo(
-      client: workCtx.chainClient,
-      projectId: int.parse(widget.projectId),
-      taskId: int.parse(widget.id),
-    )
-        .then((v) {
+    workCtx.client.query.weteeProject.tasks(BigInt.tryParse(widget.id)!).then((tasks) {
+      final v = tasks.firstWhere((v) => v.id == BigInt.tryParse(widget.id));
       setState(() {
-        _data.desc = v.description;
-        _data.tags = v.skills.map((s) => s.value).toList();
+        _data.desc = chainStr(v.description);
+        _data.tags = v.skills;
         _data.priority = v.priority;
         info = v;
       });
@@ -71,23 +65,22 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
     }
     _formKey.currentState!.save();
     if (!await workCtx.checkAfterTx()) return;
+    // ignore: use_build_context_synchronously
     await waitFutureLoading(
       context: context,
       future: () async {
-        await rustApi.daoProjectCreateTask(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.createTask(
           daoId: workCtx.org.daoId,
-          name: _data.name,
-          priority: _data.priority,
-          skills: Uint8List.fromList(_data.tags),
-          desc: _data.desc,
+          projectId: BigInt.tryParse(widget.projectId)!,
+          name: strToChain(_data.name),
+          description: strToChain(_data.desc),
           point: _data.point,
-          projectId: int.parse(widget.projectId),
-          assignees: [workCtx.user.address],
-          amount: _data.amount,
-          maxAssignee: 3,
+          priority: _data.priority,
+          amount: BigInt.from(_data.amount),
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
       },
     );
 
@@ -313,7 +306,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           contentPadding: EdgeInsets.zero,
         ),
-        members: info != null ? info!.assignees : [],
+        members: info != null ? info!.assignees.map((v) => hex.encode(v)).toList() : [],
       ),
       SizedBox(height: 10.w),
       DaoMemberList(
@@ -326,7 +319,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           contentPadding: EdgeInsets.zero,
         ),
-        members: info != null ? info!.reviewers : [],
+        members: info != null ? info!.reviewers.map((v) => hex.encode(v)).toList() : [],
       ),
     ];
   }

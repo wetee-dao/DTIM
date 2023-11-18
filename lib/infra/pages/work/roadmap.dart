@@ -1,9 +1,11 @@
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_org/quarter_task.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/priority_icon.dart';
@@ -42,11 +44,16 @@ class _RoadMapPageState extends State<RoadMapPage> {
 
   getData() async {
     print("getData");
-    quarters = await rustApi.daoRoadmap(
-      client: dao.chainClient,
-      daoId: im.currentState!.org.daoId,
-      year: 2023,
-    );
+    List<Quarter> qs = [];
+    for (var i = 1; i <= 4; i++) {
+      final qtasks = await workCtx.client.query.weteeOrg.roadMaps(BigInt.from(workCtx.org.daoId), 202301);
+      qs.add(Quarter(
+        year: 2023 * 100 + i,
+        quarter: i,
+        tasks: qtasks,
+      ));
+    }
+    quarters = qs;
     if (mounted) {
       setState(() {
         _loading = false;
@@ -215,7 +222,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                           SizedBox(width: 7.w),
                           Expanded(
                             child: Text(
-                              items[index].name,
+                              chainStr(items[index].name),
                               style: TextStyle(
                                 color: constTheme.centerChannelColor,
                                 fontSize: 14.w,
@@ -257,7 +264,7 @@ class _RoadMapPageState extends State<RoadMapPage> {
                               ),
                               padding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 8.w),
                               child: Text(
-                                findTag(tag.value).label,
+                                findTag(tag).label,
                                 style: TextStyle(color: constTheme.centerChannelColor, fontSize: 10.w),
                               ),
                             ),

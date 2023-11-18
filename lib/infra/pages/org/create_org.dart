@@ -1,5 +1,6 @@
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/domain/utils/functions.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:dtim/infra/components/iconfont.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -21,7 +22,7 @@ import '../../../application/store/work_ctx.dart';
 
 @RoutePage(name: "createOrgRoute")
 class CreateOrgPage extends StatefulWidget {
-  const CreateOrgPage({Key? key}) : super(key: key);
+  const CreateOrgPage({super.key});
 
   @override
   State<CreateOrgPage> createState() => _CreateOrgPageState();
@@ -443,19 +444,20 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                     future: () async {
                       printSuccess(_imController.text.replaceAll(RegExp(r"\s*"), ""));
                       try {
-                        await rustApi.createDao(
-                          client: workCtx.chainClient,
-                          from: im.me!.address,
-                          name: _data.name,
-                          purpose: _data.purpose,
-                          metaData: "{}",
-                          desc: _data.desc,
-                          imApi: _imController.text.replaceAll(RegExp(r"\s*"), ""),
-                          bg: _data.bg,
-                          logo: _data.logo,
-                          img: _data.img,
-                          homeUrl: _data.homeUrl,
+                        final call = workCtx.client.tx.weteeOrg.createDao(
+                          name: strToChain(_data.name),
+                          purpose: strToChain(_data.purpose),
+                          metaData: strToChain("{}"),
+                          desc: strToChain(_data.desc),
+                          imApi: strToChain(_imController.text.replaceAll(RegExp(r"\s*"), "")),
+                          bg: strToChain(_data.bg),
+                          logo: strToChain(_data.logo),
+                          img: strToChain(_data.img),
+                          homeUrl: strToChain(_data.homeUrl),
                         );
+
+                        // 提交
+                        await workCtx.client.signAndSubmit(call, workCtx.user.address);
                       } catch (e) {
                         return "The user's balance is not enough to pay the handling fee";
                       }

@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/app/app.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 
 import 'package:dtim/infra/components/gov_pop.dart';
 
@@ -15,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateTreasuryPage extends StatefulWidget {
   final Function? closeModel;
-  const CreateTreasuryPage({Key? key, this.closeModel}) : super(key: key);
+  const CreateTreasuryPage({super.key, this.closeModel});
 
   @override
   State<CreateTreasuryPage> createState() => _CreateTreasuryPageState();
@@ -39,15 +40,13 @@ class _CreateTreasuryPageState extends State<CreateTreasuryPage> {
     }
     _formKey.currentState!.save();
 
-    var gov = await showGovPop(const MemberGroup(
-      scope: 1,
-      id: 0,
-    ));
+    var gov = await showGovPop(const Global());
     if (gov == null) {
       BotToast.showText(text: "取消操作");
       return;
     }
    
+    // ignore: use_build_context_synchronously
     final im = globalCtx().read<AppCubit>();
     if (!await inputPasswordg(im.me!)) {
       return;

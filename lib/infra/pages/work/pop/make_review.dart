@@ -1,4 +1,5 @@
-
+import 'package:dtim/chain/wetee_gen/types/wetee_project/review_opinion.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -13,7 +14,7 @@ class MakeReviewPage extends StatefulWidget {
   final Function? closeModel;
   final String id;
   final String projectId;
-  const MakeReviewPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
+  const MakeReviewPage({super.key, this.closeModel, required this.id, required this.projectId});
 
   @override
   State<MakeReviewPage> createState() => _MakeReviewPageState();
@@ -42,15 +43,16 @@ class _MakeReviewPageState extends State<MakeReviewPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoProjectMakeReview(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.makeReview(
           daoId: workCtx.org.daoId,
-          projectId: int.parse(widget.projectId),
-          taskId: int.parse(widget.id),
-          approve: _data.approve,
-          meta: _data.msg,
+          projectId: BigInt.tryParse(widget.projectId),
+          taskId: BigInt.tryParse(widget.id),
+          opinion: _data.approve ? ReviewOpinion.yes : ReviewOpinion.no,
+          meta: strToChain(_data.msg),
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
         await workCtx.daoRefresh();
       },
     );

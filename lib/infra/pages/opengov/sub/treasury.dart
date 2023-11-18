@@ -1,3 +1,4 @@
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 
 import 'package:flutter/material.dart';
@@ -7,9 +8,9 @@ import 'package:dtim/router.dart';
 import 'package:dtim/application/store/theme.dart';
 
 class TreasuryList extends StatelessWidget {
-  final List<Treasury> datas;
+  final List<Prop> datas;
   final Function toVote;
-  const TreasuryList({Key? key, required this.datas, required this.toVote}) : super(key: key);
+  const TreasuryList({super.key, required this.datas, required this.toVote});
 
   @override
   Widget build(BuildContext context) {
@@ -32,74 +33,75 @@ class TreasuryList extends StatelessWidget {
               color: constTheme.centerChannelColor.withOpacity(0.05),
               borderRadius: BorderRadius.all(Radius.circular(10.w)),
             ),
-            child: Row(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
-                  width: 160.w,
-                  child: Row(
-                    children: [
-                      Icon(Icons.bolt_rounded, color: constTheme.centerChannelColor, size: 20.w),
-                      SizedBox(width: 10.w),
-                      PrimaryText(
-                        text: "#${datas[index].proposalIndex}",
-                        size: 14.w,
-                      ),
-                      SizedBox(width: 5.w),
-                      PrimaryText(
-                        text: "Onging",
-                        size: 14.w,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Icon(Icons.account_box_rounded, color: constTheme.centerChannelColor, size: 15.w),
-                      SizedBox(width: 4.w),
-                      Expanded(
-                        child: PrimaryText(
-                          text: "Beneficiary: ${datas[index].beneficiary}",
-                          size: 14.w,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 200.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      PrimaryText(
-                        text: "${datas[index].value}  WTE",
-                        size: 13.w,
-                      ),
-                      SizedBox(width: 20.w)
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    toVote();
-                  },
-                  child: Container(
-                    width: 80.w,
-                    height: 30.w,
-                    decoration: BoxDecoration(
-                      color: constTheme.buttonBg.withOpacity(1),
-                      borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                    child: Center(
-                      child: Text("Go to vote", style: TextStyle(color: constTheme.buttonColor, fontSize: 13.w)),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 20.w)
-              ],
-            ),
+            child: const Text("x"),
+            // child: Row(
+            //   children: [
+            //     Container(
+            //       alignment: Alignment.centerLeft,
+            //       padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
+            //       width: 160.w,
+            //       child: Row(
+            //         children: [
+            //           Icon(Icons.bolt_rounded, color: constTheme.centerChannelColor, size: 20.w),
+            //           SizedBox(width: 10.w),
+            //           PrimaryText(
+            //             text: "#${datas[index].proposalIndex}",
+            //             size: 14.w,
+            //           ),
+            //           SizedBox(width: 5.w),
+            //           PrimaryText(
+            //             text: "Onging",
+            //             size: 14.w,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: Row(
+            //         children: [
+            //           Icon(Icons.account_box_rounded, color: constTheme.centerChannelColor, size: 15.w),
+            //           SizedBox(width: 4.w),
+            //           Expanded(
+            //             child: PrimaryText(
+            //               text: "Beneficiary: ${datas[index].beneficiary}",
+            //               size: 14.w,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 200.w,
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.end,
+            //         children: [
+            //           PrimaryText(
+            //             text: "${datas[index].value}  WTE",
+            //             size: 13.w,
+            //           ),
+            //           SizedBox(width: 20.w)
+            //         ],
+            //       ),
+            //     ),
+            //     GestureDetector(
+            //       onTap: () {
+            //         toVote();
+            //       },
+            //       child: Container(
+            //         width: 80.w,
+            //         height: 30.w,
+            //         decoration: BoxDecoration(
+            //           color: constTheme.buttonBg.withOpacity(1),
+            //           borderRadius: BorderRadius.all(Radius.circular(5.w)),
+            //         ),
+            //         child: Center(
+            //           child: Text("Go to vote", style: TextStyle(color: constTheme.buttonColor, fontSize: 13.w)),
+            //         ),
+            //       ),
+            //     ),
+            //     SizedBox(width: 20.w)
+            //   ],
+            // ),
           ),
         if (datas.isEmpty)
           Center(

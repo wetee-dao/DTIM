@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +62,7 @@ class _GovPageState extends State<GovPage> {
     workCtx.getVoteData();
     if (mounted) {
       setState(() {
-        title = workCtx.dao.name;
+        title = chainStr(workCtx.dao.name);
       });
     }
   }
@@ -125,7 +126,7 @@ class _GovPageState extends State<GovPage> {
               tools: CloseBar(color: constTheme.sidebarText),
             )
           : null,
-      body: workCtx.chainClient > -1
+      body: workCtx.chainClient != null
           ? ChangeNotifierProvider.value(
               key: const Key("daoView"),
               value: workCtx,

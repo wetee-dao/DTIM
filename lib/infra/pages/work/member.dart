@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:convert/convert.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:dtim/application/store/work_ctx.dart';
@@ -13,7 +14,7 @@ import 'package:dtim/application/store/theme.dart';
 import 'sub/member.dart';
 
 class MemberPage extends StatefulWidget {
-  const MemberPage({Key? key}) : super(key: key);
+  const MemberPage({super.key});
 
   @override
   State<MemberPage> createState() => MemberPageState();
@@ -30,9 +31,9 @@ class MemberPageState extends State<MemberPage> {
     getData();
   }
 
-
   getData() async {
-    members = await rustApi.daoMemebers(client: dao.chainClient, daoId: dao.org.daoId);
+    members =
+        (await workCtx.client.query.weteeOrg.members(BigInt.from(dao.org.daoId))).map((v) => hex.encode(v)).toList();
     print(members);
     if (mounted) setState(() {});
   }

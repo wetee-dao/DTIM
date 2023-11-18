@@ -1,4 +1,4 @@
-
+import 'package:dtim/chain/wetee_gen/types/wetee_runtime/runtime_call.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -12,7 +12,7 @@ class JoinTaskPage extends StatefulWidget {
   final Function? closeModel;
   final String id;
   final String projectId;
-  const JoinTaskPage({Key? key, this.closeModel, required this.id, required this.projectId}) : super(key: key);
+  const JoinTaskPage({super.key, this.closeModel, required this.id, required this.projectId});
 
   @override
   State<JoinTaskPage> createState() => _CreateProjectPageState();
@@ -40,23 +40,23 @@ class _CreateProjectPageState extends State<JoinTaskPage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
+        late RuntimeCall call;
         if (_data.type == 0) {
-          await rustApi.daoProjectJoinTask(
-            from: workCtx.user.address,
-            client: workCtx.chainClient,
+          call = workCtx.client.tx.weteeProject.joinTask(
             daoId: workCtx.org.daoId,
-            projectId: int.parse(widget.projectId),
-            taskId: int.parse(widget.id),
+            projectId: BigInt.tryParse(widget.projectId),
+            taskId: BigInt.tryParse(widget.id),
           );
         } else {
-          await rustApi.daoProjectJoinTaskReview(
-            from: workCtx.user.address,
-            client: workCtx.chainClient,
+          call = workCtx.client.tx.weteeProject.joinTaskReview(
             daoId: workCtx.org.daoId,
-            projectId: int.parse(widget.projectId),
-            taskId: int.parse(widget.id),
+            projectId: BigInt.tryParse(widget.projectId),
+            taskId: BigInt.tryParse(widget.id),
           );
         }
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
         await workCtx.daoRefresh();
       },
     );

@@ -1,3 +1,4 @@
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/iconfont.dart';
 import 'package:dtim/infra/router/pop_router.dart';
@@ -8,13 +9,12 @@ import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 
-import '../../../x_bridge.dart';
 import 'sub/treasury.dart';
 
 class TreasuryPage extends StatefulWidget {
   // final PageController pageController;
   final Function(String) toVote;
-  const TreasuryPage({Key? key, required this.toVote}) : super(key: key);
+  const TreasuryPage({super.key, required this.toVote});
 
   @override
   State<TreasuryPage> createState() => _TreasuryPageState();
@@ -22,7 +22,7 @@ class TreasuryPage extends StatefulWidget {
 
 class _TreasuryPageState extends State<TreasuryPage> {
   late final WorkCTX dao;
-  List<Treasury> list = [];
+  List<Prop> list = [];
 
   @override
   void initState() {

@@ -1,3 +1,4 @@
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/router.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:dtim/application/store/theme.dart';
 import 'sub/referendum.dart';
 
 class ReferendumPage extends StatefulWidget {
-  const ReferendumPage({Key? key}) : super(key: key);
+  const ReferendumPage({super.key});
 
   @override
   State<ReferendumPage> createState() => _ReferendumPageState();
@@ -68,8 +69,8 @@ class _ReferendumPageState extends State<ReferendumPage> {
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
-                              await rustApi.daoGovUnlock(
-                                  from: dao.user.address, client: dao.chainClient, daoId: dao.org.daoId);
+                              final call = workCtx.client.tx.weteeGov.unlock(daoId: BigInt.from(dao.org.daoId));
+                              await workCtx.client.signAndSubmit(call, workCtx.user.address);
                               await workCtx.daoRefresh();
                             },
                           );
@@ -121,8 +122,8 @@ class _ReferendumPageState extends State<ReferendumPage> {
           Expanded(
             child: Consumer<WorkCTX>(builder: (_, dao, child) {
               return Referendums(
-                pending: dao.pending.where((r) => r.memberGroup.scope == 1).toList(),
-                going: dao.going.where((r) => r.memberGroup.scope == 1).toList(),
+                pending: dao.pending.where((r) => r.memberData == const Global()).toList(),
+                going: dao.going.where((r) => r.memberData == const Global()).toList(),
               );
             }),
           ),

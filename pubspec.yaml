@@ -115,6 +115,7 @@ dependencies:
   polkadart_keyring: ^0.2.1
   substrate_bip39: ^0.2.0
   convert: ^3.1.1
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:

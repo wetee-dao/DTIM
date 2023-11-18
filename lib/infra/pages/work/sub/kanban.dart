@@ -1,9 +1,9 @@
+import 'package:dtim/chain/wetee_gen/types/wetee_project/task_info.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/priority_icon.dart';
@@ -231,7 +231,7 @@ class Kanban extends StatelessWidget {
                           ),
                           padding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 8.w),
                           child: Text(
-                            findTag(tag.value).label,
+                            findTag(tag).label,
                             style: TextStyle(color: constTheme.centerChannelColor, fontSize: 10.w),
                           ),
                         ),
@@ -398,13 +398,14 @@ class Kanban extends StatelessWidget {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoProjectStartTask(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.startTask(
           daoId: workCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
       },
     );
   }
@@ -415,13 +416,14 @@ class Kanban extends StatelessWidget {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoProjectRequestReview(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.requestReview(
           daoId: workCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
       },
     );
   }
@@ -431,13 +433,14 @@ class Kanban extends StatelessWidget {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoProjectTaskDone(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeProject.taskDone(
           daoId: workCtx.org.daoId,
           projectId: data.projectId,
           taskId: data.id,
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
       },
     );
   }

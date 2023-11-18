@@ -7,7 +7,7 @@ import 'text.dart';
 
 class MemberCard extends StatelessWidget {
   final String? label;
-  const MemberCard({Key? key, required this.label}) : super(key: key);
+  const MemberCard({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:dtim/domain/utils/screen/screen.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,7 @@ class SideMenu extends StatelessWidget {
                   ...dao.guilds.map((e) => iconBuilder(
                         key: Key("Guilds ${e.id.toString()}"),
                         assetName: AppIcons.zuzhi_data_organization_6,
-                        name: e.name,
+                        name: chainStr(e.name),
                         color: constTheme,
                         selected: id == "Guilds ${e.id.toString()}",
                         onTap: () => onTap("Guilds ${e.id.toString()}"),
@@ -72,7 +73,7 @@ class SideMenu extends StatelessWidget {
                   ...dao.projects.map((e) => iconBuilder(
                         key: Key("Projects ${e.id.toString()}"),
                         assetName: AppIcons.xiangmu,
-                        name: e.name,
+                        name: chainStr(e.name),
                         color: constTheme,
                         selected: id == "Projects ${e.id.toString()}",
                         onTap: () => onTap("Projects ${e.id.toString()}"),

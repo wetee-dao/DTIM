@@ -1,12 +1,11 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/application/store/app/org.dart';
-import 'package:dtim/infra/router/pop_router.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
 import 'package:dtim/application/store/work_ctx.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop_status.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/text.dart';
@@ -15,12 +14,11 @@ import 'package:dtim/router.dart';
 import 'package:dtim/application/store/theme.dart';
 
 class Referendums extends StatelessWidget {
-  final List<GovProps> pending;
-  final List<GovReferendum> going;
+  final List<PreProp> pending;
+  final List<Prop> going;
   final bool showTitle;
   final bool wrap;
-  const Referendums({Key? key, required this.pending, required this.going, this.showTitle = true, this.wrap = true})
-      : super(key: key);
+  const Referendums({super.key, required this.pending, required this.going, this.showTitle = true, this.wrap = true});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +80,7 @@ class Referendums extends StatelessWidget {
                       SizedBox(width: 10.w),
                       Expanded(
                         child: PrimaryText(
-                          text: "#${pending[index].index}",
+                          text: "#${pending[index].id}",
                           size: 14.w,
                         ),
                       ),
@@ -91,13 +89,13 @@ class Referendums extends StatelessWidget {
                 ),
                 Expanded(
                   child: PrimaryText(
-                    text: pending[index].runtimeCall.toString(),
+                    text: pending[index].call.toString(),
                     size: 13.w,
                   ),
                 ),
                 SizedBox(width: 10.w),
                 InkWell(
-                  key: Key("referendumStart${pending[index].index}"),
+                  key: Key("referendumStart${pending[index].id}"),
                   onTap: () async {
                     if (!await workCtx.checkAfterTx()) return;
 
@@ -105,7 +103,8 @@ class Referendums extends StatelessWidget {
                         await showOkCancelAlertDialog(
                           useRootNavigator: false,
                           title: "Notice",
-                          message: "开启提案需要质押${pending[index].period.decisionDeposit} WET,投票失败会导致惩罚?",
+                          message:
+                              "开启提案需要质押${workCtx.periods[pending[index].periodIndex].decisionDeposit} WET,投票失败会导致惩罚?",
                           context: globalCtx(),
                           okLabel: L10n.of(globalCtx())!.next,
                           cancelLabel: L10n.of(globalCtx())!.cancel,
@@ -113,13 +112,14 @@ class Referendums extends StatelessWidget {
                       await waitFutureLoading(
                         context: globalCtx(),
                         future: () async {
-                          await rustApi.daoGovStartReferendum(
-                            from: workCtx.user.address,
-                            client: workCtx.chainClient,
+                          final call = workCtx.client.tx.weteeGov.depositProposal(
                             daoId: workCtx.org.daoId,
-                            index: pending[index].index,
-                            deposit: pending[index].period.decisionDeposit,
+                            proposeId: pending[index].id,
+                            deposit: workCtx.periods[pending[index].periodIndex].decisionDeposit,
                           );
+
+                          // 提交
+                          await workCtx.client.signAndSubmit(call, workCtx.user.address);
                           await workCtx.daoRefresh();
                         },
                       );
@@ -257,9 +257,9 @@ class Referendums extends StatelessWidget {
     );
   }
 
-  renderAction(GovReferendum going) {
+  renderAction(Prop going) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    if (going.status > 0) {
+    if (going.status != PropStatus.ongoing) {
       return renderBox(
         Text(
           going.status == 1 ? "Approved" : "Rejected",
@@ -374,12 +374,6 @@ class Referendums extends StatelessWidget {
     //     );
     //   }
     // }
-
-    return Container(
-      width: 20.w,
-      height: 40.w,
-      color: Colors.yellow,
-    );
   }
 
   renderBox(box, {disabled = false}) {
@@ -395,9 +389,11 @@ class Referendums extends StatelessWidget {
     );
   }
 
-  renderTime(GovReferendum going, dao) {
+  renderTime(Prop going, WorkCTX dao) {
     final constTheme = Theme.of(globalCtx()).extension<ExtColors>()!;
-    if (going.period.confirmPeriod - dao.blockNumber > 0) {
+    final period = workCtx.periods[going.periodIndex];
+    final blockNumber = BigInt.from(dao.blockNumber);
+    if (period.confirmPeriod - blockNumber > BigInt.zero) {
       return SizedBox(
         width: 100.w,
         child: Row(
@@ -405,7 +401,7 @@ class Referendums extends StatelessWidget {
             SizedBox(width: 5.w),
             Expanded(
               child: PrimaryText(
-                text: "${going.period.confirmPeriod - dao.blockNumber} block left until the end of voting",
+                text: "${period.confirmPeriod - blockNumber} block left until the end of voting",
                 size: 13.w,
                 color: constTheme.centerChannelColor,
                 textAlign: TextAlign.center,
@@ -416,8 +412,8 @@ class Referendums extends StatelessWidget {
         ),
       );
     }
-    if (going.period.confirmPeriod - dao.blockNumber <= 0 &&
-        going.period.confirmPeriod + going.period.confirmPeriod - dao.blockNumber > 0) {
+    if (period.confirmPeriod - blockNumber <= BigInt.zero &&
+        period.confirmPeriod + period.confirmPeriod - blockNumber > BigInt.zero) {
       return SizedBox(
         width: 100.w,
         child: Row(
@@ -425,8 +421,7 @@ class Referendums extends StatelessWidget {
             SizedBox(width: 5.w),
             Expanded(
               child: PrimaryText(
-                text:
-                    "${going.period.confirmPeriod + going.period.confirmPeriod - dao.blockNumber} block left until execution ",
+                text: "${period.confirmPeriod + period.confirmPeriod - blockNumber} block left until execution ",
                 size: 13.w,
                 color: constTheme.centerChannelColor,
                 textAlign: TextAlign.center,

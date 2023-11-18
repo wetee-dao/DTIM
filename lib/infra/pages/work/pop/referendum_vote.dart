@@ -1,4 +1,5 @@
-
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/opinion.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_runtime/vote/pledge.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -12,7 +13,7 @@ import 'package:dtim/application/store/theme.dart';
 class ReferendumVotePage extends StatefulWidget {
   final Function? closeModel;
   final String id;
-  const ReferendumVotePage({Key? key, this.closeModel, required this.id}) : super(key: key);
+  const ReferendumVotePage({super.key, this.closeModel, required this.id});
 
   @override
   State<ReferendumVotePage> createState() => _ReferendumVotePageState();
@@ -41,14 +42,15 @@ class _ReferendumVotePageState extends State<ReferendumVotePage> {
     await waitFutureLoading(
       context: globalCtx(),
       future: () async {
-        await rustApi.daoGovVoteForReferendum(
-          from: workCtx.user.address,
-          client: workCtx.chainClient,
+        final call = workCtx.client.tx.weteeGov.voteForProp(
           daoId: workCtx.org.daoId,
-          index: int.parse(widget.id),
-          vote: _data.vote,
-          approve: _data.approve,
+          propIndex: BigInt.tryParse(widget.id),
+          opinion: _data.approve ? Opinion.yes : Opinion.no,
+          pledge: FungToken(BigInt.from(_data.vote)),
         );
+
+        // 提交
+        await workCtx.client.signAndSubmit(call, workCtx.user.address);
         await workCtx.daoRefresh();
       },
     );

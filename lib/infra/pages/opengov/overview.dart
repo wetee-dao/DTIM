@@ -1,3 +1,5 @@
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,7 @@ import 'package:dtim/application/store/theme.dart';
 import 'sub/referendum.dart';
 
 class Overviewpage extends StatelessWidget {
-  const Overviewpage({Key? key}) : super(key: key);
+  const Overviewpage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +60,7 @@ class Overviewpage extends StatelessWidget {
                             InfoCard(
                               icon: AppIcons.zichan,
                               label: "Treasury TOKEN",
-                              amount: 'WTE ${dao.daoAmount.free / dao.dao.chainUnit}',
+                              amount: 'WTE ${dao.daoAmount.free / Wetee.chainUnit}',
                             ),
                             InfoCard(
                               icon: AppIcons.zuzhi_data_organization_6,
@@ -107,8 +109,8 @@ class Overviewpage extends StatelessWidget {
                     return Referendums(
                       wrap: false,
                       showTitle: false,
-                      pending: dao.pending.where((r) => r.memberGroup.scope == 1).toList(),
-                      going: dao.going.where((r) => r.memberGroup.scope == 1).toList(),
+                      pending: dao.pending.where((r) => r.memberData == const Global()).toList(),
+                      going: dao.going.where((r) => r.memberData == const Global()).toList(),
                     );
                   })
                 ],
@@ -126,7 +128,7 @@ class Overviewpage extends StatelessWidget {
                 ),
               ),
             ),
-            child: Consumer<WorkCTX>(builder: (_, dao, child) {
+            child: Consumer<WorkCTX>(builder: (_,WorkCTX dao, child) {
               return DaoIsJoined(
                 isJoined: dao.members.contains(dao.user.address),
                 child: SingleChildScrollView(

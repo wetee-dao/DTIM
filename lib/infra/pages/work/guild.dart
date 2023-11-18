@@ -1,4 +1,11 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:convert/convert.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_org/guild_info.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
@@ -7,7 +14,6 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
-
 
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/components/dao/text.dart';
@@ -19,7 +25,7 @@ final GlobalKey guildKey = GlobalKey();
 
 class Guildpage extends StatefulWidget {
   final GuildInfo guild;
-  const Guildpage({Key? key, required this.guild}) : super(key: key);
+  const Guildpage({super.key, required this.guild});
 
   @override
   State<Guildpage> createState() => GuildpageState();
@@ -31,8 +37,8 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   late TabController _tabController;
   late PageController pageController = PageController();
   final titleList = <String>["Referendums", "Members"];
-  List<GovProps> pending = [];
-  List<GovReferendum> going = [];
+  List<PreProp> pending = [];
+  List<Prop> going = [];
 
   @override
   void initState() {
@@ -43,13 +49,12 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   }
 
   getData() async {
-    members =
-        await rustApi.daoGuildMemeberList(client: dao.chainClient, daoId: dao.org.daoId, guildId: widget.guild.id);
+    members = (await workCtx.client.query.weteeOrg.guildMembers(BigInt.from(dao.org.daoId), widget.guild.id)).map((v)=>hex.encode(v)).toList();
     if (mounted) setState(() {});
 
     await dao.getVoteData();
-    pending = dao.pending.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == widget.guild.id).toList();
-    going = dao.going.where((r) => r.memberGroup.scope == 2 && r.memberGroup.id == widget.guild.id).toList();
+    pending = dao.pending.where((r) => r.memberData == Guild(widget.guild.id)).toList();
+    going = dao.going.where((r) => r.memberData == Guild(widget.guild.id)).toList();
   }
 
   @override
@@ -103,22 +108,26 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                           await waitFutureLoading(
                             context: globalCtx(),
                             future: () async {
-                              await rustApi.daoGuildJoinRequest(
-                                from: dao.user.address,
-                                client: dao.chainClient,
-                                daoId: dao.org.daoId,
+                              final call = workCtx.client.tx.weteeGuild.guildJoin(
+                                daoId: BigInt.from(workCtx.org.daoId),
                                 guildId: info.id,
-                                ext: WithGovPs(
+                                who: hex.decode(workCtx.user.address),
+                              );
+
+                              // 提交
+                              await workCtx.client.signAndSubmit(
+                                call,
+                                workCtx.user.address,
+                                gov: WithGovPs(
                                   runType: 1,
                                   amount: 100,
-                                  member: MemberGroup(
-                                    scope: 2,
-                                    id: info.id,
-                                  ),
+                                  member: Guild(info.id),
                                   // TODO
                                   periodIndex: 0,
+                                  daoId: BigInt.from(workCtx.org.daoId),
                                 ),
                               );
+
                               await workCtx.daoRefresh();
                               getData();
                             },
@@ -152,7 +161,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
                 ),
                 SizedBox(height: 8.w),
                 PrimaryText(
-                  text: info.desc,
+                  text: chainStr(info.desc),
                   size: 14.w,
                 ),
                 SizedBox(height: 5.w),

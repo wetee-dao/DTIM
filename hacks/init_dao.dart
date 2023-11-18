@@ -28,6 +28,8 @@ void main() async {
     metaData: convertStringToUint8List("{}"),
   );
 
+  print(runcall.toJson());
+
   // 提交
   await wetee.signAndSubmit(runcall, chainAccount.address);
 

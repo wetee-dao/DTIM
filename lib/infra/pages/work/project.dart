@@ -1,4 +1,14 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:convert/convert.dart';
+import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/orml_tokens/account_data.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_project/project_info.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_project/task_info.dart';
+import 'package:dtim/chain/wetee_gen/types/wetee_project/task_status.dart';
+import 'package:dtim/domain/utils/string.dart';
 import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +44,9 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   late PageController pageController = PageController();
   final titleList = <String>["Kanban", "Members", "Referendums"];
   List<String> members = [];
-  AssetAccountData? share;
-  List<GovProps> pending = [];
-  List<GovReferendum> going = [];
+  AccountData? share;
+  List<PreProp> pending = [];
+  List<Prop> going = [];
 
   List<TaskInfo> todo = [];
   List<TaskInfo> inProgress = [];
@@ -52,19 +62,20 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
   }
 
   getData() async {
-    members =
-        await rustApi.daoProjectMemberList(client: dao.chainClient, daoId: dao.org.daoId, projectId: widget.info.id);
+    members = (await workCtx.client.query.weteeOrg.projectMembers(BigInt.from(dao.org.daoId), widget.info.id))
+        .map((v) => hex.encode(v))
+        .toList();
 
-    final ps = await rustApi.daoProjectTaskList(client: dao.chainClient, projectId: widget.info.id);
-    todo = ps.where((p) => p.status == 0).toList();
-    inProgress = ps.where((p) => p.status == 1).toList();
-    inReview = ps.where((p) => p.status == 2).toList();
-    done = ps.where((p) => p.status == 3).toList();
+    final ps = await workCtx.client.query.weteeProject.tasks(widget.info.id);
+    todo = ps.where((p) => p.status == TaskStatus.toDo).toList();
+    inProgress = ps.where((p) => p.status == TaskStatus.inProgress).toList();
+    inReview = ps.where((p) => p.status == TaskStatus.inReview).toList();
+    done = ps.where((p) => p.status == TaskStatus.done).toList();
 
-    share = await rustApi.daoBalance(client: dao.chainClient, daoId: dao.org.daoId, address: widget.info.daoAccountId);
+    share = await workCtx.client.query.tokens.accounts(hex.decode(workCtx.user.address), BigInt.from(dao.org.daoId));
 
-    pending = dao.pending.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == widget.info.id).toList();
-    going = dao.going.where((r) => r.memberGroup.scope == 3 && r.memberGroup.id == widget.info.id).toList();
+    pending = dao.pending.where((r) => r.memberData == Project(widget.info.id)).toList();
+    going = dao.going.where((r) => r.memberData == Project(widget.info.id)).toList();
 
     if (mounted) setState(() {});
   }
@@ -101,7 +112,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                   Padding(
                     padding: EdgeInsets.only(top: 8.w),
                     child: PrimaryText(
-                      text: widget.info.description,
+                      text: chainStr(widget.info.description),
                       size: 14.w,
                       height: 1.9,
                     ),
@@ -137,22 +148,26 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
                         await waitFutureLoading(
                           context: globalCtx(),
                           future: () async {
-                            await rustApi.daoProjectJoinRequest(
-                              from: dao.user.address,
-                              client: dao.chainClient,
-                              daoId: dao.org.daoId,
+                            final call = workCtx.client.tx.weteeProject.projectJoinRequest(
+                              daoId: BigInt.from(workCtx.org.daoId),
                               projectId: widget.info.id,
-                              ext: WithGovPs(
+                              who: hex.decode(workCtx.user.address),
+                            );
+
+                            // 提交
+                            await workCtx.client.signAndSubmit(
+                              call,
+                              workCtx.user.address,
+                              gov: WithGovPs(
                                 runType: 1,
                                 amount: 100,
-                                member: MemberGroup(
-                                  scope: 3,
-                                  id: widget.info.id,
-                                ),
+                                member: Project(widget.info.id),
                                 // TODO
                                 periodIndex: 0,
+                                daoId: BigInt.from(workCtx.org.daoId),
                               ),
                             );
+
                             await workCtx.daoRefresh();
                             getData();
                           },

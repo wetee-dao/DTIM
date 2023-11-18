@@ -95,7 +95,7 @@ class _WorkPageState extends State<WorkPage> {
               tools: CloseBar(color: constTheme.sidebarText),
             )
           : null,
-      body: workCtx.chainClient > -1
+      body: workCtx.chainClient != null
           ? ChangeNotifierProvider.value(
               key: const Key("workView"),
               value: workCtx,

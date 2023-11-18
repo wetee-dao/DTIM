@@ -1,3 +1,4 @@
+import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/pages/opengov/sub/referendum.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:dtim/application/store/work_ctx.dart';
 import 'package:dtim/application/store/theme.dart';
 
 class Overviewpage extends StatelessWidget {
-  const Overviewpage({Key? key}) : super(key: key);
+  const Overviewpage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +108,8 @@ class Overviewpage extends StatelessWidget {
                     return Referendums(
                       wrap: false,
                       showTitle: false,
-                      pending: dao.pending.where((r) => r.memberGroup.scope == 1).toList(),
-                      going: dao.going.where((r) => r.memberGroup.scope == 1).toList(),
+                      pending: dao.pending.where((r) => r.memberData == const Global()).toList(),
+                      going: dao.going.where((r) => r.memberData == const Global()).toList(),
                     );
                   })
                 ],
