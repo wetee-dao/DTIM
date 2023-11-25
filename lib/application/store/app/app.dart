@@ -15,7 +15,6 @@ import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/im_state.dart';
-import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/chain/wetee/wetee.dart';
 import 'package:dtim/router.dart';
 
@@ -168,6 +167,8 @@ class AppCubit extends Cubit<AppState> {
       final client = connections[userName]!;
       if (!client.isLogged()) {
         try {
+          print(me!.address);
+          print("$signCtx||$sign");
           await client.login(
             LoginType.mLoginPassword,
             identifier: AuthenticationUserIdentifier(user: me!.address),
@@ -212,6 +213,8 @@ class AppCubit extends Cubit<AppState> {
 
     if (!client.isLogged()) {
       try {
+        print(me!.address);
+        print("$signCtx||$sign");
         await client.uiaRequestBackground((auth) {
           return client.register(
             username: me!.address,

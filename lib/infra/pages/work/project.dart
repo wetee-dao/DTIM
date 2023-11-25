@@ -63,7 +63,7 @@ class ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin 
 
   getData() async {
     members = (await weteeCtx.client.query.weteeOrg.projectMembers(BigInt.tryParse(dao.org.daoId)!, widget.info.id))
-        .map((v) => hex.encode(v))
+        .map((v) =>"0x"+hex.encode(v))
         .toList();
 
     final ps = await weteeCtx.client.query.weteeProject.tasks(widget.info.id);

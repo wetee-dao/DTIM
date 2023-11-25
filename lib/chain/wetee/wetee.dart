@@ -64,7 +64,7 @@ class WeTEE {
       throw Exception('Address $address not found');
     }
     final KeyPair keyPair = keyPairs[address]!;
-    final publicKey = hex.encode(keyPair.publicKey.bytes);
+    final publicKey = "0x${hex.encode(keyPair.publicKey.bytes)}";
 
     // 获取用户信息
     final account = await query.system.account(keyPair.publicKey.bytes);
@@ -85,12 +85,12 @@ class WeTEE {
       toCall = rCall;
     }
 
-    final call = hex.encode(toCall.encode());
+    final call = "0x${hex.encode(toCall.encode())}";
     // 构建签名体
     final payloadToSign = SigningPayload(
       method: call,
-      blockHash: hex.encode(blockHash),
-      genesisHash: hex.encode(blockHash),
+      blockHash: "0x${hex.encode(blockHash)}",
+      genesisHash: "0x${hex.encode(blockHash)}",
       blockNumber: 0,
       eraPeriod: 0,
       nonce: account.nonce.toInt(),
@@ -102,7 +102,7 @@ class WeTEE {
     // 签名
     final payload = payloadToSign.encode(registry);
     final signature = keyPair.sign(payload);
-    final hexSignature = hex.encode(signature);
+    final hexSignature = "0x${hex.encode(signature)}";
 
     final extrinsic = Extrinsic(
       signer: publicKey,
@@ -126,19 +126,19 @@ class WeTEE {
   static Future<bool> addKeyring({required String keyringStr, required String password}) async {
     ChainAccountData data = ChainAccountData.fromJson(json.decode(keyringStr));
     final keyPair = await KeyPair.fromMnemonic(data.encoded);
-    final publicKey = hex.encode(keyPair.publicKey.bytes);
+    final publicKey = "0x${hex.encode(keyPair.publicKey.bytes)}";
     keyPairs[publicKey] = keyPair;
     return true;
   }
 
   Future<int> getBlockNumber() async {
-    final completer = Completer<void>();
-    var header = 0;
+    final completer = Completer<int>();
     final sub = await subscribeFinalizedHeads((s) {
-      print('Finalized head: ${s.blockNumber}');
-      header = s.blockNumber!;
+      // print('Finalized head: ${s.blockNumber}');
+      completer.complete(s.blockNumber!);
     }, provider);
-    await completer.future.then((_) => sub.cancel());
+    final header = await completer.future;
+    sub.cancel();
     return header;
   }
 
@@ -162,11 +162,9 @@ class WeTEE {
 
     final values = await api.queryStorageAt(keys);
 
-    print(values);
     List<StorageData> ks = [];
     for (int i = 0; i < values.length; i++) {
       final v = values[i];
-      print(v.changes);
       // final item = v.changes[0];
       for (int j = 0; j < v.changes.length; j++) {
         final item = v.changes[j];

@@ -306,7 +306,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           contentPadding: EdgeInsets.zero,
         ),
-        members: info != null ? info!.assignees.map((v) => hex.encode(v)).toList() : [],
+        members: info != null ? info!.assignees.map((v) =>"0x"+hex.encode(v)).toList() : [],
       ),
       SizedBox(height: 10.w),
       DaoMemberList(
@@ -319,7 +319,7 @@ class _CreateRoadMapPageState extends State<TaskInfoPage> {
           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.w)), borderSide: BorderSide.none),
           contentPadding: EdgeInsets.zero,
         ),
-        members: info != null ? info!.reviewers.map((v) => hex.encode(v)).toList() : [],
+        members: info != null ? info!.reviewers.map((v) =>"0x"+hex.encode(v)).toList() : [],
       ),
     ];
   }

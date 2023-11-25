@@ -14,7 +14,7 @@ Future<ChainAccountData> getSeedPhrase({
 }) async {
   final keyPair = await KeyPair.fromMnemonic(seedStr);
   return ChainAccountData(
-    hex.encode(keyPair.publicKey.bytes),
+    "0x${hex.encode(keyPair.publicKey.bytes)}",
     seedStr,
     ChainDataEncoding(
       [""],
@@ -41,5 +41,5 @@ Future<String> signFromAddress(Account user, String ctx) async {
   Uint8List bytes = Uint8List.fromList(list);
   final signature = keyPair.sign(bytes);
 
-  return hex.encode(signature);
+  return "0x${hex.encode(signature)}";
 }

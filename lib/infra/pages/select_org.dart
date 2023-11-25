@@ -24,7 +24,7 @@ import 'package:polkadart/scale_codec.dart';
 
 @RoutePage(name: "selectOrgRoute")
 class SelectOrgPage extends StatefulWidget {
-  const SelectOrgPage({Key? key}) : super(key: key);
+  const SelectOrgPage({super.key});
 
   @override
   State<SelectOrgPage> createState() => _SelectOrgPageState();
@@ -72,6 +72,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
       final v = (await weteeCtx.client.queryMapList(module: 'WeteeOrg', storage: 'Daos')).map((b) {
         return OrgInfo.decode(ByteInput(b));
       }).toList();
+      print(v);
       orgs = v
           .map((o) => Org(
                 o.id.toString(),

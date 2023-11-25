@@ -49,7 +49,7 @@ class GuildpageState extends State<Guildpage> with TickerProviderStateMixin {
   }
 
   getData() async {
-    members = (await weteeCtx.client.query.weteeOrg.guildMembers(BigInt.tryParse(dao.org.daoId)!, widget.guild.id)).map((v)=>hex.encode(v)).toList();
+    members = (await weteeCtx.client.query.weteeOrg.guildMembers(BigInt.tryParse(dao.org.daoId)!, widget.guild.id)).map((v)=>"0x${hex.encode(v)}").toList();
     if (mounted) setState(() {});
 
     await dao.getVoteData();

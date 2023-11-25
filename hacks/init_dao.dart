@@ -22,13 +22,11 @@ void main() async {
     logo: convertStringToUint8List(''),
     img: convertStringToUint8List('https://wetee.app/static/web3/img/logo.png'),
     homeUrl: convertStringToUint8List('https://wetee.app/'),
-    imApi: convertStringToUint8List('https://im.tc.asyou.me/'),
+    imApi: convertStringToUint8List('https://dtim-dock.gc.wetee.app/'),
     desc: convertStringToUint8List('For the freedom of programming'),
     purpose: convertStringToUint8List("For the freedom of programming"),
     metaData: convertStringToUint8List("{}"),
   );
-
-  print(runcall.toJson());
 
   // 提交
   await wetee.signAndSubmit(runcall, chainAccount.address);

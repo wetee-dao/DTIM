@@ -33,7 +33,7 @@ class MemberPageState extends State<MemberPage> {
 
   getData() async {
     members =
-        (await weteeCtx.client.query.weteeOrg.members(BigInt.tryParse(dao.org.daoId)!)).map((v) => hex.encode(v)).toList();
+        (await weteeCtx.client.query.weteeOrg.members(BigInt.tryParse(dao.org.daoId)!)).map((v) =>"0x"+hex.encode(v)).toList();
     print(members);
     if (mounted) setState(() {});
   }

@@ -1,4 +1,6 @@
 // import 'dart:io';
+import 'dart:async';
+
 import 'package:convert/convert.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/chain/wetee_gen/types/orml_tokens/account_data.dart';
@@ -39,6 +41,7 @@ class WeTEECTX with ChangeNotifier {
   int blockNumber = 0;
   int totalIssuance = 0;
   int daoRefreshChannel = 0;
+  bool reConnecting = false;
   List<GuildInfo> guilds = [];
   List<ProjectInfo> projects = [];
   List<String> members = [];
@@ -47,32 +50,51 @@ class WeTEECTX with ChangeNotifier {
   List<PreProp> pending = [];
   List<Prop> going = [];
   List<Period> periods = [];
+  List<Function> callbacks = [];
 
   setOrg(AccountOrg porg, Account puser) {
     user = puser;
     org = porg;
   }
 
-  connectChain(Function callback) async {
+  connectChain(Function? callback) async {
     if (chainClient != null) {
       if (org.daoId == "") {
-        callback();
+        callback?.call();
         return;
       }
       await getData();
       return;
     }
-    chainClient = WeTEE.url(chainUrl);
+    if (callback != null) {
+      callbacks.add(callback);
+    }
+    if (reConnecting == true) {
+      return;
+    }
+    final chainPre = WeTEE.url(chainUrl);
     printDebug("准备连接到区块链 ==> $chainUrl");
-    chainClient!.getBlockNumber().then((clientIndex) async {
+    chainPre.getBlockNumber().then((clientIndex) async {
       printSuccess("连接到区块链 ==> $chainUrl ===> $clientIndex");
+
+      chainClient = chainPre;
       notifyListeners();
 
       await getData();
-      callback();
+      for (var c in callbacks) {
+        c();
+      }
+      callbacks = [];
     }).catchError((e) {
       chainClient = null;
       printError("连接到区块链 ==> $chainUrl ===> 失败 ===> ${e.toString()}");
+      if (reConnecting == true) return;
+      reConnecting = true;
+      printWarning("等待 5s 后重新链接");
+      Timer(const Duration(seconds: 5), () {
+        reConnecting = false;
+        connectChain(null);
+      });
     });
   }
 
@@ -107,7 +129,7 @@ class WeTEECTX with ChangeNotifier {
     ss58Address = user.ss58Address;
 
     // DAO 成员
-    members = (await chainClient!.query.weteeOrg.members(daoId)).map((e) => hex.encode(e)).toList();
+    members = (await chainClient!.query.weteeOrg.members(daoId)).map((e) =>"0x${hex.encode(e)}").toList();
     votes = await chainClient!.query.weteeGov.votesOf(publicKey);
 
     periods = await chainClient!.query.weteeGov.periods(daoId);
