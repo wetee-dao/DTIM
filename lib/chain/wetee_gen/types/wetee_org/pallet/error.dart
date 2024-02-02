@@ -63,7 +63,15 @@ enum Error {
 
   /// Wrong dao gov origin.
   /// 错误的dao组织账户
-  badDaoOrigin('BadDaoOrigin', 14);
+  badDaoGovOrigin('BadDaoGovOrigin', 14),
+
+  /// Wrong dao gov origin.
+  /// 错误的dao组织账户
+  badGovOrigin('BadGovOrigin', 15),
+
+  /// Wrong dao gov 403.
+  /// 错误的dao组织账户
+  badDaoGov403('BadDaoGov403', 16);
 
   const Error(
     this.variantName,
@@ -122,7 +130,11 @@ class $ErrorCodec with _i1.Codec<Error> {
       case 13:
         return Error.tooManyMembers;
       case 14:
-        return Error.badDaoOrigin;
+        return Error.badDaoGovOrigin;
+      case 15:
+        return Error.badGovOrigin;
+      case 16:
+        return Error.badDaoGov403;
       default:
         throw Exception('Error: Invalid variant index: "$index"');
     }

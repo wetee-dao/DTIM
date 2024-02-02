@@ -2,9 +2,10 @@
 import 'dart:typed_data' as _i2;
 
 import 'package:polkadart/scale_codec.dart' as _i1;
-import 'package:quiver/collection.dart' as _i4;
+import 'package:quiver/collection.dart' as _i5;
 
 import '../../sp_core/crypto/account_id32.dart' as _i3;
+import '../../wetee_primitives/types/work_id.dart' as _i4;
 
 /// The `Event` enum of this pallet
 abstract class Event {
@@ -38,14 +39,25 @@ class $Event {
     return ClusterCreated(creator: creator);
   }
 
-  AppRuning appRuning({
-    required _i3.AccountId32 minter,
-    required BigInt id,
+  WorkRuning workRuning({
+    required _i3.AccountId32 user,
+    required _i4.WorkId workId,
+    required BigInt clusterId,
   }) {
-    return AppRuning(
-      minter: minter,
-      id: id,
+    return WorkRuning(
+      user: user,
+      workId: workId,
+      clusterId: clusterId,
     );
+  }
+
+  WorkContractUpdated workContractUpdated({required _i4.WorkId workId}) {
+    return WorkContractUpdated(workId: workId);
+  }
+
+  WorkContractWithdrawaled workContractWithdrawaled(
+      {required _i4.WorkId workId}) {
+    return WorkContractWithdrawaled(workId: workId);
   }
 }
 
@@ -59,7 +71,11 @@ class $EventCodec with _i1.Codec<Event> {
       case 0:
         return ClusterCreated._decode(input);
       case 1:
-        return AppRuning._decode(input);
+        return WorkRuning._decode(input);
+      case 2:
+        return WorkContractUpdated._decode(input);
+      case 3:
+        return WorkContractWithdrawaled._decode(input);
       default:
         throw Exception('Event: Invalid variant index: "$index"');
     }
@@ -74,8 +90,14 @@ class $EventCodec with _i1.Codec<Event> {
       case ClusterCreated:
         (value as ClusterCreated).encodeTo(output);
         break;
-      case AppRuning:
-        (value as AppRuning).encodeTo(output);
+      case WorkRuning:
+        (value as WorkRuning).encodeTo(output);
+        break;
+      case WorkContractUpdated:
+        (value as WorkContractUpdated).encodeTo(output);
+        break;
+      case WorkContractWithdrawaled:
+        (value as WorkContractWithdrawaled).encodeTo(output);
         break;
       default:
         throw Exception(
@@ -88,8 +110,12 @@ class $EventCodec with _i1.Codec<Event> {
     switch (value.runtimeType) {
       case ClusterCreated:
         return (value as ClusterCreated)._sizeHint();
-      case AppRuning:
-        return (value as AppRuning)._sizeHint();
+      case WorkRuning:
+        return (value as WorkRuning)._sizeHint();
+      case WorkContractUpdated:
+        return (value as WorkContractUpdated)._sizeHint();
+      case WorkContractWithdrawaled:
+        return (value as WorkContractWithdrawaled)._sizeHint();
       default:
         throw Exception(
             'Event: Unsupported "$value" of type "${value.runtimeType}"');
@@ -97,6 +123,7 @@ class $EventCodec with _i1.Codec<Event> {
   }
 }
 
+/// A new cluster has been created. [creator]
 class ClusterCreated extends Event {
   const ClusterCreated({required this.creator});
 
@@ -136,7 +163,7 @@ class ClusterCreated extends Event {
         other,
       ) ||
       other is ClusterCreated &&
-          _i4.listsEqual(
+          _i5.listsEqual(
             other.creator,
             creator,
           );
@@ -145,37 +172,45 @@ class ClusterCreated extends Event {
   int get hashCode => creator.hashCode;
 }
 
-class AppRuning extends Event {
-  const AppRuning({
-    required this.minter,
-    required this.id,
+/// A new app has been runed. [user]
+class WorkRuning extends Event {
+  const WorkRuning({
+    required this.user,
+    required this.workId,
+    required this.clusterId,
   });
 
-  factory AppRuning._decode(_i1.Input input) {
-    return AppRuning(
-      minter: const _i1.U8ArrayCodec(32).decode(input),
-      id: _i1.U64Codec.codec.decode(input),
+  factory WorkRuning._decode(_i1.Input input) {
+    return WorkRuning(
+      user: const _i1.U8ArrayCodec(32).decode(input),
+      workId: _i4.WorkId.codec.decode(input),
+      clusterId: _i1.U64Codec.codec.decode(input),
     );
   }
 
   /// T::AccountId
-  final _i3.AccountId32 minter;
+  final _i3.AccountId32 user;
 
-  /// u64
-  final BigInt id;
+  /// WorkId
+  final _i4.WorkId workId;
+
+  /// ClusterId
+  final BigInt clusterId;
 
   @override
   Map<String, Map<String, dynamic>> toJson() => {
-        'AppRuning': {
-          'minter': minter.toList(),
-          'id': id,
+        'WorkRuning': {
+          'user': user.toList(),
+          'workId': workId.toJson(),
+          'clusterId': clusterId,
         }
       };
 
   int _sizeHint() {
     int size = 1;
-    size = size + const _i3.AccountId32Codec().sizeHint(minter);
-    size = size + _i1.U64Codec.codec.sizeHint(id);
+    size = size + const _i3.AccountId32Codec().sizeHint(user);
+    size = size + _i4.WorkId.codec.sizeHint(workId);
+    size = size + _i1.U64Codec.codec.sizeHint(clusterId);
     return size;
   }
 
@@ -185,11 +220,15 @@ class AppRuning extends Event {
       output,
     );
     const _i1.U8ArrayCodec(32).encodeTo(
-      minter,
+      user,
+      output,
+    );
+    _i4.WorkId.codec.encodeTo(
+      workId,
       output,
     );
     _i1.U64Codec.codec.encodeTo(
-      id,
+      clusterId,
       output,
     );
   }
@@ -200,16 +239,108 @@ class AppRuning extends Event {
         this,
         other,
       ) ||
-      other is AppRuning &&
-          _i4.listsEqual(
-            other.minter,
-            minter,
+      other is WorkRuning &&
+          _i5.listsEqual(
+            other.user,
+            user,
           ) &&
-          other.id == id;
+          other.workId == workId &&
+          other.clusterId == clusterId;
 
   @override
   int get hashCode => Object.hash(
-        minter,
-        id,
+        user,
+        workId,
+        clusterId,
       );
+}
+
+/// Work contract has been updated. [user]
+class WorkContractUpdated extends Event {
+  const WorkContractUpdated({required this.workId});
+
+  factory WorkContractUpdated._decode(_i1.Input input) {
+    return WorkContractUpdated(workId: _i4.WorkId.codec.decode(input));
+  }
+
+  /// WorkId
+  final _i4.WorkId workId;
+
+  @override
+  Map<String, Map<String, Map<String, dynamic>>> toJson() => {
+        'WorkContractUpdated': {'workId': workId.toJson()}
+      };
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i4.WorkId.codec.sizeHint(workId);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      2,
+      output,
+    );
+    _i4.WorkId.codec.encodeTo(
+      workId,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is WorkContractUpdated && other.workId == workId;
+
+  @override
+  int get hashCode => workId.hashCode;
+}
+
+/// Work contract has been withdrawn. [user]
+class WorkContractWithdrawaled extends Event {
+  const WorkContractWithdrawaled({required this.workId});
+
+  factory WorkContractWithdrawaled._decode(_i1.Input input) {
+    return WorkContractWithdrawaled(workId: _i4.WorkId.codec.decode(input));
+  }
+
+  /// WorkId
+  final _i4.WorkId workId;
+
+  @override
+  Map<String, Map<String, Map<String, dynamic>>> toJson() => {
+        'WorkContractWithdrawaled': {'workId': workId.toJson()}
+      };
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i4.WorkId.codec.sizeHint(workId);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      3,
+      output,
+    );
+    _i4.WorkId.codec.encodeTo(
+      workId,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is WorkContractWithdrawaled && other.workId == workId;
+
+  @override
+  int get hashCode => workId.hashCode;
 }

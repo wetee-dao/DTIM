@@ -27,7 +27,7 @@ class Neighbours {
     return codec.encode(this);
   }
 
-  Map<String, Map<String, List<int>>> toJson() => {
+  Map<String, String> toJson() => {
         'prev': prev.toJson(),
         'next': next.toJson(),
       };

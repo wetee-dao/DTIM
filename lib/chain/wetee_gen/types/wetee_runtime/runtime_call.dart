@@ -17,8 +17,9 @@ import '../wetee_guild/pallet/call.dart' as _i13;
 import '../wetee_org/pallet/call.dart' as _i10;
 import '../wetee_project/pallet/call.dart' as _i14;
 import '../wetee_sudo/pallet/call.dart' as _i12;
+import '../wetee_task/pallet/call.dart' as _i18;
 import '../wetee_treasury/pallet/call.dart' as _i16;
-import '../wetee_worker/pallet/call.dart' as _i18;
+import '../wetee_worker/pallet/call.dart' as _i19;
 
 abstract class RuntimeCall {
   const RuntimeCall();
@@ -41,7 +42,7 @@ abstract class RuntimeCall {
     return codec.sizeHint(this);
   }
 
-  Map<String, Map<String, dynamic>> toJson();
+  Map<String, Map<String, Map<String, dynamic>>> toJson();
 }
 
 class $RuntimeCall {
@@ -107,7 +108,11 @@ class $RuntimeCall {
     return WeteeApp(value0);
   }
 
-  WeteeWorker weteeWorker(_i18.Call value0) {
+  WeteeTask weteeTask(_i18.Call value0) {
+    return WeteeTask(value0);
+  }
+
+  WeteeWorker weteeWorker(_i19.Call value0) {
     return WeteeWorker(value0);
   }
 }
@@ -150,6 +155,8 @@ class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
       case 17:
         return WeteeApp._decode(input);
       case 18:
+        return WeteeTask._decode(input);
+      case 19:
         return WeteeWorker._decode(input);
       default:
         throw Exception('RuntimeCall: Invalid variant index: "$index"');
@@ -207,6 +214,9 @@ class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
       case WeteeApp:
         (value as WeteeApp).encodeTo(output);
         break;
+      case WeteeTask:
+        (value as WeteeTask).encodeTo(output);
+        break;
       case WeteeWorker:
         (value as WeteeWorker).encodeTo(output);
         break;
@@ -249,6 +259,8 @@ class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
         return (value as WeteeTreasury)._sizeHint();
       case WeteeApp:
         return (value as WeteeApp)._sizeHint();
+      case WeteeTask:
+        return (value as WeteeTask)._sizeHint();
       case WeteeWorker:
         return (value as WeteeWorker)._sizeHint();
       default:
@@ -886,7 +898,8 @@ class WeteeApp extends RuntimeCall {
   final _i17.Call value0;
 
   @override
-  Map<String, Map<String, dynamic>> toJson() => {'WeteeApp': value0.toJson()};
+  Map<String, Map<String, Map<String, dynamic>>> toJson() =>
+      {'WeteeApp': value0.toJson()};
 
   int _sizeHint() {
     int size = 1;
@@ -917,20 +930,20 @@ class WeteeApp extends RuntimeCall {
   int get hashCode => value0.hashCode;
 }
 
-class WeteeWorker extends RuntimeCall {
-  const WeteeWorker(this.value0);
+class WeteeTask extends RuntimeCall {
+  const WeteeTask(this.value0);
 
-  factory WeteeWorker._decode(_i1.Input input) {
-    return WeteeWorker(_i18.Call.codec.decode(input));
+  factory WeteeTask._decode(_i1.Input input) {
+    return WeteeTask(_i18.Call.codec.decode(input));
   }
 
   /// self::sp_api_hidden_includes_construct_runtime::hidden_include::dispatch
-  ///::CallableCallFor<WeteeWorker, Runtime>
+  ///::CallableCallFor<WeteeTask, Runtime>
   final _i18.Call value0;
 
   @override
-  Map<String, Map<String, dynamic>> toJson() =>
-      {'WeteeWorker': value0.toJson()};
+  Map<String, Map<String, Map<String, dynamic>>> toJson() =>
+      {'WeteeTask': value0.toJson()};
 
   int _sizeHint() {
     int size = 1;
@@ -944,6 +957,50 @@ class WeteeWorker extends RuntimeCall {
       output,
     );
     _i18.Call.codec.encodeTo(
+      value0,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is WeteeTask && other.value0 == value0;
+
+  @override
+  int get hashCode => value0.hashCode;
+}
+
+class WeteeWorker extends RuntimeCall {
+  const WeteeWorker(this.value0);
+
+  factory WeteeWorker._decode(_i1.Input input) {
+    return WeteeWorker(_i19.Call.codec.decode(input));
+  }
+
+  /// self::sp_api_hidden_includes_construct_runtime::hidden_include::dispatch
+  ///::CallableCallFor<WeteeWorker, Runtime>
+  final _i19.Call value0;
+
+  @override
+  Map<String, Map<String, Map<String, dynamic>>> toJson() =>
+      {'WeteeWorker': value0.toJson()};
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i19.Call.codec.sizeHint(value0);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      19,
+      output,
+    );
+    _i19.Call.codec.encodeTo(
       value0,
       output,
     );

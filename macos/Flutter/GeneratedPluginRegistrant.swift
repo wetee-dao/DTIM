@@ -24,6 +24,7 @@ import shared_preferences_foundation
 import tray_manager
 import url_launcher_macos
 import video_compress
+import video_player_avfoundation
 import wakelock_plus
 import window_manager
 
@@ -47,6 +48,7 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   TrayManagerPlugin.register(with: registry.registrar(forPlugin: "TrayManagerPlugin"))
   UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
   VideoCompressPlugin.register(with: registry.registrar(forPlugin: "VideoCompressPlugin"))
+  FVPVideoPlayerPlugin.register(with: registry.registrar(forPlugin: "FVPVideoPlayerPlugin"))
   WakelockPlusMacosPlugin.register(with: registry.registrar(forPlugin: "WakelockPlusMacosPlugin"))
   WindowManagerPlugin.register(with: registry.registrar(forPlugin: "WindowManagerPlugin"))
 }

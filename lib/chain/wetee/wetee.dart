@@ -4,13 +4,12 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:polkadart/polkadart.dart';
-import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:polkadart/scale_codec.dart' as codec;
+import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 import 'package:dtim/chain/wetee_gen/types/wetee_runtime/runtime_call.dart';
 import 'package:dtim/chain/wetee_gen/wetee_gen.dart';
 import 'package:dtim/domain/models/models.dart';
-// import 'package:dtim/domain/utils/functions.dart';
 import 'type.dart';
 export 'type.dart';
 export 'key_pair.dart';
@@ -57,6 +56,19 @@ class WeTEE {
     return await provider.disconnect();
   }
 
+  static Future<String> signFromAddress(String address, List<int> list) async {
+    if (keyPairs[address] == null) {
+      throw Exception('Address $address not found');
+    }
+    final KeyPair keyPair = keyPairs[address]!;
+
+  
+    final signature = keyPair.sign(Uint8List.fromList(list));
+    final hexSignature = hex.encode(signature);
+
+    return hexSignature;
+  }
+
   Future<String> signAndSubmit(RuntimeCall rCall, String address, {WithGovPs? gov}) async {
     final blockHash = await query.system.blockHash(BigInt.from(0));
     final version = constant.system.version;
@@ -64,11 +76,12 @@ class WeTEE {
       throw Exception('Address $address not found');
     }
     final KeyPair keyPair = keyPairs[address]!;
-    final publicKey = "0x${hex.encode(keyPair.publicKey.bytes)}";
+    final publicKey = hex.encode(keyPair.publicKey.bytes);
 
     // 获取用户信息
     final account = await query.system.account(keyPair.publicKey.bytes);
 
+    // 构建请求
     late RuntimeCall toCall;
     if (gov != null) {
       if (gov.runType == 2) {
@@ -85,12 +98,13 @@ class WeTEE {
       toCall = rCall;
     }
 
-    final call = "0x${hex.encode(toCall.encode())}";
+    final hexCall = hex.encode(toCall.encode());
+
     // 构建签名体
     final payloadToSign = SigningPayload(
-      method: call,
-      blockHash: "0x${hex.encode(blockHash)}",
-      genesisHash: "0x${hex.encode(blockHash)}",
+      method: hexCall,
+      blockHash: hex.encode(blockHash),
+      genesisHash: hex.encode(blockHash),
       blockNumber: 0,
       eraPeriod: 0,
       nonce: account.nonce.toInt(),
@@ -101,40 +115,50 @@ class WeTEE {
 
     // 签名
     final payload = payloadToSign.encode(registry);
-    final signature = keyPair.sign(payload);
-    final hexSignature = "0x${hex.encode(signature)}";
+    final hexSignature = await signFromAddress(address, payload);
 
+    // 构建交易
     final extrinsic = Extrinsic(
       signer: publicKey,
-      method: call,
+      method: hexCall,
       signature: hexSignature,
       blockNumber: 0,
       eraPeriod: 0,
       tip: 0,
       nonce: account.nonce.toInt(),
-    ).encode(registry);
+    ).encode(registry, SignatureType.sr25519);
 
     final author = AuthorApi(provider);
     final submit = await author.submitAndWatchExtrinsic(
       extrinsic,
-      (data) => print('From here: ${data.type} - ${data.value}'),
+      (data) => print('Extrinsic result: ${data.type} - ${data.value}'),
     );
+    submit.onDone(() {
+      print('done');
+    });
     submit.cancel();
     return "";
   }
 
-  static Future<bool> addKeyring({required String keyringStr, required String password}) async {
-    ChainAccountData data = ChainAccountData.fromJson(json.decode(keyringStr));
-    final keyPair = await KeyPair.fromMnemonic(data.encoded);
-    final publicKey = "0x${hex.encode(keyPair.publicKey.bytes)}";
-    keyPairs[publicKey] = keyPair;
+  static Future<bool> addKeyring({required ChainAccountData account, required String password}) async {
+    late KeyPair keyPair ;
+    if (account.encoding.type=="uri"){
+      keyPair = await KeyPair.sr25519.fromUri(account.encoded, password);
+    }else if (account.encoding.type=="mnemonic") {
+      keyPair = await KeyPair.sr25519.fromMnemonic(account.encoded, password);
+    }
+
+    if (hex.encode(keyPair.publicKey.bytes) != account.address) {
+      throw 'password not match';
+    }
+
+    keyPairs[account.address] = keyPair;
     return true;
   }
 
   Future<int> getBlockNumber() async {
     final completer = Completer<int>();
     final sub = await subscribeFinalizedHeads((s) {
-      // print('Finalized head: ${s.blockNumber}');
       completer.complete(s.blockNumber!);
     }, provider);
     final header = await completer.future;

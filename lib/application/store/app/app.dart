@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,8 +41,10 @@ class AppCubit extends Cubit<AppState> {
   // 当前账户
   String get currentId => state.currentOrg;
 
+  // 签名内容
   String get signCtx => state.signCtx;
 
+  // 签名
   String get sign => state.sign;
 
   // 当前账户
@@ -86,16 +90,16 @@ class AppCubit extends Cubit<AppState> {
         future: () async {
           final pwd = input[0];
           try {
-            await WeTEE.addKeyring(keyringStr: user.chainData, password: pwd);
-            sign = await signFromAddress(user, signCtx);
+            await WeTEE.addKeyring(account: ChainAccountData.fromJson(json.decode(user.chainData)) , password: pwd);
+            sign = await WeTEE.signFromAddress(user.address, utf8.encode(signCtx));
           } catch (e) {
-            return "密码错误 => ${e.toString()}";
+            return e.toString();
           }
 
           emit(state.copyWith(
             me: user,
             signCtx: signCtx,
-            sign: sign,
+            sign: "0x$sign",
           ));
           return "ok";
         },
@@ -110,15 +114,16 @@ class AppCubit extends Cubit<AppState> {
         duration: const Duration(seconds: 2),
       );
     } else {
-      await WeTEE.addKeyring(keyringStr: user.chainData, password: "");
-      sign = await signFromAddress(
-        user,
-        signCtx,
+      await WeTEE.addKeyring(account: ChainAccountData.fromJson(json.decode(user.chainData)), password: "");
+      sign = await WeTEE.signFromAddress(
+        user.address,
+        utf8.encode(signCtx),
       );
+      
       emit(state.copyWith(
         me: user,
         signCtx: signCtx,
-        sign: sign,
+        sign: "0x$sign",
       ));
       final systemStore = await SystemApi.create();
       systemStore.saveLogin(user.address);
@@ -136,8 +141,7 @@ class AppCubit extends Cubit<AppState> {
     connectionStates.forEach((key, value) async {
       await value.dispose();
     });
-    // const storage = FlutterSecureStorage();
-    // await storage.delete(key: "login_state");
+
     final systemStore = await SystemApi.create();
     systemStore.saveLogin("");
     emit(const AppState());
@@ -152,9 +156,9 @@ class AppCubit extends Cubit<AppState> {
 
   // 连接账户
   Future<bool> connect(AccountOrg org) async {
-    if (org.domain!.contains("http://")) {
-      org.domain = org.domain!.replaceFirst("http://", "https://");
-    }
+    // if (org.domain!.contains("http://")) {
+    //   org.domain = org.domain!.replaceFirst("http://", "https://");
+    // }
     final server = Uri.parse(org.domain ?? "");
     final domain = server.host;
     // 构建账户密码
@@ -168,6 +172,7 @@ class AppCubit extends Cubit<AppState> {
       if (!client.isLogged()) {
         try {
           print(me!.address);
+          print(me!.ss58Address);
           print("$signCtx||$sign");
           await client.login(
             LoginType.mLoginPassword,
@@ -214,6 +219,7 @@ class AppCubit extends Cubit<AppState> {
     if (!client.isLogged()) {
       try {
         print(me!.address);
+        print(me!.ss58Address);
         print("$signCtx||$sign");
         await client.uiaRequestBackground((auth) {
           return client.register(

@@ -56,8 +56,11 @@ enum Error {
   /// 没有找到
   gov404('Gov404', 16),
 
+  /// 无效的轨道
+  period404('Period404', 17),
+
   /// 错误的DAO组织
-  badDaoOrigin('BadDaoOrigin', 17);
+  badDaoOrigin('BadDaoOrigin', 18);
 
   const Error(
     this.variantName,
@@ -122,6 +125,8 @@ class $ErrorCodec with _i1.Codec<Error> {
       case 16:
         return Error.gov404;
       case 17:
+        return Error.period404;
+      case 18:
         return Error.badDaoOrigin;
       default:
         throw Exception('Error: Invalid variant index: "$index"');

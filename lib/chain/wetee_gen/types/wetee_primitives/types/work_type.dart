@@ -3,15 +3,16 @@ import 'dart:typed_data' as _i2;
 
 import 'package:polkadart/scale_codec.dart' as _i1;
 
-enum MessageOrigin {
-  work('Work', 0);
+enum WorkType {
+  app('APP', 0),
+  task('TASK', 1);
 
-  const MessageOrigin(
+  const WorkType(
     this.variantName,
     this.codecIndex,
   );
 
-  factory MessageOrigin.decode(_i1.Input input) {
+  factory WorkType.decode(_i1.Input input) {
     return codec.decode(input);
   }
 
@@ -19,7 +20,7 @@ enum MessageOrigin {
 
   final int codecIndex;
 
-  static const $MessageOriginCodec codec = $MessageOriginCodec();
+  static const $WorkTypeCodec codec = $WorkTypeCodec();
 
   String toJson() => variantName;
   _i2.Uint8List encode() {
@@ -27,23 +28,25 @@ enum MessageOrigin {
   }
 }
 
-class $MessageOriginCodec with _i1.Codec<MessageOrigin> {
-  const $MessageOriginCodec();
+class $WorkTypeCodec with _i1.Codec<WorkType> {
+  const $WorkTypeCodec();
 
   @override
-  MessageOrigin decode(_i1.Input input) {
+  WorkType decode(_i1.Input input) {
     final index = _i1.U8Codec.codec.decode(input);
     switch (index) {
       case 0:
-        return MessageOrigin.work;
+        return WorkType.app;
+      case 1:
+        return WorkType.task;
       default:
-        throw Exception('MessageOrigin: Invalid variant index: "$index"');
+        throw Exception('WorkType: Invalid variant index: "$index"');
     }
   }
 
   @override
   void encodeTo(
-    MessageOrigin value,
+    WorkType value,
     _i1.Output output,
   ) {
     _i1.U8Codec.codec.encodeTo(

@@ -1,5 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i21;
+import 'dart:async' as _i22;
 
 import 'package:polkadart/polkadart.dart' as _i1;
 
@@ -16,12 +16,13 @@ import 'pallets/transaction_payment.dart' as _i7;
 import 'pallets/wetee_app.dart' as _i17;
 import 'pallets/wetee_asset.dart' as _i13;
 import 'pallets/wetee_gov.dart' as _i16;
-import 'pallets/wetee_guild.dart' as _i19;
+import 'pallets/wetee_guild.dart' as _i20;
 import 'pallets/wetee_org.dart' as _i12;
 import 'pallets/wetee_project.dart' as _i15;
 import 'pallets/wetee_sudo.dart' as _i14;
-import 'pallets/wetee_treasury.dart' as _i20;
-import 'pallets/wetee_worker.dart' as _i18;
+import 'pallets/wetee_task.dart' as _i18;
+import 'pallets/wetee_treasury.dart' as _i21;
+import 'pallets/wetee_worker.dart' as _i19;
 
 class Queries {
   Queries(_i1.StateApi api)
@@ -41,7 +42,8 @@ class Queries {
         weteeProject = _i15.Queries(api),
         weteeGov = _i16.Queries(api),
         weteeApp = _i17.Queries(api),
-        weteeWorker = _i18.Queries(api);
+        weteeTask = _i18.Queries(api),
+        weteeWorker = _i19.Queries(api);
 
   final _i2.Queries system;
 
@@ -75,7 +77,9 @@ class Queries {
 
   final _i17.Queries weteeApp;
 
-  final _i18.Queries weteeWorker;
+  final _i18.Queries weteeTask;
+
+  final _i19.Queries weteeWorker;
 }
 
 class Extrinsics {
@@ -101,17 +105,19 @@ class Extrinsics {
 
   final _i14.Txs weteeSudo = _i14.Txs();
 
-  final _i19.Txs weteeGuild = _i19.Txs();
+  final _i20.Txs weteeGuild = _i20.Txs();
 
   final _i15.Txs weteeProject = _i15.Txs();
 
   final _i16.Txs weteeGov = _i16.Txs();
 
-  final _i20.Txs weteeTreasury = _i20.Txs();
+  final _i21.Txs weteeTreasury = _i21.Txs();
 
   final _i17.Txs weteeApp = _i17.Txs();
 
-  final _i18.Txs weteeWorker = _i18.Txs();
+  final _i18.Txs weteeTask = _i18.Txs();
+
+  final _i19.Txs weteeWorker = _i19.Txs();
 }
 
 class Constants {
@@ -155,7 +161,12 @@ class Registry {
   }
 
   List getSignedExtensionExtra() {
-    return ['CheckSpecVersion', 'CheckTxVersion', 'CheckGenesis', 'CheckMortality'];
+    return [
+      'CheckSpecVersion',
+      'CheckTxVersion',
+      'CheckGenesis',
+      'CheckMortality'
+    ];
   }
 }
 
@@ -196,11 +207,11 @@ class WeteeGen {
 
   final Registry registry;
 
-  _i21.Future connect() async {
+  _i22.Future connect() async {
     return await _provider.connect();
   }
 
-  _i21.Future disconnect() async {
+  _i22.Future disconnect() async {
     return await _provider.disconnect();
   }
 }

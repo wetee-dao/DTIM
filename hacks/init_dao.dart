@@ -1,7 +1,9 @@
-import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:convert/convert.dart';
 import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/chain/wetee_gen/types/sp_runtime/multiaddress/multi_address.dart';
 import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:polkadart/scale_codec.dart';
 
@@ -10,10 +12,19 @@ const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson mo
 
 void main() async {
   final wetee = WeTEE.url('ws://127.0.0.1:9944');
-
   final chainAccount = await getSeedPhrase(seedStr: DAO_ROOT_SEED, name: '', password: '');
+  await WeTEE.addKeyring(account: chainAccount, password: "");
+
+  // 初始化资金
+  final alicePair = await getFromUri(uri:'//Alice', name: '', password: '');
+  await WeTEE.addKeyring(account: alicePair, password: "");
+  final dest = const $MultiAddress().id(hex.decode(chainAccount.address.replaceAll("0x", "")));
+  var tcall = wetee.tx.balances.transfer(dest: dest, value: BigInt.from(1000000000000000000));
+  await wetee.signAndSubmit(tcall, alicePair.address);
+
+  sleep(const Duration(seconds: 7));
+
   print(chainAccount.meta["ss58Address"]);
-  await WeTEE.addKeyring(keyringStr: json.encode(chainAccount.toJson()), password: "");
 
   // 创建DAO
   var runcall = wetee.tx.weteeOrg.createDao(
@@ -22,7 +33,7 @@ void main() async {
     logo: convertStringToUint8List(''),
     img: convertStringToUint8List('https://wetee.app/static/web3/img/logo.png'),
     homeUrl: convertStringToUint8List('https://wetee.app/'),
-    imApi: convertStringToUint8List('https://dtim-dock.gc.wetee.app/'),
+    imApi: convertStringToUint8List('http://127.0.0.1:8008/'), // https://dtim-dock.gc.wetee.app/ 
     desc: convertStringToUint8List('For the freedom of programming'),
     purpose: convertStringToUint8List("For the freedom of programming"),
     metaData: convertStringToUint8List("{}"),
@@ -31,6 +42,8 @@ void main() async {
   // 提交
   await wetee.signAndSubmit(runcall, chainAccount.address);
 
+  sleep(const Duration(seconds: 7));
+  
   final d = await wetee.query.weteeOrg.daos(BigInt.from(5000));
   print(d!.id.toString());
 

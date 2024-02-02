@@ -17,8 +17,9 @@ import '../wetee_guild/pallet/event.dart' as _i13;
 import '../wetee_org/pallet/event.dart' as _i10;
 import '../wetee_project/pallet/event.dart' as _i14;
 import '../wetee_sudo/pallet/event.dart' as _i12;
+import '../wetee_task/pallet/event.dart' as _i18;
 import '../wetee_treasury/pallet/event.dart' as _i16;
-import '../wetee_worker/pallet/event.dart' as _i18;
+import '../wetee_worker/pallet/event.dart' as _i19;
 
 abstract class RuntimeEvent {
   const RuntimeEvent();
@@ -107,7 +108,11 @@ class $RuntimeEvent {
     return WeteeApp(value0);
   }
 
-  WeteeWorker weteeWorker(_i18.Event value0) {
+  WeteeTask weteeTask(_i18.Event value0) {
+    return WeteeTask(value0);
+  }
+
+  WeteeWorker weteeWorker(_i19.Event value0) {
     return WeteeWorker(value0);
   }
 }
@@ -150,6 +155,8 @@ class $RuntimeEventCodec with _i1.Codec<RuntimeEvent> {
       case 17:
         return WeteeApp._decode(input);
       case 18:
+        return WeteeTask._decode(input);
+      case 19:
         return WeteeWorker._decode(input);
       default:
         throw Exception('RuntimeEvent: Invalid variant index: "$index"');
@@ -207,6 +214,9 @@ class $RuntimeEventCodec with _i1.Codec<RuntimeEvent> {
       case WeteeApp:
         (value as WeteeApp).encodeTo(output);
         break;
+      case WeteeTask:
+        (value as WeteeTask).encodeTo(output);
+        break;
       case WeteeWorker:
         (value as WeteeWorker).encodeTo(output);
         break;
@@ -249,6 +259,8 @@ class $RuntimeEventCodec with _i1.Codec<RuntimeEvent> {
         return (value as WeteeTreasury)._sizeHint();
       case WeteeApp:
         return (value as WeteeApp)._sizeHint();
+      case WeteeTask:
+        return (value as WeteeTask)._sizeHint();
       case WeteeWorker:
         return (value as WeteeWorker)._sizeHint();
       default:
@@ -898,19 +910,19 @@ class WeteeApp extends RuntimeEvent {
   int get hashCode => value0.hashCode;
 }
 
-class WeteeWorker extends RuntimeEvent {
-  const WeteeWorker(this.value0);
+class WeteeTask extends RuntimeEvent {
+  const WeteeTask(this.value0);
 
-  factory WeteeWorker._decode(_i1.Input input) {
-    return WeteeWorker(_i18.Event.codec.decode(input));
+  factory WeteeTask._decode(_i1.Input input) {
+    return WeteeTask(_i18.Event.codec.decode(input));
   }
 
-  /// wetee_worker::Event<Runtime>
+  /// wetee_task::Event<Runtime>
   final _i18.Event value0;
 
   @override
   Map<String, Map<String, Map<String, dynamic>>> toJson() =>
-      {'WeteeWorker': value0.toJson()};
+      {'WeteeTask': value0.toJson()};
 
   int _sizeHint() {
     int size = 1;
@@ -924,6 +936,49 @@ class WeteeWorker extends RuntimeEvent {
       output,
     );
     _i18.Event.codec.encodeTo(
+      value0,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is WeteeTask && other.value0 == value0;
+
+  @override
+  int get hashCode => value0.hashCode;
+}
+
+class WeteeWorker extends RuntimeEvent {
+  const WeteeWorker(this.value0);
+
+  factory WeteeWorker._decode(_i1.Input input) {
+    return WeteeWorker(_i19.Event.codec.decode(input));
+  }
+
+  /// wetee_worker::Event<Runtime>
+  final _i19.Event value0;
+
+  @override
+  Map<String, Map<String, Map<String, dynamic>>> toJson() =>
+      {'WeteeWorker': value0.toJson()};
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i19.Event.codec.sizeHint(value0);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      19,
+      output,
+    );
+    _i19.Event.codec.encodeTo(
       value0,
       output,
     );

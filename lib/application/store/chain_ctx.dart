@@ -1,5 +1,6 @@
 // import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -221,9 +222,9 @@ Future<bool> inputPasswordg(Account user) async {
       future: () async {
         final pwd = input[0];
         try {
-          await WeTEE.addKeyring(keyringStr: user.chainData, password: pwd);
+          await WeTEE.addKeyring(account: ChainAccountData.fromJson(json.decode(user.chainData)), password: pwd);
         } catch (e) {
-          return "密码错误 => ${e.toString()}";
+          return e.toString();
         }
         return "ok";
       },

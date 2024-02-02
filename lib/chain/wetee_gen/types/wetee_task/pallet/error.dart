@@ -5,10 +5,26 @@ import 'package:polkadart/scale_codec.dart' as _i1;
 
 /// The `Error` enum of this pallet.
 enum Error {
-  /// Not a sudo account, nor a dao account.
-  notSudo('NotSudo', 0),
-  rootNotExists('RootNotExists', 1),
-  sudoRunError('SudoRunError', 2);
+  /// Task status mismatch.
+  taskStatusMismatch('TaskStatusMismatch', 0),
+
+  /// Root not exists.
+  taskNotExists('TaskNotExists', 1),
+
+  /// Too many app.
+  tooManyTask('TooManyTask', 2),
+
+  /// Task 403.
+  task403('Task403', 3),
+
+  /// Not enough balance.
+  notEnoughBalance('NotEnoughBalance', 4),
+
+  /// Task is runing.
+  taskIsRuning('TaskIsRuning', 5),
+
+  /// Level not exists.
+  levelNotExists('LevelNotExists', 6);
 
   const Error(
     this.variantName,
@@ -39,11 +55,19 @@ class $ErrorCodec with _i1.Codec<Error> {
     final index = _i1.U8Codec.codec.decode(input);
     switch (index) {
       case 0:
-        return Error.notSudo;
+        return Error.taskStatusMismatch;
       case 1:
-        return Error.rootNotExists;
+        return Error.taskNotExists;
       case 2:
-        return Error.sudoRunError;
+        return Error.tooManyTask;
+      case 3:
+        return Error.task403;
+      case 4:
+        return Error.notEnoughBalance;
+      case 5:
+        return Error.taskIsRuning;
+      case 6:
+        return Error.levelNotExists;
       default:
         throw Exception('Error: Invalid variant index: "$index"');
     }

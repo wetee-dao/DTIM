@@ -106,7 +106,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    link.CallSession? call = gcall.calls.isNotEmpty ? gcall.calls[0] : null;
+    link.CallSession? call = gcall.callSessions.isNotEmpty ? gcall.callSessions[0] : null;
     final actions = call != null
         ? GCallAction(gcall, onChange: () {
             setState(() {});

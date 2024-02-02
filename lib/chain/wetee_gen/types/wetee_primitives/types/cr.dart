@@ -3,20 +3,16 @@ import 'dart:typed_data' as _i2;
 
 import 'package:polkadart/scale_codec.dart' as _i1;
 
-class Deposit {
-  const Deposit({
-    required this.deposit,
+class Cr {
+  const Cr({
     required this.cpu,
     required this.mem,
     required this.disk,
   });
 
-  factory Deposit.decode(_i1.Input input) {
+  factory Cr.decode(_i1.Input input) {
     return codec.decode(input);
   }
-
-  /// Balance
-  final BigInt deposit;
 
   /// u16
   final int cpu;
@@ -27,14 +23,13 @@ class Deposit {
   /// u16
   final int disk;
 
-  static const $DepositCodec codec = $DepositCodec();
+  static const $CrCodec codec = $CrCodec();
 
   _i2.Uint8List encode() {
     return codec.encode(this);
   }
 
-  Map<String, dynamic> toJson() => {
-        'deposit': deposit,
+  Map<String, int> toJson() => {
         'cpu': cpu,
         'mem': mem,
         'disk': disk,
@@ -46,33 +41,24 @@ class Deposit {
         this,
         other,
       ) ||
-      other is Deposit &&
-          other.deposit == deposit &&
-          other.cpu == cpu &&
-          other.mem == mem &&
-          other.disk == disk;
+      other is Cr && other.cpu == cpu && other.mem == mem && other.disk == disk;
 
   @override
   int get hashCode => Object.hash(
-        deposit,
         cpu,
         mem,
         disk,
       );
 }
 
-class $DepositCodec with _i1.Codec<Deposit> {
-  const $DepositCodec();
+class $CrCodec with _i1.Codec<Cr> {
+  const $CrCodec();
 
   @override
   void encodeTo(
-    Deposit obj,
+    Cr obj,
     _i1.Output output,
   ) {
-    _i1.U128Codec.codec.encodeTo(
-      obj.deposit,
-      output,
-    );
     _i1.U16Codec.codec.encodeTo(
       obj.cpu,
       output,
@@ -88,9 +74,8 @@ class $DepositCodec with _i1.Codec<Deposit> {
   }
 
   @override
-  Deposit decode(_i1.Input input) {
-    return Deposit(
-      deposit: _i1.U128Codec.codec.decode(input),
+  Cr decode(_i1.Input input) {
+    return Cr(
       cpu: _i1.U16Codec.codec.decode(input),
       mem: _i1.U16Codec.codec.decode(input),
       disk: _i1.U16Codec.codec.decode(input),
@@ -98,9 +83,8 @@ class $DepositCodec with _i1.Codec<Deposit> {
   }
 
   @override
-  int sizeHint(Deposit obj) {
+  int sizeHint(Cr obj) {
     int size = 0;
-    size = size + _i1.U128Codec.codec.sizeHint(obj.deposit);
     size = size + _i1.U16Codec.codec.sizeHint(obj.cpu);
     size = size + _i1.U16Codec.codec.sizeHint(obj.mem);
     size = size + _i1.U16Codec.codec.sizeHint(obj.disk);

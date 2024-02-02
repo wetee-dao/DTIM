@@ -198,6 +198,9 @@ class Constants {
   /// Max Authorities in use
   final int maxAuthorities = 32;
 
+  /// The maximum number of nominators for each validator.
+  final int maxNominators = 32;
+
   /// The maximum number of entries to keep in the set id to session index mapping.
   ///
   /// Since the `SetIdSession` map is only used for validating equivocations this

@@ -56,6 +56,10 @@ class $Call {
     );
   }
 
+  Rerun rerun({required BigInt id}) {
+    return Rerun(id: id);
+  }
+
   Update update({
     required BigInt appId,
     required List<int> name,
@@ -93,10 +97,6 @@ class $Call {
   Stop stop({required BigInt appId}) {
     return Stop(appId: appId);
   }
-
-  Restart restart({required BigInt appId}) {
-    return Restart(appId: appId);
-  }
 }
 
 class $CallCodec with _i1.Codec<Call> {
@@ -109,15 +109,15 @@ class $CallCodec with _i1.Codec<Call> {
       case 1:
         return Create._decode(input);
       case 2:
-        return Update._decode(input);
+        return Rerun._decode(input);
       case 3:
-        return SetSettings._decode(input);
+        return Update._decode(input);
       case 4:
-        return Recharge._decode(input);
+        return SetSettings._decode(input);
       case 5:
-        return Stop._decode(input);
+        return Recharge._decode(input);
       case 6:
-        return Restart._decode(input);
+        return Stop._decode(input);
       default:
         throw Exception('Call: Invalid variant index: "$index"');
     }
@@ -132,6 +132,9 @@ class $CallCodec with _i1.Codec<Call> {
       case Create:
         (value as Create).encodeTo(output);
         break;
+      case Rerun:
+        (value as Rerun).encodeTo(output);
+        break;
       case Update:
         (value as Update).encodeTo(output);
         break;
@@ -144,9 +147,6 @@ class $CallCodec with _i1.Codec<Call> {
       case Stop:
         (value as Stop).encodeTo(output);
         break;
-      case Restart:
-        (value as Restart).encodeTo(output);
-        break;
       default:
         throw Exception(
             'Call: Unsupported "$value" of type "${value.runtimeType}"');
@@ -158,6 +158,8 @@ class $CallCodec with _i1.Codec<Call> {
     switch (value.runtimeType) {
       case Create:
         return (value as Create)._sizeHint();
+      case Rerun:
+        return (value as Rerun)._sizeHint();
       case Update:
         return (value as Update)._sizeHint();
       case SetSettings:
@@ -166,8 +168,6 @@ class $CallCodec with _i1.Codec<Call> {
         return (value as Recharge)._sizeHint();
       case Stop:
         return (value as Stop)._sizeHint();
-      case Restart:
-        return (value as Restart)._sizeHint();
       default:
         throw Exception(
             'Call: Unsupported "$value" of type "${value.runtimeType}"');
@@ -329,6 +329,51 @@ class Create extends Call {
       );
 }
 
+/// See [`Pallet::rerun`].
+class Rerun extends Call {
+  const Rerun({required this.id});
+
+  factory Rerun._decode(_i1.Input input) {
+    return Rerun(id: _i1.U64Codec.codec.decode(input));
+  }
+
+  /// TeeAppId
+  final BigInt id;
+
+  @override
+  Map<String, Map<String, BigInt>> toJson() => {
+        'rerun': {'id': id}
+      };
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i1.U64Codec.codec.sizeHint(id);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      2,
+      output,
+    );
+    _i1.U64Codec.codec.encodeTo(
+      id,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is Rerun && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
+}
+
 /// See [`Pallet::update`].
 class Update extends Call {
   const Update({
@@ -380,7 +425,7 @@ class Update extends Call {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      2,
+      3,
       output,
     );
     _i1.U64Codec.codec.encodeTo(
@@ -472,7 +517,7 @@ class SetSettings extends Call {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      3,
+      4,
       output,
     );
     _i1.U64Codec.codec.encodeTo(
@@ -543,7 +588,7 @@ class Recharge extends Call {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      4,
+      5,
       output,
     );
     _i1.U64Codec.codec.encodeTo(
@@ -595,51 +640,6 @@ class Stop extends Call {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      5,
-      output,
-    );
-    _i1.U64Codec.codec.encodeTo(
-      appId,
-      output,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(
-        this,
-        other,
-      ) ||
-      other is Stop && other.appId == appId;
-
-  @override
-  int get hashCode => appId.hashCode;
-}
-
-/// See [`Pallet::restart`].
-class Restart extends Call {
-  const Restart({required this.appId});
-
-  factory Restart._decode(_i1.Input input) {
-    return Restart(appId: _i1.U64Codec.codec.decode(input));
-  }
-
-  /// TeeAppId
-  final BigInt appId;
-
-  @override
-  Map<String, Map<String, BigInt>> toJson() => {
-        'restart': {'appId': appId}
-      };
-
-  int _sizeHint() {
-    int size = 1;
-    size = size + _i1.U64Codec.codec.sizeHint(appId);
-    return size;
-  }
-
-  void encodeTo(_i1.Output output) {
-    _i1.U8Codec.codec.encodeTo(
       6,
       output,
     );
@@ -655,7 +655,7 @@ class Restart extends Call {
         this,
         other,
       ) ||
-      other is Restart && other.appId == appId;
+      other is Stop && other.appId == appId;
 
   @override
   int get hashCode => appId.hashCode;

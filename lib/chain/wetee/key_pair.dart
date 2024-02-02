@@ -1,45 +1,58 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:convert/convert.dart';
 import 'package:dtim/domain/models/account.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
-import 'package:substrate_bip39/substrate_bip39.dart';
+import 'package:sr25519/sr25519.dart' show Bip39;
 
-// TODO 等待库跟新后修复为安全的写法
+// 助记词转换为账户
 Future<ChainAccountData> getSeedPhrase({
   required String seedStr,
   required String name,
   required String password,
 }) async {
-  final keyPair = await KeyPair.fromMnemonic(seedStr);
+  final keyPair = await KeyPair.sr25519.fromMnemonic(seedStr, password);
+  final address = keyPair.address;
+
   return ChainAccountData(
-    "0x${hex.encode(keyPair.publicKey.bytes)}",
+    hex.encode(keyPair.publicKey.bytes),
     seedStr,
     ChainDataEncoding(
       [""],
       'mnemonic',
-      'bip39',
+      'sr25519',
     ),
     {
-      'ss58Address': keyPair.address,
+      'ss58Address': address,
       'name': name,
-      'password': password,
     },
   );
 }
 
-List<String> seedGenerate() {
-  return SubstrateBip39.generate(words: 24).words;
+// 助记词转换为账户
+Future<ChainAccountData> getFromUri({
+  required String uri,
+  required String name,
+  required String password,
+}) async {
+  final keyPair = await KeyPair.sr25519.fromUri(uri, password);
+  final address = keyPair.address;
+
+  return ChainAccountData(
+    hex.encode(keyPair.publicKey.bytes),
+    uri,
+    ChainDataEncoding(
+      [""],
+      'uri',
+      'sr25519',
+    ),
+    {
+      'ss58Address': address,
+      'name': name,
+    },
+  );
 }
 
-Future<String> signFromAddress(Account user, String ctx) async {
-  ChainAccountData data = ChainAccountData.fromJson(json.decode(user.chainData));
 
-  final keyPair = await KeyPair.fromMnemonic(data.encoded);
-  List<int> list = utf8.encode(ctx);
-  Uint8List bytes = Uint8List.fromList(list);
-  final signature = keyPair.sign(bytes);
-
-  return "0x${hex.encode(signature)}";
+// 生成助记词
+List<String> seedGenerate() {
+  return Bip39.generateMnemonic().words;
 }

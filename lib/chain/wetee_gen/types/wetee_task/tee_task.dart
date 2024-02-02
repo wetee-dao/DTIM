@@ -7,8 +7,8 @@ import 'package:quiver/collection.dart' as _i5;
 import '../sp_core/crypto/account_id32.dart' as _i2;
 import '../wetee_primitives/types/cr.dart' as _i3;
 
-class TeeApp {
-  const TeeApp({
+class TeeTask {
+  const TeeTask({
     required this.id,
     required this.creator,
     required this.startBlock,
@@ -21,7 +21,7 @@ class TeeApp {
     required this.level,
   });
 
-  factory TeeApp.decode(_i1.Input input) {
+  factory TeeTask.decode(_i1.Input input) {
     return codec.decode(input);
   }
 
@@ -55,7 +55,7 @@ class TeeApp {
   /// u8
   final int level;
 
-  static const $TeeAppCodec codec = $TeeAppCodec();
+  static const $TeeTaskCodec codec = $TeeTaskCodec();
 
   _i4.Uint8List encode() {
     return codec.encode(this);
@@ -80,7 +80,7 @@ class TeeApp {
         this,
         other,
       ) ||
-      other is TeeApp &&
+      other is TeeTask &&
           other.id == id &&
           _i5.listsEqual(
             other.creator,
@@ -119,12 +119,12 @@ class TeeApp {
       );
 }
 
-class $TeeAppCodec with _i1.Codec<TeeApp> {
-  const $TeeAppCodec();
+class $TeeTaskCodec with _i1.Codec<TeeTask> {
+  const $TeeTaskCodec();
 
   @override
   void encodeTo(
-    TeeApp obj,
+    TeeTask obj,
     _i1.Output output,
   ) {
     _i1.U64Codec.codec.encodeTo(
@@ -170,8 +170,8 @@ class $TeeAppCodec with _i1.Codec<TeeApp> {
   }
 
   @override
-  TeeApp decode(_i1.Input input) {
-    return TeeApp(
+  TeeTask decode(_i1.Input input) {
+    return TeeTask(
       id: _i1.U64Codec.codec.decode(input),
       creator: const _i1.U8ArrayCodec(32).decode(input),
       startBlock: _i1.U64Codec.codec.decode(input),
@@ -186,7 +186,7 @@ class $TeeAppCodec with _i1.Codec<TeeApp> {
   }
 
   @override
-  int sizeHint(TeeApp obj) {
+  int sizeHint(TeeTask obj) {
     int size = 0;
     size = size + _i1.U64Codec.codec.sizeHint(obj.id);
     size = size + const _i2.AccountId32Codec().sizeHint(obj.creator);

@@ -17,7 +17,7 @@ dependencies:
   intl: any
   cupertino_icons: ^1.0.2
   # rust 链桥
-  flutter_rust_bridge: 1.82.1
+  flutter_rust_bridge: ^1.82.6
   # 动画库
   lottie: ^2.2.0
   # 组件动画库
@@ -47,7 +47,7 @@ dependencies:
   # 多选框
   chips_choice: ^3.0.0
   # matrix 连接库
-  matrix: ^0.22.0
+  matrix: ^0.25.8
   matrix_link_text: ^2.0.0
   # 日期格式化插件
   date_format: ^2.0.7
@@ -58,7 +58,7 @@ dependencies:
   # 弹窗
   adaptive_dialog: ^1.9.0-0
   # 缩略图
-  flutter_blurhash: ^0.7.0
+  flutter_blurhash: ^0.8.2
   # 视频播放器
   video_player: ^2.7.0
   # html
@@ -96,7 +96,7 @@ dependencies:
   badges: ^3.0.2
   # 加密
   flutter_olm: ^1.2.0
-  flutter_openssl_crypto: ^0.1.0
+  flutter_openssl_crypto: ^0.3.0
   # fl_chart: ^0.63.0
   video_compress: ^3.1.2
   # 录音
@@ -111,11 +111,12 @@ dependencies:
   hive_flutter: ^1.1.0
   # 设备信息
   device_info_plus: ^9.0.2
-  polkadart: ^0.2.1
-  polkadart_keyring: ^0.2.1
-  substrate_bip39: ^0.2.0
+  polkadart: ^0.3.2
+  # polkadart_keyring: ^0.2.1
+  # substrate_bip39: ^0.2.0
   convert: ^3.1.1
   provider: ^6.1.1
+  polkadart_keyring: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -128,13 +129,13 @@ dev_dependencies:
   freezed: ^2.4.1
   build_runner: ^2.4.6
   json_serializable: ^6.7.1
-  polkadart_cli: ^0.2.2
+  polkadart_cli: ^0.3.2
   # dart_code_metrics: ^5.7.3
   # iconfont_convert: ^1.0.0
 
 dependency_overrides:
-  http: ^0.13.5
-  collection: ^1.17.1
+  # http: ^0.13.5
+  collection: ^1.18.0
 
 polkadart:
   output_dir: lib/chain

@@ -318,4 +318,40 @@ class MatrixLocals extends MatrixLocalizations {
   
   @override
   String hasKnocked(String targetName) => l10n.user;
+  
+  @override
+  String acceptedKeyVerification(String senderName) {
+    // TODO: implement acceptedKeyVerification
+    throw UnimplementedError();
+  }
+  
+  @override
+  String canceledKeyVerification(String senderName) {
+    // TODO: implement canceledKeyVerification
+    throw UnimplementedError();
+  }
+  
+  @override
+  String completedKeyVerification(String senderName) {
+    // TODO: implement completedKeyVerification
+    throw UnimplementedError();
+  }
+  
+  @override
+  String isReadyForKeyVerification(String senderName) {
+    // TODO: implement isReadyForKeyVerification
+    throw UnimplementedError();
+  }
+  
+  @override
+  String requestedKeyVerification(String senderName) {
+    // TODO: implement requestedKeyVerification
+    throw UnimplementedError();
+  }
+  
+  @override
+  String startedKeyVerification(String senderName) {
+    // TODO: implement startedKeyVerification
+    throw UnimplementedError();
+  }
 }
