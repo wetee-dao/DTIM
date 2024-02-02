@@ -3,7 +3,6 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:dtim/infra/components/dao/text.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/application/store/theme.dart';
 

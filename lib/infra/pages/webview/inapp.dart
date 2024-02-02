@@ -1,7 +1,4 @@
-import 'dart:collection';
 
-import 'package:dtim/application/store/theme.dart';
-import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -49,7 +46,7 @@ class _InappViewState extends State<InappView> {
 
   @override
   Widget build(BuildContext context) {
-    final constTheme = Theme.of(context).extension<ExtColors>()!;
+    // final constTheme = Theme.of(context).extension<ExtColors>()!;
     return ElevatedButton(
       onPressed: () async {
         // await widget.browser.openUrlRequest(
