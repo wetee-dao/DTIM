@@ -15,7 +15,7 @@
 - [Windows development environment](https://docs.flutter.dev/get-started/install/windows/).
 
 ### RUN client
-> please uninstalling Flutter Snap and installing it manually,It is best to install version 3.7.3
+> please uninstall Flutter Snap and install it manually, it is best to install version 3.7.3
 - run environment
     ```
     $ rustup update

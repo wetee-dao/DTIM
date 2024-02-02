@@ -10,9 +10,9 @@ In recent years, with the rapid development of information technology and techno
 
 Currently, most Web3 companies are still working with tools within Web2, such as Telegram, Discord, Google Drive, Enterprise WeChat, DingTalk, Lark, and etc, Which user's information and initiative are limited. 
 
-**DTIM** is trying to create a safe, efficient, powerful and Web3-based instant collaboration tool, which is a breakthrough. It establishes solid trust relationship among organization members through open and transparent smart contract; it maintain end-to-end encrypted communication, to ensure efficient and confidentiallity; it improves work efficiency with thousands of open-source collaborative tool libraries; it keeps data in safe hands through distributed and decentralized storage. 
+**DTIM** is trying to create a safe, efficient, powerful and Web3-based instant collaboration tool, which is a breakthrough. It establishes solid trust relationship among organization members through open and transparent smart contract; it maintains end-to-end encrypted communication, to ensure efficiency and confidentiality; it improves work efficiency with thousands of open-source collaborative tool libraries; it keeps data in safe hands through distributed and decentralized storage. 
 
-**DTIM** focuses on providing DAO with a comprehensive collaborative tool. The tool will help DAO to set up a core team. After the core team authorized by the community, they can make decisions on the daily affairs of DAO, in order to avoiding endless voting. 
+**DTIM** focuses on providing DAO with a comprehensive collaborative tool. The tool will help DAO to set up a core team. After the core team authorized by the community, they can make decisions on the daily affairs of DAO, in order to avoid endless voting. 
 
 ### Project Details
 
@@ -45,7 +45,7 @@ We provide DAO templates the substrate pallet and ink! Smart contracts:
 8. Contribution value and medal management.
 9. Level management.
 
-**DTIM** focuses on providing DAO with a comprehensive collaborative tool. The tool will help DAO to set up a core team. After the core team authorized by the community, they can make decisions on the daily affairs of DAO, in order to avoiding endless voting. 
+**DTIM** focuses on providing DAO with a comprehensive collaborative tool. The tool will help DAO to set up a core team. After the core team authorized by the community, they can make decisions on the daily affairs of DAO, in order to avoid endless voting. 
 
 According to business needs, DAO organizations will set up skill groups, called "guilds", and each guild will automatically create public chat channels and Kanbans in DTIM. Users can join a guild based on their own strengths or willings.  Members can choose whether to participate in projects or events according to their own strengths and willingness. 
 
