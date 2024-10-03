@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/domain/utils/functions.dart';
@@ -104,7 +105,6 @@ class _PCPageState extends State<PCPage> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: constTheme.sidebarHeaderBg,
       body: AutoTabsRouter.pageView(
         routes: mainPages,
         scrollDirection: Axis.vertical,

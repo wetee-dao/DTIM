@@ -203,7 +203,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: _loading ? constTheme.sidebarBg : constTheme.centerChannelBg,
+      backgroundColor: _loading ? constTheme.sidebarBg.withOpacity(0.99) : constTheme.centerChannelBg.withOpacity(0.99),
       body: Center(
         child: _loading
             ? moveWindow(Column(

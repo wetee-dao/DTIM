@@ -488,7 +488,7 @@ const themes = [
     "codeTheme": "Night Owl Dark Theme",
   },
 ];
-const defaultTheme = 14;
+const defaultTheme = 15;
 int currentTheme = 14;
 
 Future<ThemeData> setTheme(String name) async {

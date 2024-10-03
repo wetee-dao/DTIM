@@ -42,6 +42,7 @@ Future<void> main() async {
   // 初始化桌面窗口
   if (isPc()) {
     initScreen(1200);
+
     // 计算创建窗口大小
     var winSize = const Size(1150, 750);
 
@@ -53,6 +54,7 @@ Future<void> main() async {
       winSize = const Size(1250, 750);
     }
 
+    // 创建窗口
     WindowOptions windowOptions = WindowOptions(
       size: winSize,
       minimumSize: const Size(800, 550),
