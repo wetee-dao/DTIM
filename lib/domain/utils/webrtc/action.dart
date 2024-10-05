@@ -14,7 +14,7 @@ class CallAction {
   CallAction(this.call);
 
   link.CallState get _state => call.state;
-  bool get speakerOn => call.speakerOn;
+  // bool get speakerOn => call.speakerOn;
   bool get isMicrophoneMuted => call.isMicrophoneMuted;
   bool get isLocalVideoMuted => call.isLocalVideoMuted;
   bool get isScreensharingEnabled => call.screensharingEnabled;
@@ -36,7 +36,7 @@ class CallAction {
         if (call.isRinging) {
           call.reject();
         } else {
-          call.hangup();
+          call.hangup(reason: link.CallErrorCode.userHangup);
         }
       },
       tooltip: 'Hangup',
@@ -124,7 +124,7 @@ class CallAction {
         call.localUserMediaStream!.stream!.getVideoTracks()[0],
       );
       if (PlatformInfos.isMobile) {
-        call.facingMode == 'user' ? call.facingMode = 'environment' : call.facingMode = 'user';
+        // call.facingMode == 'user' ? call.facingMode = 'environment' : call.facingMode = 'user';
       }
     }
   }
@@ -139,7 +139,7 @@ class CallAction {
             channelDescription: 'Foreground Notification',
           ),
           iosNotificationOptions: const IOSNotificationOptions(),
-          foregroundTaskOptions: const ForegroundTaskOptions(),
+          foregroundTaskOptions: ForegroundTaskOptions(eventAction: ForegroundTaskEventAction.nothing()),
         );
         FlutterForegroundTask.startService(
           notificationTitle: "screen sharing",
@@ -155,19 +155,19 @@ class CallAction {
 }
 
 class GCallAction {
-  final link.GroupCall call;
+  final link.GroupCallSession call;
   final Function? onChange;
   GCallAction(this.call, {this.onChange});
 
-  String get _state => call.state;
+  link.GroupCallState get _state => call.state;
   // bool get speakerOn => call.speakerOn;
-  bool get isMicrophoneMuted => call.isMicrophoneMuted;
-  bool get isLocalVideoMuted => call.isLocalVideoMuted;
-  bool get isScreensharingEnabled => call.screensharingEnabled;
+  bool get isMicrophoneMuted => false;
+  bool get isLocalVideoMuted => false;
+  bool get isScreensharingEnabled => false;
   // bool get isRemoteOnHold => call.remoteOnHold;
-  bool get voiceonly => call.type == 'm.voice';
-  bool get connecting => call.state == link.GroupCallState.Entering;
-  bool get connected => call.state == link.GroupCallState.Entered;
+  bool get voiceonly => true;
+  bool get connecting => call.state == link.GroupCallState.entering;
+  bool get connected => call.state == link.GroupCallState.entered;
 
   List<Action> buildActionButtons() {
     final switchCameraButton = Action(
@@ -198,12 +198,12 @@ class GCallAction {
         if (result == 1) {
           await call.leave();
         } else if (result == 2) {
-          await call.terminate();
+          await call.leave();
           return onChange?.call();
         }
       },
       tooltip: 'Hangup',
-      backgroundColor: _state == link.GroupCallState.Ended ? Colors.black45 : Colors.red,
+      backgroundColor: _state == link.GroupCallState.ended ? Colors.black45 : Colors.red,
       child: const Icon(Icons.call_end),
     );
 
@@ -217,7 +217,7 @@ class GCallAction {
     final muteMicButton = Action(
       tooltip: 'muteMic',
       onPressed: () async {
-        await call.setMicrophoneMuted(!call.isMicrophoneMuted);
+        // await call.setMicrophoneMuted(!call.isMicrophoneMuted);
         return onChange?.call();
       },
       backgroundColor: isMicrophoneMuted ? Colors.blueGrey : Colors.black45,
@@ -241,7 +241,7 @@ class GCallAction {
     final muteCameraButton = Action(
       tooltip: 'muteCam',
       onPressed: () async {
-        await call.setLocalVideoMuted(!call.isLocalVideoMuted);
+        // await call.setLocalVideoMuted(!call.isLocalVideoMuted);
         return onChange?.call();
       },
       backgroundColor: isLocalVideoMuted ? Colors.yellow : Colors.black45,
@@ -272,40 +272,40 @@ class GCallAction {
   }
 
   void _switchCamera() async {
-    if (call.localUserMediaStream != null) {
-      await Helper.switchCamera(
-        call.localUserMediaStream!.stream!.getVideoTracks()[0],
-      );
-      if (PlatformInfos.isMobile) {
-        // call.facingMode == 'user' ? call.facingMode = 'environment' : call.facingMode = 'user';
-      }
-    }
+    // if (call.localUserMediaStream != null) {
+    //   await Helper.switchCamera(
+    //     call.localUserMediaStream!.stream!.getVideoTracks()[0],
+    //   );
+    //   if (PlatformInfos.isMobile) {
+    //     // call.facingMode == 'user' ? call.facingMode = 'environment' : call.facingMode = 'user';
+    //   }
+    // }
     onChange?.call();
   }
 
   void _screenSharing() async {
-    if (PlatformInfos.isAndroid) {
-      if (!call.screensharingEnabled) {
-        FlutterForegroundTask.init(
-          androidNotificationOptions: AndroidNotificationOptions(
-            channelId: 'notification_channel_id',
-            channelName: 'Foreground Notification',
-            channelDescription: 'Foreground Notification',
-          ),
-          iosNotificationOptions: const IOSNotificationOptions(),
-          foregroundTaskOptions: const ForegroundTaskOptions(),
-        );
-        FlutterForegroundTask.startService(
-          notificationTitle: "screen sharing",
-          notificationText: "screen sharing",
-        );
-      } else {
-        FlutterForegroundTask.stopService();
-      }
-    }
+    // if (PlatformInfos.isAndroid) {
+    //   if (!call.screensharingEnabled) {
+    //     FlutterForegroundTask.init(
+    //       androidNotificationOptions: AndroidNotificationOptions(
+    //         channelId: 'notification_channel_id',
+    //         channelName: 'Foreground Notification',
+    //         channelDescription: 'Foreground Notification',
+    //       ),
+    //       iosNotificationOptions: const IOSNotificationOptions(),
+    //       foregroundTaskOptions: const ForegroundTaskOptions(),
+    //     );
+    //     FlutterForegroundTask.startService(
+    //       notificationTitle: "screen sharing",
+    //       notificationText: "screen sharing",
+    //     );
+    //   } else {
+    //     FlutterForegroundTask.stopService();
+    //   }
+    // }
 
     // call.setScreensharingEnabled(!call.screensharingEnabled);
-    onChange?.call();
+    // onChange?.call();
   }
 }
 

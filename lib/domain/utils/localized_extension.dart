@@ -50,7 +50,7 @@ extension LocalizedExceptionExtension on Object {
         supportedVersions,
       );
     }
-    if (this is MatrixConnectionException || this is SocketException) {
+    if (this is SocketException) {
       return L10n.of(context)!.noConnectionToTheServer;
     }
     if (this is String) return toString();

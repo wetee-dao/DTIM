@@ -34,19 +34,19 @@ class GroupWebRTCalling extends StatefulWidget {
 }
 
 class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
-  String? _state;
+  link.GroupCallState? _state;
   late AppCubit im;
-  late link.GroupCall gcall;
+  late link.GroupCallSession gcall;
   late AnimationController _controller;
 
   // bool get speakerOn => gcall.speakerOn;
-  bool get isMicrophoneMuted => gcall.isMicrophoneMuted;
-  bool get isLocalVideoMuted => gcall.isLocalVideoMuted;
-  bool get isScreensharingEnabled => gcall.screensharingEnabled;
+  bool get isMicrophoneMuted => true;
+  bool get isLocalVideoMuted => true;
+  bool get isScreensharingEnabled => true;
   // bool get isRemoteOnHold => gcall.remoteOnHold;
-  bool get voiceonly => gcall.type == link.GroupCallType.Voice;
-  bool get connecting => gcall.state == link.GroupCallState.Entering;
-  bool get connected => gcall.state == link.GroupCallState.Entered;
+  bool get voiceonly =>  true;
+  bool get connecting => gcall.state == link.GroupCallState.entering;
+  bool get connected => gcall.state == link.GroupCallState.entered;
 
   @override
   void initState() {
@@ -68,14 +68,14 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
   }
 
   void initialize() async {
-    gcall.onGroupCallFeedsChanged.stream.listen(_handleCallState);
+    // gcall.onGroupCallFeedsChanged.stream.listen(_handleCallState);
     gcall.onGroupCallEvent.stream.listen((event) {});
     _state = gcall.state;
   }
 
-  void _handleCallState(link.GroupCall session) {
+  void _handleCallState(link.GroupCallSession session) {
     printDebug('CallingPage::handleCallState: ${session.state}');
-    if ({link.GroupCallState.Entered, link.GroupCallState.Ended}.contains(session.state)) {
+    if ({link.GroupCallState.entered, link.GroupCallState.ended}.contains(session.state)) {
       try {
         // Vibration.vibrate(duration: 200);
       } catch (e) {
@@ -86,7 +86,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
     if (mounted) {
       setState(() {
         _state = session.state;
-        if (_state == link.GroupCallState.Ended) cleanUp();
+        if (_state == link.GroupCallState.ended) cleanUp();
       });
     }
   }
@@ -96,26 +96,24 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
       const Duration(seconds: 2),
       () => widget.onClear?.call(),
     );
-    if (gcall.type == link.CallType.kVideo) {
-      try {
-        // unawaited(Wakelock.disable());
-      } catch (_) {}
-    }
+    // if (gcall.type == link.CallType.kVideo) {
+    //   try {
+    //     // unawaited(Wakelock.disable());
+    //   } catch (_) {}
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    link.CallSession? call = gcall.callSessions.isNotEmpty ? gcall.callSessions[0] : null;
-    final actions = call != null
-        ? GCallAction(gcall, onChange: () {
+    // link.CallSession? call = gcall.callSessions.isNotEmpty ? gcall.callSessions[0] : null;
+    final actions = GCallAction(gcall, onChange: () {
             setState(() {});
-          }).buildActionButtons()
-        : [];
+          }).buildActionButtons();
 
     return Scaffold(
       backgroundColor: constTheme.centerChannelBg,
-      body: _state == link.GroupCallState.Entered
+      body: _state == link.GroupCallState.entered
           ? Column(
               children: [
                 Row(
@@ -153,52 +151,16 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                       //     matrixClient: im.currentState!.client,
                       //   ),
                       // ),
-                      for (var i = 0; i < gcall.userMediaStreams.length; i++)
+                      for (var i = 0; i < gcall.participants.length; i++)
                         SizedBox(
                           width: 200.w,
                           height: 160.w,
-                          child: MStreamView(
-                            gcall.userMediaStreams[i],
-                            mainView: true,
-                            matrixClient: im.currentState!.client,
-                          ),
+                          // child: MStreamView(
+                          //   gcall.participants[i],
+                          //   mainView: true,
+                          //   matrixClient: im.currentState!.client,
+                          // ),
                         ),
-                      //   child: CustomPaint(
-                      //     painter: ImgPainter(
-                      //       _controller,
-                      //       color: constTheme.buttonBg,
-                      //     ),
-                      //     child: Center(
-                      //       child: ClipRRect(
-                      //         borderRadius: BorderRadius.circular(200.0),
-                      //         child: Container(
-                      //           color: constTheme.centerChannelBg,
-                      //           width: 90.w,
-                      //           height: 90.w,
-                      //           padding: EdgeInsets.all(15.w),
-                      //           child: gcall.room.isDirectChat
-                      //               ? BaseAvatar(
-                      //                   key: Key(gcall.room.directChatMatrixID ?? "-"),
-                      //                   gcall.room.directChatMatrixID ?? "-",
-                      //                   true,
-                      //                   60.w,
-                      //                   bg: Colors.transparent,
-                      //                   color: constTheme.centerChannelColor,
-                      //                 )
-                      //               : Container(
-                      //                   width: 60.w,
-                      //                   height: 60.w,
-                      //                   padding: EdgeInsets.only(top: 2.w),
-                      //                   child: Center(
-                      //                     child: Icon(gcall.room.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                      //                         size: 45.w, color: constTheme.centerChannelColor),
-                      //                   ),
-                      //                 ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ]),
                   ),
                 ),
@@ -362,8 +324,8 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     icon: Icon(AppIcons.jinrudaobo, size: 30.w),
                     color: Colors.white,
                     onPressed: () async {
-                      final stream = await gcall.initLocalStream();
-                      gcall.enter(stream: stream);
+                      // final stream = await gcall.initLocalStream();
+                      // gcall.enter(stream: stream);
                     },
                   ),
                 ),
@@ -414,7 +376,7 @@ class _Calling extends State<GroupWebRTCalling> with TickerProviderStateMixin {
                     icon: Icon(Icons.close, size: 30.w),
                     color: Colors.white,
                     onPressed: () async {
-                      gcall.terminate();
+                      gcall.leave();
                     },
                   ),
                 ),

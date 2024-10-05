@@ -248,34 +248,34 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   padding: EdgeInsets.only(right: 5.w),
                   child: IconButton(
                     onPressed: () async {
-                      final voip = im.currentState!.webrtcTool!.voip;
-                      final success = await waitFutureLoading(
-                        context: context,
-                        future: () => voip.requestTurnServerCredentials(),
-                      );
-                      if (success.result == null) {
-                        BotToast.showText(text: L10n.of(context)!.turnError);
-                      }
-                      try {
-                        if (!room!.groupCallsEnabled) {
-                          await room!.enableGroupCalls();
-                        }
-                        if (!room!.canCreateGroupCall) {
-                          BotToast.showText(text: L10n.of(context)!.meetingNoPermission);
-                          return;
-                        }
-                        if (voip.groupCalls[room!.id] != null) {
-                          joinMeet(voip.groupCalls[room!.id]);
-                          return;
-                        }
-                        await voip.newGroupCall(
-                          room!.id,
-                          link.GroupCallType.Video,
-                          link.GroupCallIntent.Prompt,
-                        );
-                      } catch (e) {
-                        BotToast.showText(text: e.toLocalizedString(globalCtx()));
-                      }
+                      // final voip = im.currentState!.webrtcTool!.voip;
+                      // final success = await waitFutureLoading(
+                      //   context: context,
+                      //   future: () => voip.requestTurnServerCredentials(),
+                      // );
+                      // if (success.result == null) {
+                      //   BotToast.showText(text: L10n.of(context)!.turnError);
+                      // }
+                      // try {
+                      //   if (!room!.groupCallsEnabled) {
+                      //     await room!.enableGroupCalls();
+                      //   }
+                      //   if (!room!.canCreateGroupCall) {
+                      //     BotToast.showText(text: L10n.of(context)!.meetingNoPermission);
+                      //     return;
+                      //   }
+                      //   if (voip.groupCalls[room!.id] != null) {
+                      //     joinMeet(voip.groupCalls[room!.id]);
+                      //     return;
+                      //   }
+                      //   await voip.newGroupCall(
+                      //     room!.id,
+                      //     link.GroupCallType.Video,
+                      //     link.GroupCallIntent.Prompt,
+                      //   );
+                      // } catch (e) {
+                      //   BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                      // }
                     },
                     padding: EdgeInsets.zero,
                     constraints: size,
@@ -291,19 +291,19 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   padding: EdgeInsets.only(right: 5.w),
                   child: IconButton(
                     onPressed: () async {
-                      final voip = im.currentState!.webrtcTool!.voip;
-                      final success = await waitFutureLoading(
-                        context: context,
-                        future: () => voip.requestTurnServerCredentials(),
-                      );
-                      if (success.result == null) {
-                        BotToast.showText(text: L10n.of(context)!.turnError);
-                      }
-                      try {
-                        await voip.inviteToCall(room!.id, link.CallType.kVoice);
-                      } catch (e) {
-                        BotToast.showText(text: e.toLocalizedString(globalCtx()));
-                      }
+                      // final voip = im.currentState!.webrtcTool!.voip;
+                      // final success = await waitFutureLoading(
+                      //   context: context,
+                      //   future: () => voip.requestTurnServerCredentials(),
+                      // );
+                      // if (success.result == null) {
+                      //   BotToast.showText(text: L10n.of(context)!.turnError);
+                      // }
+                      // try {
+                      //   await voip.inviteToCall(room!.id, link.CallType.kVoice);
+                      // } catch (e) {
+                      //   BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                      // }
                     },
                     padding: EdgeInsets.zero,
                     constraints: size,

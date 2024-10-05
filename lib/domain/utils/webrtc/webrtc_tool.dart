@@ -46,7 +46,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   }
 
   @override
-  Future<void> handleGroupCallEnded(GroupCall groupCall) async {
+  Future<void> handleGroupCallEnded(GroupCallSession groupCall) async {
     printError("handleGroupCallEnded");
     callingPopup?.remove();
     callingPopup = null;
@@ -79,7 +79,7 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
   }
 
   @override
-  Future<void> handleNewGroupCall(GroupCall groupCall) async {
+  Future<void> handleNewGroupCall(GroupCallSession groupCall) async {
     printError("handleNewGroupCall => ${groupCall.groupCallId}");
     final g = globalCtx().read<WebRTCCubit>();
     if (voip.calls.keys.length > 1) {
@@ -138,41 +138,10 @@ class WebrtcTool with WidgetsBindingObserver implements WebRTCDelegate {
     }
   }
 
-  // void addGroupCallingPopup(String groupCallId, GroupCall groupCall) {
-  //   final context = globalCtx(); // web is weird
-  //   if (callingPopup != null) {
-  //     Logs().e('[VOIP] addCallingOverlay: The call session already exists?');
-  //     callingPopup!.remove();
-  //   }
-  //   // falling back on a dialog
-  //   if (kIsWeb) {
-  //     showDialog(
-  //       context: context,
-  //       builder: (context) => GroupWebRTCalling(
-  //         context: context,
-  //         client: client,
-  //         callId: groupCallId,
-  //         call: groupCall,
-  //         onClear: () => Navigator.of(context).pop(),
-  //       ),
-  //     );
-  //   } else {
-  //     callingPopup = OverlayEntry(
-  //       builder: (_) => GroupWebRTCalling(
-  //         context: context,
-  //         client: client,
-  //         callId: groupCallId,
-  //         call: groupCall,
-  //         onClear: () {
-  //           callingPopup?.remove();
-  //           callingPopup = null;
-  //         },
-  //       ),
-  //     );
-  //     globalState().overlay!.insert(callingPopup!);
-  //   }
-  // }
-
   @override
   MediaDevices get mediaDevices => webrtc.navigator.mediaDevices;
+  
+  @override
+  // TODO: implement keyProvider
+  EncryptionKeyProvider? get keyProvider => throw UnimplementedError();
 }

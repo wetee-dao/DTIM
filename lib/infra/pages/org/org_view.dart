@@ -385,7 +385,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
 
                   for (var k in voip.groupCalls.keys) {
                     final call = voip.groupCalls[k]!;
-                    if (k.contains(":")) continue;
+                    if (k.callId.contains(":")) continue;
                     // final callActions = CallAction(call);
                     // final actions = callActions.buildActionButtons();
                     calls.add(

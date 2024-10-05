@@ -354,4 +354,14 @@ class MatrixLocals extends MatrixLocalizations {
     // TODO: implement startedKeyVerification
     throw UnimplementedError();
   }
+  
+  @override
+  // TODO: implement cancelledSend
+  String get cancelledSend => throw UnimplementedError();
+  
+  @override
+  String invitedBy(String senderName) {
+    // TODO: implement invitedBy
+    throw UnimplementedError();
+  }
 }

@@ -70,12 +70,6 @@ class EventVideoPlayerState extends State<EventVideoPlayer> {
           autoInitialize: true,
         );
       }
-    } on MatrixConnectionException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toLocalizedString(context)),
-        ),
-      );
     } catch (e, s) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

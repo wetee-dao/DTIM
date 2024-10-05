@@ -35,7 +35,7 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
   link.CallState? _state;
   late AnimationController _controller;
 
-  bool get speakerOn => widget.call.speakerOn;
+  bool get speakerOn => true;
   bool get isMicrophoneMuted => widget.call.isMicrophoneMuted;
   bool get isLocalVideoMuted => widget.call.isLocalVideoMuted;
   bool get isScreensharingEnabled => widget.call.screensharingEnabled;
@@ -64,9 +64,9 @@ class _Calling extends State<WebRTCCalling> with TickerProviderStateMixin {
     final call = widget.call;
     call.onCallStateChanged.stream.listen(_handleCallState);
     call.onCallEventChanged.stream.listen((event) {
-      if (event == link.CallEvent.kFeedsChanged) {
+      if (event == link.CallStateChange.kFeedsChanged) {
         call.tryRemoveStopedStreams();
-      } else if (event == link.CallEvent.kLocalHoldUnhold || event == link.CallEvent.kRemoteHoldUnhold) {
+      } else if (event == link.CallStateChange.kLocalHoldUnhold || event == link.CallStateChange.kRemoteHoldUnhold) {
         setState(() {});
         printDebug(
           'Call hold event: local ${call.localHold}, remote ${call.remoteOnHold}',

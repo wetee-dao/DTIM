@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:convert/convert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
@@ -91,7 +92,8 @@ class AppCubit extends Cubit<AppState> {
           final pwd = input[0];
           try {
             await WeTEE.addKeyring(account: ChainAccountData.fromJson(json.decode(user.chainData)) , password: pwd);
-            sign = await WeTEE.signFromAddress(user.address, utf8.encode(signCtx));
+            var signature =  await WeTEE.signFromAddress(user.address, utf8.encode(signCtx));
+            sign = hex.encode(signature);
           } catch (e) {
             return e.toString();
           }
@@ -115,11 +117,12 @@ class AppCubit extends Cubit<AppState> {
       );
     } else {
       await WeTEE.addKeyring(account: ChainAccountData.fromJson(json.decode(user.chainData)), password: "");
-      sign = await WeTEE.signFromAddress(
+      var signature = await WeTEE.signFromAddress(
         user.address,
         utf8.encode(signCtx),
       );
-      
+      sign = hex.encode(signature);
+
       emit(state.copyWith(
         me: user,
         signCtx: signCtx,

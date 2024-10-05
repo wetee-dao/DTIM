@@ -103,7 +103,8 @@ class ImState {
 
     // 频道消息，频道状态
     client.onRoomState.stream.listen((event) {
-      if (["m.room.history_visibility", "m.room.join_rules", "m.room.power_levels"].contains(event.body)) {
+      var state = event.state;
+      if (["m.room.history_visibility", "m.room.join_rules", "m.room.power_levels"].contains(state.type)) {
         return;
       }
       EasyDebounce.debounce(

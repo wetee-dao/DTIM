@@ -106,18 +106,18 @@ class GroupCallContent extends StatelessWidget {
                   if (voip.groupCalls[event.stateKey] != null)
                     ElevatedButton.icon(
                       onPressed: () async {
-                        final success = await waitFutureLoading(
-                          context: context,
-                          future: () => voip.requestTurnServerCredentials(),
-                        );
-                        if (success.result == null) {
-                          BotToast.showText(text: "获取 turn 服务器失败");
-                        }
-                        try {
-                          await voip.createGroupCallFromRoomStateEvent(event);
-                        } catch (e) {
-                          BotToast.showText(text: e.toLocalizedString(globalCtx()));
-                        }
+                        // final success = await waitFutureLoading(
+                        //   context: context,
+                        //   future: () => voip.requestTurnServerCredentials(),
+                        // );
+                        // if (success.result == null) {
+                        //   BotToast.showText(text: "获取 turn 服务器失败");
+                        // }
+                        // try {
+                        //   await voip.createGroupCallFromRoomStateEvent(event);
+                        // } catch (e) {
+                        //   BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                        // }
                       },
                       icon: Icon(AppIcons.jinrudaobo, color: textColor, size: 16.w),
                       label: Text("Join", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.w)),

@@ -56,7 +56,7 @@ class WeTEE {
     return await provider.disconnect();
   }
 
-  static Future<String> signFromAddress(String address, List<int> list) async {
+  static Future<Uint8List> signFromAddress(String address, List<int> list) async {
     if (keyPairs[address] == null) {
       throw Exception('Address $address not found');
     }
@@ -64,9 +64,9 @@ class WeTEE {
 
   
     final signature = keyPair.sign(Uint8List.fromList(list));
-    final hexSignature = hex.encode(signature);
+    // final hexSignature = hex.encode(signature);
 
-    return hexSignature;
+    return signature;
   }
 
   Future<String> signAndSubmit(RuntimeCall rCall, String address, {WithGovPs? gov}) async {
@@ -98,7 +98,7 @@ class WeTEE {
       toCall = rCall;
     }
 
-    final hexCall = hex.encode(toCall.encode());
+    final hexCall = toCall.encode();
 
     // 构建签名体
     final payloadToSign = SigningPayload(
@@ -118,8 +118,8 @@ class WeTEE {
     final hexSignature = await signFromAddress(address, payload);
 
     // 构建交易
-    final extrinsic = Extrinsic(
-      signer: publicKey,
+    final extrinsic = ExtrinsicPayload(
+      signer: Uint8List.fromList(keyPair.publicKey.bytes),
       method: hexCall,
       signature: hexSignature,
       blockNumber: 0,

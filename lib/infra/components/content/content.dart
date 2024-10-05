@@ -299,7 +299,7 @@ class MessageContent extends StatelessWidget {
             );
           },
         );
-      case EventTypes.GroupCallMemberPrefix:
+      case EventTypes.GroupCallMember:
         return FutureBuilder<User?>(
           future: event.fetchSenderUser(),
           builder: (context, snapshot) {
@@ -314,7 +314,7 @@ class MessageContent extends StatelessWidget {
         );
       case EventTypes.RoomMember:
         return RoomMemberContent(event, textColor);
-      case EventTypes.GroupCallPrefix:
+      case EventTypes.GroupCallMemberInvite:
         return GroupCallContent(event, textColor);
       default:
         return _ButtonContent(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/application/store/db.dart';
@@ -14,12 +16,14 @@ import 'package:dtim/domain/utils/tray.dart';
 
 import 'package:dtim/application/service/apis/apis.dart';
 import 'application/store/app/webrtc.dart';
+import 'infra/components/window.dart';
 import 'router.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/domain/utils/screen/screen_util.dart';
 
 final botToastBuilder = BotToastInit();
+final virtualWindowFrameBuilder = WindowFrameInit();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +64,7 @@ Future<void> main() async {
       minimumSize: const Size(800, 550),
       center: true,
       backgroundColor: Colors.transparent,
+      titleBarStyle: TitleBarStyle.hidden,
       skipTaskbar: false,
     );
 
@@ -67,8 +72,8 @@ Future<void> main() async {
       if (PlatformInfos.isMacOS || PlatformInfos.isWindows) {
         await windowManager.setHasShadow(true);
       }
-      await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: true);
       await windowManager.setSize(winSize);
+      await windowManager.setBackgroundColor(Colors.transparent);
       await windowManager.show();
       await showtray();
       await windowManager.focus();
@@ -109,8 +114,11 @@ class App extends StatelessWidget {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);
             ScreenUtil.setConText(context);
+            if (Platform.isLinux) {
+              child = virtualWindowFrameBuilder(context, child);
+            }
             return MediaQuery(
-              data: data.copyWith(textScaleFactor: 1),
+              data: data.copyWith(textScaler: const TextScaler.linear(1)),
               child: child,
             );
           },

@@ -46,13 +46,13 @@ class MStreamView extends StatelessWidget {
               color: Colors.transparent,
             ),
           if (!videoMuted)
-            RTCVideoView(
-              // yes, it must explicitly be casted even though I do not feel
-              // comfortable with it...
-              wrappedStream.renderer as RTCVideoRenderer,
-              mirror: mirrored,
-              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain,
-            ),
+            // RTCVideoView(
+            //   // yes, it must explicitly be casted even though I do not feel
+            //   // comfortable with it...
+            //   wrappedStream.renderer as RTCVideoRenderer,
+            //   mirror: mirrored,
+            //   objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain,
+            // ),
           if (videoMuted)
             Positioned(
               child: Avatar(

@@ -1,49 +1,59 @@
 import 'dart:async';
 
-import 'package:dtim/domain/utils/functions.dart';
 import 'package:flutter/material.dart';
-import 'package:matrix/matrix.dart' as link;
+import 'package:matrix/matrix.dart';
+// ignore: implementation_imports
+import 'package:matrix/src/voip/models/call_options.dart';
+// ignore: implementation_imports
+import 'package:matrix/src/voip/models/voip_id.dart';
 
 import 'call.dart';
 
-class WebrtcVoIP extends link.VoIP {
+class WebrtcVoIP extends VoIP {
   OverlayEntry? callingPopup;
 
-  WebrtcVoIP(client, delegate) : super(client, delegate);
+  WebrtcVoIP(super.client, super.delegate)
+      : super(
+          enableSFUE2EEKeyRatcheting: false,
+        );
 
   @override
-  Future<WebrtcCallSession> inviteToCall(String roomId, link.CallType type) async {
-    final room = client.getRoomById(roomId);
-    if (room == null) {
-      printDebug('[VOIP] Invalid room id [$roomId].');
-      return Null as WebrtcCallSession;
-    }
+  Future<CallSession> inviteToCall(
+    Room room,
+    CallType type, {
+    String? userId,
+    String? deviceId,
+  }) async {
+    final roomId = room.id;
     final callId = 'cid${DateTime.now().millisecondsSinceEpoch}';
     if (currentGroupCID == null) {
       incomingCallRoomId[roomId] = callId;
     }
-    final opts = link.CallOptions()
-      ..callId = callId
-      ..type = type
-      ..dir = link.CallDirection.kOutgoing
-      ..room = room
-      ..voip = this
-      ..localPartyId = localPartyId!
-      ..iceServers = await getIceSevers();
-
+    final opts = CallOptions(
+      callId: callId,
+      type: type,
+      dir: CallDirection.kOutgoing,
+      room: room,
+      voip: this,
+      localPartyId: localPartyId,
+      iceServers: await getIceServers(),
+    );
     final newCall = createNewCall(opts);
-    currentCID = callId;
+
+    newCall.remoteUserId = userId;
+    newCall.remoteDeviceId = deviceId;
+
+    currentCID = VoipId(roomId: roomId, callId: callId);
     await newCall.initOutboundCall(type).then((_) {
       delegate.handleNewCall(newCall);
     });
-    currentCID = callId;
     return newCall;
   }
 
   @override
-  WebrtcCallSession createNewCall(link.CallOptions opts) {
+  WebrtcCallSession createNewCall(CallOptions opts) {
     final call = WebrtcCallSession(opts);
-    calls[opts.callId] = call;
+    calls[VoipId(roomId: opts.room.id, callId: opts.callId)] = call;
     return call;
   }
 }
