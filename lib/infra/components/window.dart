@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dtim/domain/utils/screen/size_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/src/resize_edge.dart';
@@ -46,24 +47,24 @@ class _WindowFrameState extends State<WindowFrame>
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border.all(
-          color: Theme.of(context).dividerColor,
+          color: Theme.of(context).dividerColor.withOpacity(0.3),
           width: (_isMaximized || _isFullScreen) ? 0 : 1,
         ),
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 12,
+          (_isMaximized || _isFullScreen) ? 0 : 10.w,
         ),
         boxShadow: <BoxShadow>[
           if (!_isMaximized && !_isFullScreen)
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
               offset: Offset(0.0, _isFocused ? 4 : 2),
-              blurRadius: 12,
+              blurRadius: 10.w,
             ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 12,
+          (_isMaximized || _isFullScreen) ? 0 : 10.w,
         ),
         child: widget.child,
       ),

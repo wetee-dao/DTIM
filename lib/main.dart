@@ -72,8 +72,8 @@ Future<void> main() async {
       if (PlatformInfos.isMacOS || PlatformInfos.isWindows) {
         await windowManager.setHasShadow(true);
       }
+      await windowManager.setAsFrameless();
       await windowManager.setSize(winSize);
-      await windowManager.setBackgroundColor(Colors.transparent);
       await windowManager.show();
       await showtray();
       await windowManager.focus();

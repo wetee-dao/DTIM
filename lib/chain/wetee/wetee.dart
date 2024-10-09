@@ -76,7 +76,7 @@ class WeTEE {
       throw Exception('Address $address not found');
     }
     final KeyPair keyPair = keyPairs[address]!;
-    final publicKey = hex.encode(keyPair.publicKey.bytes);
+    // final publicKey = hex.encode(keyPair.publicKey.bytes);
 
     // 获取用户信息
     final account = await query.system.account(keyPair.publicKey.bytes);
