@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/utils/screen/size_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,7 @@ class WindowFrame extends StatefulWidget {
   State<StatefulWidget> createState() => _WindowFrameState();
 }
 
-class _WindowFrameState extends State<WindowFrame>
-    with WindowListener {
+class _WindowFrameState extends State<WindowFrame> with WindowListener {
   bool _isFocused = true;
   bool _isMaximized = false;
   bool _isFullScreen = false;
@@ -43,30 +43,39 @@ class _WindowFrameState extends State<WindowFrame>
   }
 
   Widget _buildWindowFrame(BuildContext context) {
+    final constTheme = Theme.of(context).extension<ExtColors>()!;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: constTheme.sidebarBg.withOpacity(0.70),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.3),
           width: (_isMaximized || _isFullScreen) ? 0 : 1,
         ),
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 10.w,
+          (_isMaximized || _isFullScreen) ? 0 : 16,
         ),
         boxShadow: <BoxShadow>[
           if (!_isMaximized && !_isFullScreen)
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
               offset: Offset(0.0, _isFocused ? 4 : 2),
-              blurRadius: 10.w,
+              blurRadius: 16,
             ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 10.w,
+          (_isMaximized || _isFullScreen) ? 0 : 16,
         ),
-        child: widget.child,
+        child: Container(
+          margin: const EdgeInsets.all(8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+              (_isMaximized || _isFullScreen) ? 0 : 12,
+            ),
+            child: widget.child,
+          ),
+        ),
       ),
     );
   }

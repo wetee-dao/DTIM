@@ -40,7 +40,7 @@ Future<void> main() async {
   final systemStore = await SystemApi.create();
   final winsystem = await systemStore.get();
   if (winsystem != null) {
-    setThemeIndex(winsystem.theme);
+    // setThemeIndex(winsystem.theme);
   }
 
   // 初始化桌面窗口

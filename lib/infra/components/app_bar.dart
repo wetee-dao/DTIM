@@ -24,7 +24,7 @@ class LocalAppBar extends StatelessWidget implements PreferredSizeWidget {
     bool? showMacosTop,
     this.leading,
     this.backgroundColor,
-  })  : _height = height ?? 60.w,
+  })  : _height = height ?? 55.w,
         _title = title ?? "",
         _showMacosTop = showMacosTop ?? true,
         super(key: key);
