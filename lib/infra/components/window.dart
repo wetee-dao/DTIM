@@ -1,13 +1,9 @@
 import 'dart:io';
 
 import 'package:dtim/application/store/theme.dart';
-import 'package:dtim/domain/utils/screen/size_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:window_manager/src/resize_edge.dart';
-import 'package:window_manager/src/widgets/drag_to_resize_area.dart';
-import 'package:window_manager/src/window_listener.dart';
-import 'package:window_manager/src/window_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;
@@ -64,12 +60,14 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
         ],
       ),
       child: ClipRRect(
+        // clipBehavior: Clip.hardEdge,
         borderRadius: BorderRadius.circular(
           (_isMaximized || _isFullScreen) ? 0 : 16,
         ),
         child: Container(
           margin: const EdgeInsets.all(8),
           child: ClipRRect(
+            clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(
               (_isMaximized || _isFullScreen) ? 0 : 12,
             ),

@@ -153,9 +153,9 @@ flutter:
     - family: iconfont
       fonts:
         - asset: assets/fonts/iconfont.ttf
-    - family: Iconfont
+    - family: DatDot
       fonts:
-        - asset: assets/fonts/iconfont.ttf
+        - asset: assets/fonts/DatDot-Light.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

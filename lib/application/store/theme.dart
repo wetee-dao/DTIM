@@ -489,7 +489,7 @@ const themes = [
   },
 ];
 const defaultTheme = 15;
-int currentTheme = 14;
+int currentTheme = 13;
 
 Future<ThemeData> setTheme(String name) async {
   currentTheme = themes.indexWhere((t) => t["codeTheme"] == name);

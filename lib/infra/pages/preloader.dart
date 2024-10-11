@@ -14,6 +14,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:dtim/domain/utils/screen/screen.dart';
@@ -534,10 +535,6 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                       child: moveWindow(Container(
                         decoration: BoxDecoration(
                           color: constTheme.sidebarBg,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(6.w),
-                            bottomRight: Radius.circular(6.w),
-                          ),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -560,36 +557,45 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                 ],
                               ),
                             Expanded(
-                              child: Opacity(
-                                opacity: 0.3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/banner.png',
-                                      width: 350.w,
-                                      filterQuality: FilterQuality.medium,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/matrix.svg',
+                                    semanticsLabel: 'matrix',
+                                    width: 250.w,
+                                    // ignore: deprecated_member_use
+                                    color: constTheme.sidebarText.withAlpha(180),
+                                  ),
+                                  SizedBox(height: 20.w),
+                                  Text(
+                                    "DTIM",
+                                    style: TextStyle(
+                                      fontSize: 30.w,
+                                      color: constTheme.sidebarText,
+                                      fontFamily: 'DatDot',
                                     ),
-                                    SizedBox(height: 20.w),
-                                    Text(
-                                      "100% open source",
-                                      style: TextStyle(
-                                        fontSize: 30.w,
-                                        color: constTheme.sidebarText,
-                                      ),
+                                  ),
+                                  Text(
+                                    "WEB3 matrix",
+                                    style: TextStyle(
+                                      fontSize: 30.w,
+                                      color: constTheme.sidebarText,
+                                      fontFamily: 'DatDot',
                                     ),
-                                    Text(
-                                      "decentralized office tools",
-                                      style: TextStyle(
-                                        fontSize: 30.w,
-                                        color: constTheme.sidebarText,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  Text(
+                                    "100% open source",
+                                    style: TextStyle(
+                                      fontSize: 30.w,
+                                      color: constTheme.sidebarText,
+                                      fontFamily: 'DatDot',
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            SizedBox(height: 65.w)
+                            SizedBox(height: 40.w)
                           ],
                         ),
                       )),
