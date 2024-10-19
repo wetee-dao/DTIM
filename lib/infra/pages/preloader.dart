@@ -565,14 +565,14 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                     semanticsLabel: 'matrix',
                                     width: 250.w,
                                     // ignore: deprecated_member_use
-                                    color: constTheme.sidebarText.withAlpha(180),
+                                    color: constTheme.sidebarText.withOpacity(0.75),
                                   ),
                                   SizedBox(height: 20.w),
                                   Text(
                                     "DTIM",
                                     style: TextStyle(
                                       fontSize: 30.w,
-                                      color: constTheme.sidebarText,
+                                      color: constTheme.sidebarText.withOpacity(0.85),
                                       fontFamily: 'DatDot',
                                     ),
                                   ),
@@ -580,7 +580,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                     "WEB3 matrix",
                                     style: TextStyle(
                                       fontSize: 30.w,
-                                      color: constTheme.sidebarText,
+                                      color: constTheme.sidebarText.withOpacity(0.85),
                                       fontFamily: 'DatDot',
                                     ),
                                   ),
@@ -588,7 +588,7 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
                                     "100% open source",
                                     style: TextStyle(
                                       fontSize: 30.w,
-                                      color: constTheme.sidebarText,
+                                      color: constTheme.sidebarText.withOpacity(0.85),
                                       fontFamily: 'DatDot',
                                     ),
                                   )
