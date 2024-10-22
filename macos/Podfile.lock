@@ -1,4 +1,6 @@
 PODS:
+  - appkit_ui_element_colors (1.0.0):
+    - FlutterMacOS
   - audioplayers_darwin (0.0.1):
     - FlutterMacOS
   - desktop_lifecycle (0.0.1):
@@ -15,7 +17,7 @@ PODS:
     - FlutterMacOS
   - flutter_webrtc (0.9.36):
     - FlutterMacOS
-    - WebRTC-SDK (= 114.5735.02)
+    - WebRTC-SDK (= 114.5735.08)
   - FlutterMacOS (1.0.0)
   - macos_ui (0.1.0):
     - FlutterMacOS
@@ -26,7 +28,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - record_macos (0.2.0):
+  - record_darwin (1.0.0):
+    - Flutter
     - FlutterMacOS
   - screen_retriever (0.0.1):
     - FlutterMacOS
@@ -39,13 +42,17 @@ PODS:
     - FlutterMacOS
   - video_compress (0.3.0):
     - FlutterMacOS
+  - video_player_avfoundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - wakelock_plus (0.0.1):
     - FlutterMacOS
-  - WebRTC-SDK (114.5735.02)
+  - WebRTC-SDK (114.5735.08)
   - window_manager (0.2.0):
     - FlutterMacOS
 
 DEPENDENCIES:
+  - appkit_ui_element_colors (from `Flutter/ephemeral/.symlinks/plugins/appkit_ui_element_colors/macos`)
   - audioplayers_darwin (from `Flutter/ephemeral/.symlinks/plugins/audioplayers_darwin/macos`)
   - desktop_lifecycle (from `Flutter/ephemeral/.symlinks/plugins/desktop_lifecycle/macos`)
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
@@ -59,12 +66,13 @@ DEPENDENCIES:
   - macos_window_utils (from `Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos`)
   - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
-  - record_macos (from `Flutter/ephemeral/.symlinks/plugins/record_macos/macos`)
+  - record_darwin (from `Flutter/ephemeral/.symlinks/plugins/record_darwin/macos`)
   - screen_retriever (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
   - tray_manager (from `Flutter/ephemeral/.symlinks/plugins/tray_manager/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
   - video_compress (from `Flutter/ephemeral/.symlinks/plugins/video_compress/macos`)
+  - video_player_avfoundation (from `Flutter/ephemeral/.symlinks/plugins/video_player_avfoundation/darwin`)
   - wakelock_plus (from `Flutter/ephemeral/.symlinks/plugins/wakelock_plus/macos`)
   - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
 
@@ -73,6 +81,8 @@ SPEC REPOS:
     - WebRTC-SDK
 
 EXTERNAL SOURCES:
+  appkit_ui_element_colors:
+    :path: Flutter/ephemeral/.symlinks/plugins/appkit_ui_element_colors/macos
   audioplayers_darwin:
     :path: Flutter/ephemeral/.symlinks/plugins/audioplayers_darwin/macos
   desktop_lifecycle:
@@ -99,8 +109,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
-  record_macos:
-    :path: Flutter/ephemeral/.symlinks/plugins/record_macos/macos
+  record_darwin:
+    :path: Flutter/ephemeral/.symlinks/plugins/record_darwin/macos
   screen_retriever:
     :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos
   shared_preferences_foundation:
@@ -111,35 +121,39 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
   video_compress:
     :path: Flutter/ephemeral/.symlinks/plugins/video_compress/macos
+  video_player_avfoundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/video_player_avfoundation/darwin
   wakelock_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/wakelock_plus/macos
   window_manager:
     :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
 
 SPEC CHECKSUMS:
+  appkit_ui_element_colors: 39bb2d80be3f19b152ccf4c70d5bbe6cba43d74a
   audioplayers_darwin: dcad41de4fbd0099cb3749f7ab3b0cb8f70b810c
   desktop_lifecycle: a600c10e12fe033c7be9078f2e929b8241f2c1e3
   device_info_plus: 5401765fde0b8d062a2f8eb65510fb17e77cf07f
   dynamic_color: 2eaa27267de1ca20d879fbd6e01259773fb1670f
   emoji_picker_flutter: 533634326b1c5de9a181ba14b9758e6dfe967a20
-  file_selector_macos: 468fb6b81fac7c0e88d71317f3eec34c3b008ff9
-  flutter_secure_storage_macos: d56e2d218c1130b262bef8b4a7d64f88d7f9c9ea
-  flutter_webrtc: b7de006ffa89334a52103ea577b6596c437e6b9e
+  file_selector_macos: 54fdab7caa3ac3fc43c9fac4d7d8d231277f8cf2
+  flutter_secure_storage_macos: 59459653abe1adb92abbc8ea747d79f8d19866c9
+  flutter_webrtc: cf7dc44d26cbb5c5f1ae5f583dab545871f287f9
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   macos_ui: 6229a8922cd97bafb7d9636c8eb8dfb0744183ca
   macos_window_utils: 933f91f64805e2eb91a5bd057cf97cd097276663
   package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  record_macos: 937889e0f2a7a12b6fc14e97a3678e5a18943de6
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  record_darwin: 1f6619f2abac4d1ca91d3eeab038c980d76f1517
   screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
-  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
+  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   tray_manager: 9064e219c56d75c476e46b9a21182087930baf90
-  url_launcher_macos: d2691c7dd33ed713bf3544850a623080ec693d95
+  url_launcher_macos: 5f437abeda8c85500ceb03f5c1938a8c5a705399
   video_compress: c896234f100791b5fef7f049afa38f6d2ef7b42f
+  video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
   wakelock_plus: 4783562c9a43d209c458cb9b30692134af456269
-  WebRTC-SDK: dd913fd31cfbf1d43b9a22d83f4c6354c960c623
+  WebRTC-SDK: c24d2a6c9f571f2ed42297cb8ffba9557093142b
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
 
-PODFILE CHECKSUM: dac0ddf03d136db544afc27b87cc6c08492e67b9
+PODFILE CHECKSUM: d4f7bed7751a2548a288c0dc329459c782e59841
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.15.2

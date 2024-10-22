@@ -7,6 +7,7 @@ import 'package:window_manager/window_manager.dart';
 
 final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;
+final _kIsMacos = !kIsWeb && Platform.isMacOS;
 
 class WindowFrame extends StatefulWidget {
   const WindowFrame({

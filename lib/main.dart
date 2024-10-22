@@ -29,7 +29,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (isPc()) {
     await windowManager.ensureInitialized();
-    await windowManager.hide();
+    // await windowManager.hide();
   }
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
 
@@ -72,7 +72,9 @@ Future<void> main() async {
       if (PlatformInfos.isMacOS || PlatformInfos.isWindows) {
         await windowManager.setHasShadow(true);
       }
-      await windowManager.setAsFrameless();
+      if (Platform.isLinux) {
+        await windowManager.setAsFrameless();
+      }
       await windowManager.setSize(winSize);
       await windowManager.show();
       await showtray();
@@ -114,7 +116,7 @@ class App extends StatelessWidget {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);
             ScreenUtil.setConText(context);
-            if (Platform.isLinux) {
+            if (Platform.isLinux || Platform.isMacOS) {
               child = virtualWindowFrameBuilder(context, child);
             }
             return MediaQuery(
