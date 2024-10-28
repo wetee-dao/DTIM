@@ -29,7 +29,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (isPc()) {
     await windowManager.ensureInitialized();
-    // await windowManager.hide();
   }
   AdaptiveDialog.instance.updateConfiguration(defaultStyle: AdaptiveStyle.material);
 
@@ -76,7 +75,7 @@ Future<void> main() async {
         await windowManager.setAsFrameless();
       }
       await windowManager.setSize(winSize);
-      await windowManager.show();
+      // await windowManager.show();
       await showtray();
       await windowManager.focus();
     });

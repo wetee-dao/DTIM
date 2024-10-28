@@ -41,7 +41,7 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
 
   Widget _buildWindowFrame(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    return DecoratedBox(
+    return Container(
       decoration: BoxDecoration(
         color: constTheme.sidebarBg.withOpacity(0.70),
         border: Border.all(
@@ -49,17 +49,18 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
           width: (_isMaximized || _isFullScreen) ? 0 : 1,
         ),
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 16,
+          (_isMaximized || _isFullScreen) ? 0 : 23
         ),
         boxShadow: <BoxShadow>[
           if (!_isMaximized && !_isFullScreen)
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              offset: Offset(0.0, _isFocused ? 4 : 2),
-              blurRadius: 16,
+              color: Colors.black.withOpacity(0.4),
+              // offset: Offset(0.0, _isFocused ? 4 : 2),
+              blurRadius: 5
             ),
         ],
       ),
+      margin: const EdgeInsets.all(5),
       child: ClipRRect(
         // clipBehavior: Clip.hardEdge,
         borderRadius: BorderRadius.circular(
@@ -70,7 +71,7 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
           child: ClipRRect(
             clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(
-              (_isMaximized || _isFullScreen) ? 0 : 12,
+              (_isMaximized || _isFullScreen) ? 0 : 20,
             ),
             child: widget.child,
           ),
