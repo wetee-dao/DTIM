@@ -11,7 +11,7 @@ import 'package:polkadart/scale_codec.dart';
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {
-  final wetee = WeTEE.url('http://127.0.0.1:9944');
+  final wetee = WeTEE.url('wss://xiaobai.asyou.me:30001');
   final chainAccount = await getSeedPhrase(seedStr: DAO_ROOT_SEED, name: '', password: '');
   await WeTEE.addKeyring(account: chainAccount, password: "");
 
@@ -27,7 +27,7 @@ void main() async {
   print(chainAccount.meta["ss58Address"]);
 
   // 创建DAO
-  var runcall = wetee.tx.weTEEOrg.createDao(
+  var runcall = wetee.tx.weTEEMatrix.createNode(
     name: convertStringToUint8List("ProgrammingDAO"),
     bg: convertStringToUint8List(''),
     logo: convertStringToUint8List(''),

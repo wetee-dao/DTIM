@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/orml_tokens/account_data.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/period.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/vote_info.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_matrix/node_info.dart';
+import 'package:dtim/router.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -14,27 +13,17 @@ import 'package:flutter/material.dart';
 import 'package:dtim/application/chain/wetee/wetee.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/domain/models/models.dart';
-import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:polkadart/polkadart.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/guild_info.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_info.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_project/project_info.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/pre_prop.dart';
-import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/prop.dart';
 
 // final chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
-const chainUrl = "https://xiaobai.asyou.me:30001";
+const chainUrl = "wss://xiaobai.asyou.me:30001";
 
-class WeTEECTX with ChangeNotifier {
+class GlobalCTX with ChangeNotifier {
   late Account user;
   late AccountOrg org;
-  late OrgInfo dao;
-  late AccountData daoAmount;
-  late int userPoint;
-  late AccountData nativeAmount;
-  late AccountData share;
+  late NodeInfo node;
 
   WeTEE? chainClient;
   Provider? provider;
@@ -43,14 +32,7 @@ class WeTEECTX with ChangeNotifier {
   int totalIssuance = 0;
   int daoRefreshChannel = 0;
   bool reConnecting = false;
-  List<GuildInfo> guilds = [];
-  List<ProjectInfo> projects = [];
-  List<String> members = [];
   String ss58Address = "";
-  List<VoteInfo> votes = [];
-  List<PreProp> pending = [];
-  List<Prop> going = [];
-  List<Period> periods = [];
   List<Function> callbacks = [];
 
   setOrg(AccountOrg porg, Account puser) {
@@ -60,7 +42,7 @@ class WeTEECTX with ChangeNotifier {
 
   connectChain(Function? callback) async {
     if (chainClient != null) {
-      if (org.daoId == "") {
+      if (org.nodeId == "") {
         callback?.call();
         return;
       }
@@ -110,39 +92,12 @@ class WeTEECTX with ChangeNotifier {
     // 区块链代码
     blockNumber = await chainClient!.getBlockNumber();
 
-    if (org.daoId == "") return;
-    final daoId = BigInt.tryParse(org.daoId)!;
-    final publicKey = hex.decode(user.address);
+    if (org.nodeId == "") return;
+    final nodeId = BigInt.tryParse(org.nodeId)!;
+    // final publicKey = hex.decode(user.address);
 
     // DAO信息
-    dao = (await chainClient!.query.weTEEOrg.daos(daoId))!;
-    daoAmount = await chainClient!.query.tokens.accounts(dao.daoAccountId, BigInt.from(0));
-    totalIssuance = (await chainClient!.query.tokens.totalIssuance(daoId)).toInt();
-
-    // 工会&项目
-    guilds = await chainClient!.query.weTEEOrg.guilds(daoId);
-    projects = await chainClient!.query.weTEEProject.daoProjects(daoId);
-
-    // 用户荣誉点 share 链上金额
-    userPoint = await chainClient!.query.weTEEOrg.memberPoint(daoId, publicKey);
-    share = await chainClient!.query.tokens.accounts(publicKey, daoId);
-    nativeAmount = await chainClient!.query.tokens.accounts(publicKey, BigInt.from(0));
-    ss58Address = user.ss58Address;
-
-    // DAO 成员
-    members = (await chainClient!.query.weTEEOrg.members(daoId)).map((e) =>"0x${hex.encode(e)}").toList();
-    votes = await chainClient!.query.weTEEGov.votesOf(publicKey);
-
-    periods = await chainClient!.query.weTEEGov.periods(daoId);
-
-    if (notify) notifyListeners();
-  }
-
-  getVoteData({notify = true}) async {
-    if (org.daoId == 0) return;
-    pending = await chainClient!.query.weTEEGov.preProps(BigInt.tryParse(org.daoId)!);
-    going = [];
-    // await chainClient!.query.weTEEGov.props(BigInt.from(org.daoId), key2);
+    node = (await chainClient!.query.weTEEMatrix.matrix(nodeId))!;
 
     if (notify) notifyListeners();
   }
@@ -154,40 +109,13 @@ class WeTEECTX with ChangeNotifier {
       if (daoRefreshChannel > 0) {
         daoRefreshChannel--;
         await getData();
-        await getVoteData();
       } else {
         if (user.address != '') {
-          if (org.daoId == 0) return;
-          nativeAmount = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.from(0));
-          share = await chainClient!.query.tokens.accounts(hex.decode(user.address), BigInt.tryParse(org.daoId)!);
+          if (org.nodeId == "0") return;
         }
       }
       notifyListeners();
     }
-  }
-
-  Future<bool> checkAfterTx() async {
-    if (!members.contains(user.address)) {
-      BotToast.showText(text: 'You are not a member of this Org workgroup', duration: const Duration(seconds: 2));
-      return false;
-    }
-    if (nativeAmount.free < BigInt.from(100)) {
-      BotToast.showText(
-        text: "The user's balance is not enough to pay the handling fee",
-        duration: const Duration(seconds: 2),
-      );
-      return false;
-    }
-    return await inputPassword();
-  }
-
-  Future<void> daoRefresh() async {
-    daoRefreshChannel = 3;
-    BotToast.showText(
-        text: 'Successfully, data will take effect in subsequent blocks ', duration: const Duration(seconds: 2));
-    await getData();
-    await getVoteData();
-    notifyListeners();
   }
 
   Future<bool> inputPassword() async {
@@ -197,7 +125,7 @@ class WeTEECTX with ChangeNotifier {
   WeTEE get client => chainClient!;
 }
 
-final weteeCtx = WeTEECTX();
+final chainCtx = GlobalCTX();
 
 Future<bool> inputPasswordg(Account user) async {
   if (!PlatformInfos.isWeb) {

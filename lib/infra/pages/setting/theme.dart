@@ -70,7 +70,7 @@ class _ThemePageState extends State<ThemePage> {
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
                 onToggle: (String v) async {
                   final accountOrgApi = await AccountOrgApi.create();
-                  await accountOrgApi.saveOrgTheme(im.me!.address + im.currentState!.org.orgHash, v);
+                  await accountOrgApi.saveOrgTheme(im.me!.address + im.currentState!.org.nodeHash, v);
                   // 设置全局设置，方便加载
                   final t = await setTheme(v);
                   AdaptiveTheme.of(globalCtx()).setTheme(
@@ -88,7 +88,7 @@ class _ThemePageState extends State<ThemePage> {
                 description: const Text('选中后可看到效果，部分内容可能不会变化，重启后可消除'),
                 onToggle: (String v) async {
                   final accountOrgApi = await AccountOrgApi.create();
-                  await accountOrgApi.saveOrgTheme(im.me!.address + im.currentState!.org.orgHash, v);
+                  await accountOrgApi.saveOrgTheme(im.me!.address + im.currentState!.org.nodeHash, v);
                   // 设置全局设置，方便加载
                   final t = await setTheme(v);
                   AdaptiveTheme.of(globalCtx()).setTheme(

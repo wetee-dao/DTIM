@@ -47,10 +47,10 @@ class _PreloaderPageState extends State<PreloaderPage> with WindowListener {
 
     im = context.read();
     getList(() {
-      weteeCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: [], ss58Address: ''));
-      weteeCtx.connectChain(() async {
-        setState(() => _loading = false);
-      });
+      // chainCtx.setOrg(AccountOrg(""), Account(address: "", chainData: "{}", orgs: [], ss58Address: ''));
+      // chainCtx.connectChain(() async {
+      // setState(() => _loading = false);
+      // });
       if (accounts.isNotEmpty && !runInTest) {
         autoLogin();
         return;

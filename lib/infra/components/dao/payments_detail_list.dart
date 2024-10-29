@@ -76,35 +76,35 @@ class PaymentsDetailList extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20.w),
-        Consumer<WeTEECTX>(builder: (_, dao, child) {
+        Consumer<GlobalCTX>(builder: (_, dao, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PrimaryText(
-                text: dao.votes.isNotEmpty ? 'My ongoing vote' : 'No ongoing vote',
+                text: 'My ongoing vote',
                 size: 18,
                 fontWeight: FontWeight.w800,
               ),
             ],
           );
         }),
-        Consumer<WeTEECTX>(builder: (_, dao, child) {
-          return Column(
-            children: List.generate(
-              dao.votes.length,
-              (index) => PaymentListTile(
-                icon: Icons.how_to_vote_rounded,
-                amount: "Share ${dao.votes[index].pledge}",
-                label: "Referendum #${dao.votes[index].propIndex}",
-                action: Icon(
-                  dao.votes[index].opinion == 1 ? Icons.check_circle_outline_rounded : Icons.cancel_outlined,
-                  color: dao.votes[index].opinion == 1 ? constTheme.buttonBg : constTheme.errorTextColor,
-                  size: 25.w,
-                ),
-              ),
-            ),
-          );
-        }),
+        // Consumer<GlobalCTX>(builder: (_, dao, child) {
+        //   return Column(
+        //     children: List.generate(
+        //       dao.votes.length,
+        //       (index) => PaymentListTile(
+        //         icon: Icons.how_to_vote_rounded,
+        //         amount: "Share ${dao.votes[index].pledge}",
+        //         label: "Referendum #${dao.votes[index].propIndex}",
+        //         action: Icon(
+        //           dao.votes[index].opinion == 1 ? Icons.check_circle_outline_rounded : Icons.cancel_outlined,
+        //           color: dao.votes[index].opinion == 1 ? constTheme.buttonBg : constTheme.errorTextColor,
+        //           size: 25.w,
+        //         ),
+        //       ),
+        //     ),
+        //   );
+        // }),
         // SizedBox(height: 15.w),
         // Column(
         //   crossAxisAlignment: CrossAxisAlignment.start,

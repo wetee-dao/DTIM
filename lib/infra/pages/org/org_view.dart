@@ -89,7 +89,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                         children: [
                           Expanded(
                             child: Text(
-                              imc.currentState!.org.orgName ?? "",
+                              imc.currentState!.org.nodeName ?? "",
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(

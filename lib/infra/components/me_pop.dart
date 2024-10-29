@@ -204,7 +204,7 @@ class _MePopState extends State<MePop> {
                   onTap: () async {
                     final im = context.read<AppCubit>();
                     menuController.hideMenu();
-                    weteeCtx.disconnectChain();
+                    chainCtx.disconnectChain();
                     await im.logout();
                   },
                   child: Container(

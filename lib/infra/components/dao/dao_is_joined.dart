@@ -63,13 +63,7 @@ class DaoIsJoined extends StatelessWidget {
                     ElevatedButton(
                       key: const Key('joinDao'),
                       onPressed: () {
-                        if (weteeCtx.nativeAmount.free < BigInt.from(100)) {
-                          BotToast.showText(
-                              text: "The user's balance is not enough to pay the handling fee",
-                              duration: const Duration(seconds: 2));
-                          return;
-                        }
-                        showModelOrPage(context, "/join_dao");
+
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith((states) => constTheme.buttonBg),

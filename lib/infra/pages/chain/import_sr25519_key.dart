@@ -308,7 +308,7 @@ class _ImportSr25519KeyPageState extends State<ImportSr25519KeyPage> with Window
                     address: chainData.address,
                     ss58Address: chainData.meta["ss58Address"]!,
                     chainData: json.encode(chainData.toJson()),
-                    orgs: [],
+                    nodes: [],
                   );
                   initUser.name = chainData.meta["name"];
                   initUser.domain = "";

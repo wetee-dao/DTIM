@@ -64,9 +64,9 @@ class _MobilePageState extends State<MobilePage> {
     }
     if (im.currentState != null) {
       var u = await im.currentState!.client.getAvatarUrl(im.currentState!.client.userID ?? "");
-      AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.orgHash);
+      AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.nodeHash);
       if (org != null) {
-        apps = org.apps ?? [];
+        // apps = org.apps ?? [];
       }
       if (mounted) {
         setState(() {
@@ -74,10 +74,10 @@ class _MobilePageState extends State<MobilePage> {
         });
       }
 
-      weteeCtx.setOrg(im.currentState!.org, im.me!);
-      weteeCtx.connectChain(() async {
-        apps = trans(await weteeCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(im.currentState!.org.daoId)!));
-        await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
+      chainCtx.setOrg(im.currentState!.org, im.me!);
+      chainCtx.connectChain(() async {
+        apps = trans(await chainCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(im.currentState!.org.nodeId)!));
+        await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.nodeHash, apps);
         if (mounted) {
           setState(() {});
         }

@@ -1,8 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
-import 'org.dart';
-
 part 'account.g.dart';
 
 @HiveType(typeId: 1)
@@ -31,54 +29,54 @@ class Account extends HiveObject {
   late String chainData;
 
   @HiveField(5)
-  late List<AccountOrg> orgs;
+  late List<AccountOrg> nodes;
 
   // 区块链地址
   @HiveField(7)
   late String ss58Address;
 
-  Account({required this.address, required this.chainData, required this.ss58Address, required this.orgs});
+  Account({required this.address, required this.chainData, required this.ss58Address, required this.nodes});
 }
 
 @HiveType(typeId: 2)
 class AccountOrg {
-  // 组织hash
+  // 节点hash
   @HiveField(2)
-  String orgHash = "";
+  String nodeHash = "";
 
-  // 组织名
+  // 节点名
   @HiveField(3)
-  String? orgName;
+  String? nodeName;
 
-  // 组织名
+  // 节点名
   @HiveField(14)
-  String? orgDesc;
+  String? nodeDesc;
 
-  // 组织主颜色
+  // 节点主颜色
   @HiveField(4)
-  String? orgColor;
+  String? nodeColor;
 
-  // 组织头像
+  // 节点头像
   @HiveField(5)
-  String? orgAvater;
+  String? nodeAvater;
 
-  // 组织图片
+  // 节点图片
   @HiveField(6)
-  String? orgImg;
+  String? nodeImg;
 
-  // 组织授权网址
+  // 节点授权网址
   @HiveField(7)
   String? domain;
 
-  // 组织Id
+  // 节点Id
   @HiveField(9)
-  String daoId = "";
+  String nodeId = "";
 
   // 区块链连接点
   @HiveField(13)
   String? theme;
 
-  // 组织状态 1=>激活 2=>暂停 3=>删除
+  // 节点状态 1=>激活 2=>暂停 3=>删除
   @HiveField(10)
   int status = 1;
 
@@ -89,11 +87,7 @@ class AccountOrg {
   @HiveField(12)
   late Account account;
 
-  // 应用列表
-  @HiveField(15)
-  List<OrgApp>? apps = [];
-
-  AccountOrg(this.orgHash);
+  AccountOrg(this.nodeHash);
 }
 
 @JsonSerializable()

@@ -35,17 +35,17 @@ class _IntegratePageState extends State<IntegratePage> {
   void initState() {
     super.initState();
     im = context.read<AppCubit>();
-    weteeCtx.setOrg(im.currentState!.org, im.me!);
-    weteeCtx.connectChain(() {
-      getData();
-    });
+    chainCtx.setOrg(im.currentState!.org, im.me!);
+    // chainCtx.connectChain(() {
+    //   getData();
+    // });
   }
 
   getData() async {
-    // apps = await rustApi.appHubs(client: weteeCtx.chainClient);
+    // apps = await rustApi.appHubs(client: chainCtx.chainClient);
     // TODO
     apps = [];
-    oapps = trans(await weteeCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(weteeCtx.org.daoId)!));
+    oapps = trans(await chainCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(chainCtx.org.nodeId)!));
     loding = false;
     setState(() {});
   }

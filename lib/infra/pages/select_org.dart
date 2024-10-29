@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_matrix/node_info.dart';
 import 'package:dtim/application/store/chain_ctx.dart';
 import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:dtim/domain/utils/functions.dart';
@@ -35,7 +36,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
   List<Account?> accounts = [];
   List<AccountOrg> userOrgs = [];
   List<Org> orgs = [];
-  WeTEECTX? wctx;
+  GlobalCTX? wctx;
   late AppCubit im;
   late AccountOrgApi accountOrgApi;
 
@@ -63,14 +64,14 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
 
     final vuser = await AccountApi.create();
     accounts = await vuser.getUsers();
-    final orgList = userOrgs.map((o) => o.orgHash).toList();
+    final orgList = userOrgs.map((o) => o.nodeHash).toList();
     selected = orgList;
     setState(() {});
 
-    weteeCtx.setOrg(AccountOrg(""), im.me!);
-    weteeCtx.connectChain(() async {
-      final v = (await weteeCtx.client.queryMapList(module: 'WeteeOrg', storage: 'Daos')).map((b) {
-        return OrgInfo.decode(ByteInput(b));
+    chainCtx.setOrg(AccountOrg(""), im.me!);
+    chainCtx.connectChain(() async {
+      final v = (await chainCtx.client.queryMapList(module: 'WeTEEMatrix', storage: 'Matrix')).map((b) {
+        return NodeInfo.decode(ByteInput(b));
       }).toList();
       print(v);
       orgs = v
@@ -225,7 +226,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                             okLabel: L10n.of(globalCtx())!.next,
                             cancelLabel: L10n.of(globalCtx())!.cancel,
                           )) {
-                        await accountOrgApi.deleteOrg(im.me!.address, userOrgs[i].orgHash);
+                        await accountOrgApi.deleteOrg(im.me!.address, userOrgs[i].nodeHash);
                         await getData();
                       }
                     },
@@ -245,10 +246,10 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                             height: 130.w,
                             decoration: BoxDecoration(
                               color:
-                                  userOrgs[i].orgColor != null ? hexToColor(userOrgs[i].orgColor!) : Colors.transparent,
+                                  userOrgs[i].nodeColor != null ? hexToColor(userOrgs[i].nodeColor!) : Colors.transparent,
                             ),
                             child: Image.network(
-                              userOrgs[i].orgImg ?? "",
+                              userOrgs[i].nodeImg ?? "",
                               width: 206.w,
                               fit: BoxFit.cover,
                               height: 130.w,
@@ -262,7 +263,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "# ${userOrgs[i].orgName ?? "-"}",
+                                  "# ${userOrgs[i].nodeName ?? "-"}",
                                   style: TextStyle(
                                     color: constTheme.centerChannelColor,
                                     fontSize: 16.w,
@@ -271,7 +272,7 @@ class _SelectOrgPageState extends State<SelectOrgPage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  userOrgs[i].orgDesc ?? "",
+                                  userOrgs[i].nodeDesc ?? "",
                                   style: TextStyle(
                                     color: constTheme.centerChannelColor,
                                     fontSize: 12.w,

@@ -17,6 +17,7 @@ import '../wetee_dsecret/pallet/call.dart' as _i23;
 import '../wetee_gov/pallet/call.dart' as _i16;
 import '../wetee_gpu/pallet/call.dart' as _i20;
 import '../wetee_guild/pallet/call.dart' as _i14;
+import '../wetee_matrix/pallet/call.dart' as _i25;
 import '../wetee_message_queue/pallet/call.dart' as _i9;
 import '../wetee_org/pallet/call.dart' as _i11;
 import '../wetee_project/pallet/call.dart' as _i15;
@@ -140,6 +141,10 @@ class $RuntimeCall {
   WeTEEBridge weTEEBridge(_i24.Call value0) {
     return WeTEEBridge(value0);
   }
+
+  WeTEEMatrix weTEEMatrix(_i25.Call value0) {
+    return WeTEEMatrix(value0);
+  }
 }
 
 class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
@@ -193,6 +198,8 @@ class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
         return WeTEEDsecret._decode(input);
       case 24:
         return WeTEEBridge._decode(input);
+      case 25:
+        return WeTEEMatrix._decode(input);
       default:
         throw Exception('RuntimeCall: Invalid variant index: "$index"');
     }
@@ -270,6 +277,9 @@ class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
       case WeTEEBridge:
         (value as WeTEEBridge).encodeTo(output);
         break;
+      case WeTEEMatrix:
+        (value as WeTEEMatrix).encodeTo(output);
+        break;
       default:
         throw Exception(
             'RuntimeCall: Unsupported "$value" of type "${value.runtimeType}"');
@@ -323,6 +333,8 @@ class $RuntimeCallCodec with _i1.Codec<RuntimeCall> {
         return (value as WeTEEDsecret)._sizeHint();
       case WeTEEBridge:
         return (value as WeTEEBridge)._sizeHint();
+      case WeTEEMatrix:
+        return (value as WeTEEMatrix)._sizeHint();
       default:
         throw Exception(
             'RuntimeCall: Unsupported "$value" of type "${value.runtimeType}"');
@@ -1292,6 +1304,50 @@ class WeTEEBridge extends RuntimeCall {
         other,
       ) ||
       other is WeTEEBridge && other.value0 == value0;
+
+  @override
+  int get hashCode => value0.hashCode;
+}
+
+class WeTEEMatrix extends RuntimeCall {
+  const WeTEEMatrix(this.value0);
+
+  factory WeTEEMatrix._decode(_i1.Input input) {
+    return WeTEEMatrix(_i25.Call.codec.decode(input));
+  }
+
+  /// self::sp_api_hidden_includes_construct_runtime::hidden_include::dispatch
+  ///::CallableCallFor<WeTEEMatrix, Runtime>
+  final _i25.Call value0;
+
+  @override
+  Map<String, Map<String, Map<String, dynamic>>> toJson() =>
+      {'WeTEEMatrix': value0.toJson()};
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i25.Call.codec.sizeHint(value0);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      25,
+      output,
+    );
+    _i25.Call.codec.encodeTo(
+      value0,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is WeTEEMatrix && other.value0 == value0;
 
   @override
   int get hashCode => value0.hashCode;

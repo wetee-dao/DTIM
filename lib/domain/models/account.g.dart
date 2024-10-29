@@ -20,7 +20,7 @@ class AccountAdapter extends TypeAdapter<Account> {
       address: fields[3] as String,
       chainData: fields[4] as String,
       ss58Address: fields[7] as String,
-      orgs: (fields[5] as List).cast<AccountOrg>(),
+      nodes: (fields[5] as List).cast<AccountOrg>(),
     )
       ..id = fields[0] as int
       ..name = fields[1] as String?
@@ -45,7 +45,7 @@ class AccountAdapter extends TypeAdapter<Account> {
       ..writeByte(4)
       ..write(obj.chainData)
       ..writeByte(5)
-      ..write(obj.orgs)
+      ..write(obj.nodes)
       ..writeByte(7)
       ..write(obj.ss58Address);
   }
@@ -74,40 +74,39 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
     return AccountOrg(
       fields[2] as String,
     )
-      ..orgName = fields[3] as String?
-      ..orgDesc = fields[14] as String?
-      ..orgColor = fields[4] as String?
-      ..orgAvater = fields[5] as String?
-      ..orgImg = fields[6] as String?
+      ..nodeName = fields[3] as String?
+      ..nodeDesc = fields[14] as String?
+      ..nodeColor = fields[4] as String?
+      ..nodeAvater = fields[5] as String?
+      ..nodeImg = fields[6] as String?
       ..domain = fields[7] as String?
-      ..daoId = fields[9] as String
+      ..nodeId = fields[9] as String
       ..theme = fields[13] as String?
       ..status = fields[10] as int
       ..withAddr = fields[11] as String
-      ..account = fields[12] as Account
-      ..apps = (fields[15] as List?)?.cast<OrgApp>();
+      ..account = fields[12] as Account;
   }
 
   @override
   void write(BinaryWriter writer, AccountOrg obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(12)
       ..writeByte(2)
-      ..write(obj.orgHash)
+      ..write(obj.nodeHash)
       ..writeByte(3)
-      ..write(obj.orgName)
+      ..write(obj.nodeName)
       ..writeByte(14)
-      ..write(obj.orgDesc)
+      ..write(obj.nodeDesc)
       ..writeByte(4)
-      ..write(obj.orgColor)
+      ..write(obj.nodeColor)
       ..writeByte(5)
-      ..write(obj.orgAvater)
+      ..write(obj.nodeAvater)
       ..writeByte(6)
-      ..write(obj.orgImg)
+      ..write(obj.nodeImg)
       ..writeByte(7)
       ..write(obj.domain)
       ..writeByte(9)
-      ..write(obj.daoId)
+      ..write(obj.nodeId)
       ..writeByte(13)
       ..write(obj.theme)
       ..writeByte(10)
@@ -115,9 +114,7 @@ class AccountOrgAdapter extends TypeAdapter<AccountOrg> {
       ..writeByte(11)
       ..write(obj.withAddr)
       ..writeByte(12)
-      ..write(obj.account)
-      ..writeByte(15)
-      ..write(obj.apps);
+      ..write(obj.account);
   }
 
   @override

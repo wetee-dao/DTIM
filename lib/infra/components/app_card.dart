@@ -121,7 +121,7 @@ class AppCard extends StatelessWidget {
           //   context: globalCtx(),
           //   future: () async {
           // await rustApi.createAsset(
-          //   client: weteeCtx.chainClient,
+          //   client: chainCtx.chainClient,
           //   from: im.me!.address,
           //   daoId: im.currentState!.org.daoId,
           //   name: input[0],
@@ -130,7 +130,7 @@ class AppCard extends StatelessWidget {
           //   symbol: input[1],
           // );
           //     await rustApi.orgIntegrateApp(
-          //       client: weteeCtx.chainClient,
+          //       client: chainCtx.chainClient,
           //       from: im.me!.address,
           //       orgId: im.currentState!.org.daoId,
           //       appId: id,
@@ -164,11 +164,11 @@ class AppCard extends StatelessWidget {
           await waitFutureLoading(
             context: globalCtx(),
             future: () async {
-              final call = weteeCtx.client.tx.weTEEOrg.orgIntegrateApp(
-                daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
+              final call = chainCtx.client.tx.weTEEOrg.orgIntegrateApp(
+                daoId: BigInt.tryParse(chainCtx.org.nodeId)!,
                 appId: id,
               );
-              await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address, gov: gov);
+              await chainCtx.client.signAndSubmit(call, chainCtx.user.address, gov: gov);
               BotToast.showText(text: gov.runType == 2 ? "应用集成成功" : "应用集成提案将显示在治理中，请到治理插件中开启投票");
             },
           );

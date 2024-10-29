@@ -26,7 +26,7 @@ List<List<ItemModel>> menuItems = [
     ItemModel('离开组织', onTap: (id, im) async {
       final accountOrgApi = await AccountOrgApi.create();
       final orgs = await accountOrgApi.listByAccount(im.me!.address);
-      orgs.removeWhere((o) => o.orgHash == im.currentState!.org.orgHash);
+      orgs.removeWhere((o) => o.nodeHash == im.currentState!.org.nodeHash);
       if (OkCancelResult.ok ==
           await showOkCancelAlertDialog(
             useRootNavigator: false,
@@ -40,7 +40,7 @@ List<List<ItemModel>> menuItems = [
           title: "处理中...",
           context: globalCtx(),
           future: () async {
-            await accountOrgApi.deleteOrg(im.me!.address, im.currentState!.org.orgHash);
+            await accountOrgApi.deleteOrg(im.me!.address, im.currentState!.org.nodeHash);
             await im.logout();
           },
         );

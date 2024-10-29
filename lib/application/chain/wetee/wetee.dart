@@ -25,7 +25,9 @@ class WeTEE {
         registry = Registry();
 
   factory WeTEE.url(String url) {
-    final provider = Provider.fromUri(Uri.parse(url));
+    // 大部分时间使用http请求，提交交易使用ws
+    var httpUrl = url.replaceAll("ws", "http");
+    final provider = Provider.fromUri(Uri.parse(httpUrl));
     final rpc = Rpc(
       state: StateApi(provider),
       system: SystemApi(provider),
@@ -63,7 +65,6 @@ class WeTEE {
     }
     final KeyPair keyPair = keyPairs[address]!;
 
-  
     final signature = keyPair.sign(Uint8List.fromList(list));
     // final hexSignature = hex.encode(signature);
 
@@ -142,10 +143,10 @@ class WeTEE {
   }
 
   static Future<bool> addKeyring({required ChainAccountData account, required String password}) async {
-    late KeyPair keyPair ;
-    if (account.encoding.type=="uri"){
+    late KeyPair keyPair;
+    if (account.encoding.type == "uri") {
       keyPair = await KeyPair.sr25519.fromUri(account.encoded, password);
-    }else if (account.encoding.type=="mnemonic") {
+    } else if (account.encoding.type == "mnemonic") {
       keyPair = await KeyPair.sr25519.fromMnemonic(account.encoded, password);
     }
 
@@ -158,13 +159,8 @@ class WeTEE {
   }
 
   Future<int> getBlockNumber() async {
-    final completer = Completer<int>();
-    final sub = await subscribeFinalizedHeads((s) {
-      completer.complete(s.blockNumber!);
-    }, provider);
-    final header = await completer.future;
-    sub.cancel();
-    return header;
+    final block = await provider.send('chain_getBlock', []);
+    return int.parse(block.result['block']['header']['number']);
   }
 
   Future<List<StorageData>> queryMapList({
@@ -199,25 +195,6 @@ class WeTEE {
       }
     }
     return ks;
-  }
-
-  Future<StreamSubscription<BlockHeader>> subscribeFinalizedHeads(
-      void Function(BlockHeader) onData, Provider provider) async {
-    final subscription = await provider.subscribe(
-      'chain_subscribeFinalizedHeads',
-      [],
-      onCancel: (subscription) async {
-        await provider.send('chain_unsubscribeFinalizedHeads', [subscription]);
-      },
-    );
-
-    return subscription.stream.map((response) {
-      var header = BlockHeader.fromJson(response.result);
-      header.blockNumber = hexToInt(header.number);
-      return header;
-    }).listen(onData);
-
-    // return subscription.stream.map((event) => event.result).listen(onData);
   }
 }
 

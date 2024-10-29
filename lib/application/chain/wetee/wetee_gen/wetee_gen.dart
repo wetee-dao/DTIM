@@ -1,5 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i27;
+import 'dart:async' as _i28;
 
 import 'package:polkadart/polkadart.dart' as _i1;
 
@@ -13,20 +13,21 @@ import 'pallets/system.dart' as _i2;
 import 'pallets/timestamp.dart' as _i3;
 import 'pallets/tokens.dart' as _i9;
 import 'pallets/transaction_payment.dart' as _i7;
-import 'pallets/utility.dart' as _i24;
+import 'pallets/utility.dart' as _i25;
 import 'pallets/we_t_e_e_app.dart' as _i17;
 import 'pallets/we_t_e_e_asset.dart' as _i13;
 import 'pallets/we_t_e_e_bridge.dart' as _i23;
 import 'pallets/we_t_e_e_dsecret.dart' as _i22;
 import 'pallets/we_t_e_e_gov.dart' as _i16;
 import 'pallets/we_t_e_e_gpu.dart' as _i19;
-import 'pallets/we_t_e_e_guild.dart' as _i25;
+import 'pallets/we_t_e_e_guild.dart' as _i26;
+import 'pallets/we_t_e_e_matrix.dart' as _i24;
 import 'pallets/we_t_e_e_message_queue.dart' as _i11;
 import 'pallets/we_t_e_e_org.dart' as _i12;
 import 'pallets/we_t_e_e_project.dart' as _i15;
 import 'pallets/we_t_e_e_sudo.dart' as _i14;
 import 'pallets/we_t_e_e_task.dart' as _i18;
-import 'pallets/we_t_e_e_treasury.dart' as _i26;
+import 'pallets/we_t_e_e_treasury.dart' as _i27;
 import 'pallets/we_t_e_e_worker.dart' as _i20;
 
 class Queries {
@@ -52,7 +53,8 @@ class Queries {
         weTEEWorker = _i20.Queries(api),
         contracts = _i21.Queries(api),
         weTEEDsecret = _i22.Queries(api),
-        weTEEBridge = _i23.Queries(api);
+        weTEEBridge = _i23.Queries(api),
+        weTEEMatrix = _i24.Queries(api);
 
   final _i2.Queries system;
 
@@ -97,6 +99,8 @@ class Queries {
   final _i22.Queries weTEEDsecret;
 
   final _i23.Queries weTEEBridge;
+
+  final _i24.Queries weTEEMatrix;
 }
 
 class Extrinsics {
@@ -116,7 +120,7 @@ class Extrinsics {
 
   final _i11.Txs weTEEMessageQueue = _i11.Txs();
 
-  final _i24.Txs utility = _i24.Txs();
+  final _i25.Txs utility = _i25.Txs();
 
   final _i12.Txs weTEEOrg = _i12.Txs();
 
@@ -124,13 +128,13 @@ class Extrinsics {
 
   final _i14.Txs weTEESudo = _i14.Txs();
 
-  final _i25.Txs weTEEGuild = _i25.Txs();
+  final _i26.Txs weTEEGuild = _i26.Txs();
 
   final _i15.Txs weTEEProject = _i15.Txs();
 
   final _i16.Txs weTEEGov = _i16.Txs();
 
-  final _i26.Txs weTEETreasury = _i26.Txs();
+  final _i27.Txs weTEETreasury = _i27.Txs();
 
   final _i17.Txs weTEEApp = _i17.Txs();
 
@@ -145,6 +149,8 @@ class Extrinsics {
   final _i22.Txs weTEEDsecret = _i22.Txs();
 
   final _i23.Txs weTEEBridge = _i23.Txs();
+
+  final _i24.Txs weTEEMatrix = _i24.Txs();
 }
 
 class Constants {
@@ -166,11 +172,13 @@ class Constants {
 
   final _i11.Constants weTEEMessageQueue = _i11.Constants();
 
-  final _i24.Constants utility = _i24.Constants();
+  final _i25.Constants utility = _i25.Constants();
 
   final _i12.Constants weTEEOrg = _i12.Constants();
 
   final _i21.Constants contracts = _i21.Constants();
+
+  final _i24.Constants weTEEMatrix = _i24.Constants();
 }
 
 class Rpc {
@@ -240,11 +248,11 @@ class WeteeGen {
 
   final Registry registry;
 
-  _i27.Future connect() async {
+  _i28.Future connect() async {
     return await _provider.connect();
   }
 
-  _i27.Future disconnect() async {
+  _i28.Future disconnect() async {
     return await _provider.disconnect();
   }
 }

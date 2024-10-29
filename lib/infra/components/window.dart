@@ -68,7 +68,7 @@ class _AeroFrameState extends State<AeroFrame> with WindowListener {
           (_isMaximized || _isFullScreen) ? 0 : 16,
         ),
         child: Container(
-          margin: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(6),
           child: ClipRRect(
             clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(

@@ -68,9 +68,9 @@ class _PCPageState extends State<PCPage> {
     }
     if (im.currentState != null) {
       var u = await im.currentState!.client.getAvatarUrl(im.currentState!.client.userID ?? "");
-      AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.orgHash);
+      AccountOrg? org = accountOrgApi.getOrg(im.me!.address, im.currentState!.org.nodeHash);
       if (org != null) {
-        apps = org.apps ?? [];
+        // apps = org.apps ?? [];
       }
       if (mounted) {
         setState(() {
@@ -78,14 +78,14 @@ class _PCPageState extends State<PCPage> {
         });
       }
 
-      weteeCtx.setOrg(im.currentState!.org, im.me!);
-      // weteeCtx.connectChain(() async {
-      //   apps = trans(await weteeCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(im.currentState!.org.daoId)!));
-      //   await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
-      //   if (mounted) {
-      //     setState(() {});
-      //   }
-      // });
+      chainCtx.setOrg(im.currentState!.org, im.me!);
+      chainCtx.connectChain(() async {
+        apps = trans(await chainCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(im.currentState!.org.nodeId)!));
+        await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.nodeHash, apps);
+        if (mounted) {
+          setState(() {});
+        }
+      });
     }
   }
 
@@ -241,7 +241,7 @@ class _PCPageState extends State<PCPage> {
                         for (var i = 0; i < aorgs!.length; i++)
                           GestureDetector(
                             onTap: () async {
-                              if (im.currentState!.org.daoId == aorgs![i].daoId) {
+                              if (im.currentState!.org.nodeId == aorgs![i].nodeId) {
                                 return;
                               }
                               if (im.sign == "") {
@@ -266,36 +266,36 @@ class _PCPageState extends State<PCPage> {
                               await getData();
                             },
                             child: Container(
-                              width: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,
-                              height: im.currentState!.org.daoId == aorgs![i].daoId ? 40.w : 42.w,
-                              padding: im.currentState!.org.daoId == aorgs![i].daoId ? EdgeInsets.all(2.w) : null,
+                              width: im.currentState!.org.nodeId == aorgs![i].nodeId ? 40.w : 42.w,
+                              height: im.currentState!.org.nodeId == aorgs![i].nodeId ? 40.w : 42.w,
+                              padding: im.currentState!.org.nodeId == aorgs![i].nodeId ? EdgeInsets.all(2.w) : null,
                               margin: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
                               decoration: BoxDecoration(
                                 color: constTheme.sidebarHeaderTextColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(8.w),
                                 border: Border.all(
-                                  color: im.currentState!.org.daoId == aorgs![i].daoId
+                                  color: im.currentState!.org.nodeId == aorgs![i].nodeId
                                       ? constTheme.sidebarTextActiveBorder.withOpacity(0.7)
                                       : constTheme.sidebarBg,
                                   width: 2.w,
                                 ),
                               ),
                               child: Container(
-                                width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
-                                height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                width: im.currentState!.org.nodeId == aorgs![i].nodeId ? 36.w : 42.w,
+                                height: im.currentState!.org.nodeId == aorgs![i].nodeId ? 36.w : 42.w,
                                 decoration: BoxDecoration(
-                                  color: aorgs![i].orgColor != null
-                                      ? hexToColor(aorgs![i].orgColor!)
+                                  color: aorgs![i].nodeColor != null
+                                      ? hexToColor(aorgs![i].nodeColor!)
                                       : constTheme.sidebarText.withOpacity(0.02),
                                   borderRadius: BorderRadius.circular(4.w),
                                 ),
-                                child: aorgs![i].orgAvater == null
+                                child: aorgs![i].nodeAvater == null
                                     ? Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          if (aorgs![i].orgAvater == null)
+                                          if (aorgs![i].nodeAvater == null)
                                             Text(
-                                              aorgs![i].orgName ?? "",
+                                              aorgs![i].nodeName ?? "",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: constTheme.sidebarHeaderTextColor.withOpacity(0.8),
@@ -309,15 +309,15 @@ class _PCPageState extends State<PCPage> {
                                           borderRadius: BorderRadius.circular(6.w),
                                           child: Image.network(
                                             fit: BoxFit.cover,
-                                            aorgs![i].orgAvater!,
-                                            width: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
-                                            height: im.currentState!.org.daoId == aorgs![i].daoId ? 36.w : 42.w,
+                                            aorgs![i].nodeAvater!,
+                                            width: im.currentState!.org.nodeId == aorgs![i].nodeId ? 36.w : 42.w,
+                                            height: im.currentState!.org.nodeId == aorgs![i].nodeId ? 36.w : 42.w,
                                             loadingBuilder:
                                                 (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                                               if (loadingProgress == null) return child;
                                               return Center(
                                                 child: Text(
-                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  aorgs![i].nodeName != null ? aorgs![i].nodeName![0] : "-",
                                                   style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
                                                 ),
                                               );
@@ -326,7 +326,7 @@ class _PCPageState extends State<PCPage> {
                                                 (BuildContext context, Object exception, StackTrace? stackTrace) {
                                               return Center(
                                                 child: Text(
-                                                  aorgs![i].orgName != null ? aorgs![i].orgName![0] : "-",
+                                                  aorgs![i].nodeName != null ? aorgs![i].nodeName![0] : "-",
                                                   style: TextStyle(fontSize: 16.w, color: constTheme.sidebarText),
                                                 ),
                                               );

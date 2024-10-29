@@ -46,7 +46,6 @@ class AccountOrgApi {
   saveApp(String userId, String orgHash, List<OrgApp> apps) async {
     var org = storeBox.get(userId + orgHash);
     if (org != null) {
-      org.apps = apps;
       await storeBox.put(userId + orgHash, org);
     }
   }
@@ -62,16 +61,16 @@ class AccountOrgApi {
     } else if (org.logo != null && org.logo != "") {
       img = org.logo!;
     }
-    at.orgName = org.name;
-    at.orgDesc = org.desc;
-    at.orgAvater = org.logo;
-    at.orgImg = img;
-    at.orgColor = org.bg;
+    at.nodeName = org.name;
+    at.nodeDesc = org.desc;
+    at.nodeAvater = org.logo;
+    at.nodeImg = img;
+    at.nodeColor = org.bg;
     at.domain = org.imApi;
     at.status = 1;
     at.withAddr = address;
     at.account = account!;
-    at.daoId = org.daoId;
+    at.nodeId = org.daoId;
     await storeBox.put(address + org.hash, at);
   }
 
@@ -94,13 +93,13 @@ class AccountOrgApi {
     for (var j = 0; j < storeOrgs.length; j++) {
       var storeIndex = -1;
       for (var i = 0; i < fs.length; i++) {
-        if (storeOrgs[j].orgHash == fs[i]) {
+        if (storeOrgs[j].nodeHash == fs[i]) {
           storeIndex = i;
         }
       }
       // 删除
       if (storeIndex == -1) {
-        await storeBox.delete(address + storeOrgs[j].orgHash);
+        await storeBox.delete(address + storeOrgs[j].nodeHash);
       }
     }
 
@@ -108,7 +107,7 @@ class AccountOrgApi {
     for (var i = 0; i < fs.length; i++) {
       var storeIndex = -1;
       for (var j = 0; j < storeOrgs.length; j++) {
-        if (storeOrgs[j].orgHash == fs[i]) {
+        if (storeOrgs[j].nodeHash == fs[i]) {
           storeIndex = j;
         }
       }
@@ -118,31 +117,31 @@ class AccountOrgApi {
         // 新增
         if (org != null) {
           final at = AccountOrg(org.hash);
-          at.orgName = org.name;
-          at.orgDesc = org.desc;
-          at.orgAvater = org.logo;
-          at.orgImg = org.img;
-          at.orgColor = org.bg;
+          at.nodeName = org.name;
+          at.nodeDesc = org.desc;
+          at.nodeAvater = org.logo;
+          at.nodeImg = org.img;
+          at.nodeColor = org.bg;
           at.domain = org.imApi;
           at.status = 1;
           at.withAddr = address;
           at.account = account!;
-          at.daoId = org.daoId;
+          at.nodeId = org.daoId;
           await storeBox.put(address + org.hash, at);
         }
       } else {
         // 更新
         if (org != null) {
-          storeOrgs[storeIndex].orgName = org.name;
-          storeOrgs[storeIndex].orgDesc = org.desc;
-          storeOrgs[storeIndex].orgAvater = org.logo;
-          storeOrgs[storeIndex].orgImg = org.img;
-          storeOrgs[storeIndex].orgColor = org.bg;
+          storeOrgs[storeIndex].nodeName = org.name;
+          storeOrgs[storeIndex].nodeDesc = org.desc;
+          storeOrgs[storeIndex].nodeAvater = org.logo;
+          storeOrgs[storeIndex].nodeImg = org.img;
+          storeOrgs[storeIndex].nodeColor = org.bg;
           storeOrgs[storeIndex].domain = org.imApi;
           storeOrgs[storeIndex].status = 1;
           storeOrgs[storeIndex].withAddr = address;
           storeOrgs[storeIndex].account = account!;
-          storeOrgs[storeIndex].daoId = org.daoId;
+          storeOrgs[storeIndex].nodeId = org.daoId;
           await storeBox.put(address + org.hash, storeOrgs[storeIndex]);
         }
       }

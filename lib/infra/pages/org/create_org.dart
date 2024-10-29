@@ -433,9 +433,9 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                 _formKey.currentState!.save();
                 final im = context.read<AppCubit>();
 
-                weteeCtx.setOrg(im.currentState!.org, im.me!);
-                weteeCtx.connectChain(() async {
-                  printInfo("weteeCtx.connectChain2");
+                chainCtx.setOrg(im.currentState!.org, im.me!);
+                chainCtx.connectChain(() async {
+                  printInfo("chainCtx.connectChain2");
                   if (!await inputPasswordg(im.me!)) {
                     return;
                   }
@@ -444,7 +444,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                     future: () async {
                       printSuccess(_imController.text.replaceAll(RegExp(r"\s*"), ""));
                       try {
-                        final call = weteeCtx.client.tx.weTEEOrg.createDao(
+                        final call = chainCtx.client.tx.weTEEOrg.createDao(
                           name: strToChain(_data.name),
                           purpose: strToChain(_data.purpose),
                           metaData: strToChain("{}"),
@@ -457,7 +457,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                         );
 
                         // 提交
-                        await weteeCtx.client.signAndSubmit(call, weteeCtx.user.address);
+                        await chainCtx.client.signAndSubmit(call, chainCtx.user.address);
                       } catch (e) {
                         return "The user's balance is not enough to pay the handling fee";
                       }

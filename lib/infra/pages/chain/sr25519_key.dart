@@ -346,7 +346,7 @@ class _Sr25519KeyPageState extends State<Sr25519KeyPage> with WindowListener {
                     address: chainData.address,
                     chainData: json.encode(chainData.toJson()),
                     ss58Address: chainData.meta["ss58Address"]!,
-                    orgs: [],
+                    nodes: [],
                   );
                   initUser.name = chainData.meta["name"];
                   initUser.domain = "";

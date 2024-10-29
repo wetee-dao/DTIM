@@ -39,8 +39,8 @@ class _GovPopState extends State<GovPop> {
 
   getData() async {
     // periods = await XXXXdaoGovPeriods(
-    //   client: weteeCtx.chainClient,
-    //   orgId: weteeCtx.org.daoId,
+    //   client: chainCtx.chainClient,
+    //   orgId: chainCtx.org.daoId,
     // );
     // print(periods);
     setState(() {});
@@ -51,15 +51,15 @@ class _GovPopState extends State<GovPop> {
       return;
     }
     _formKey.currentState!.save();
-    widget.closeModel!.call(
-      WithGovPs(
-        runType: _data.type,
-        amount: 0,
-        member: widget.member,
-        periodIndex: _data.periodIndex,
-        daoId: weteeCtx.dao.id,
-      ),
-    );
+    // widget.closeModel!.call(
+    //   WithGovPs(
+    //     runType: _data.type,
+    //     amount: 0,
+    //     member: widget.member,
+    //     periodIndex: _data.periodIndex,
+    //     daoId: chainCtx.dao.id,
+    //   ),
+    // );
   }
 
   @override
