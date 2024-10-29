@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
 import 'package:dtim/infra/pages/org/create_org.dart';
-import 'package:dtim/infra/pages/opengov/gov.dart';
 import 'package:dtim/infra/pages/webview/webview.dart';
 
 import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
@@ -13,7 +12,6 @@ import 'package:dtim/infra/pages/chain/sr25519_key.dart';
 import 'package:dtim/infra/pages/main_pc.dart';
 import 'package:dtim/infra/pages/select_org.dart';
 import 'package:dtim/application/store/app/app.dart';
-import 'package:dtim/infra/pages/work/work.dart';
 import 'package:dtim/infra/pages/org/org.dart';
 import 'package:dtim/infra/pages/preloader.dart';
 
@@ -50,8 +48,8 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
       AutoRoute(path: '/', page: PreloaderRoute.page),
       AutoRoute(path: '/app', page: PlatformInfos.isMobile ? MobileRoute.page : PcRoute.page, children: [
         AutoRoute(path: 'im', page: PlatformInfos.isMobile ? OrgMobileRoute.page : OrgRoute.page),
-        AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
-        AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
+        // AutoRoute(path: 'gov', page: GovRoute.page, maintainState: false),
+        // AutoRoute(path: 'work', page: DaoRoute.page, maintainState: false),
         AutoRoute(path: 'integrate', page: IntegrateRoute.page, maintainState: false),
         AutoRoute(path: 'webview', page: WebviewRoute.page, maintainState: false),
       ]),

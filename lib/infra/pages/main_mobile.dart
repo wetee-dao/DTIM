@@ -38,8 +38,6 @@ class _MobilePageState extends State<MobilePage> {
 
   final mainPages = [
     const OrgMobileRoute(),
-    const GovRoute(),
-    const DaoRoute(),
     const IntegrateRoute(),
     // const WebviewRoute(),
   ];
@@ -78,7 +76,7 @@ class _MobilePageState extends State<MobilePage> {
 
       weteeCtx.setOrg(im.currentState!.org, im.me!);
       weteeCtx.connectChain(() async {
-        apps = trans(await weteeCtx.client.query.weteeOrg.orgApps(BigInt.tryParse(im.currentState!.org.daoId)!));
+        apps = trans(await weteeCtx.client.query.weTEEOrg.orgApps(BigInt.tryParse(im.currentState!.org.daoId)!));
         await accountOrgApi.saveApp(im.me!.address, im.currentState!.org.orgHash, apps);
         if (mounted) {
           setState(() {});

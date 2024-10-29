@@ -1,22 +1,12 @@
 // import 'package:dtim/infra/pages/channel/create.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:dtim/infra/pages/opengov/pop/create_treasury.dart';
 import 'package:dtim/infra/pages/user/kyc.dart';
 import 'package:dtim/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dtim/infra/pages/channel/create_private.dart';
 import 'package:dtim/infra/pages/channel/setting/setting.dart';
-import 'package:dtim/infra/pages/work/pop/apply_project_funding.dart';
-import 'package:dtim/infra/pages/work/pop/create_project.dart';
-import 'package:dtim/infra/pages/work/pop/create_roadmap.dart';
-import 'package:dtim/infra/pages/work/pop/create_task.dart';
-import 'package:dtim/infra/pages/work/pop/join_dao.dart';
-import 'package:dtim/infra/pages/work/pop/make_review.dart';
-import 'package:dtim/infra/pages/work/pop/referendum_vote.dart';
-import 'package:dtim/infra/pages/work/pop/task_info.dart';
 import 'package:dtim/infra/pages/setting/setting.dart';
-import 'package:dtim/infra/pages/work/pop/join_task.dart';
 import 'package:dtim/infra/pages/channel/create.dart';
 import 'package:dtim/infra/pages/search.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
@@ -32,36 +22,40 @@ getPage(String url, Function closeModel) {
     return SettingPage(closeModel: closeModel);
   } else if (url == "/create_private") {
     return CreatePrivatePage(closeModel: closeModel);
-  } else if (url == "/create_roadmap") {
-    return CreateRoadMapPage(closeModel: closeModel);
-  } else if (url.indexOf("/create_task/") == 0) {
-    final pstr = url.replaceAll("/create_task/", "");
-    final ps = pstr.split("/");
-    return CreateTaskPage(projectId: ps[0], closeModel: closeModel);
-  } else if (url.indexOf("/join_task/") == 0) {
-    final pstr = url.replaceAll("/join_task/", "");
-    final ps = pstr.split("/");
-    return JoinTaskPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
-  } else if (url.indexOf("/task_info/") == 0) {
-    final pstr = url.replaceAll("/task_info/", "");
-    final ps = pstr.split("/");
-    return TaskInfoPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
-  } else if (url.indexOf("/make_review/") == 0) {
-    final pstr = url.replaceAll("/make_review/", "");
-    final ps = pstr.split("/");
-    return MakeReviewPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
-  } else if (url.indexOf("/apply_project_funding/") == 0) {
-    final pstr = url.replaceAll("/apply_project_funding/", "");
-    return ApplyProjectFundingPage(projectId: pstr, closeModel: closeModel);
-  } else if (url.indexOf("/join_dao") == 0) {
-    return JoinWorkPage(closeModel: closeModel);
-  } else if (url.indexOf("/create_dao_project") == 0) {
-    return CreateProjectPage(closeModel: closeModel);
-  } else if (url.indexOf("/referendum_vote") == 0) {
-    final pstr = url.replaceAll("/referendum_vote/", "");
-    final ps = pstr.split("/");
-    return ReferendumVotePage(id: ps[0], closeModel: closeModel);
-  } else if (url.indexOf("/channel_setting/") == 0) {
+  }
+  // else if (url == "/create_roadmap") {
+  //   return CreateRoadMapPage(closeModel: closeModel);
+  // } else if (url.indexOf("/create_task/") == 0) {
+  //   final pstr = url.replaceAll("/create_task/", "");
+  //   final ps = pstr.split("/");
+  //   return CreateTaskPage(projectId: ps[0], closeModel: closeModel);
+  // } else if (url.indexOf("/join_task/") == 0) {
+  //   final pstr = url.replaceAll("/join_task/", "");
+  //   final ps = pstr.split("/");
+  //   return JoinTaskPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
+  // } else if (url.indexOf("/task_info/") == 0) {
+  //   final pstr = url.replaceAll("/task_info/", "");
+  //   final ps = pstr.split("/");
+  //   return TaskInfoPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
+  // } else if (url.indexOf("/make_review/") == 0) {
+  //   final pstr = url.replaceAll("/make_review/", "");
+  //   final ps = pstr.split("/");
+  //   return MakeReviewPage(projectId: ps[0], id: ps[1], closeModel: closeModel);
+  // } else if (url.indexOf("/apply_project_funding/") == 0) {
+  //   final pstr = url.replaceAll("/apply_project_funding/", "");
+  //   return ApplyProjectFundingPage(projectId: pstr, closeModel: closeModel);
+  // } else if (url.indexOf("/join_dao") == 0) {
+  //   return JoinWorkPage(closeModel: closeModel);
+  // } else if (url.indexOf("/create_dao_project") == 0) {
+  //   return CreateProjectPage(closeModel: closeModel);
+  // } else if (url.indexOf("/referendum_vote") == 0) {
+  //   final pstr = url.replaceAll("/referendum_vote/", "");
+  //   final ps = pstr.split("/");
+  //   return ReferendumVotePage(id: ps[0], closeModel: closeModel);
+  // } else if (url.indexOf("/create_treasury") == 0) {
+  //   return CreateTreasuryPage(closeModel: closeModel);
+  // }
+  else if (url.indexOf("/channel_setting/") == 0) {
     final pstr = url.replaceAll("/channel_setting/", "");
     final ps = pstr.split("/");
     return ChannelSettingPage(
@@ -76,9 +70,7 @@ getPage(String url, Function closeModel) {
     return KycPage(closeModel: closeModel);
   } else if (url.indexOf("/user_setting") == 0) {
     return UserSettingPage(closeModel: closeModel);
-  } else if (url.indexOf("/create_treasury") == 0) {
-    return CreateTreasuryPage(closeModel: closeModel);
-  }
+  } 
 
   return const Center(child: Text("404"));
 }

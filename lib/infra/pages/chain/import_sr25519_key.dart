@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dtim/application/service/apis/account_api.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/application/chain/wetee/wetee.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:window_manager/window_manager.dart';

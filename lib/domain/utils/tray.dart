@@ -5,7 +5,6 @@ import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:dtim/application/service/apis/system_api.dart';
 
 showtray() async {
   // print("window.platformBrightness => " + window.platformBrightness.toString());
@@ -37,7 +36,7 @@ showtray() async {
   }
 
   await windowManager.setPreventClose(true);
-  windowManager.addListener(WindowManagerListener());
+  // windowManager.addListener(WindowManagerListener());
 }
 
 class TrayManagerListener implements TrayListener {
@@ -61,62 +60,63 @@ class TrayManagerListener implements TrayListener {
   void onTrayMenuItemClick(MenuItem menuItem) {}
 }
 
-class WindowManagerListener implements WindowListener {
-  @override
-  void onWindowBlur() {}
+// class WindowManagerListener implements WindowListener {
+//   @override
+//   void onWindowBlur() {}
 
-  @override
-  void onWindowFocus() {}
+//   @override
+//   void onWindowFocus() {}
 
-  @override
-  void onWindowMaximize() {}
+//   @override
+//   void onWindowMaximize() {}
 
-  @override
-  void onWindowMinimize() {}
+//   @override
+//   void onWindowMinimize() {}
 
-  @override
-  void onWindowMove() {}
+//   @override
+//   void onWindowMove() {}
 
-  @override
-  void onWindowResize() {
-    windowManager.getSize().then((value) async {
-      await (await SystemApi.create()).save(value.width, value.height);
-    });
-  }
+//   @override
+//   void onWindowResize() {
+//     windowManager.getSize().then((value) async {
+//       final systemStore = await SystemApi.create();
+//       await systemStore.save(value.width, value.height);
+//     });
+//   }
 
-  @override
-  void onWindowRestore() {}
+//   @override
+//   void onWindowRestore() {}
 
-  @override
-  void onWindowClose() {
-    windowManager.hide();
-  }
+//   @override
+//   void onWindowClose() {
+//     windowManager.hide();
+//   }
 
-  @override
-  void onWindowEnterFullScreen() {}
+//   @override
+//   void onWindowEnterFullScreen() {}
 
-  @override
-  void onWindowEvent(String eventName) {}
+//   @override
+//   void onWindowEvent(String eventName) {}
 
-  @override
-  void onWindowLeaveFullScreen() {}
+//   @override
+//   void onWindowLeaveFullScreen() {}
 
-  @override
-  void onWindowMoved() {}
+//   @override
+//   void onWindowMoved() {}
 
-  @override
-  void onWindowResized() {}
+//   @override
+//   void onWindowResized() {}
 
-  @override
-  void onWindowUnmaximize() {}
+//   @override
+//   void onWindowUnmaximize() {}
   
-  @override
-  void onWindowDocked() {
-    // TODO: implement onWindowDocked
-  }
+//   @override
+//   void onWindowDocked() {
+//     // TODO: implement onWindowDocked
+//   }
   
-  @override
-  void onWindowUndocked() {
-    // TODO: implement onWindowUndocked
-  }
-}
+//   @override
+//   void onWindowUndocked() {
+//     // TODO: implement onWindowUndocked
+//   }
+// }

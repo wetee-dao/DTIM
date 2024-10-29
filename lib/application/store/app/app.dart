@@ -18,7 +18,7 @@ import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/application/store/im_state.dart';
-import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/application/chain/wetee/wetee.dart';
 import 'package:dtim/router.dart';
 
 part 'app.freezed.dart';

@@ -2,16 +2,16 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:dtim/chain/wetee_gen/types/sp_runtime/multiaddress/multi_address.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
+import 'package:dtim/application/chain/wetee/wetee.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/sp_runtime/multiaddress/multi_address.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:polkadart/scale_codec.dart';
 
 // ignore: constant_identifier_names
 const DAO_ROOT_SEED = "gloom album notable jewel divorce never trouble lesson month neck sign harbor";
 
 void main() async {
-  final wetee = WeTEE.url('ws://127.0.0.1:9944');
+  final wetee = WeTEE.url('http://127.0.0.1:9944');
   final chainAccount = await getSeedPhrase(seedStr: DAO_ROOT_SEED, name: '', password: '');
   await WeTEE.addKeyring(account: chainAccount, password: "");
 
@@ -19,7 +19,7 @@ void main() async {
   final alicePair = await getFromUri(uri:'//Alice', name: '', password: '');
   await WeTEE.addKeyring(account: alicePair, password: "");
   final dest = const $MultiAddress().id(hex.decode(chainAccount.address.replaceAll("0x", "")));
-  var tcall = wetee.tx.balances.transfer(dest: dest, value: BigInt.from(1000000000000000000));
+  var tcall = wetee.tx.balances.transferKeepAlive(dest: dest, value: BigInt.from(1000000000000000000));
   await wetee.signAndSubmit(tcall, alicePair.address);
 
   sleep(const Duration(seconds: 7));
@@ -27,7 +27,7 @@ void main() async {
   print(chainAccount.meta["ss58Address"]);
 
   // 创建DAO
-  var runcall = wetee.tx.weteeOrg.createDao(
+  var runcall = wetee.tx.weTEEOrg.createDao(
     name: convertStringToUint8List("ProgrammingDAO"),
     bg: convertStringToUint8List(''),
     logo: convertStringToUint8List(''),
@@ -44,7 +44,7 @@ void main() async {
 
   sleep(const Duration(seconds: 7));
   
-  final d = await wetee.query.weteeOrg.daos(BigInt.from(5000));
+  final d = await wetee.query.weTEEOrg.daos(BigInt.from(5000));
   print(d!.id.toString());
 
   final orgs = (await wetee.queryMapList(module: 'WeteeOrg', storage: 'Daos')).map((b) {

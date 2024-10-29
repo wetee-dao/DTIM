@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dtim/application/service/apis/system_api.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +10,20 @@ final _kIsLinux = !kIsWeb && Platform.isLinux;
 final _kIsWindows = !kIsWeb && Platform.isWindows;
 final _kIsMacos = !kIsWeb && Platform.isMacOS;
 
-class WindowFrame extends StatefulWidget {
-  const WindowFrame({
+class AeroFrame extends StatefulWidget {
+  const AeroFrame({
     super.key,
     required this.child,
   });
 
-  /// The [child] contained by the WindowFrame.
+  /// The [child] contained by the AeroFrame.
   final Widget child;
 
   @override
-  State<StatefulWidget> createState() => _WindowFrameState();
+  State<StatefulWidget> createState() => _AeroFrameState();
 }
 
-class _WindowFrameState extends State<WindowFrame> with WindowListener {
+class _AeroFrameState extends State<AeroFrame> with WindowListener {
   bool _isFocused = true;
   bool _isMaximized = false;
   bool _isFullScreen = false;
@@ -39,7 +40,7 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
     super.dispose();
   }
 
-  Widget _buildWindowFrame(BuildContext context) {
+  Widget _buildAeroFrame(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       decoration: BoxDecoration(
@@ -49,7 +50,7 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
           width: (_isMaximized || _isFullScreen) ? 0 : 1,
         ),
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 23
+          (_isMaximized || _isFullScreen) ? 0 : 24
         ),
         boxShadow: <BoxShadow>[
           if (!_isMaximized && !_isFullScreen)
@@ -85,7 +86,7 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
     if (_kIsLinux) {
       return DragToResizeArea(
         enableResizeEdges: (_isMaximized || _isFullScreen) ? [] : null,
-        child: _buildWindowFrame(context),
+        child: _buildAeroFrame(context),
       );
     } else if (_kIsWindows) {
       return DragToResizeArea(
@@ -144,12 +145,20 @@ class _WindowFrameState extends State<WindowFrame> with WindowListener {
       _isFullScreen = false;
     });
   }
+
+  @override
+  void onWindowResize() {
+    windowManager.getSize().then((value) async {
+      final systemStore = await SystemApi.create();
+      await systemStore.save(value.width, value.height);
+    });
+  }
 }
 
 // ignore: non_constant_identifier_names
-TransitionBuilder WindowFrameInit() {
+TransitionBuilder AeroFrameInit() {
   return (_, Widget? child) {
-    return WindowFrame(
+    return AeroFrame(
       child: child!,
     );
   };

@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/chain_ctx.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/member_data.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/gov_pop.dart';
 import 'package:dtim/router.dart';
@@ -164,7 +164,7 @@ class AppCard extends StatelessWidget {
           await waitFutureLoading(
             context: globalCtx(),
             future: () async {
-              final call = weteeCtx.client.tx.weteeOrg.orgIntegrateApp(
+              final call = weteeCtx.client.tx.weTEEOrg.orgIntegrateApp(
                 daoId: BigInt.tryParse(weteeCtx.org.daoId)!,
                 appId: id,
               );

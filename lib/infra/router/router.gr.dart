@@ -21,12 +21,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CreateOrgPage(),
       );
     },
-    GovRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const GovPage(),
-      );
-    },
     ImportSr25519keyRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -92,12 +86,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const Sr25519KeyPage(),
       );
     },
-    DaoRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WorkPage(),
-      );
-    },
   };
 }
 
@@ -111,20 +99,6 @@ class CreateOrgRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CreateOrgRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [GovPage]
-class GovRoute extends PageRouteInfo<void> {
-  const GovRoute({List<PageRouteInfo>? children})
-      : super(
-          GovRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'GovRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -289,20 +263,6 @@ class Sr25519keyRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'Sr25519keyRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WorkPage]
-class DaoRoute extends PageRouteInfo<void> {
-  const DaoRoute({List<PageRouteInfo>? children})
-      : super(
-          DaoRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DaoRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dtim/application/store/chain_ctx.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';

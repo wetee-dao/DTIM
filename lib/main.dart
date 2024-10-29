@@ -23,7 +23,7 @@ import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/domain/utils/screen/screen_util.dart';
 
 final botToastBuilder = BotToastInit();
-final virtualWindowFrameBuilder = WindowFrameInit();
+final virtualAeroFrameBuilder = AeroFrameInit();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,9 +53,9 @@ Future<void> main() async {
       winSize = Size(winsystem.width, winsystem.height);
     }
 
-    if (runInTest) {
-      winSize = const Size(1250, 750);
-    }
+    // if (runInTest) {
+    //   winSize = const Size(1250, 750);
+    // }
 
     // 创建窗口
     WindowOptions windowOptions = WindowOptions(
@@ -115,9 +115,8 @@ class App extends StatelessWidget {
             final MediaQueryData data = MediaQuery.of(context);
             child = botToastBuilder(context, child);
             ScreenUtil.setConText(context);
-            if (Platform.isLinux || Platform.isMacOS) {
-              child = virtualWindowFrameBuilder(context, child);
-            }
+            child = virtualAeroFrameBuilder(context, child);
+            
             return MediaQuery(
               data: data.copyWith(textScaler: const TextScaler.linear(1)),
               child: child,

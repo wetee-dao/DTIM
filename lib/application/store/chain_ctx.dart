@@ -4,28 +4,28 @@ import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:dtim/chain/wetee_gen/types/orml_tokens/account_data.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/period.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/vote_info.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/orml_tokens/account_data.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/period.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/vote_info.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dtim/chain/wetee/wetee.dart';
+import 'package:dtim/application/chain/wetee/wetee.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/domain/models/models.dart';
 import 'package:dtim/router.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:polkadart/polkadart.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_org/guild_info.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_project/project_info.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/pre_prop.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/prop.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/guild_info.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_info.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_project/project_info.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/pre_prop.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/prop.dart';
 
 // final chainUrl = PlatformInfos.isDesktop ? "ws://chain.gc.wetee.app:80" : "wss://chain.gc.wetee.app";
-const chainUrl = "ws://127.0.0.1:9944";
+const chainUrl = "https://xiaobai.asyou.me:30001";
 
 class WeTEECTX with ChangeNotifier {
   late Account user;
@@ -115,34 +115,34 @@ class WeTEECTX with ChangeNotifier {
     final publicKey = hex.decode(user.address);
 
     // DAO信息
-    dao = (await chainClient!.query.weteeOrg.daos(daoId))!;
+    dao = (await chainClient!.query.weTEEOrg.daos(daoId))!;
     daoAmount = await chainClient!.query.tokens.accounts(dao.daoAccountId, BigInt.from(0));
     totalIssuance = (await chainClient!.query.tokens.totalIssuance(daoId)).toInt();
 
     // 工会&项目
-    guilds = await chainClient!.query.weteeOrg.guilds(daoId);
-    projects = await chainClient!.query.weteeProject.daoProjects(daoId);
+    guilds = await chainClient!.query.weTEEOrg.guilds(daoId);
+    projects = await chainClient!.query.weTEEProject.daoProjects(daoId);
 
     // 用户荣誉点 share 链上金额
-    userPoint = await chainClient!.query.weteeOrg.memberPoint(daoId, publicKey);
+    userPoint = await chainClient!.query.weTEEOrg.memberPoint(daoId, publicKey);
     share = await chainClient!.query.tokens.accounts(publicKey, daoId);
     nativeAmount = await chainClient!.query.tokens.accounts(publicKey, BigInt.from(0));
     ss58Address = user.ss58Address;
 
     // DAO 成员
-    members = (await chainClient!.query.weteeOrg.members(daoId)).map((e) =>"0x${hex.encode(e)}").toList();
-    votes = await chainClient!.query.weteeGov.votesOf(publicKey);
+    members = (await chainClient!.query.weTEEOrg.members(daoId)).map((e) =>"0x${hex.encode(e)}").toList();
+    votes = await chainClient!.query.weTEEGov.votesOf(publicKey);
 
-    periods = await chainClient!.query.weteeGov.periods(daoId);
+    periods = await chainClient!.query.weTEEGov.periods(daoId);
 
     if (notify) notifyListeners();
   }
 
   getVoteData({notify = true}) async {
     if (org.daoId == 0) return;
-    pending = await chainClient!.query.weteeGov.preProps(BigInt.tryParse(org.daoId)!);
+    pending = await chainClient!.query.weTEEGov.preProps(BigInt.tryParse(org.daoId)!);
     going = [];
-    // await chainClient!.query.weteeGov.props(BigInt.from(org.daoId), key2);
+    // await chainClient!.query.weTEEGov.props(BigInt.from(org.daoId), key2);
 
     if (notify) notifyListeners();
   }

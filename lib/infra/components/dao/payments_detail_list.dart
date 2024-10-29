@@ -1,6 +1,6 @@
-import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:dtim/chain/wetee_gen/types/orml_tokens/account_data.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_org/org_info.dart';
+import 'package:dtim/application/chain/wetee/wetee.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/orml_tokens/account_data.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_info.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

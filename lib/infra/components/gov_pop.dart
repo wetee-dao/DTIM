@@ -1,7 +1,7 @@
 import 'package:dtim/application/store/chain_ctx.dart';
-import 'package:dtim/chain/wetee/wetee.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/member_data.dart';
-import 'package:dtim/chain/wetee_gen/types/wetee_gov/period.dart';
+import 'package:dtim/application/chain/wetee/wetee.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/member_data.dart';
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_gov/period.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 

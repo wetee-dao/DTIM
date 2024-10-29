@@ -444,7 +444,7 @@ class _CreateOrgPageState extends State<CreateOrgPage> with WindowListener {
                     future: () async {
                       printSuccess(_imController.text.replaceAll(RegExp(r"\s*"), ""));
                       try {
-                        final call = weteeCtx.client.tx.weteeOrg.createDao(
+                        final call = weteeCtx.client.tx.weTEEOrg.createDao(
                           name: strToChain(_data.name),
                           purpose: strToChain(_data.purpose),
                           metaData: strToChain("{}"),

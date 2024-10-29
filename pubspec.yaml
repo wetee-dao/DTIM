@@ -135,9 +135,9 @@ dependency_overrides:
   intl: ^0.19.0
 
 polkadart:
-  output_dir: lib/chain
+  output_dir: lib/application/chain/wetee
   chains:
-    wetee_gen: ws://127.0.0.1:9944
+    wetee_gen: wss://xiaobai.asyou.me:30001
 
 flutter:
   generate: true

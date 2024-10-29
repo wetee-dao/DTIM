@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'package:dtim/chain/wetee_gen/types/wetee_org/org_app.dart' as org_app;
+import 'package:dtim/application/chain/wetee/wetee_gen/types/wetee_org/org_app.dart' as org_app;
 
 part 'org.g.dart';
 
