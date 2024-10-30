@@ -16,9 +16,8 @@ class ChannelBar extends StatefulWidget implements PreferredSizeWidget {
   final link.Room room;
   final Widget? tools;
   final Function? onBack;
-  ChannelBar({Key? key, this.onBack, this.tools, required this.room, double? height})
-      : _height = height ?? 60.w,
-        super(key: key);
+  ChannelBar({super.key, this.onBack, this.tools, required this.room, double? height})
+      : _height = height ?? 60.w;
 
   @override
   State<ChannelBar> createState() => _ChannelBarState();
@@ -59,6 +58,8 @@ class _ChannelBarState extends State<ChannelBar> {
       Container(
         height: widget._height,
         decoration: BoxDecoration(
+          color: constTheme.centerChannelBg,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(10.w)),
           border: Border(
             bottom: BorderSide(color: constTheme.centerChannelDivider),
           ),

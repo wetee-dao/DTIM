@@ -44,13 +44,13 @@ class _AeroFrameState extends State<AeroFrame> with WindowListener {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       decoration: BoxDecoration(
-        color: constTheme.sidebarBg.withOpacity(0.70),
+        color: constTheme.sidebarBg.withOpacity(0.90),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.3),
           width: (_isMaximized || _isFullScreen) ? 0 : 1,
         ),
         borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 24
+          (_isMaximized || _isFullScreen) ? 0 : 14
         ),
         boxShadow: <BoxShadow>[
           if (!_isMaximized && !_isFullScreen)
@@ -72,7 +72,7 @@ class _AeroFrameState extends State<AeroFrame> with WindowListener {
           child: ClipRRect(
             clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(
-              (_isMaximized || _isFullScreen) ? 0 : 20,
+              (_isMaximized || _isFullScreen) ? 0 : 12,
             ),
             child: widget.child,
           ),

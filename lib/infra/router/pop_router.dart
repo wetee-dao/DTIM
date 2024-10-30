@@ -70,7 +70,7 @@ getPage(String url, Function closeModel) {
     return KycPage(closeModel: closeModel);
   } else if (url.indexOf("/user_setting") == 0) {
     return UserSettingPage(closeModel: closeModel);
-  } 
+  }
 
   return const Center(child: Text("404"));
 }
@@ -106,9 +106,15 @@ Future<T?> showModelOrPage<T>(context, url, {double width = 520, double height =
               ),
             ],
           ),
-          child: getPage(url, () {
-            context.router.pop();
-          }),
+          child: ClipRRect(
+            // clipBehavior: Clip.hardEdge,
+            borderRadius: BorderRadius.circular(
+              7.w,
+            ),
+            child: getPage(url, () {
+              context.router.pop();
+            }),
+          ),
         );
       },
     );

@@ -114,7 +114,7 @@ class BaseAvatar extends StatefulWidget {
   final Color? bg;
   final Color? color;
 
-  const BaseAvatar(this.avatarSrc, this.online, this.avatarWidth, {Key? key, this.bg, this.color}) : super(key: key);
+  const BaseAvatar(this.avatarSrc, this.online, this.avatarWidth, {super.key, this.bg, this.color});
 
   @override
   State<BaseAvatar> createState() => _BaseAvatarState();

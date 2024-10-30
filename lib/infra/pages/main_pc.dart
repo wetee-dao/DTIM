@@ -103,6 +103,7 @@ class _PCPageState extends State<PCPage> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: AutoTabsRouter.pageView(
         routes: mainPages,
         scrollDirection: Axis.vertical,
@@ -116,19 +117,15 @@ class _PCPageState extends State<PCPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               moveWindow(
-                Container(
-                  width: 65.w,
+                SizedBox(
+                  width: 55.w,
                   height: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: constTheme.sidebarHeaderBg,
-                    border: Border(right: BorderSide(color: constTheme.sidebarHeaderBg.lighter(0.08), width: 1)),
-                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (PlatformInfos.isMacOS) SizedBox(height: 20.w),
-                      SizedBox(height: 12.w),
+                      SizedBox(height: 6.w),
                       // 用户
                       SizedBox(
                         width: 40.w,

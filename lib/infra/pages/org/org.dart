@@ -32,14 +32,18 @@ class _OrgPageState extends State<OrgPage> {
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Scaffold(
-      backgroundColor: constTheme.centerChannelBg,
+      backgroundColor: Colors.transparent,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             height: double.maxFinite,
             width: leftWidth,
-            color: constTheme.sidebarBg,
+            decoration: BoxDecoration(
+              color: constTheme.centerChannelBg,
+              borderRadius: BorderRadius.circular(10.w)
+            ),
+            margin: EdgeInsets.only(left: 5.w),
             child: OrgViewPage(key: const Key("OrgViewPage"), width: leftWidth),
           ),
           GestureDetector(
@@ -48,8 +52,8 @@ class _OrgPageState extends State<OrgPage> {
               child: Row(
                 children: [
                   Container(
-                    color: constTheme.centerChannelColor.withOpacity(0.08),
-                    width: 1,
+                    color: Colors.transparent,
+                    width: 3.w,
                     height: double.infinity,
                   ),
                   const SizedBox(width: 1, height: double.infinity),

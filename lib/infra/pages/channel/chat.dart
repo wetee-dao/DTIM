@@ -399,9 +399,12 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
           ),
         ),
       ),
-      backgroundColor: constTheme.centerChannelBg,
+      backgroundColor: Colors.transparent,
       body: Container(
-        color: constTheme.centerChannelBg,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.w)),
+          color: constTheme.centerChannelBg,
+        ),
         child: Column(
           children: [
             Expanded(

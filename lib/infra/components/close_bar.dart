@@ -12,7 +12,7 @@ class CloseBar extends StatefulWidget {
   final Widget? child;
   final Color? color;
 
-  const CloseBar({Key? key, this.child, this.color}) : super(key: key);
+  const CloseBar({super.key, this.child, this.color});
 
   @override
   State<StatefulWidget> createState() => _CloseBarState();
@@ -65,10 +65,11 @@ class _CloseBarState extends State<CloseBar> with WindowListener {
     }
     if (widget.child == null) return renderIcons(constTheme);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         renderIcons(constTheme),
-        SizedBox(height: 6.w),
+        // SizedBox(height: 2.w),
         widget.child!,
       ],
     );

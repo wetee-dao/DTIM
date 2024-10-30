@@ -27,7 +27,7 @@ import 'package:dtim/domain/utils/matrix_sdk_extensions/matrix_file_extension.da
 class ChannelInputPage extends StatefulWidget {
   final link.Room room;
 
-  const ChannelInputPage({Key? key, required this.room}) : super(key: key);
+  const ChannelInputPage({super.key, required this.room});
 
   @override
   State<ChannelInputPage> createState() => _ChannelInputPageState();
@@ -253,7 +253,6 @@ class _ChannelInputPageState extends State<ChannelInputPage> {
       height: 66.w,
       padding: EdgeInsets.symmetric(horizontal: 15.w),
       decoration: BoxDecoration(
-        color: constTheme.centerChannelBg,
         border: Border(top: BorderSide(color: constTheme.centerChannelDivider)),
       ),
       child: Row(

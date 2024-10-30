@@ -5,8 +5,8 @@ import 'package:crypto/crypto.dart';
 import 'package:image/image.dart' as img;
 
 class Identicon {
-  final int _rows = 10;
-  final int _cols = 10;
+  final int _rows = 6;
+  final int _cols = 6;
   late Function(List<int>) _digest;
 
   List<int> _fgColour = [255, 255, 255];
