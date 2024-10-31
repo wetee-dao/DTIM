@@ -60,6 +60,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // moveWindow(
         //   Row(
@@ -140,6 +141,18 @@ class _OrgViewPageState extends State<OrgViewPage> {
         //   height: 1,
         //   color: constTheme.centerChannelColor.withOpacity(0.08),
         // ),
+        Padding(
+          padding: EdgeInsets.all(8.w),
+          child: Text(
+            "Message",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 14.w,
+              color: constTheme.centerChannelColor,
+            ),
+          ),
+        ),
         SingleChildScrollView(
           child: showType
               ? Column(
@@ -474,12 +487,7 @@ class _OrgViewPageState extends State<OrgViewPage> {
                     })
                   ],
                 )
-              : Column(
-                  children: [
-                    SizedBox(height: 20.w),
-                    const ChannelList(key: Key("ChannelList")),
-                  ],
-                ),
+              : const ChannelList(key: Key("ChannelList")),
         ),
       ],
     );

@@ -57,7 +57,7 @@ class _ChannelListState extends State<ChannelList> {
           color: currentId == chat.id ? constTheme.sidebarTextActiveBorder.withOpacity(0.09) : Colors.transparent,
           hoverColor: currentId == chat.id ? constTheme.sidebarTextActiveBorder.withOpacity(0.09):constTheme.centerChannelColor.withOpacity(0.08),
           radius: 5.w,
-          margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 2.w),
+          margin: EdgeInsets.only(left: 8.w, right: 8.w, bottom: 2.w),
           onPressed: () async {
             org.setChannelId(chat.id);
           },

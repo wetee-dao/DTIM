@@ -9,7 +9,7 @@ import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/application/store/theme.dart';
-import 'channel/chat.dart';
+import 'channel/channel.dart';
 import 'chat_view.dart';
 
 @RoutePage(name: "orgRoute")
@@ -41,7 +41,7 @@ class _OrgPageState extends State<OrgPage> {
             width: leftWidth,
             decoration: BoxDecoration(
               color: constTheme.centerChannelBg,
-              borderRadius: BorderRadius.circular(10.w)
+              borderRadius: BorderRadius.circular(1.windowRadius)
             ),
             margin: EdgeInsets.only(left: 3.w),
             child: OrgViewPage(key: const Key("OrgViewPage"), width: leftWidth),

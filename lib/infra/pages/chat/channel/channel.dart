@@ -391,7 +391,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.w)),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(1.windowRadius)),
           color: constTheme.centerChannelBg,
         ),
         child: Column(
