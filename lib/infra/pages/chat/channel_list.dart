@@ -13,11 +13,11 @@ import 'package:dtim/router.dart';
 import 'package:dtim/application/store/app/app.dart';
 import 'package:dtim/application/store/theme.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
-import 'hover_list_item.dart';
-import 'loading_dialog.dart';
+import '../../components/hover_list_item.dart';
+import '../../components/loading_dialog.dart';
 
 class ChannelList extends StatefulWidget {
-  const ChannelList({Key? key}) : super(key: key);
+  const ChannelList({super.key});
 
   @override
   State<ChannelList> createState() => _ChannelListState();
@@ -54,8 +54,10 @@ class _ChannelListState extends State<ChannelList> {
           key: Key(chat.id),
           subkey: "DirectChat${chat.id}",
           ishover: index == hover,
-          color: currentId == chat.id ? constTheme.sidebarText.withOpacity(0.08) : Colors.transparent,
-          hoverColor: constTheme.sidebarText.withOpacity(0.08),
+          color: currentId == chat.id ? constTheme.sidebarTextActiveBorder.withOpacity(0.09) : Colors.transparent,
+          hoverColor: currentId == chat.id ? constTheme.sidebarTextActiveBorder.withOpacity(0.09):constTheme.centerChannelColor.withOpacity(0.08),
+          radius: 5.w,
+          margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 2.w),
           onPressed: () async {
             org.setChannelId(chat.id);
           },
@@ -69,7 +71,7 @@ class _ChannelListState extends State<ChannelList> {
                 context: context,
                 color: constTheme.sidebarBg,
                 elevation: 0,
-                shape: Border.all(color: constTheme.sidebarText.withOpacity(0.08)),
+                shape: Border.all(color: constTheme.centerChannelColor.withOpacity(0.08)),
                 position: RelativeRect.fromLTRB(
                   offset.dx,
                   offset.dy,
@@ -144,21 +146,16 @@ class _ChannelListState extends State<ChannelList> {
             child: Container(
               height: 29.w,
               padding: EdgeInsets.only(right: 12.w, left: 12.w),
-              child: Icon(Icons.adaptive.more, size: 17.w, color: constTheme.sidebarText.withAlpha(155)),
-            ),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  width: 2.w,
-                  color: currentId == chat.id ? constTheme.sidebarTextActiveBorder : Colors.transparent,
-                ),
+              child: Icon(
+                Icons.adaptive.more,
+                size: 17.w,
+                color: constTheme.centerChannelColor.withAlpha(155),
               ),
             ),
-            height: 35.w,
+          ),
+          child: SizedBox(
+            height: 45.w,
             width: double.maxFinite,
-            // padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 12.w),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -183,7 +180,7 @@ class _ChannelListState extends State<ChannelList> {
                       child: Icon(
                         chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
                         size: chat.encrypted ? 24.w : 19.w,
-                        color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText,
+                        color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.centerChannelColor,
                       ),
                     ),
                   ),
@@ -197,7 +194,7 @@ class _ChannelListState extends State<ChannelList> {
                     style: TextStyle(
                       fontSize: 15.w,
                       fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
-                      color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.sidebarText,
+                      color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.centerChannelColor,
                     ),
                   ),
                 ),
@@ -219,15 +216,17 @@ class _ChannelListState extends State<ChannelList> {
         padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
           border: Border(
-              bottom: !hideBorder ? BorderSide(color: constTheme.sidebarText.withOpacity(0.08)) : BorderSide.none),
+              bottom:
+                  !hideBorder ? BorderSide(color: constTheme.centerChannelColor.withOpacity(0.08)) : BorderSide.none),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(width: 10.w),
-            Icon(icon, color: constTheme.sidebarText.withOpacity(0.7), size: 16.w),
+            Icon(icon, color: constTheme.centerChannelColor.withOpacity(0.7), size: 16.w),
             SizedBox(width: 6.w),
-            Text(name, style: TextStyle(color: constTheme.sidebarText.withOpacity(0.7), fontSize: 12.w, height: 1)),
+            Text(name,
+                style: TextStyle(color: constTheme.centerChannelColor.withOpacity(0.7), fontSize: 12.w, height: 1)),
             SizedBox(width: 10.w),
           ],
         ),

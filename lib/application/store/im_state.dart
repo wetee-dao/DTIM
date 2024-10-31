@@ -1,6 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:async';
-import 'package:dtim/infra/pages/channel/setting/key_verification_dialog.dart';
+import 'package:dtim/infra/pages/chat/channel/setting/key_verification_dialog.dart';
 import 'package:dtim/domain/utils/functions.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
 import 'package:easy_debounce/easy_debounce.dart';

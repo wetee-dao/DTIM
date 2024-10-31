@@ -102,6 +102,16 @@ class _PCPageState extends State<PCPage> {
   @override
   Widget build(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
+    final iconbg = constTheme.sidebarText.withOpacity(0.08);
+    final iconbt = ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(iconbg),
+      foregroundColor: MaterialStateProperty.all(constTheme.sidebarText),
+      // elevation: MaterialStateProperty.all(24),
+      elevation: MaterialStateProperty.all<double>(0),
+      shape: MaterialStateProperty.all(
+        const CircleBorder(),
+      ),
+    );
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AutoTabsRouter.pageView(
@@ -125,30 +135,64 @@ class _PCPageState extends State<PCPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (PlatformInfos.isMacOS) SizedBox(height: 20.w),
-                      SizedBox(height: 6.w),
+                      SizedBox(height: 16.w),
                       // 用户
                       SizedBox(
-                        width: 40.w,
-                        height: 40.w,
+                        width: 32.w,
+                        height: 32.w,
                         child: MePop(
                           im.me!.address,
                           im.me!.name ?? "-",
                           mxContent: avatar,
                           true,
-                          40.w,
-                          bg: constTheme.sidebarText.withOpacity(0.1),
+                          32.w,
+                          bg: iconbg,
                           color: constTheme.sidebarText,
                         ),
                       ),
-                      Container(
-                        width: 6.w,
-                        height: 4.w,
-                        margin: EdgeInsets.only(top: 12.w, bottom: 10.w),
-                        decoration: BoxDecoration(
-                          color: constTheme.sidebarText,
-                          borderRadius: BorderRadius.circular(2.w),
+                      SizedBox(height: 13.w),
+                      ElevatedButton(
+                        onPressed: () {
+                          printDebug("discover and join");
+                          context.router.pushNamed("/select_org?t=back").then((value) {
+                            getData();
+                          });
+                        },
+                        style: iconbt,
+                        child: SizedBox(
+                          width: 32.w,
+                          height: 32.w,
+                          child: Center(
+                            child: Icon(
+                              AppIcons.search,
+                              size: 18.w,
+                              color: constTheme.sidebarText,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 13.w),
+                      ElevatedButton(
+                        onPressed: () {
+                          printDebug("discover and join");
+                          context.router.pushNamed("/select_org?t=back").then((value) {
+                            getData();
+                          });
+                        },
+                        style: iconbt,
+                        child: SizedBox(
+                          width: 32.w,
+                          height: 32.w,
+                          child: Center(
+                            child: Icon(
+                              Icons.add,
+                              size: 18.w,
+                              color: constTheme.sidebarText,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 13.w),
                       Flexible(
                         child: StreamBuilder(
                           stream: currentId.stream,
@@ -160,6 +204,7 @@ class _PCPageState extends State<PCPage> {
                                   icon: AppIcons.chat,
                                   key: const Key("Chat"),
                                   selected: id.data == 0,
+                                  bg: iconbg,
                                   onTap: () {
                                     pageRouter.setActiveIndex(0);
                                     onSelect(0);
@@ -171,6 +216,7 @@ class _PCPageState extends State<PCPage> {
                                     img: app.icon,
                                     key: Key("app_${app.hash}"),
                                     selected: id.data == app.appId! + 1,
+                                    bg: iconbg,
                                     onTap: () {
                                       if (app.appId! < 2) {
                                         pageRouter.setActiveIndex(app.appId! + 1);
@@ -179,16 +225,16 @@ class _PCPageState extends State<PCPage> {
                                     },
                                   ),
                                 // DAO管理
-                                SiderBarItem(
-                                  "Apps",
-                                  icon: AppIcons.shujujicheng,
-                                  key: const Key("Integrate"),
-                                  selected: id.data == 3,
-                                  onTap: () {
-                                    pageRouter.setActiveIndex(3);
-                                    onSelect(3);
-                                  },
-                                ),
+                                // SiderBarItem(
+                                //   "Apps",
+                                //   icon: AppIcons.shujujicheng,
+                                //   key: const Key("Integrate"),
+                                //   selected: id.data == 3,
+                                //   onTap: () {
+                                //     pageRouter.setActiveIndex(3);
+                                //     onSelect(3);
+                                //   },
+                                // ),
                                 // DAO管理
                                 // SiderBarItem(
                                 //   "Dapps",
@@ -205,35 +251,35 @@ class _PCPageState extends State<PCPage> {
                           },
                         ),
                       ),
-                      IconButton(
-                        tooltip: "discover and join",
-                        onPressed: () {
-                          printDebug("discover and join");
-                          context.router.pushNamed("/select_org?t=back").then((value) {
-                            getData();
-                          });
-                        },
-                        icon: SizedBox(
-                          width: 36.w,
-                          height: 36.w,
-                          child: Center(
-                            child: Icon(
-                              AppIcons.discoverfill,
-                              size: 23.w,
-                              color: constTheme.sidebarText,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 6.w,
-                        height: 4.w,
-                        margin: EdgeInsets.only(top: 0.w, bottom: 5.w),
-                        decoration: BoxDecoration(
-                          color: constTheme.sidebarText,
-                          borderRadius: BorderRadius.circular(2.w),
-                        ),
-                      ),
+                      // IconButton(
+                      //   tooltip: "discover and join",
+                      //   onPressed: () {
+                      //     printDebug("discover and join");
+                      //     context.router.pushNamed("/select_org?t=back").then((value) {
+                      //       getData();
+                      //     });
+                      //   },
+                      //   icon: SizedBox(
+                      //     width: 36.w,
+                      //     height: 36.w,
+                      //     child: Center(
+                      //       child: Icon(
+                      //         AppIcons.discoverfill,
+                      //         size: 23.w,
+                      //         color: constTheme.sidebarText,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Container(
+                      //   width: 6.w,
+                      //   height: 4.w,
+                      //   margin: EdgeInsets.only(top: 0.w, bottom: 5.w),
+                      //   decoration: BoxDecoration(
+                      //     color: constTheme.sidebarText,
+                      //     borderRadius: BorderRadius.circular(2.w),
+                      //   ),
+                      // ),
                       if (aorgs != null)
                         for (var i = 0; i < aorgs!.length; i++)
                           GestureDetector(
@@ -334,7 +380,7 @@ class _PCPageState extends State<PCPage> {
                               ),
                             ),
                           ),
-                      SizedBox(height: 15.w),
+                      SizedBox(height: 10.w),
                     ],
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:dtim/application/chain/wetee/wetee_gen/types/frame_support/dispatch/raw_origin.dart';
 import 'package:flutter/material.dart';
 
 class HoverListItem extends StatefulWidget {
@@ -9,9 +10,11 @@ class HoverListItem extends StatefulWidget {
   final Widget? trailing;
   final Widget child;
   final String subkey;
+  final double radius;
+  final EdgeInsetsGeometry? margin;
 
   const HoverListItem({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.child,
     this.trailing,
@@ -20,7 +23,9 @@ class HoverListItem extends StatefulWidget {
     this.ishover,
     required this.subkey,
     this.onHover,
-  }) : super(key: key);
+    this.radius = 0,
+    this.margin,
+  });
 
   @override
   HoverListItemState createState() => HoverListItemState();
@@ -50,7 +55,11 @@ class HoverListItemState extends State<HoverListItem> {
         behavior: HitTestBehavior.translucent,
         onTap: () => widget.onPressed(),
         child: Container(
-          color: calcHover ? widget.hoverColor : widget.color,
+          margin: widget.margin,
+          decoration: BoxDecoration(
+            borderRadius: widget.radius > 0 ? BorderRadius.circular(widget.radius) : BorderRadius.zero,
+            color: calcHover ? widget.hoverColor : widget.color,
+          ),
           child: widget.trailing == null
               ? widget.child
               : Row(

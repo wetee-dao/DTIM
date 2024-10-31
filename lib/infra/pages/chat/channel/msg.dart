@@ -18,8 +18,7 @@ class Msg extends StatefulWidget {
   final link.Client client;
   final link.Timeline timeline;
 
-  const Msg({Key? key, required this.event, required this.client, this.preEvent, required this.timeline})
-      : super(key: key);
+  const Msg({super.key, required this.event, required this.client, this.preEvent, required this.timeline});
 
   @override
   State<Msg> createState() => _MsgState();
@@ -234,7 +233,7 @@ class _MsgState extends State<Msg> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (showAvatar) SizedBox(height: 8.w),
+              if (showAvatar) SizedBox(height: 5.w),
               if (showAvatar)
                 RichText(
                   text: TextSpan(
@@ -259,7 +258,7 @@ class _MsgState extends State<Msg> {
               SizedBox(height: 3.w),
               renderBody(event),
               Reacs(event, widget.timeline, client: widget.client),
-              SizedBox(height: 5.w),
+              SizedBox(height: 3.w),
             ],
           ),
         ),

@@ -4,10 +4,10 @@ import 'package:dtim/infra/pages/user/kyc.dart';
 import 'package:dtim/infra/pages/user/setting.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dtim/infra/pages/channel/create_private.dart';
-import 'package:dtim/infra/pages/channel/setting/setting.dart';
+import 'package:dtim/infra/pages/chat/channel/create_private.dart';
+import 'package:dtim/infra/pages/chat/channel/setting/setting.dart';
 import 'package:dtim/infra/pages/setting/setting.dart';
-import 'package:dtim/infra/pages/channel/create.dart';
+import 'package:dtim/infra/pages/chat/channel/create.dart';
 import 'package:dtim/infra/pages/search.dart';
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
@@ -82,8 +82,8 @@ Future<T?> showModelOrPage<T>(context, url, {double width = 520, double height =
       context: context,
       useSafeArea: true,
       barrierColor: Theme.of(context).brightness == Brightness.dark
-          ? Colors.white.withOpacity(0.1)
-          : Colors.black.withOpacity(0.7),
+          ? Colors.black.withOpacity(0.85)
+          : Colors.white.withOpacity(0.85),
       builder: (context) {
         final media = MediaQuery.of(context);
         final bottom = media.size.height - 30.w - height.w;
@@ -107,7 +107,6 @@ Future<T?> showModelOrPage<T>(context, url, {double width = 520, double height =
             ],
           ),
           child: ClipRRect(
-            // clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(
               7.w,
             ),

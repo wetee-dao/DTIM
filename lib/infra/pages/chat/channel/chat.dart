@@ -28,7 +28,7 @@ import 'msg.dart';
 class ChannelDetailPage extends StatefulWidget {
   String channerlID;
 
-  ChannelDetailPage({Key? key, required this.channerlID}) : super(key: key);
+  ChannelDetailPage({super.key, required this.channerlID});
 
   @override
   State<ChannelDetailPage> createState() => _ChannelDetailPageState();
@@ -229,7 +229,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
   Widget build(BuildContext context) {
     if (room == null) return Container();
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final size = BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w);
+    final size = BoxConstraints(minWidth: 28.w, maxWidth: 28.w, minHeight: 28.w, maxHeight: 28.w);
+    final iconStyle = IconButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
+    );
     return Scaffold(
       appBar: ChannelBar(
         room: room!,
@@ -279,40 +282,33 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                     },
                     padding: EdgeInsets.zero,
                     constraints: size,
-                    style: IconButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
-                    ),
+                    style: iconStyle,
                     tooltip: "meeting",
                     icon: Icon(AppIcons.meeting_board, color: constTheme.centerChannelColor, size: 21.w),
                   ),
                 ),
               if (room!.isDirectChat)
-                Padding(
-                  padding: EdgeInsets.only(right: 5.w),
-                  child: IconButton(
-                    onPressed: () async {
-                      // final voip = im.currentState!.webrtcTool!.voip;
-                      // final success = await waitFutureLoading(
-                      //   context: context,
-                      //   future: () => voip.requestTurnServerCredentials(),
-                      // );
-                      // if (success.result == null) {
-                      //   BotToast.showText(text: L10n.of(context)!.turnError);
-                      // }
-                      // try {
-                      //   await voip.inviteToCall(room!.id, link.CallType.kVoice);
-                      // } catch (e) {
-                      //   BotToast.showText(text: e.toLocalizedString(globalCtx()));
-                      // }
-                    },
-                    padding: EdgeInsets.zero,
-                    constraints: size,
-                    style: IconButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
-                    ),
-                    tooltip: "voice call",
-                    icon: Icon(Icons.call_rounded, color: constTheme.centerChannelColor, size: 21.w),
-                  ),
+                IconButton(
+                  onPressed: () async {
+                    // final voip = im.currentState!.webrtcTool!.voip;
+                    // final success = await waitFutureLoading(
+                    //   context: context,
+                    //   future: () => voip.requestTurnServerCredentials(),
+                    // );
+                    // if (success.result == null) {
+                    //   BotToast.showText(text: L10n.of(context)!.turnError);
+                    // }
+                    // try {
+                    //   await voip.inviteToCall(room!.id, link.CallType.kVoice);
+                    // } catch (e) {
+                    //   BotToast.showText(text: e.toLocalizedString(globalCtx()));
+                    // }
+                  },
+                  padding: EdgeInsets.zero,
+                  constraints: size,
+                  style: iconStyle,
+                  tooltip: "voice call",
+                  icon: Icon(Icons.call_rounded, color: constTheme.centerChannelColor, size: 21.w),
                 ),
               // IconButton(
               //   onPressed: () async {
@@ -354,9 +350,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                     builder: (BuildContext context, snapshot) => IconButton(
                       padding: EdgeInsets.zero,
                       constraints: size,
-                      style: IconButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.w)),
-                      ),
+                      style: iconStyle,
                       tooltip: room!.encrypted ? L10n.of(context)!.encrypted : L10n.of(context)!.encryptionNotEnabled,
                       icon: Icon(
                         room!.encrypted ? Icons.lock_rounded : Icons.lock_open_rounded,
@@ -375,18 +369,13 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   );
                 },
               ),
-              SizedBox(width: 2.w),
               IconButton(
                 onPressed: () async {
                   showModelOrPage(context, "/channel_setting/${Uri.encodeComponent(room!.id)}/info");
                 },
                 padding: EdgeInsets.zero,
-                constraints: BoxConstraints(minWidth: 30.w, maxWidth: 30.w, minHeight: 30.w, maxHeight: 30.w),
-                style: IconButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.w),
-                  ),
-                ),
+                constraints: size,
+                style: iconStyle,
                 tooltip: "info",
                 icon: Icon(
                   Icons.info_outline,
@@ -394,7 +383,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                   size: 21.w,
                 ),
               ),
-              SizedBox(width: 9.w),
+              SizedBox(width: 7.w),
             ],
           ),
         ),

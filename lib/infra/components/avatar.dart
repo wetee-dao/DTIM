@@ -22,6 +22,7 @@ class Avatar extends StatelessWidget {
   final double fontSize;
   final Color? bg;
   final Color? color;
+  final double radius;
 
   const Avatar({
     required this.id,
@@ -31,10 +32,11 @@ class Avatar extends StatelessWidget {
     this.onTap,
     this.client,
     this.fontSize = 18,
-    Key? key,
+    this.radius = 3,
+    super.key,
     this.bg,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,7 @@ class Avatar extends StatelessWidget {
     } else {
       container = id == ""
           ? CircleAvatar(
-              radius: 3,
+              radius: radius,
               child: Container(
                 width: size,
                 height: size,
@@ -96,6 +98,7 @@ class Avatar extends StatelessWidget {
               size,
               color: color,
               bg: bg,
+              radius: radius,
             );
     }
 
@@ -113,8 +116,9 @@ class BaseAvatar extends StatefulWidget {
   final double avatarWidth;
   final Color? bg;
   final Color? color;
+  final double radius;
 
-  const BaseAvatar(this.avatarSrc, this.online, this.avatarWidth, {super.key, this.bg, this.color});
+  const BaseAvatar(this.avatarSrc, this.online, this.avatarWidth, {super.key, this.bg, this.color, this.radius = 3});
 
   @override
   State<BaseAvatar> createState() => _BaseAvatarState();
@@ -125,16 +129,16 @@ class _BaseAvatarState extends State<BaseAvatar> {
 
   buildCtx(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final imgw = (widget.avatarWidth * 0.7).toInt();
+    final imgw = (widget.avatarWidth * 0.7 - widget.radius/4).toInt();
     final imgbg = widget.color ?? constTheme.centerChannelColor;
     final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
     final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(
       getUserShortId(widget.avatarSrc),
-      scale: (widget.avatarWidth / 50).ceil(),
+      scale: (widget.avatarWidth / 6).ceil(),
     );
 
     ctx = Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: boxBg),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(widget.radius), color: boxBg),
       padding: EdgeInsets.all((widget.avatarWidth - imgw) / 2),
       alignment: Alignment.topLeft,
       child: Image.memory(
@@ -178,11 +182,11 @@ class BaseAvatarWithPop extends StatefulWidget {
     this.name,
     this.online,
     this.avatarWidth, {
-    Key? key,
+    super.key,
     this.bg,
     this.color,
     this.mxContent,
-  }) : super(key: key);
+  });
 
   @override
   State<BaseAvatarWithPop> createState() => _BaseAvatarWithPopState();

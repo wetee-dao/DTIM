@@ -26,11 +26,11 @@ class MePop extends StatefulWidget {
     this.name,
     this.online,
     this.avatarWidth, {
-    Key? key,
+    super.key,
     this.bg,
     this.color,
     this.mxContent,
-  }) : super(key: key);
+  });
 
   @override
   State<MePop> createState() => _MePopState();
@@ -54,7 +54,8 @@ class _MePopState extends State<MePop> {
         color: widget.color,
         id: widget.id,
         mxContent: widget.mxContent,
-        size: 40.w,
+        size: widget.avatarWidth,
+        radius: widget.avatarWidth/2,
       ),
       menuBuilder: () => Container(
         width: 270.w,

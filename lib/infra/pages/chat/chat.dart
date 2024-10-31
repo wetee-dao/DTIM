@@ -9,12 +9,12 @@ import 'package:dtim/application/store/app/org.dart';
 import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/application/store/theme.dart';
-import '../channel/chat.dart';
-import 'org_view.dart';
+import 'channel/chat.dart';
+import 'chat_view.dart';
 
 @RoutePage(name: "orgRoute")
 class OrgPage extends StatefulWidget {
-  const OrgPage({Key? key}) : super(key: key);
+  const OrgPage({super.key});
 
   @override
   State<OrgPage> createState() => _OrgPageState();
@@ -43,7 +43,7 @@ class _OrgPageState extends State<OrgPage> {
               color: constTheme.centerChannelBg,
               borderRadius: BorderRadius.circular(10.w)
             ),
-            margin: EdgeInsets.only(left: 5.w),
+            margin: EdgeInsets.only(left: 3.w),
             child: OrgViewPage(key: const Key("OrgViewPage"), width: leftWidth),
           ),
           GestureDetector(
@@ -53,7 +53,7 @@ class _OrgPageState extends State<OrgPage> {
                 children: [
                   Container(
                     color: Colors.transparent,
-                    width: 3.w,
+                    width: 4.w,
                     height: double.infinity,
                   ),
                   const SizedBox(width: 1, height: double.infinity),

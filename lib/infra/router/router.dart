@@ -1,10 +1,10 @@
 import 'package:dtim/domain/utils/platform_infos.dart';
 import 'package:dtim/infra/pages/main_mobile.dart';
-import 'package:dtim/infra/pages/org/org_mobile.dart';
+import 'package:dtim/infra/pages/chat/chat_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dtim/infra/pages/integrate/integrate.dart';
-import 'package:dtim/infra/pages/org/create_org.dart';
+import 'package:dtim/infra/pages/chat/create_chat.dart';
 import 'package:dtim/infra/pages/webview/webview.dart';
 
 import 'package:dtim/infra/pages/chain/import_sr25519_key.dart';
@@ -12,7 +12,7 @@ import 'package:dtim/infra/pages/chain/sr25519_key.dart';
 import 'package:dtim/infra/pages/main_pc.dart';
 import 'package:dtim/infra/pages/select_org.dart';
 import 'package:dtim/application/store/app/app.dart';
-import 'package:dtim/infra/pages/org/org.dart';
+import 'package:dtim/infra/pages/chat/chat.dart';
 import 'package:dtim/infra/pages/preloader.dart';
 
 part 'router.gr.dart';

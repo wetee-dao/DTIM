@@ -113,10 +113,12 @@ class App extends StatelessWidget {
           theme: light,
           builder: (context, child) {
             final MediaQueryData data = MediaQuery.of(context);
+            if (isPc()) {
+              child = virtualAeroFrameBuilder(context, child);
+            }
             child = botToastBuilder(context, child);
             ScreenUtil.setConText(context);
-            child = virtualAeroFrameBuilder(context, child);
-            
+
             return MediaQuery(
               data: data.copyWith(textScaler: const TextScaler.linear(1)),
               child: child,

@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:dtim/application/service/apis/system_api.dart';
 import 'package:dtim/application/store/theme.dart';
+import 'package:dtim/domain/utils/screen/screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
@@ -44,20 +46,18 @@ class _AeroFrameState extends State<AeroFrame> with WindowListener {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
     return Container(
       decoration: BoxDecoration(
-        color: constTheme.sidebarBg.withOpacity(0.90),
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withOpacity(0.3),
-          width: (_isMaximized || _isFullScreen) ? 0 : 1,
-        ),
-        borderRadius: BorderRadius.circular(
-          (_isMaximized || _isFullScreen) ? 0 : 14
-        ),
+        color: constTheme.sidebarBg.withOpacity(0.68),
+        // border: Border.all(
+        //   color: Theme.of(context).dividerColor.withOpacity(0.3),
+        //   width: (_isMaximized || _isFullScreen) ? 0 : 1,
+        // ),
+        borderRadius: BorderRadius.circular((_isMaximized || _isFullScreen) ? 0 : 14),
         boxShadow: <BoxShadow>[
           if (!_isMaximized && !_isFullScreen)
             BoxShadow(
               color: Colors.black.withOpacity(0.4),
               // offset: Offset(0.0, _isFocused ? 4 : 2),
-              blurRadius: 5
+              blurRadius: 5,
             ),
         ],
       ),
@@ -67,14 +67,17 @@ class _AeroFrameState extends State<AeroFrame> with WindowListener {
         borderRadius: BorderRadius.circular(
           (_isMaximized || _isFullScreen) ? 0 : 16,
         ),
-        child: Container(
-          margin: const EdgeInsets.all(6),
-          child: ClipRRect(
-            clipBehavior: Clip.hardEdge,
-            borderRadius: BorderRadius.circular(
-              (_isMaximized || _isFullScreen) ? 0 : 12,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            margin: EdgeInsets.all(5.w),
+            child: ClipRRect(
+              clipBehavior: Clip.hardEdge,
+              borderRadius: BorderRadius.circular(
+                (_isMaximized || _isFullScreen) ? 0 : 12,
+              ),
+              child: widget.child,
             ),
-            child: widget.child,
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'org_view.dart';
+import 'chat_view.dart';
 
 @RoutePage(name: "orgMobileRoute")
 class OrgMobilePage extends StatefulWidget {

@@ -24,7 +24,7 @@ class ChannelSettingPage extends StatefulWidget {
   final String id;
   final String t;
   final Function? closeModel;
-  const ChannelSettingPage({Key? key, required this.id, this.closeModel, required this.t}) : super(key: key);
+  const ChannelSettingPage({super.key, required this.id, this.closeModel, required this.t});
 
   @override
   State<ChannelSettingPage> createState() => _ChannelSettingPageState();
@@ -103,6 +103,7 @@ class _ChannelSettingPageState extends State<ChannelSettingPage> with TickerProv
               tabs: titleList.map((e) => Tab(text: e)).toList(),
               isScrollable: true,
               dividerColor: Colors.transparent,
+              tabAlignment: TabAlignment.start,
               indicator: MaterialIndicator(
                 color: constTheme.sidebarTextActiveBorder,
                 strokeWidth: 10,
