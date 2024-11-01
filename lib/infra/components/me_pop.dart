@@ -166,6 +166,33 @@ class _MePopState extends State<MePop> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     menuController.hideMenu();
+                    showModelOrPage(context, "/setting", width: 0.7.sw, height: 0.8.sh);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15.w),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: constTheme.centerChannelColor.withOpacity(0.05))),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          '组织设置',
+                          style: TextStyle(fontSize: 14.w, color: constTheme.centerChannelColor),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14.w,
+                          color: constTheme.centerChannelColor,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    menuController.hideMenu();
                     showModelOrPage(context, "/kyc");
                   },
                   child: Container(

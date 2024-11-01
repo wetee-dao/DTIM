@@ -37,7 +37,7 @@ class BasePopupMenuController extends ChangeNotifier {
 
 class BasePopupMenu extends StatefulWidget {
   const BasePopupMenu({
-    Key? key,
+    super.key,
     required this.child,
     required this.menuBuilder,
     required this.pressType,
@@ -51,7 +51,7 @@ class BasePopupMenu extends StatefulWidget {
     this.position,
     this.menuOnChange,
     this.enablePassEvent = true,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final PressType pressType;

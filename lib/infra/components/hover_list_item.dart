@@ -8,6 +8,7 @@ class HoverListItem extends StatefulWidget {
   final VoidCallback onPressed;
   final Function(bool)? onHover;
   final Widget? trailing;
+  final Widget? unTrailing;
   final Widget child;
   final String subkey;
   final double radius;
@@ -18,6 +19,7 @@ class HoverListItem extends StatefulWidget {
     required this.onPressed,
     required this.child,
     this.trailing,
+    this.unTrailing,
     this.color,
     this.hoverColor,
     this.ishover,
@@ -38,6 +40,7 @@ class HoverListItemState extends State<HoverListItem> {
   Widget build(BuildContext context) {
     bool calcHover = _isHover || (widget.ishover != null && widget.ishover!);
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (event) {
         widget.onHover?.call(true);
         setState(() {
@@ -65,7 +68,8 @@ class HoverListItemState extends State<HoverListItem> {
               : Row(
                   children: [
                     Expanded(child: widget.child),
-                    Visibility(visible: calcHover, child: widget.trailing!),
+                    calcHover ? widget.trailing! : widget.unTrailing??const SizedBox(width: 0.1)
+                    // Visibility(visible: calcHover, child: widget.trailing!),
                   ],
                 ),
         ),

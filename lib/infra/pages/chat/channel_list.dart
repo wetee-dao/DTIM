@@ -1,4 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:date_format/date_format.dart';
+import 'package:dtim/domain/utils/time.dart';
 import 'package:dtim/infra/components/components.dart';
 import 'package:dtim/infra/router/pop_router.dart';
 import 'package:dtim/application/store/app/org.dart';
@@ -55,7 +57,9 @@ class _ChannelListState extends State<ChannelList> {
           subkey: "DirectChat${chat.id}",
           ishover: index == hover,
           color: currentId == chat.id ? constTheme.sidebarTextActiveBorder.withOpacity(0.09) : Colors.transparent,
-          hoverColor: currentId == chat.id ? constTheme.sidebarTextActiveBorder.withOpacity(0.09):constTheme.centerChannelColor.withOpacity(0.08),
+          hoverColor: currentId == chat.id
+              ? constTheme.sidebarTextActiveBorder.withOpacity(0.09)
+              : constTheme.centerChannelColor.withOpacity(0.08),
           radius: 5.w,
           margin: EdgeInsets.only(left: 8.w, right: 8.w, bottom: 2.w),
           onPressed: () async {
@@ -144,8 +148,8 @@ class _ChannelListState extends State<ChannelList> {
               });
             },
             child: Container(
-              height: 29.w,
-              padding: EdgeInsets.only(right: 12.w, left: 12.w),
+              height: 50.w,
+              padding: EdgeInsets.only(right: 6.w, left: 6.w),
               child: Icon(
                 Icons.adaptive.more,
                 size: 17.w,
@@ -153,17 +157,30 @@ class _ChannelListState extends State<ChannelList> {
               ),
             ),
           ),
+          unTrailing: Container(
+            width: 50.w,
+            height: 50.w,
+            padding: EdgeInsets.only(top: 8.w, right: 8.w),
+            child: Text(
+              getTime(chat.lastEvent!.originServerTs),
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontSize: 11.w,
+                fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
+                color: constTheme.centerChannelColor.withAlpha(155),
+              ),
+            ),
+          ),
           child: SizedBox(
-            height: 45.w,
+            height: 50.w,
             width: double.maxFinite,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(width: 10.w),
-                Container(
-                  width: 25.w,
+                SizedBox(width: 6.w),
+                SizedBox(
+                  width: 35.w,
                   height: 35.w,
-                  padding: EdgeInsets.only(top: 2.w),
                   child: badges.Badge(
                     showBadge: chat.isUnread,
                     badgeStyle: badges.BadgeStyle(badgeColor: constTheme.sidebarUnreadText),
@@ -177,27 +194,51 @@ class _ChannelListState extends State<ChannelList> {
                       ),
                     ),
                     child: Center(
-                      child: Icon(
-                        chat.encrypted ? Icons.private_connectivity : Icons.all_inclusive_sharp,
-                        size: chat.encrypted ? 24.w : 19.w,
+                      child: BaseAvatar(
+                        key: Key("list-id${chat.id}"),
+                        chat.id,
+                        true,
+                        35.w,
                         color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.centerChannelColor,
+                        bg: constTheme.centerChannelColor.withOpacity(0.05),
+                        radius: 5.w,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 8.w),
+                SizedBox(width: 6.w),
                 Expanded(
-                  child: Text(
-                    chat.getLocalizedDisplayname(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15.w,
-                      fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
-                      color: chat.isUnreadOrInvited ? constTheme.sidebarUnreadText : constTheme.centerChannelColor,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        chat.getLocalizedDisplayname(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 17.w,
+                          height: 1,
+                          fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
+                          color: constTheme.centerChannelColor,
+                        ),
+                      ),
+                      SizedBox(height: 2.w),
+                      Text(
+                        chat.lastEvent!.text,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 13.w,
+                          height: 1,
+                          fontWeight: chat.isUnreadOrInvited ? FontWeight.bold : FontWeight.normal,
+                          color: constTheme.centerChannelColor.withAlpha(155),
+                        ),
+                      )
+                    ],
                   ),
                 ),
+                SizedBox(width: 8.w),
               ],
             ),
           ),

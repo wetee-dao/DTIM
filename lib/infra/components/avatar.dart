@@ -129,7 +129,7 @@ class _BaseAvatarState extends State<BaseAvatar> {
 
   buildCtx(BuildContext context) {
     final constTheme = Theme.of(context).extension<ExtColors>()!;
-    final imgw = (widget.avatarWidth * 0.7 - widget.radius/4).toInt();
+    final imgw = (widget.avatarWidth * 0.7 - widget.radius/3).toInt();
     final imgbg = widget.color ?? constTheme.centerChannelColor;
     final boxBg = widget.bg ?? constTheme.centerChannelColor.withOpacity(0.1);
     final img = Identicon(fg: [imgbg.red, imgbg.green, imgbg.blue]).generate(
@@ -212,7 +212,7 @@ class _BaseAvatarWithPopState extends State<BaseAvatarWithPop> {
       showArrow: false,
       controller: menuController,
       position: PreferredPosition.bottomLeft,
-      pressType: kIsWeb ? PressType.singleClick : PressType.mouseHover,
+      pressType: PressType.singleClick,
       child: Avatar(
         id: widget.id,
         mxContent: widget.mxContent,

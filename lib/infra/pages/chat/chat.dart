@@ -21,7 +21,7 @@ class OrgPage extends StatefulWidget {
 }
 
 class _OrgPageState extends State<OrgPage> {
-  double leftWidth = 200.w;
+  double leftWidth = 250.w;
 
   @override
   void dispose() {
@@ -62,7 +62,7 @@ class _OrgPageState extends State<OrgPage> {
             ),
             onPanUpdate: (details) {
               setState(() {
-                if (leftWidth + details.delta.dx < 180.w || leftWidth + details.delta.dx > 350.w) {
+                if (leftWidth + details.delta.dx < 220.w || leftWidth + details.delta.dx > 350.w) {
                   return;
                 }
                 leftWidth = leftWidth + details.delta.dx;

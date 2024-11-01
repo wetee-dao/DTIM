@@ -208,7 +208,7 @@ class _MsgState extends State<Msg> {
                 user.id,
                 user.displayName ?? "-",
                 true,
-                40.w,
+                35.w,
                 color: constTheme.centerChannelColor,
                 bg: constTheme.centerChannelDivider,
                 mxContent: user.avatarUrl,
@@ -217,7 +217,7 @@ class _MsgState extends State<Msg> {
           ),
         if (!showAvatar)
           SizedBox(
-            width: 40.w,
+            width: 35.w,
             child: hover
                 ? Text(
                     getTime(event.originServerTs),

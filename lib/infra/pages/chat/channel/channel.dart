@@ -420,19 +420,19 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> with WindowListen
                         return SizedBox(height: 10.w);
                       }
                       if (index == events.length + 1) {
-                        if (timeline != null && timeline!.canRequestHistory) {
-                          return Center(
-                            child: Container(
-                              width: 15.w,
-                              height: 15.w,
-                              margin: EdgeInsets.all(8.w),
-                              child: CircularProgressIndicator.adaptive(
-                                strokeWidth: 4.w,
-                                valueColor: AlwaysStoppedAnimation(constTheme.centerChannelColor),
-                              ),
-                            ),
-                          );
-                        }
+                        // if (timeline != null && timeline!.canRequestHistory) {
+                        //   return Center(
+                        //     child: Container(
+                        //       width: 15.w,
+                        //       height: 15.w,
+                        //       margin: EdgeInsets.all(8.w),
+                        //       child: CircularProgressIndicator.adaptive(
+                        //         strokeWidth: 4.w,
+                        //         valueColor: AlwaysStoppedAnimation(constTheme.centerChannelColor),
+                        //       ),
+                        //     ),
+                        //   );
+                        // }
                         return Container();
                       }
 
